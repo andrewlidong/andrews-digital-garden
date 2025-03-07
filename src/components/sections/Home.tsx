@@ -65,15 +65,13 @@ const Home = forwardRef<HTMLElement, { title: string }>((props, ref) => {
         <h1 className="text-8xl font-bold">
           Introducing... <Title />
         </h1>
-        <h1 className="text-6xl font-bold">Your next hire.</h1>
+        <h1 className="text-6xl font-bold">Senior Software Engineer.</h1>
         {/* <p className="text-2xl">
           Developer, community builder, filmmaker, amateur musician - you can
           guarantee his value is <b>not just code.</b>
         </p> */}
         <p className="text-2xl text-slate-200">
-          A multi-faceted developer with experience building innovative
-          solutions, inspiring communities, and driving impact — you can
-          guarantee his value is <b>not just code.</b>
+        A versatile developer with a track record of building innovative solutions, fostering communities, and delivering meaningful impact - <b>bringing value that goes far beyond just code.</b>
         </p>
       </main>
 
@@ -103,30 +101,35 @@ const Home = forwardRef<HTMLElement, { title: string }>((props, ref) => {
       <div className="max-w-4xl mx-auto mb-6 text-center">
         <span className="text-white text-lg">★★★★★</span>
         <p className="text-xl text-gray-300 mt-2 text-center mb-4">
-          Trusted by the following companies:
+        Proudly contributed to:
         </p>
         <div className="flex justify-center space-x-10 relative z-40">
           {[
             {
-              href: "https://arcticwolf.com/",
-              src: "/arctic_wolf.png",
-              alt: "Arctic Wolf",
+              href: "https://capitalone.com/",
+              src: "/capitalone.png",
+              alt: "Capital One",
             },
             {
-              href: "https://99ravens.ai/",
-              src: "/99_ravens.png",
-              alt: "99 Ravens",
+              href: "https://rubrik.com/",
+              src: "/rubrik.jpeg",
+              alt: "Rubrik",
             },
-            { href: "https://horizn.com/", src: "/horizn.png", alt: "Horizn" },
+            { href: "https://superalert.nyc/", src: "/superalert.png", alt: "SuperAlert" },
             {
-              href: "https://www.arcticai.co/",
-              src: "/arctic_ai.png",
-              alt: "Arctic AI",
+              href: "https://www.limitless.ventures/",
+              src: "/limitlessventures.jpeg",
+              alt: "Limitless Ventures",
             },
             {
-              href: "https://www.mikobyte.com/",
-              src: "/mikobyte.webp",
-              alt: "Mikobyte Solutions",
+              href: "https://codecademy.com/",
+              src: "/codecademy.jpg",
+              alt: "Codecademy",
+            },
+            {
+              href: "https://equinox.com/",
+              src: "/equinox.png",
+              alt: "Equinox",
             },
           ].map((company, index) => (
             <a

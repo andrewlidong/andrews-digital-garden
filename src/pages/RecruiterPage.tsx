@@ -13,7 +13,7 @@ function RecruiterPage() {
 
   const [index, setIndex] = useState(0);
   const [title, setTitle] = useState("");
-  const fullTitle = "Portfolio.";
+  const fullTitle = "Andrew Dong";
 
   const [activeTab, setActiveTab] = useState("home");
   const [isScrolling, setIsScrolling] = useState(false);
