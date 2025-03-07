@@ -1,0 +1,1 @@
+Helped out a friend by creating a tool to [summarize podcasts](https://github.com/levp22/Podcast-Summarizer) and other YouTube videos using Python and a port of OpenAI's Whisper. Sunday project, created in 2 Socratica sessions (~4 hours!)

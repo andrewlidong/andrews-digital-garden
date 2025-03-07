@@ -1,0 +1,3 @@
+Building a [global collective of makers](https://www.socratica.info/map). Hosting weekly co-working sessions in Waterloo where people work on their passion projects. Running community building events ranging from paint nights, [adult summer camp](https://www.instagram.com/p/C9FmIHfupyt/), and Waterloo's [biggest demo day](https://x.com/socraticainfo/status/1776025502202868185) (soon to be the world's).
+
+Getting involved with Socratica significantly changed my life, immensely grateful to be a part of this community and for all the incredible people I have met along the way.

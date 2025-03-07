@@ -1,0 +1,245 @@
+{
+    "contact": {
+        "email": "andrewdong1994@gmail.com",
+        "linkedin": "https://www.linkedin.com/in/andrew-dong/",
+        "github": "https://github.com/andrewlidong",
+        "twitter": "https://twitter.com/AndrewDong1994",
+        "letterboxd": "https://letterboxd.com/andrewdong1994/"
+    },
+    "experience": [
+        {
+            "title": "Senior Software Engineer",
+            "company": "Capital One",
+            "location": "New York, NY",
+            "startDate": "2023",
+            "endDate": "2025",
+            "fun_description": [],
+            "recruiter_description": [
+                "Led Cloud Cost Optimization Initiatives, architecting OptiCloud, an internal cloud governance system that optimized AWS and GCP resource allocation. Implemented dynamic cost policy enforcement and real-time anomaly detection, reducing unnecessary cloud spend by $30M annually and increasing policy compliance by 70%.",
+                "Optimized API Reliability and Performance by designing a high-performance API orchestrator for cost analysis queries. Implemented gRPC batching, event-driven retries with Kafka, and intelligent circuit breakers, reducing API failure rates by 60% and cutting query latency by 60% (200ms → 80ms).",
+                "Built a Real-Time Cloud Cost Analytics Dashboard, integrating TypeScript, Angular, and Go-based APIs to provide engineering teams with granular cost tracking and forecasting. Increased adoption of cost-saving recommendations by 50%, leading to faster and more informed cloud infrastructure decisions."
+            ],
+            "technologies": [
+                "Golang",
+                "AWS",
+                "DynamoDB",
+                "TypeScript",
+                "gRPC",
+                "Kubernetes"
+            ],
+            "quote": "\"Exemplified exceptional professionalism and an unwavering work ethic, consistently taking ownership, seeking excellence, and delivering high-impact results. Brought dedication and accountability to every challenge, ensuring both personal and team success.\" - Team Lead"
+        },
+        {
+            "title": "Senior Software Engineer",
+            "company": "Rubrik",
+            "location": "Palo Alto, CA",
+            "startDate": "2021",
+            "endDate": "2023",
+            "fun_description": [],
+            "recruiter_description": [
+                "Optimized Metadata Sync Performance, achieving an 8x speed improvement (40+ minutes → under 5 minutes) for a mission-critical backup system. Reduced gRPC round trips by 70%, implemented intelligent caching, and migrated from dbClient to dbPool, significantly enhancing data consistency and system reliability.",
+                "Led a Cross-Functional Initiative to enable multi-archival location support for Rubrik’s Reports service, improving visibility for 5000+ enterprise customers. Designed an internal blobstore helper, optimized MySQL-backed metadata indexing, and established company-wide best practices for pyramid testing, increasing system scalability and maintainability."
+            ],
+            "technologies": [
+                "Scala",
+                "Golang",
+                "TypeScript",
+                "GCP",
+                "MySQL",
+                "Cassandra"
+            ],
+            "quote": ""
+        },
+        {
+            "title": "Software Engineer",
+            "company": "SuperAlert",
+            "location": "New York, NY",
+            "startDate": "2020",
+            "endDate": "2020",
+            "fun_description": [],
+            "recruiter_description": [
+                "Developed an IoT Alert Monitoring Platform, integrating MQTT, Telegraf, InfluxDB, AWS, and Grafana to process and visualize real-time telemetry data from 300+ IoT sensors. Automated device registration and testing for LoRaWAN connectivity, improving deployment efficiency.",
+                "Optimized Sensor Firmware and Data Transmission, rewriting embedded C code to reduce downlink frequency, extending battery life by 20x. Identified and resolved supply chain bottlenecks caused by excessive transmission rates, ensuring scalability and cost efficiency."
+            ],
+            "technologies": [
+                "Python",
+                "MQTT",
+                "LoRaWAN",
+                "Telegraf",
+                "AWS",
+                "Grafana",
+                "InfluxDB"
+            ],
+            "quote": "\"I absolutely recommend Andrew for any job for which he is eligible- his enthusiasm and positivity when approaching difficult tasks is a pleasure to be around.\" - Carissa Ottoson"
+        },
+        {
+            "title": "Technical Contributor",
+            "company": "Limitless Ventures",
+            "location": "New York, NY",
+            "startDate": "2019",
+            "endDate": "2020",
+            "fun_description": [],
+            "recruiter_description": [
+                "Engineered Performance, Security, and Accessibility Enhancements for a recovery-focused venture capital platform, optimizing site reliability, scalability, and user experience. Improved frontend performance by refactoring React components and enhancing API efficiency.",
+                "Conducted penetration testing and addressed vulnerabilities, ensuring secure and compliant deployments."
+            ],
+            "technologies": [
+                "JavaScript",
+                "Webpack"
+            ],
+            "quote": "\"Their combination of adaptability and attention to detail is truly remarkable. Their contributions will remain valuable to the team for years to come.\" - Manager"
+        }
+    ],
+    "skills": [
+        {
+            "name": "Python",
+            "category": "Languages"
+        },
+        {
+            "name": "JavaScript/TypeScript",
+            "category": "Languages"
+        },
+        {
+            "name": "HTML/CSS",
+            "category": "Languages"
+        },
+        {
+            "name": "React",
+            "category": "Tools"
+        },
+        {
+            "name": "AWS",
+            "category": "Tools"
+        },
+        {
+            "name": "MySQL",
+            "category": "Tools"
+        },
+        {
+            "name": "GraphQL",
+            "category": "Tools"
+        }
+    ],
+    "education": [
+        {
+            "degree": "Bachelor of Mathematics",
+            "school": "University of Chicago",
+            "startDate": "2012",
+            "endDate": "2016",
+            "description": [
+                "IMC International Math Competition Finalist",
+                "Dean’s List",
+                "US Presidential Scholar"
+            ]
+        }
+    ],
+    "projects": [
+        {
+            "name": "ThisIsWater",
+            "description": [
+                "Developed ThisIsWater, a full-stack blogging platform, enabling seamless content creation and management with a scalable architecture. Designed an intuitive user experience, integrating modern web technologies for dynamic and responsive publishing."
+            ],
+            "technologies": [
+                "React",
+                "Rails",
+                "PostgreSQL",
+                "AWS"
+            ],
+            "live_url": "https://thisiswater.herokuapp.com/",
+            "image_url": "fck.png"
+        },
+        {
+            "name": "Resonant",
+            "description": [
+                "Implemented a friend-nominated dating algorithm in 6 days, earning 100k+ Twitter impressions and fostering 2 relationships"
+            ],
+            "technologies": [
+                "GPT-4",
+                "Jupyter Notebook",
+                "Python"
+            ],
+            "live_url": "https://x.com/ansonyuu/status/1755307905383879133",
+            "image_url": "resonant.webp"
+        },
+        {
+            "name": "Resume Generator",
+            "description": [
+                "Generate resume and cover letter based on prior work experience"
+            ],
+            "technologies": [
+                "React",
+                "GPT-3.5",
+                "JavaScript"
+            ],
+            "live_url": "https://github.com/yourusername/resume-generator",
+            "image_url": "resume_generator.png"
+        },
+        {
+            "name": "Mini Games",
+            "description": [
+                "Created real-time multiplayer game in 36 hours using WebSockets and React, ran a successful live demo for a 100+ person audience"
+            ],
+            "technologies": [
+                "React",
+                "Socket.IO",
+                "Next.js"
+            ],
+            "live_url": "https://github.com/yourusername/mini-games"
+        },
+        {
+            "name": "Podcast Summarizer",
+            "description": [
+                "Uses AI to summarize podcasts into a few sentences, allowing users to quickly understand the content of a podcast without listening to the entire episode"
+            ],
+            "technologies": [
+                "Jupyter Notebook",
+                "Python",
+                "GPT-3.5"
+            ],
+            "live_url": "https://github.com/levp22/Podcast-Summarizer"
+        },
+        {
+            "name": "Chess Engine",
+            "description": [
+                "Created chess engine in C++ following object-oriented design patterns, with multiple levels of computer AI"
+            ],
+            "technologies": [
+                "C++"
+            ],
+            "live_url": "https://github.com/yourusername/chess-engine",
+            "image_url": ""
+        }
+    ],
+    "extracurriculars": [
+        {
+            "name": "Socratica",
+            "position": "Host",
+            "startDate": "05/2024",
+            "endDate": "Present",
+            "description": [
+                "Community building in Waterloo (and worldwide), giving makers a space to pursue passion projects with weekly co-working sessions",
+                "Planned and hosted various events for our over 400 unique attendees, including bonfires, paint nights, and an end-of-term showcase"
+            ]
+        },
+        {
+            "name": "UW Blueprint",
+            "position": "Project Developer, Internal Director",
+            "startDate": "09/2023",
+            "endDate": "Present",
+            "description": [
+                "Worked with Feeding Canadian Kids to develop a web platform to streamline the volunteering process, helping to feed over 150,000 children - built with React, GraphQL, Python (Flask), and MongoDB",
+                "Currently serving as Internal Director, running community events and managing logistics for our team of over 100 students"
+            ]
+        },
+        {
+            "name": "UW Mario Kart",
+            "position": "Co-founder, CEO",
+            "startDate": "05/2023",
+            "endDate": "04/2023",
+            "description": [
+                "Founded Waterloo's first Mario Kart club, lead weekly meetings, and organize tournaments",
+                "Organized live band to perform soundtrack while members raced"
+            ]
+        }
+    ]
+}

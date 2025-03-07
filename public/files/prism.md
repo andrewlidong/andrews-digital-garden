@@ -1,0 +1,1 @@
+Helping to create Waterloo's first art-tech collective by doing both design and dev for their website. Built with React and Next.js, check it out [here](https://prismcollective.ca)!

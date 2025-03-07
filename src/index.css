@@ -1,0 +1,54 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@layer base {
+  :root {
+    --radius: 0.5rem
+  }
+}
+@font-face {
+  font-family: "ChiKareGo2";
+  src: url("https://db.onlinewebfonts.com/t/20879f289f178c7c99a7623b1bcda06f.eot");
+  src: url("https://db.onlinewebfonts.com/t/20879f289f178c7c99a7623b1bcda06f.eot?#iefix")format("embedded-opentype"),
+  url("https://db.onlinewebfonts.com/t/20879f289f178c7c99a7623b1bcda06f.woff2")format("woff2"),
+  url("https://db.onlinewebfonts.com/t/20879f289f178c7c99a7623b1bcda06f.woff")format("woff"),
+  url("https://db.onlinewebfonts.com/t/20879f289f178c7c99a7623b1bcda06f.ttf")format("truetype"),
+  url("https://db.onlinewebfonts.com/t/20879f289f178c7c99a7623b1bcda06f.svg#ChiKareGo2")format("svg");
+}
+body {
+  /* @apply cursor-default; */
+}
+@layer utilities {
+  /* Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+}
+
+.markdown-body {
+  background-color: transparent;
+  color: black;
+  a {
+    color: black;
+    text-decoration: underline;
+  }
+}
+
+@media (max-width: 767px) {
+  .markdown-body {
+    padding: 15px;
+  }
+}
+
+.markdown-body ul {
+  list-style-type: disc !important;
+}
+
+.markdown-body ol {
+  list-style-type: decimal !important;
+}

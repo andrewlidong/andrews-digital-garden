@@ -1,0 +1,3 @@
+Tech for social good. Currently serving as internal director of [UW Blueprint](https://uwblueprint.org/), a student-run organization that develops software for NPOs. Responsible for logistics, culture, and running community building events.
+
+Formerly a developer on [Feeding Canadian Kids](https://feedingcanadiankids.org/?utm_source=google&utm_medium=cpc&utm_campaign=Testcampaign2&gad_source=1&gclid=CjwKCAjw1NK4BhAwEiwAVUHPUBSQrrg8RkHIUqiCF5D4rzcY8eqqt8b0rrSvzwi0vQpYXXBwt3HDShoCsGkQAvD_BwE), creating a matchmaking platform to connect after school programs with food donors. Helping over 170,000 kids not go to bed hungry.
