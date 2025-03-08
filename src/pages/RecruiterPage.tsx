@@ -7,22 +7,26 @@ import Experience from "../components/sections/Experience";
 import Contact from "../components/sections/Contact";
 import Projects from "../components/sections/Projects";
 import { useNavigate } from "react-router-dom";
+import { ScrollProgressBar } from "@/components/ui/ScrollProgressBar";
+import { AnimatedElement } from "@/components/ui/AnimatedElement";
+import { ParallaxBackground } from "@/components/ui/ParallaxBackground";
+import "../styles/animations.css";
 
 function RecruiterPage() {
   const navigate = useNavigate();
-
-  const [index, setIndex] = useState(0);
-  const [title, setTitle] = useState("");
-  const fullTitle = "Andrew Dong";
-
   const [activeTab, setActiveTab] = useState("home");
   const [isScrolling, setIsScrolling] = useState(false);
+  
+  // Ref for the scroll progress bar
+  const progressBarRef = useRef<HTMLDivElement>(null);
+  
   const navItems = [
     { id: "home", label: "Home" },
     { id: "experience", label: "Experience" },
     { id: "projects", label: "Projects" },
     { id: "contact", label: "Contact" },
   ];
+  
   const sectionRefs = useRef<{
     home: HTMLElement | null;
     experience: HTMLElement | null;
@@ -35,41 +39,48 @@ function RecruiterPage() {
     contact: null,
   });
 
-  // TODO: handle mobile
-
-  // TODO: change this to CSS animation
+  // Improved scroll handling with throttling
   useEffect(() => {
-    if (index < fullTitle.length) {
-      const timeout = setTimeout(() => {
-        setTitle((prevTitle) => prevTitle + fullTitle[index]);
-        setIndex((prevIndex) => prevIndex + 1);
-      }, 300); // Adjust this value to change the typing speed
-
-      return () => clearTimeout(timeout);
-    }
-  }, [index]);
-
-  useEffect(() => {
+    let lastScrollTime = 0;
+    const throttleTime = 100; // ms between scroll event processing
+    
     const handleScroll = () => {
-      if (isScrolling) return;
-
-      const scrollPosition = window.scrollY + window.innerHeight / 2;
-
-      for (const [id, ref] of Object.entries(sectionRefs.current)) {
-        if (
-          ref &&
-          ref.offsetTop <= scrollPosition &&
-          ref.offsetTop + ref.offsetHeight > scrollPosition
-        ) {
-          setActiveTab(id);
-          break;
+      const now = Date.now();
+      
+      // Update progress bar directly with DOM manipulation for better performance
+      if (progressBarRef.current) {
+        const scrollTop = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight;
+        const winHeight = window.innerHeight;
+        const scrollPercent = Math.min(scrollTop / (docHeight - winHeight), 1);
+        progressBarRef.current.style.width = `${scrollPercent * 100}%`;
+      }
+      
+      // Throttle the more expensive section detection
+      if (now - lastScrollTime > throttleTime && !isScrolling) {
+        lastScrollTime = now;
+        
+        const scrollPosition = window.scrollY + window.innerHeight / 2;
+        let foundActive = false;
+        
+        // Find which section is currently in view
+        for (const [id, ref] of Object.entries(sectionRefs.current)) {
+          if (
+            ref &&
+            ref.offsetTop <= scrollPosition &&
+            ref.offsetTop + ref.offsetHeight > scrollPosition
+          ) {
+            setActiveTab(id);
+            foundActive = true;
+            break;
+          }
         }
       }
     };
 
-    window.addEventListener("scroll", handleScroll);
-    handleScroll(); // Call once to set initial active tab
-
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll(); // Call once to set initial values
+    
     return () => window.removeEventListener("scroll", handleScroll);
   }, [isScrolling]);
 
@@ -81,7 +92,7 @@ function RecruiterPage() {
       element.scrollIntoView({ behavior: "smooth" });
       setTimeout(() => {
         setIsScrolling(false);
-      }, 1500);
+      }, 1000);
     }
   };
 
@@ -90,6 +101,15 @@ function RecruiterPage() {
       <div className="relative min-h-screen overflow-hidden flex flex-col items-center bg-gray-900">
         {/* Subtle pattern overlay */}
         <div className="absolute inset-0 bg-gray-800 opacity-50 pattern-grid-dark"></div>
+        
+        {/* Simple progress bar - using ref for direct DOM manipulation */}
+        <div className="fixed top-0 left-0 right-0 h-1 z-50 bg-gray-800">
+          <div 
+            ref={progressBarRef}
+            className="h-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500"
+            style={{ width: '0%' }}
+          ></div>
+        </div>
         
         {/* Desktop Content */}
         <div className="hidden md:block relative z-10 flex flex-col justify-between min-h-screen w-9/12">
@@ -113,12 +133,12 @@ function RecruiterPage() {
 
   const NavBar = () => {
     return (
-      <nav className="fixed top-10 left-60 right-60 z-50 bg-gray-800 border border-gray-700 shadow-md rounded-full p-1 flex justify-between items-center">
+      <nav className="fixed top-10 left-60 right-60 z-50 bg-gray-800/90 backdrop-blur-sm border border-gray-700 shadow-md rounded-full p-1 flex justify-between items-center">
         {navItems.map((item) => (
           <Button
             key={item.id}
             variant="ghost"
-            className={`text-lg px-6 py-6 rounded-full transition-colors duration-200 ${
+            className={`text-lg px-6 py-6 rounded-full transition-all duration-300 ${
               activeTab === item.id
                 ? "text-gray-900 bg-gray-100 hover:bg-white"
                 : "text-gray-100 hover:bg-gray-700 hover:text-white"
@@ -147,7 +167,7 @@ function RecruiterPage() {
     <Background>
       <NavBar />
       <div className="text-white">
-        <Home title={title} ref={(el) => (sectionRefs.current.home = el)} />
+        <Home ref={(el) => (sectionRefs.current.home = el)} />
         <Experience ref={(el) => (sectionRefs.current.experience = el)} />
         <Projects ref={(el) => (sectionRefs.current.projects = el)} />
         <Contact ref={(el) => (sectionRefs.current.contact = el)} />

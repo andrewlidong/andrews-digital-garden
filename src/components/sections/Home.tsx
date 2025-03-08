@@ -16,17 +16,41 @@ type AutoplayType = {
   destroy: () => void;
 };
 
-const Home = forwardRef<HTMLElement, { title: string }>((props, ref) => {
+const Home = forwardRef<HTMLElement, { title?: string }>((props, ref) => {
   const [autoplay, setAutoplay] = useState<AutoplayType | null>(null);
-
-  const Title = () => {
-    return (
-      <span className="font-bold text-slate-200">
-        {props.title}
-        <span className="animate-pulse">|</span>
-      </span>
-    );
-  };
+  const [typedText, setTypedText] = useState("");
+  const fullName = "Andrew Dong";
+  const typingIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  
+  // Simple typing effect
+  useEffect(() => {
+    let index = 0;
+    
+    // Clear any existing interval
+    if (typingIntervalRef.current) {
+      clearInterval(typingIntervalRef.current);
+    }
+    
+    // Set up typing interval
+    typingIntervalRef.current = setInterval(() => {
+      if (index < fullName.length) {
+        setTypedText(fullName.substring(0, index + 1));
+        index++;
+      } else {
+        // Stop the interval when done typing
+        if (typingIntervalRef.current) {
+          clearInterval(typingIntervalRef.current);
+        }
+      }
+    }, 150);
+    
+    // Cleanup
+    return () => {
+      if (typingIntervalRef.current) {
+        clearInterval(typingIntervalRef.current);
+      }
+    };
+  }, []);
 
   const plugin = useRef(
     Autoplay({
@@ -59,51 +83,59 @@ const Home = forwardRef<HTMLElement, { title: string }>((props, ref) => {
     <section
       id="home"
       ref={ref}
-      className="min-h-screen flex flex-col items-center justify-around"
+      className="min-h-screen flex flex-col items-center justify-around relative"
     >
-      <main className="text-center flex flex-col gap-8 text-white mt-36">
-        <h1 className="text-8xl font-bold">
-          Introducing <Title />
+      {/* Simple background elements */}
+      <div className="absolute top-40 left-40 w-80 h-80 rounded-full bg-blue-500/10 blur-3xl"></div>
+      <div className="absolute bottom-40 right-40 w-96 h-96 rounded-full bg-purple-500/10 blur-3xl"></div>
+      
+      <main className="text-center flex flex-col gap-8 text-white mt-36 z-10">
+        <h1 className="text-8xl font-bold animate-on-scroll fade-up is-visible">
+          Introducing <span className="font-bold text-slate-200 relative">
+            {typedText}<span className="animate-pulse inline-block ml-1">|</span>
+          </span>
         </h1>
-        <h1 className="text-6xl font-bold">Senior Software Engineer.</h1>
-        {/* <p className="text-2xl">
-          Developer, community builder, filmmaker, amateur musician - you can
-          guarantee his value is <b>not just code.</b>
-        </p> */}
-        <p className="text-2xl text-slate-200">
-        A versatile developer with a track record of building innovative solutions, fostering communities, and delivering meaningful impact - <b>bringing value that goes far beyond just code.</b>
+        
+        <h1 className="text-6xl font-bold animate-on-scroll fade-up is-visible" style={{ transitionDelay: '200ms' }}>
+          Senior Software Engineer.
+        </h1>
+        
+        <p className="text-2xl text-slate-200 animate-on-scroll fade-up is-visible" style={{ transitionDelay: '400ms' }}>
+          A versatile developer with a track record of building innovative solutions, fostering communities, and delivering meaningful impact - <b>bringing value that goes far beyond just code.</b>
         </p>
       </main>
 
-      <Carousel
-        plugins={[plugin.current]}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-        className="text-white text-center max-w-3xl"
-      >
-        <CarouselContent>
-          {resume.experience.map((item) => {
-            if (item.quote) {
-              return (
-                <CarouselItem key={item.company}>
-                  <span className="flex items-center justify-center h-full">
-                    {item.quote}, {item.company}
-                  </span>
-                </CarouselItem>
-              );
-            }
-          })}
-        </CarouselContent>
-        <CarouselPrevious className="text-slate-500" />
-        <CarouselNext className="text-slate-500" />
-      </Carousel>
+      <div className="animate-on-scroll fade-in is-visible z-10" style={{ transitionDelay: '600ms' }}>
+        <Carousel
+          plugins={[plugin.current]}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          className="text-white text-center max-w-3xl"
+        >
+          <CarouselContent>
+            {resume.experience.map((item) => {
+              if (item.quote) {
+                return (
+                  <CarouselItem key={item.company}>
+                    <span className="flex items-center justify-center h-full">
+                      {item.quote}, {item.company}
+                    </span>
+                  </CarouselItem>
+                );
+              }
+            })}
+          </CarouselContent>
+          <CarouselPrevious className="text-slate-500" />
+          <CarouselNext className="text-slate-500" />
+        </Carousel>
+      </div>
 
-      <div className="max-w-4xl mx-auto mb-6 text-center">
+      <div className="max-w-4xl mx-auto mb-6 text-center z-10 animate-on-scroll fade-up is-visible" style={{ transitionDelay: '800ms' }}>
         <span className="text-white text-lg">★★★★★</span>
         <p className="text-xl text-gray-300 mt-2 text-center mb-4">
-        Proudly contributed to:
+          Proudly contributed to:
         </p>
-        <div className="flex justify-center space-x-10 relative z-40">
+        <div className="flex justify-center space-x-10 relative z-40 stagger-children">
           {[
             {
               href: "https://capitalone.com/",
@@ -137,7 +169,7 @@ const Home = forwardRef<HTMLElement, { title: string }>((props, ref) => {
               href={company.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="opacity-50 hover:opacity-100 transition-opacity duration-200"
+              className="opacity-50 hover:opacity-100 transition-all duration-300 hover-lift"
             >
               <img
                 src={company.src}

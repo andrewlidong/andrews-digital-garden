@@ -1,0 +1,136 @@
+/* Base animation classes */
+.animate-on-scroll {
+  opacity: 0;
+  transition-property: opacity, transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 800ms;
+}
+
+.animate-on-scroll.is-visible {
+  opacity: 1;
+}
+
+/* Fade up animation */
+.fade-up {
+  transform: translateY(30px);
+}
+
+.fade-up.is-visible {
+  transform: translateY(0);
+}
+
+/* Fade in animation */
+.fade-in {
+  opacity: 0;
+}
+
+.fade-in.is-visible {
+  opacity: 1;
+}
+
+/* Slide from left animation */
+.slide-left {
+  transform: translateX(-50px);
+}
+
+.slide-left.is-visible {
+  transform: translateX(0);
+}
+
+/* Slide from right animation */
+.slide-right {
+  transform: translateX(50px);
+}
+
+.slide-right.is-visible {
+  transform: translateX(0);
+}
+
+/* Scale animation */
+.scale-up {
+  transform: scale(0.9);
+}
+
+.scale-up.is-visible {
+  transform: scale(1);
+}
+
+/* Staggered animations - add delay to children */
+.stagger-children > *:nth-child(1) { transition-delay: 0ms; }
+.stagger-children > *:nth-child(2) { transition-delay: 100ms; }
+.stagger-children > *:nth-child(3) { transition-delay: 200ms; }
+.stagger-children > *:nth-child(4) { transition-delay: 300ms; }
+.stagger-children > *:nth-child(5) { transition-delay: 400ms; }
+.stagger-children > *:nth-child(6) { transition-delay: 500ms; }
+.stagger-children > *:nth-child(7) { transition-delay: 600ms; }
+.stagger-children > *:nth-child(8) { transition-delay: 700ms; }
+
+/* Progress bar animation */
+.scroll-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(to right, #3b82f6, #8b5cf6, #ec4899);
+  z-index: 100;
+  transition: width 100ms ease-out;
+}
+
+/* Subtle parallax effect for backgrounds */
+.parallax-bg {
+  transition: transform 450ms cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+}
+
+/* Hover effects for cards and interactive elements */
+.hover-lift {
+  transition: transform 300ms ease, box-shadow 300ms ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+}
+
+/* Gradient background that shifts on scroll */
+.gradient-bg {
+  background: linear-gradient(135deg, #1e293b, #0f172a);
+  background-size: 400% 400%;
+  transition: background-position 1s ease;
+}
+
+.gradient-bg.is-visible {
+  background-position: 100% 100%;
+}
+
+/* Pure CSS typing animation */
+.typing-animation {
+  display: inline-block;
+  position: relative;
+}
+
+.typing-animation::after {
+  content: '|';
+  position: absolute;
+  right: -8px;
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* Pre-defined text for typing animation */
+.typing-text-andrew-dong {
+  width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing 2s steps(11) forwards;
+  animation-delay: 0.5s;
+}
+
+@keyframes typing {
+  from { width: 0; }
+  to { width: 100%; }
+} 

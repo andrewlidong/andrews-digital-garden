@@ -1,39 +1,38 @@
+@import './styles/animations.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 @layer base {
   :root {
-    --radius: 0.5rem
+    --radius: 0.5rem;
   }
 }
+
 @font-face {
   font-family: "ChiKareGo2";
-  src: url("https://db.onlinewebfonts.com/t/20879f289f178c7c99a7623b1bcda06f.eot");
-  src: url("https://db.onlinewebfonts.com/t/20879f289f178c7c99a7623b1bcda06f.eot?#iefix")format("embedded-opentype"),
-  url("https://db.onlinewebfonts.com/t/20879f289f178c7c99a7623b1bcda06f.woff2")format("woff2"),
-  url("https://db.onlinewebfonts.com/t/20879f289f178c7c99a7623b1bcda06f.woff")format("woff"),
-  url("https://db.onlinewebfonts.com/t/20879f289f178c7c99a7623b1bcda06f.ttf")format("truetype"),
-  url("https://db.onlinewebfonts.com/t/20879f289f178c7c99a7623b1bcda06f.svg#ChiKareGo2")format("svg");
+  src: url("/ChiKareGo2.ttf") format("truetype");
 }
+
 body {
-  /* @apply cursor-default; */
-}
-@layer utilities {
-  /* Chrome, Safari and Opera */
-  .no-scrollbar::-webkit-scrollbar {
-    display: none;
-  }
-
-  .no-scrollbar {
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
-  }
+  font-family: "Inter", sans-serif;
 }
 
-/* Linux terminal styles */
+/* Hide scrollbar for Chrome, Safari and Opera */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+/* Markdown styling */
 .markdown-body {
-  background-color: transparent !important;
-  color: #98c379 !important;
+  font-size: 1.1rem;
+  line-height: 1.6;
 }
 
 .markdown-body h1,
@@ -42,58 +41,64 @@ body {
 .markdown-body h4,
 .markdown-body h5,
 .markdown-body h6 {
-  color: #61afef !important;
-  border-bottom-color: #3e4451 !important;
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+  font-weight: 600;
 }
 
 .markdown-body a {
-  color: #56b6c2 !important;
-  text-decoration: underline;
+  color: #3b82f6;
+  text-decoration: none;
 }
 
 .markdown-body code {
-  background-color: #2c323c !important;
-  color: #e06c75 !important;
+  background-color: rgba(0, 0, 0, 0.05);
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
 }
 
 .markdown-body pre {
-  background-color: #2c323c !important;
+  padding: 1em;
 }
 
 .markdown-body blockquote {
-  color: #abb2bf !important;
-  border-left-color: #3e4451 !important;
+  border-left: 4px solid #ddd;
+  padding-left: 1em;
+  color: #666;
 }
 
-/* Recruiter mode styles */
 .text-white h1,
-.text-white p,
-.text-white span,
-.text-white div {
-  color: #fff !important;
+.text-white h2,
+.text-white h3,
+.text-white h4,
+.text-white h5,
+.text-white h6 {
+  color: white;
 }
 
 .text-white .text-black,
-.text-white .text-slate-800,
-.text-white .text-slate-900,
-.text-white .text-gray-800 {
-  color: #fff !important;
+.text-white .text-gray-900,
+.text-white .text-gray-800,
+.text-white .text-gray-700 {
+  color: white;
 }
 
 .text-white .bg-opacity-50 {
-  opacity: 0.8 !important;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 .markdown-body ul {
-  list-style-type: disc !important;
+  list-style-type: disc;
+  padding-left: 2em;
 }
 
 .markdown-body ol {
-  list-style-type: decimal !important;
+  list-style-type: decimal;
+  padding-left: 2em;
 }
 
 @media (max-width: 767px) {
   .markdown-body {
-    padding: 15px;
+    font-size: 1rem;
   }
 }
