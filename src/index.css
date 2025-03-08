@@ -30,19 +30,58 @@ body {
   }
 }
 
+/* Linux terminal styles */
 .markdown-body {
-  background-color: transparent;
-  color: black;
-  a {
-    color: black;
-    text-decoration: underline;
-  }
+  background-color: transparent !important;
+  color: #98c379 !important;
 }
 
-@media (max-width: 767px) {
-  .markdown-body {
-    padding: 15px;
-  }
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3,
+.markdown-body h4,
+.markdown-body h5,
+.markdown-body h6 {
+  color: #61afef !important;
+  border-bottom-color: #3e4451 !important;
+}
+
+.markdown-body a {
+  color: #56b6c2 !important;
+  text-decoration: underline;
+}
+
+.markdown-body code {
+  background-color: #2c323c !important;
+  color: #e06c75 !important;
+}
+
+.markdown-body pre {
+  background-color: #2c323c !important;
+}
+
+.markdown-body blockquote {
+  color: #abb2bf !important;
+  border-left-color: #3e4451 !important;
+}
+
+/* Recruiter mode styles */
+.text-white h1,
+.text-white p,
+.text-white span,
+.text-white div {
+  color: #fff !important;
+}
+
+.text-white .text-black,
+.text-white .text-slate-800,
+.text-white .text-slate-900,
+.text-white .text-gray-800 {
+  color: #fff !important;
+}
+
+.text-white .bg-opacity-50 {
+  opacity: 0.8 !important;
 }
 
 .markdown-body ul {
@@ -51,4 +90,10 @@ body {
 
 .markdown-body ol {
   list-style-type: decimal !important;
+}
+
+@media (max-width: 767px) {
+  .markdown-body {
+    padding: 15px;
+  }
 }

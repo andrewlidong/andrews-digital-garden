@@ -245,10 +245,10 @@ function PersonalPage() {
         setIsStarting(false);
         setStartupComplete(true);
       }} />}
-      <div className="font-macos fixed top-0 left-0 w-full h-full bg-chessboard">
+      <div className="font-mono fixed top-0 left-0 w-full h-full bg-gray-900 text-white">
         <Header />
 
-        <div className="grid grid-flow-row justify-end pr-1">
+        <div className="grid grid-flow-row justify-start pl-6 pt-4 gap-1">
           {fileSystem.map((item) => renderFileOrFolder(item))}
         </div>
 
@@ -271,7 +271,7 @@ function PersonalPage() {
             >
               {win.windowType === "folder" && Array.isArray(win.content) ? (
                 <div
-                  className={`p-2 pt-4 grid ${isMobile ? "grid-cols-2" : "grid-cols-3"} items-start`}
+                  className={`p-2 pt-4 grid ${isMobile ? "grid-cols-2" : "grid-cols-3"} items-start gap-1`}
                 >
                   {win.content.map((item) => renderFileOrFolder(item, win.id))}
                 </div>

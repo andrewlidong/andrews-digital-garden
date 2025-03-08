@@ -33,23 +33,15 @@ export const File: React.FC<FileProps> = ({
   const FileContent = (
     <div
       id={id}
-      className={`file-container flex flex-col items-center justify-center p-2 ${!disabled ? "cursor-pointer" : ""}`}
+      className={`file-container flex items-center p-2 ${!disabled ? "cursor-pointer" : ""} ${clicked ? "bg-gray-800 bg-opacity-50 rounded" : ""}`}
       onDoubleClick={!disabled ? handleDoubleClick : undefined}
       onClick={!disabled ? handleClick : undefined}
     >
-      <img
-        src={
-          disabled
-            ? "/macos_assets/file_disabled.png"
-            : clicked
-              ? "/macos_assets/file_clicked.png"
-              : "/macos_assets/file.png"
-        }
-        alt="File"
-        draggable="false"
-      />
+      <div className="mr-2 text-blue-400 text-xl">
+        📄
+      </div>
       <p
-        className={`${!clicked ? "text-black bg-white" : "text-white bg-black"} text-wrap max-w-[140px] text-center font-medium text-sm px-2 text-xl`}
+        className={`font-mono ${disabled ? "text-gray-500" : clicked ? "text-blue-300" : "text-white"} text-lg`}
       >
         {name}
       </p>
@@ -62,8 +54,8 @@ export const File: React.FC<FileProps> = ({
         default={{
           x: initialPosition.x,
           y: initialPosition.y,
-          width: 80,
-          height: 80,
+          width: 200,
+          height: 40,
         }}
         enableResizing={false}
       >

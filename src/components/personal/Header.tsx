@@ -81,11 +81,11 @@ export const Header: React.FC = () => {
   ];
 
   const MenuDropdown: React.FC<{ items: MenuItem[] }> = ({ items }) => (
-    <div className="absolute top-full left-0 bg-white border-2 border-black shadow-md min-w-[160px] z-20">
+    <div className="absolute top-full left-0 bg-gray-800 border border-gray-700 shadow-md min-w-[160px] z-20">
       {items.map((item, index) => (
         <div
           key={index}
-          className="px-4 py-1 hover:bg-black hover:text-white cursor-pointer border-b border-gray-200 last:border-b-0"
+          className="px-4 py-1 hover:bg-gray-700 text-gray-200 hover:text-white cursor-pointer border-b border-gray-700 last:border-b-0 font-mono"
           onClick={() => {
             if (item.onClick) {
               item.onClick();
@@ -102,25 +102,17 @@ export const Header: React.FC = () => {
   return (
     <>
       {/* Header */}
-      <div className="bg-white flex text-xl border-b-4 border-black items-center">
-        <img src="/macos_assets/header_left.png" />
-        <div className="flex grow items-center gap-6 h-full">
+      <div className="bg-gray-900 text-white border-b border-gray-700 py-2 px-4">
+        <div className="flex items-center gap-6">
+          <div className="font-mono text-green-500 flex items-center">
+            <span className="mr-2">andrew@digital-garden:~$</span>
+          </div>
           <div className="relative">
             <button
               onClick={() => handleMenuClick("webRing")}
-              className={`px-2 py-2 ${activeDropdown === "webRing" ? "bg-black text-white" : ""}`}
+              className={`px-2 py-1 rounded ${activeDropdown === "webRing" ? "bg-gray-700 text-green-400" : "text-gray-300 hover:text-white"}`}
             >
-              <img
-                src={
-                  activeDropdown === "webRing"
-                    ? "/macos_assets/webring_white.png"
-                    : "/macos_assets/webring_black.png"
-                }
-                width="24"
-                height="24"
-                alt="CS Webring"
-                className="w-5 h-5"
-              />
+              webring
             </button>
             {activeDropdown === "webRing" && (
               <MenuDropdown items={webRingItems} />
@@ -129,9 +121,9 @@ export const Header: React.FC = () => {
           <div className="relative">
             <button
               onClick={() => handleMenuClick("contact")}
-              className={`px-2 ${activeDropdown === "contact" ? "bg-black text-white" : ""}`}
+              className={`px-2 py-1 rounded ${activeDropdown === "contact" ? "bg-gray-700 text-green-400" : "text-gray-300 hover:text-white"}`}
             >
-              Contact
+              contact
             </button>
             {activeDropdown === "contact" && (
               <MenuDropdown items={contactMenuItems} />
@@ -140,16 +132,15 @@ export const Header: React.FC = () => {
           <div className="relative">
             <button
               onClick={() => handleMenuClick("recruiter")}
-              className={`px-2 ${activeDropdown === "recruiter" ? "bg-black text-white" : ""}`}
+              className={`px-2 py-1 rounded ${activeDropdown === "recruiter" ? "bg-gray-700 text-green-400" : "text-gray-300 hover:text-white"}`}
             >
-              Recruiter Mode
+              recruiter-mode
             </button>
             {activeDropdown === "recruiter" && (
               <MenuDropdown items={recruiterMenuItems} />
             )}
           </div>
         </div>
-        <img src="/macos_assets/header_right.png" />
       </div>
 
       {/* Click anywhere else to close dropdowns */}

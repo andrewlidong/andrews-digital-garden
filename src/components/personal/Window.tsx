@@ -255,83 +255,71 @@ export const Window: React.FC<WindowProps> = ({
     });
   };
 
+  // Render the actual window content
   return (
     <>
-      {/* Wireframe outline for animation */}
+      {/* Animated outline for opening/closing effects */}
       {showOutline && (
         <div
-          className="fixed border-2 border-black bg-transparent"
-          style={animationStyle}
+          className="fixed border-2 border-gray-700 bg-transparent"
+          style={animationStyle as React.CSSProperties}
         />
       )}
 
       {/* Actual window content */}
       {showContent && (
         <Rnd
+          ref={windowRef}
           default={{
             x: initialPosition.x,
             y: initialPosition.y,
             width: size.width,
             height: size.height,
           }}
-          minWidth={350}
-          minHeight={300}
-          maxWidth={800}
-          maxHeight={600}
-          style={{ zIndex }}
-          onMouseDown={onFocus}
-          onResize={(_, __, ref) => {
-            setSize({ width: ref.offsetWidth, height: ref.offsetHeight });
+          style={{
+            zIndex,
           }}
-          dragHandleClassName="window-header"
-          cancel=".window-button"
-          ref={windowRef}
+          onMouseDown={onFocus}
+          dragHandleClassName="window-drag-handle"
+          bounds="parent"
+          minWidth={300}
+          minHeight={200}
+          onResize={(e, direction, ref) => {
+            setSize({
+              width: parseInt(ref.style.width),
+              height: parseInt(ref.style.height),
+            });
+          }}
         >
-          <div className="bg-white border-black border-2 flex flex-col h-full">
-            <div className="window-header flex border-black border-b-2 items-center cursor-move">
-              <img
-                src="/macos_assets/window_header.png"
-                width="12px"
-                className="mx-2"
-                draggable="false"
-              />
+          <div
+            className={`flex flex-col h-full border border-gray-700 bg-gray-800 shadow-lg overflow-hidden`}
+          >
+            {/* Window header */}
+            <div
+              className="window-drag-handle flex items-center justify-between px-3 py-2 bg-gray-900 border-b border-gray-700 text-white"
+            >
+              <div className="flex items-center">
+                <span className="text-green-500 mr-2">$</span>
+                <span className="font-mono text-sm">{title}</span>
+              </div>
               <button
-                onClick={handleClose}
+                className={`w-5 h-5 flex items-center justify-center rounded-full ${
+                  isCloseButtonPressed ? "bg-red-700" : "bg-red-500"
+                } text-white text-xs`}
                 onMouseDown={() => setIsCloseButtonPressed(true)}
                 onMouseUp={() => setIsCloseButtonPressed(false)}
                 onMouseLeave={() => setIsCloseButtonPressed(false)}
-                className="window-button cursor-pointer"
+                onClick={handleClose}
               >
-                <img
-                  src={
-                    isCloseButtonPressed
-                      ? "/macos_assets/window_clicked.png"
-                      : "/macos_assets/window_unclicked.png"
-                  }
-                  width="22px"
-                  draggable="false"
-                />
+                ×
               </button>
-              <img
-                className="grow mx-2 h-[38px]"
-                src="/macos_assets/window_header.png"
-                draggable="false"
-              />
-              <div className="text-xl select-none">{title}</div>
-              <img
-                className="grow ml-2 h-[38px]"
-                src="/macos_assets/window_header.png"
-                draggable="false"
-              />
-              <img
-                className="h-[38px] w-[50px] mr-2"
-                src="/macos_assets/window_header.png"
-                draggable="false"
-              />
             </div>
 
-            <div className="flex-grow overflow-hidden cursor-default">
-              <ClassicScrollbar>{children}</ClassicScrollbar>
+            {/* Window content */}
+            <div className="flex-grow overflow-hidden bg-gray-900 text-white">
+              <ClassicScrollbar>
+                <div className="p-4 font-mono">{children}</div>
+              </ClassicScrollbar>
             </div>
           </div>
         </Rnd>
