@@ -248,38 +248,56 @@ function PersonalPage() {
       <div className="font-mono fixed top-0 left-0 w-full h-full bg-gray-900 text-white">
         <Header />
 
-        <div className="grid grid-flow-row justify-start pl-6 pt-4 gap-1">
+        <div className="grid grid-flow-row justify-start pl-6 pt-16 gap-2 max-w-xs">
           {fileSystem.map((item) => renderFileOrFolder(item))}
         </div>
 
         {windows
           .filter((w) => w.isOpen)
-          .map((win) => (
-            <Window
-              key={win.id}
-              title={win.title}
-              width={isMobile ? 350 : 600}
-              height={isMobile ? 300 : 400}
-              initialPosition={{
-                x: (isMobile ? 0 : 100) + windows.length * 20,
-                y: (isMobile ? 40 : 100) + windows.length * 20,
-              }}
-              zIndex={win.zIndex}
-              onFocus={() => bringToFront(win.id)}
-              onClose={() => closeWindow(win.id)}
-              sourceElementId={win.sourceElementId}
-            >
-              {win.windowType === "folder" && Array.isArray(win.content) ? (
-                <div
-                  className={`p-2 pt-4 grid ${isMobile ? "grid-cols-2" : "grid-cols-3"} items-start gap-1`}
-                >
-                  {win.content.map((item) => renderFileOrFolder(item, win.id))}
-                </div>
-              ) : (
-                <TextContent content={win.content as string} />
-              )}
-            </Window>
-          ))}
+          .map((win, index) => {
+            // Position windows on the right side to avoid blocking folders
+            // Calculate a position that's about 1/3 from the right edge of the screen
+            const screenWidth = window.innerWidth;
+            const screenHeight = window.innerHeight;
+            
+            const windowWidth = isMobile ? 350 : 600;
+            const windowHeight = isMobile ? 300 : 400;
+            
+            // Position the window on the right side, leaving space for folders on the left
+            const baseX = Math.max(200, screenWidth / 3);
+            const baseY = 80; // Some space from the top for the header
+            
+            // Add offset based on window index (25px per window)
+            const offsetX = index * 25;
+            const offsetY = index * 25;
+            
+            return (
+              <Window
+                key={win.id}
+                title={win.title}
+                width={windowWidth}
+                height={windowHeight}
+                initialPosition={{
+                  x: baseX + offsetX,
+                  y: baseY + offsetY,
+                }}
+                zIndex={win.zIndex}
+                onFocus={() => bringToFront(win.id)}
+                onClose={() => closeWindow(win.id)}
+                sourceElementId={win.sourceElementId}
+              >
+                {win.windowType === "folder" && Array.isArray(win.content) ? (
+                  <div
+                    className={`p-2 pt-4 grid ${isMobile ? "grid-cols-2" : "grid-cols-3"} items-start gap-1`}
+                  >
+                    {win.content.map((item) => renderFileOrFolder(item, win.id))}
+                  </div>
+                ) : (
+                  <TextContent content={win.content as string} />
+                )}
+              </Window>
+            );
+          })}
       </div>
     </>
   );
