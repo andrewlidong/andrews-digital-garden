@@ -5,59 +5,83 @@
         "type": "folder",
         "children": [
             {
-                "id": "resume_generator",
-                "name": "Resume Generator.txt",
+                "id": "this_is_water",
+                "name": "This Is Water.txt",
                 "type": "file",
-                "path": "/files/resume_generator.md"
+                "path": "/files/this_is_water.md"
             },
             {
-                "id": "mini_games",
-                "name": "Mini Games.txt",
+                "id": "sorting_octopus",
+                "name": "Sorting Octopus.txt",
                 "type": "file",
-                "path": "/files/mini_games.md"
+                "path": "/files/sorting_octopus.md"
             },
             {
-                "id": "chess_engine",
-                "name": "Chess Engine.txt",
+                "id": "profound_sound",
+                "name": "Profound Sound.txt",
                 "type": "file",
-                "path": "/files/chess_engine.md"
+                "path": "/files/profound_sound.md"
+            },
+            {
+                "id": "moonshine",
+                "name": "Moonshine.txt",
+                "type": "file",
+                "path": "/files/moonshine.md"
+            },
+            {
+                "id": "msg_mvc",
+                "name": "MSG MVC.txt",
+                "type": "file",
+                "path": "/files/msg_mvc.md"
             }
         ]
     },
     {
-        "id": "side_quests",
-        "name": "Side Quests",
+        "id": "interests",
+        "name": "Interests",
         "type": "folder",
         "children": [
             {
-                "id": "socratica",
-                "name": "Socratica.txt",
+                "id": "phish",
+                "name": "Phish.txt",
                 "type": "file",
-                "path": "/files/socratica.md"
+                "path": "/files/phish.md"
             },
             {
-                "id": "mario_kart",
-                "name": "Mario Kart.txt",
+                "id": "starcraft_2",
+                "name": "StarCraft 2.txt",
                 "type": "file",
-                "path": "/files/mario_kart.md"
+                "path": "/files/starcraft_2.md"
             },
             {
-                "id": "uw_blueprint",
-                "name": "UW Blueprint.txt",
+                "id": "lakers",
+                "name": "Lakers.txt",
                 "type": "file",
-                "path": "/files/uw_blueprint.md"
+                "path": "/files/lakers.md"
             },
             {
-                "id": "skiing",
-                "name": "Skiing.txt",
+                "id": "packers",
+                "name": "Packers.txt",
                 "type": "file",
-                "path": "/files/skiing.md"
+                "path": "/files/packers.md"
             },
             {
-                "id": "uw_film",
-                "name": "UW Film.txt",
+                "id": "yankees",
+                "name": "Yankees.txt",
                 "type": "file",
-                "path": "/files/uw_film.md"
+                "path": "/files/yankees.md"
+            },
+            {
+                "id": "triathlons",
+                "name": "Triathlons.txt",
+                "type": "file",
+                "path": "/files/triathlons.md"
+            },
+            {
+                "id": "bigvision",
+                "name": "BigVision.txt",
+                "type": "file",
+                "path": "/files/bigvision.md"
             }
         ]
     },
@@ -67,22 +91,28 @@
         "type": "folder",
         "children": [
             {
-                "id": "casual_film_critic",
-                "name": "Casual Film Critic.txt",
+                "id": "film_appreciation",
+                "name": "Film Appreciation.txt",
                 "type": "file",
-                "path": "/files/casual_film_critic.md"
+                "path": "/files/film_appreciation.md"
             },
             {
-                "id": "directing",
-                "name": "Directing.txt",
+                "id": "filmmaking",
+                "name": "Filmmaking.txt",
                 "type": "file",
-                "path": "/files/directing.md"
+                "path": "/files/filmmaking.md"
             },
             {
-                "id": "favourite_films",
-                "name": "Favourites.txt",
+                "id": "film_festivals",
+                "name": "Film Festivals.txt",
                 "type": "file",
-                "path": "/files/favourite_films.md"
+                "path": "/files/film_festivals.md"
+            },
+            {
+                "id": "favorite_films",
+                "name": "Favorite Films.txt",
+                "type": "file",
+                "path": "/files/favorite_films.md"
             }
         ]
     },
@@ -92,16 +122,28 @@
         "type": "folder",
         "children": [
             {
-                "id": "jamming_with_jaryd",
-                "name": "Jamming With Jaryd.txt",
+                "id": "musical_journey",
+                "name": "Musical Journey.txt",
                 "type": "file",
-                "path": "/files/jamming_with_jaryd.md"
+                "path": "/files/musical_journey.md"
             },
             {
-                "id": "concerts",
-                "name": "Concerts.txt",
+                "id": "music_production",
+                "name": "Music Production.txt",
                 "type": "file",
-                "path": "/files/concerts.md"
+                "path": "/files/music_production.md"
+            },
+            {
+                "id": "live_music",
+                "name": "Live Music.txt",
+                "type": "file",
+                "path": "/files/live_music.md"
+            },
+            {
+                "id": "playlists_and_curation",
+                "name": "Playlists & Curation.txt",
+                "type": "file",
+                "path": "/files/playlists_and_curation.md"
             }
         ]
     },

@@ -1,16 +1,57 @@
-Welcome to my digital garden! I'm a software developer passionate about coding, technology, and creating meaningful projects. This space is where I cultivate and share my ideas, experiences, and learnings. Feel free to explore and discover what's growing here.
+# Welcome to Andrew's Digital Garden
 
-I strongly believe in the power of community - from student council all the way back in middle school to hosting Socratica sessions now, creating spaces and opportunities for people to connect face-to-face as human beings drives innovation, purpose, and happiness.
+Hello! I'm Andrew, a software engineer with a background in pure mathematics and professional cooking. This digital garden is my personal space to share projects, interests, and creative explorations.
 
-Some recent projects:
+## What is a Digital Garden?
 
-- Organized a sold-out student film festival at my favourite local theatre
-- Mario Kart with the soundtrack played by a live band
-- Friend-nominated dating algorithms
-- Created a short film in 6 weeks for buildspace
-- Ran a summer camp for adults
-- Built an RPG party game about organizing a hackathon (for a hackathon)
+Unlike traditional blogs or portfolios, a digital garden is an evolving collection of ideas, projects, and interests that grow and develop over time. It's less about polished final products and more about the journey of exploration and learning.
 
-Hope you enjoy your stay - plenty of hidden goodies to find
+## My Journey
 
-PS - if you are a recruiter, check out Recruiter Mode
+### From Mathematics to Kitchens to Code
+
+After graduating from the University of Chicago with a bachelor's degree in pure mathematics, I spent time traveling across America working as a chef in diverse, elite kitchens. My culinary journey included Detroit's Grey Ghost, Chicago's A10, High Five Ramen and Blackbird, Portland's Lang Baan, and New York's Spotted Pig, Cafe Boulud and Daniel.
+
+While working at Restaurant Daniel, I decided to pursue a new career. Software engineering offered the perfect blend of rigor and creativity I loved along with a whole new set of problems that excited me, and I haven't looked back since.
+
+### Software Engineering
+
+With software engineering, I discovered that the familiar systematic approach to thinking about problems I'd formerly encountered as a mathematician could be applied creatively towards applications and scalable good. During my time as an engineer, I've had the opportunity to work across the stack, from frontend to backend to devops and analytics. I'm particularly interested in understanding interrelations between systems, having worked on complex distributed systems in the past.
+
+## My Philosophy
+
+I've been blessed to have had several friends and mentors who have supported, motivated, and inspired me. I'm especially drawn to two sayings. The first was that good engineers ought to deliver products with "style and taste." The other claimed that his proudest achievement in life was to have walked through it with "dignity and grace." 
+
+I believe that the most important part of my career is how it moves and touches those around me. To that end, I strive to work with style, taste, dignity, and grace.
+
+## What You'll Find Here
+
+### Projects
+Explore my software development work, from full-stack applications to experimental tools. Each project represents a unique challenge and learning opportunity.
+
+### Interests
+Dive into my personal interests including sports (Lakers, Packers, Yankees), music (Phish), gaming (StarCraft 2), athletic pursuits (triathlons), and community involvement (BigVision).
+
+### Film
+Discover my passion for cinema through sections on film appreciation, filmmaking experiences, festival involvement, and favorite films across various genres and eras.
+
+### Music
+Explore my musical journey as both a listener and creator, including production work, live music experiences, and thoughtfully curated playlists.
+
+## Beyond Coding
+
+When I'm not coding, you can find me:
+- Rock climbing
+- Picking through produce at the local farmer's market
+- Running through Central Park
+- Enjoying the outdoors
+- Attending live music events
+- Making use of my library card
+
+I believe in balancing technical work with activities that nourish the body, mind, and spirit.
+
+## Let's Connect
+
+I'm always open to interesting conversations, collaborations, and opportunities. Feel free to explore this digital garden and reach out if something catches your interest.
+
+*PS - If you're a recruiter, check out Recruiter Mode for a more traditional presentation of my professional background.*

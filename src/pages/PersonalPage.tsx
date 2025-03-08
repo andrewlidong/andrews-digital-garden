@@ -248,81 +248,120 @@ function PersonalPage() {
       <div className="font-mono fixed top-0 left-0 w-full h-full bg-gray-900 text-white">
         <Header />
 
-        {/* Terminal Welcome Message */}
-        <div className="px-6 pt-16 pb-4 text-green-400">
-          <pre className="text-xs sm:text-sm">
-{`
- █████╗ ███╗   ██╗██████╗ ██████╗ ███████╗██╗    ██╗███████╗    ██████╗ ██╗ ██████╗ ██╗████████╗ █████╗ ██╗         ██████╗  █████╗ ██████╗ ██████╗ ███████╗███╗   ██╗
-██╔══██╗████╗  ██║██╔══██╗██╔══██╗██╔════╝██║    ██║██╔════╝    ██╔══██╗██║██╔════╝ ██║╚══██╔══╝██╔══██╗██║         ██╔════╝ ██╔══██╗██╔══██╗██╔══██╗██╔════╝████╗  ██║
-███████║██╔██╗ ██║██║  ██║██████╔╝█████╗  ██║ █╗ ██║███████╗    ██║  ██║██║██║  ███╗██║   ██║   ███████║██║         ██║  ███╗███████║██████╔╝██║  ██║█████╗  ██╔██╗ ██║
-██╔══██║██║╚██╗██║██║  ██║██╔══██╗██╔══╝  ██║███╗██║╚════██║    ██║  ██║██║██║   ██║██║   ██║   ██╔══██║██║         ██║   ██║██╔══██║██╔══██╗██║  ██║██╔══╝  ██║╚██╗██║
-██║  ██║██║ ╚████║██████╔╝██║  ██║███████╗╚███╔███╔╝███████║    ██████╔╝██║╚██████╔╝██║   ██║   ██║  ██║███████╗    ╚██████╔╝██║  ██║██║  ██║██████╔╝███████╗██║ ╚████║
-╚═╝  ╚═╝╚═╝  ╚═══╝╚═════╝ ╚═╝  ╚═╝╚══════╝ ╚══╝╚══╝ ╚══════╝    ╚═════╝ ╚═╝ ╚═════╝ ╚═╝   ╚═╝   ╚═╝  ╚═╝╚══════╝     ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝ ╚══════╝╚═╝  ╚═══╝
-`}
-          </pre>
-          <div className="mt-2 text-gray-300">
-            <p>Welcome to Andrew's Digital Garden v1.0.0</p>
-            <p className="text-gray-500">Type 'help' for a list of available commands or browse the filesystem.</p>
-            <div className="flex items-center mt-2">
-              <span className="text-green-500 mr-2">andrew@digital-garden:~$</span>
-              <span className="text-yellow-300 animate-pulse">▌</span>
+        <div className="flex h-[calc(100vh-60px)] pt-4">
+          {/* Left sidebar with filesystem */}
+          <div className="w-[320px] min-w-[320px] border-r border-gray-700 pl-6 pr-4 overflow-y-auto">
+            <div className="grid grid-flow-row gap-2 pb-20">
+              {fileSystem.map((item) => renderFileOrFolder(item))}
             </div>
           </div>
-        </div>
-
-        {/* File system container - fixed width and position */}
-        <div className="absolute left-0 top-[300px] w-[320px] pl-6 pr-4">
-          <div className="grid grid-flow-row gap-2">
-            {fileSystem.map((item) => renderFileOrFolder(item))}
+          
+          {/* Main content area */}
+          <div className="flex-1 relative overflow-hidden">
+            {/* Terminal Welcome Message */}
+            <div className="px-6 pt-4 pb-2 text-green-400">
+              <pre className="text-xs">
+{`
+  █████╗ ███╗   ██╗██████╗ ██████╗ ███████╗██╗    ██╗███████╗
+ ██╔══██╗████╗  ██║██╔══██╗██╔══██╗██╔════╝██║    ██║██╔════╝
+ ███████║██╔██╗ ██║██║  ██║██████╔╝█████╗  ██║ █╗ ██║███████╗
+ ██╔══██║██║╚██╗██║██║  ██║██╔══██╗██╔══╝  ██║███╗██║╚════██║
+ ██║  ██║██║ ╚████║██████╔╝██║  ██║███████╗╚███╔███╔╝███████║
+ ╚═╝  ╚═╝╚═╝  ╚═══╝╚═════╝ ╚═╝  ╚═╝╚══════╝ ╚══╝╚══╝ ╚══════╝
+                                                              
+  ██████╗  █████╗ ██████╗ ██████╗ ███████╗███╗   ██╗         
+ ██╔════╝ ██╔══██╗██╔══██╗██╔══██╗██╔════╝████╗  ██║         
+ ██║  ███╗███████║██████╔╝██║  ██║█████╗  ██╔██╗ ██║         
+ ██║   ██║██╔══██║██╔══██╗██║  ██║██╔══╝  ██║╚██╗██║         
+ ╚██████╔╝██║  ██║██║  ██║██████╔╝███████╗██║ ╚████║         
+  ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝ ╚══════╝╚═╝  ╚═══╝         
+`}
+              </pre>
+              <div className="mt-1 text-gray-300 text-sm">
+                <p>Welcome to Andrew's Digital Garden v1.0.0</p>
+                <p className="text-xs text-gray-500 mt-1 mb-2">A personal space for projects, interests, and creative explorations.</p>
+                <div className="flex items-center">
+                  <span className="text-green-500 mr-2">andrew@digital-garden:~$</span>
+                  <span className="text-yellow-300 animate-pulse">▌</span>
+                </div>
+              </div>
+            </div>
+            
+            {/* Windows */}
+            {windows
+              .filter((w) => w.isOpen)
+              .map((win, index) => {
+                // Fixed position for windows in the main content area
+                // This ensures the animation preview matches the final position
+                const baseX = 50; // Fixed margin from the left of the content area
+                const baseY = 180; // Fixed position below the welcome message
+                
+                // Add offset based on window index (25px per window)
+                const offsetX = index * 25;
+                const offsetY = index * 25;
+                
+                // Limit window width to fit in the content area
+                const contentAreaWidth = window.innerWidth - 350; // Account for sidebar
+                const windowWidth = isMobile ? 350 : Math.min(600, contentAreaWidth - 100);
+                const windowHeight = isMobile ? 300 : 400;
+                
+                return (
+                  <Window
+                    key={win.id}
+                    title={win.title}
+                    width={windowWidth}
+                    height={windowHeight}
+                    initialPosition={{
+                      x: baseX + offsetX,
+                      y: baseY + offsetY,
+                    }}
+                    zIndex={win.zIndex}
+                    onFocus={() => bringToFront(win.id)}
+                    onClose={() => closeWindow(win.id)}
+                    sourceElementId={win.sourceElementId}
+                  >
+                    {win.windowType === "folder" && Array.isArray(win.content) ? (
+                      <div className="p-4 bg-gray-900">
+                        <div className="mb-3 pb-2 border-b border-gray-700">
+                          <span className="text-blue-400 font-mono">andrew@digital-garden</span>
+                          <span className="text-gray-400">:</span>
+                          <span className="text-green-400">~/documents/</span>
+                          <span className="text-yellow-300">{win.title}</span>
+                          <span className="text-gray-400">$</span>
+                          <span className="text-white ml-2">ls -la</span>
+                        </div>
+                        <div className="grid gap-2">
+                          <div className="flex text-gray-500 text-sm mb-1">
+                            <span className="w-6 mr-2">Type</span>
+                            <span className="flex-1">Name</span>
+                          </div>
+                          {win.content.map((item) => (
+                            <div 
+                              key={item.id}
+                              className="flex items-center hover:bg-gray-800 p-1 rounded cursor-pointer"
+                              onClick={() => !isDisabled(item.id) && openWindow(item, win.id)}
+                            >
+                              <span className="w-6 mr-2">
+                                {item.type === 'folder' ? 
+                                  <span className="text-yellow-500">📁</span> : 
+                                  <span className="text-blue-400">📄</span>
+                                }
+                              </span>
+                              <span className={`flex-1 ${isDisabled(item.id) ? 'text-gray-500' : 'text-white'}`}>
+                                {item.name}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ) : (
+                      <TextContent content={win.content as string} />
+                    )}
+                  </Window>
+                );
+              })}
           </div>
         </div>
-
-        {windows
-          .filter((w) => w.isOpen)
-          .map((win, index) => {
-            // Position windows just to the right of the folders
-            // The max-w-xs class on the folder container is about 320px wide
-            // Add some margin (20px) to avoid overlapping
-            const folderAreaWidth = 340; // 320px + 20px margin
-            
-            // Start windows just after the folder area
-            const baseX = folderAreaWidth;
-            const baseY = 120; // Below the welcome message
-            
-            // Add offset based on window index (25px per window)
-            const offsetX = index * 25;
-            const offsetY = index * 25;
-            
-            const windowWidth = isMobile ? 350 : 600;
-            const windowHeight = isMobile ? 300 : 400;
-            
-            return (
-              <Window
-                key={win.id}
-                title={win.title}
-                width={windowWidth}
-                height={windowHeight}
-                initialPosition={{
-                  x: baseX + offsetX,
-                  y: baseY + offsetY,
-                }}
-                zIndex={win.zIndex}
-                onFocus={() => bringToFront(win.id)}
-                onClose={() => closeWindow(win.id)}
-                sourceElementId={win.sourceElementId}
-              >
-                {win.windowType === "folder" && Array.isArray(win.content) ? (
-                  <div
-                    className={`p-2 pt-4 grid ${isMobile ? "grid-cols-2" : "grid-cols-3"} items-start gap-1`}
-                  >
-                    {win.content.map((item) => renderFileOrFolder(item, win.id))}
-                  </div>
-                ) : (
-                  <TextContent content={win.content as string} />
-                )}
-              </Window>
-            );
-          })}
       </div>
     </>
   );
