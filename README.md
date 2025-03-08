@@ -1,19 +1,25 @@
 # Andrew's Digital Garden
 
-A personal digital garden website inspired by macOS, featuring a nostalgic desktop interface with folders and files that showcase projects, interests, and creative work.
+A personal digital garden showcasing my journey from mathematics to culinary arts to software engineering. This interactive space features a terminal-inspired interface with folders and files that organize my projects, interests, and creative explorations.
 
-![Digital Garden Screenshot](public/macos_assets/startup_message.png)
+![Digital Garden Screenshot](public/screenshot.png)
 
-## 🌱 What is a Digital Garden?
+## 🌱 About This Digital Garden
 
-A digital garden is a personal space on the web where ideas, projects, and interests can grow and evolve over time. Unlike traditional blogs with chronological posts, a digital garden is organized by topic and allows for continuous updates and connections between different pieces of content.
+This digital garden serves as a creative expression of my professional journey and personal interests. After graduating from the University of Chicago with a degree in pure mathematics, I spent time working as a chef in elite kitchens across America before finding my passion in software engineering. This space reflects the diverse experiences and interests I've cultivated along the way.
+
+## 💻 What You'll Find Here
+
+- **Projects**: Explore my software development work, from full-stack applications to experimental tools
+- **Interests**: Dive into my personal interests including sports, music, gaming, and athletic pursuits
+- **Film**: Discover my passion for cinema through appreciation, filmmaking, and favorite films
+- **Music**: Explore my musical journey as both a listener and creator
 
 ## ✨ Features
 
-- **macOS-inspired Interface**: Complete with folders, files, and windows
+- **Terminal-Inspired Interface**: Complete with a Linux-style boot sequence and command-line aesthetic
 - **Interactive Desktop**: Click and drag windows, open folders, and read files
 - **Responsive Design**: Works on desktop and mobile devices
-- **Startup Screen**: Classic macOS-style boot sequence
 - **File System**: Organized content in a familiar folder structure
 - **Markdown Support**: Content files written in Markdown for easy formatting
 
@@ -64,7 +70,7 @@ A digital garden is a personal space on the web where ideas, projects, and inter
 andrews-digital-garden/
 ├── public/                  # Static assets
 │   ├── files/               # Markdown content files
-│   ├── macos_assets/        # macOS UI assets
+│   ├── macos_assets/        # UI assets
 │   └── ...
 ├── src/
 │   ├── components/          # React components
@@ -94,15 +100,12 @@ Example:
 }
 ```
 
-### Changing the Theme
-
-The project uses Tailwind CSS for styling. You can customize the theme in the `tailwind.config.js` file.
-
 ## 📝 License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-## 🙏 Acknowledgments
+## 👤 About Me
 
-- Inspired by macOS interface
-- Built with love and airplane pretzels
+I'm a software engineer with a background in pure mathematics and professional cooking. My journey has taken me from the University of Chicago to elite kitchens across America, and finally to the world of software engineering. I strive to work with style, taste, dignity, and grace, focusing on how my work moves and touches those around me.
+
+When I'm not coding, you can find me rock climbing, exploring local farmer's markets, running through Central Park, enjoying the outdoors, attending live music events, or making use of my library card.
