@@ -29,27 +29,6 @@ export const Header: React.FC = () => {
     setActiveDropdown(activeDropdown === menu ? null : menu);
   };
 
-  const webRingItems: MenuItem[] = [
-    {
-      name: "Digital Garden",
-      onClick: () => {
-        window.open("https://yourdomain.com");
-      },
-    },
-    {
-      name: "←",
-      onClick: () => {
-        window.open("https://yourdomain.com/prev");
-      },
-    },
-    {
-      name: "→",
-      onClick: () => {
-        window.open("https://yourdomain.com/next");
-      },
-    },
-  ];
-
   const contactMenuItems: MenuItem[] = [
     {
       name: "Twitter",
@@ -122,17 +101,6 @@ export const Header: React.FC = () => {
           <div className="flex items-center gap-6">
             <div className="font-mono text-green-500 flex items-center">
               <span className="mr-2">andrew@digital-garden:~$</span>
-            </div>
-            <div className="relative">
-              <button
-                onClick={() => handleMenuClick("webRing")}
-                className={`px-2 py-1 rounded ${activeDropdown === "webRing" ? "bg-gray-700 text-green-400" : "text-gray-300 hover:text-white"}`}
-              >
-                webring
-              </button>
-              {activeDropdown === "webRing" && (
-                <MenuDropdown items={webRingItems} />
-              )}
             </div>
             <div className="relative">
               <button
