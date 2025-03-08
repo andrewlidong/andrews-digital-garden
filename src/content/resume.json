@@ -187,7 +187,7 @@
                 "KaTeX"
             ],
             "live_url": "https://andrewlidong.xyz/moonshine-slides/",
-            "image_url": "/default_project.png"
+            "image_url": "/moonshine_project.png"
         },
         {
             "name": "MSG MVC",
@@ -198,7 +198,7 @@
                 "Ruby"
             ],
             "live_url": "https://github.com/andrewlidong/MSG_MVC",
-            "image_url": "/default_project.png"
+            "image_url": "/msg_mvc_project.png"
         },
         {
             "name": "RayquazaORM",
@@ -212,7 +212,7 @@
                 "Database Design"
             ],
             "github_url": "https://github.com/andrewlidong/RayquazaORM",
-            "image_url": "/default_project.png"
+            "image_url": "/rayquaza_orm_project.png"
         }
     ]
 }
