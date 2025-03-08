@@ -248,7 +248,29 @@ function PersonalPage() {
       <div className="font-mono fixed top-0 left-0 w-full h-full bg-gray-900 text-white">
         <Header />
 
-        <div className="grid grid-flow-row justify-start pl-6 pt-16 gap-2 max-w-xs">
+        {/* Terminal Welcome Message */}
+        <div className="px-6 pt-16 pb-4 text-green-400">
+          <pre className="text-xs sm:text-sm">
+{`
+ █████╗ ███╗   ██╗██████╗ ██████╗ ███████╗██╗    ██╗███████╗    ██████╗ ██╗ ██████╗ ██╗████████╗ █████╗ ██╗         ██████╗  █████╗ ██████╗ ██████╗ ███████╗███╗   ██╗
+██╔══██╗████╗  ██║██╔══██╗██╔══██╗██╔════╝██║    ██║██╔════╝    ██╔══██╗██║██╔════╝ ██║╚══██╔══╝██╔══██╗██║         ██╔════╝ ██╔══██╗██╔══██╗██╔══██╗██╔════╝████╗  ██║
+███████║██╔██╗ ██║██║  ██║██████╔╝█████╗  ██║ █╗ ██║███████╗    ██║  ██║██║██║  ███╗██║   ██║   ███████║██║         ██║  ███╗███████║██████╔╝██║  ██║█████╗  ██╔██╗ ██║
+██╔══██║██║╚██╗██║██║  ██║██╔══██╗██╔══╝  ██║███╗██║╚════██║    ██║  ██║██║██║   ██║██║   ██║   ██╔══██║██║         ██║   ██║██╔══██║██╔══██╗██║  ██║██╔══╝  ██║╚██╗██║
+██║  ██║██║ ╚████║██████╔╝██║  ██║███████╗╚███╔███╔╝███████║    ██████╔╝██║╚██████╔╝██║   ██║   ██║  ██║███████╗    ╚██████╔╝██║  ██║██║  ██║██████╔╝███████╗██║ ╚████║
+╚═╝  ╚═╝╚═╝  ╚═══╝╚═════╝ ╚═╝  ╚═╝╚══════╝ ╚══╝╚══╝ ╚══════╝    ╚═════╝ ╚═╝ ╚═════╝ ╚═╝   ╚═╝   ╚═╝  ╚═╝╚══════╝     ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝ ╚══════╝╚═╝  ╚═══╝
+`}
+          </pre>
+          <div className="mt-2 text-gray-300">
+            <p>Welcome to Andrew's Digital Garden v1.0.0</p>
+            <p className="text-gray-500">Type 'help' for a list of available commands or browse the filesystem.</p>
+            <div className="flex items-center mt-2">
+              <span className="text-green-500 mr-2">andrew@digital-garden:~$</span>
+              <span className="text-yellow-300 animate-pulse">▌</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="grid grid-flow-row justify-start pl-6 pt-4 gap-2 max-w-xs">
           {fileSystem.map((item) => renderFileOrFolder(item))}
         </div>
 

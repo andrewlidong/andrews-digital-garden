@@ -73,7 +73,7 @@ export const Window: React.FC<WindowProps> = ({
       };
     }
 
-    // Calculate final position
+    // Calculate final position - use the provided initialPosition
     const finalRect = {
       left: initialPosition.x,
       top: initialPosition.y,
@@ -313,6 +313,14 @@ export const Window: React.FC<WindowProps> = ({
               >
                 ×
               </button>
+            </div>
+            
+            {/* File path breadcrumb */}
+            <div className="bg-gray-800 px-3 py-1 border-b border-gray-700 text-xs font-mono">
+              <span className="text-blue-400">andrew@digital-garden</span>
+              <span className="text-gray-400">:</span>
+              <span className="text-green-400">~/documents/</span>
+              <span className="text-yellow-300">{title}</span>
             </div>
 
             {/* Window content */}
