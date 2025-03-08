@@ -128,14 +128,14 @@ function RecruiterPage() {
             {item.label}
           </Button>
         ))}
-        <div className="flex items-center space-x-2 mx-4">
+        <div className="flex items-center space-x-3 mx-4 bg-white px-5 py-3 rounded-full">
           <Switch
             id="recruiter-mode"
             checked={true}
             onCheckedChange={() => navigate("/")}
-            className="data-[state=checked]:bg-gray-100"
+            className="data-[state=checked]:bg-green-500 scale-150"
           />
-          <Label htmlFor="recruiter-mode" className="text-lg text-gray-100">
+          <Label htmlFor="recruiter-mode" className="text-lg font-bold text-black">
             Recruiter Mode
           </Label>
         </div>

@@ -38,7 +38,7 @@
             "fun_description": [],
             "recruiter_description": [
                 "Optimized Metadata Sync Performance, achieving an 8x speed improvement (40+ minutes → under 5 minutes) for a mission-critical backup system. Reduced gRPC round trips by 70%, implemented intelligent caching, and migrated from dbClient to dbPool, significantly enhancing data consistency and system reliability.",
-                "Led a Cross-Functional Initiative to enable multi-archival location support for Rubrik’s Reports service, improving visibility for 5000+ enterprise customers. Designed an internal blobstore helper, optimized MySQL-backed metadata indexing, and established company-wide best practices for pyramid testing, increasing system scalability and maintainability."
+                "Led a Cross-Functional Initiative to enable multi-archival location support for Rubrik's Reports service, improving visibility for 5000+ enterprise customers. Designed an internal blobstore helper, optimized MySQL-backed metadata indexing, and established company-wide best practices for pyramid testing, increasing system scalability and maintainability."
             ],
             "technologies": [
                 "Scala",
@@ -128,7 +128,7 @@
             "endDate": "2016",
             "description": [
                 "IMC International Math Competition Finalist",
-                "Dean’s List",
+                "Dean's List",
                 "US Presidential Scholar"
             ]
         }
@@ -146,7 +146,7 @@
                 "AWS"
             ],
             "live_url": "https://thisiswater.herokuapp.com/",
-            "image_url": "thisiswater.jpg"
+            "image_url": "/thisiswater.png"
         },
         {
             "name": "Sorting Octopus",
@@ -160,7 +160,7 @@
                 "GPT-3.5"
             ],
             "live_url": "https://sorting-octopus.fly.dev/",
-            "image_url": "sorting-octopus.jpg"
+            "image_url": "/sortingOctopus.jpg"
         },
         {
             "name": "Profound Sound",
@@ -173,7 +173,7 @@
                 "D3"
             ],
             "live_url": "https://andrewlidong.xyz/ProfoundSound/",
-            "image_url": "profound-sound.jpg"
+            "image_url": "/profoundSound.gif"
         },
         {
             "name": "Moonshine",
@@ -187,7 +187,7 @@
                 "KaTeX"
             ],
             "live_url": "https://andrewlidong.xyz/moonshine-slides/",
-            "image_url": "moonshine.jpg"
+            "image_url": "/chess.png"
         },
         {
             "name": "MSG MVC",
@@ -197,7 +197,8 @@
             "technologies": [
                 "Ruby"
             ],
-            "live_url": "https://github.com/andrewlidong/MSG_MVC"
+            "live_url": "https://github.com/andrewlidong/MSG_MVC",
+            "image_url": "/horizn.png"
         },
         {
             "name": "Chess Engine",
@@ -208,7 +209,7 @@
                 "C++"
             ],
             "live_url": "https://github.com/yourusername/chess-engine",
-            "image_url": ""
+            "image_url": "/chess.png"
         }
     ],
     "extracurriculars": [

@@ -142,7 +142,7 @@ const Home = forwardRef<HTMLElement, { title: string }>((props, ref) => {
               <img
                 src={company.src}
                 alt={company.alt}
-                className="h-10 relative z-10"
+                className="h-14 relative z-10"
               />
             </a>
           ))}
