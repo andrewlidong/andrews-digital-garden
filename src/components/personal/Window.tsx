@@ -144,8 +144,8 @@ export const Window: React.FC<WindowProps> = ({
           {id === 'terminal' ? (
             <div className="h-full">{children}</div>
           ) : (
-            <ClassicScrollbar>
-              <div className="p-4 font-mono">{children}</div>
+            <ClassicScrollbar alwaysShow={true}>
+              <div className="p-4 font-mono h-full">{children}</div>
             </ClassicScrollbar>
           )}
         </div>

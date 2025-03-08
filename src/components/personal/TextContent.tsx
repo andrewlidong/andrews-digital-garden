@@ -4,9 +4,10 @@ import "github-markdown-css/github-markdown.css";
 
 interface TextContentProps {
   content: string;
+  filename?: string;
 }
 
-export const TextContent: React.FC<TextContentProps> = ({ content }) => {
+export const TextContent: React.FC<TextContentProps> = ({ content, filename = "file.md" }) => {
   const [displayedContent, setDisplayedContent] = useState("");
   const [isTyping, setIsTyping] = useState(true);
   const [typingComplete, setTypingComplete] = useState(false);
@@ -42,23 +43,21 @@ export const TextContent: React.FC<TextContentProps> = ({ content }) => {
   }, [content]);
 
   return (
-    <>
-      <div className="markdown-body p-4 font-mono text-green-300 bg-gray-900">
-        <div className="flex items-start mb-4">
-          <span className="text-green-500 mr-2 whitespace-nowrap">andrew@digital-garden:~$</span>
-          <span className="text-yellow-300 whitespace-nowrap">cat file.md</span>
-        </div>
-        <div className="border-l-2 border-gray-700 pl-4 ml-2">
-          {typingComplete ? (
-            <ReactMarkdown>{content}</ReactMarkdown>
-          ) : (
-            <>
-              <div className="whitespace-pre-wrap">{displayedContent}</div>
-              {isTyping && <span className="animate-pulse">▌</span>}
-            </>
-          )}
-        </div>
+    <div className="w-full h-full markdown-body font-mono text-green-300 bg-gray-900">
+      <div className="flex items-start mb-4">
+        <span className="text-green-500 mr-2 whitespace-nowrap">andrew@digital-garden:~$</span>
+        <span className="text-yellow-300 whitespace-nowrap">cat {filename}</span>
       </div>
-    </>
+      <div className="border-l-2 border-gray-700 pl-4 ml-2">
+        {typingComplete ? (
+          <ReactMarkdown>{content}</ReactMarkdown>
+        ) : (
+          <>
+            <div className="whitespace-pre-wrap">{displayedContent}</div>
+            {isTyping && <span className="animate-pulse">▌</span>}
+          </>
+        )}
+      </div>
+    </div>
   );
 };

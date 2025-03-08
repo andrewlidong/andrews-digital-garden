@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 
 interface ClassicScrollbarProps {
   children: React.ReactNode;
+  alwaysShow?: boolean;
 }
 
 interface ScrollState {
@@ -9,7 +10,7 @@ interface ScrollState {
   scrollPosition: number;
 }
 
-export default function ClassicScrollbar({ children }: ClassicScrollbarProps) {
+export default function ClassicScrollbar({ children, alwaysShow = false }: ClassicScrollbarProps) {
   const [scrollState, setScrollState] = useState<ScrollState>({
     isOverflowing: false,
     scrollPosition: 0,
@@ -38,11 +39,27 @@ export default function ClassicScrollbar({ children }: ClassicScrollbarProps) {
     }));
   }, []);
 
+  // Check for overflow on mount and when content changes
   useEffect(() => {
-    const resizeObserver = new ResizeObserver(checkOverflow);
+    checkOverflow();
+    
+    // Force a recheck after a short delay to account for dynamic content
+    const timer = setTimeout(() => {
+      checkOverflow();
+    }, 500);
+    
+    return () => clearTimeout(timer);
+  }, [checkOverflow, children]);
+
+  useEffect(() => {
+    const resizeObserver = new ResizeObserver(() => {
+      checkOverflow();
+    });
+    
     if (contentRef.current) {
       resizeObserver.observe(contentRef.current);
     }
+    
     return () => resizeObserver.disconnect();
   }, [checkOverflow]);
 
@@ -160,24 +177,24 @@ export default function ClassicScrollbar({ children }: ClassicScrollbarProps) {
         ref={contentRef}
         onScroll={handleScroll}
         className={`flex-grow overflow-hidden ${
-          isTouchDevice ? "overflow-y-auto" : "hover:overflow-y-auto"
+          isTouchDevice ? "overflow-y-auto" : "overflow-y-auto"
         } no-scrollbar pr-4`}
       >
         {children}
       </div>
 
-      {scrollState.isOverflowing && !isTouchDevice && (
-        <div className="w-8 flex flex-col border-l-2 border-black">
+      {(scrollState.isOverflowing || alwaysShow) && !isTouchDevice && (
+        <div className="w-8 flex flex-col border-l border-gray-800">
           <button
             onClick={() => handleArrowClick("up")}
-            className="border-b-2 border-black h-8 flex items-center justify-center bg-neutral-100 hover:bg-neutral-200"
+            className="border-b border-gray-800 h-8 flex items-center justify-center bg-gray-900 hover:bg-gray-800"
           >
-            <span className="text-lg">▲</span>
+            <span className="text-lg text-white">▲</span>
           </button>
 
           <div
             ref={scrollTrackRef}
-            className="flex-grow relative bg-neutral-100"
+            className="flex-grow relative bg-gray-900"
           >
             <div
               ref={scrollThumbRef}
@@ -192,15 +209,15 @@ export default function ClassicScrollbar({ children }: ClassicScrollbarProps) {
                 height: getThumbHeight(),
                 touchAction: "none",
               }}
-              className="absolute w-full bg-neutral-300 hover:bg-neutral-400 cursor-pointer"
+              className="absolute w-full bg-white bg-opacity-60 hover:bg-opacity-80 cursor-pointer"
             />
           </div>
 
           <button
             onClick={() => handleArrowClick("down")}
-            className="border-t-2 border-black h-8 flex items-center justify-center bg-neutral-100 hover:bg-neutral-200"
+            className="border-t border-gray-800 h-8 flex items-center justify-center bg-gray-900 hover:bg-gray-800"
           >
-            <span className="text-lg">▼</span>
+            <span className="text-lg text-white">▼</span>
           </button>
         </div>
       )}
