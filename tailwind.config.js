@@ -20,7 +20,9 @@ export default {
         'default': 'url(/macos_assets/cursor.png), auto',
       },
       backgroundImage: {
-        'chessboard': 'url(/macos_assets/background.png)'
+        'chessboard': 'url(/macos_assets/background.png)',
+        'pattern-grid-lg': 'linear-gradient(to right, #f0f0f0 1px, transparent 1px), linear-gradient(to bottom, #f0f0f0 1px, transparent 1px)',
+        'pattern-grid-dark': 'linear-gradient(to right, #4a5568 1px, transparent 1px), linear-gradient(to bottom, #4a5568 1px, transparent 1px)'
       }
   	}
   },

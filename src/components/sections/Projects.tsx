@@ -24,18 +24,18 @@ const Projects = forwardRef<HTMLElement>((_, ref) => {
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {resume.projects.map((project, index) => (
-            <Card key={index} className="flex flex-col relative">
+            <Card key={index} className="flex flex-col relative border-gray-700 bg-gray-800">
               {project.live_url && (
                 <a
                   href={project.live_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="absolute top-4 right-4 z-10 p-2 bg-white rounded"
+                  className="absolute top-4 right-4 z-10 p-2 bg-gray-700 rounded"
                 >
-                  <ExternalLink className="w-6 h-6" />
+                  <ExternalLink className="w-6 h-6 text-white" />
                 </a>
               )}
-              <CardHeader>
+              <CardHeader className="bg-gray-800">
                 {project.image_url && (
                   <img
                     src={project.image_url}
@@ -44,14 +44,14 @@ const Projects = forwardRef<HTMLElement>((_, ref) => {
                   />
                 )}
               </CardHeader>
-              <CardContent className="flex-grow">
-                <CardTitle className="text-xl mb-2">{project.name}</CardTitle>
-                <CardDescription className="text-gray-600 mb-4">
+              <CardContent className="flex-grow bg-gray-800">
+                <CardTitle className="text-xl mb-2 text-white">{project.name}</CardTitle>
+                <CardDescription className="text-gray-300 mb-4">
                   {project.description}
                 </CardDescription>
-                <div className="flex flex-wrap gap-2 mb-4">
+                <div className="flex flex-wrap gap-2 mt-2">
                   {project.technologies.map((tech, techIndex) => (
-                    <Badge key={techIndex} variant="secondary">
+                    <Badge key={techIndex} variant="secondary" className="bg-gray-600 text-white">
                       {tech}
                     </Badge>
                   ))}

@@ -87,21 +87,16 @@ function RecruiterPage() {
 
   const Background = ({ children }: { children: React.ReactNode }) => {
     return (
-      <div className="relative min-h-screen overflow-hidden flex flex-col items-center">
-        {/* Base gradient - changed to softer, natural green colors */}
-        <div className="absolute inset-0 bg-gradient-to-br from-emerald-700 via-teal-800 to-green-900"></div>
-
-        {/* Metallic overlay */}
-        <div className="absolute inset-0 opacity-40">
-          <div className="absolute inset-0 bg-gradient-to-t from-transparent via-white to-transparent opacity-10"></div>
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white to-transparent opacity-10"></div>
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-10"></div>
-          <div className="absolute inset-0 bg-gradient-to-l from-transparent via-white to-transparent opacity-10"></div>
+      <div className="relative min-h-screen overflow-hidden flex flex-col items-center bg-gray-900">
+        {/* Subtle pattern overlay */}
+        <div className="absolute inset-0 bg-gray-800 opacity-50 pattern-grid-dark"></div>
+        
+        {/* Desktop Content */}
+        <div className="hidden md:block relative z-10 flex flex-col justify-between min-h-screen w-9/12">
+          {children}
         </div>
 
-        {/* Shine effect */}
-        <div className="absolute inset-0 bg-gradient-to-br from-transparent via-white to-transparent opacity-5"></div>
-
+        {/* Mobile warning */}
         <div className="fixed inset-0 bg-gray-900 text-white p-6 flex flex-col items-center justify-center md:hidden">
           <h1 className="text-2xl font-bold mb-4">Desktop Only</h1>
           <p className="text-center mb-4">
@@ -112,26 +107,21 @@ function RecruiterPage() {
             experience. 
           </p>
         </div>
-
-        {/* Desktop Content */}
-        <div className="hidden md:block relative z-10 flex flex-col justify-between min-h-screen w-9/12">
-          {children}
-        </div>
       </div>
     );
   };
 
   const NavBar = () => {
     return (
-      <nav className="fixed top-10 left-60 right-60 z-50 bg-teal-800 bg-opacity-30 backdrop-filter backdrop-blur-lg rounded-full p-1 flex justify-between items-center">
+      <nav className="fixed top-10 left-60 right-60 z-50 bg-gray-800 border border-gray-700 shadow-md rounded-full p-1 flex justify-between items-center">
         {navItems.map((item) => (
           <Button
             key={item.id}
             variant="ghost"
             className={`text-lg px-6 py-6 rounded-full transition-colors duration-200 ${
               activeTab === item.id
-                ? "text-teal-100 bg-teal-700 hover:text-white"
-                : "text-white hover:bg-teal-700 hover:bg-opacity-50 hover:text-white"
+                ? "text-gray-900 bg-gray-100 hover:bg-white"
+                : "text-gray-100 hover:bg-gray-700 hover:text-white"
             }`}
             onClick={() => handleNavClick(item.id)}
           >
@@ -143,9 +133,9 @@ function RecruiterPage() {
             id="recruiter-mode"
             checked={true}
             onCheckedChange={() => navigate("/")}
-            className="data-[state=checked]:bg-teal-600"
+            className="data-[state=checked]:bg-gray-100"
           />
-          <Label htmlFor="recruiter-mode" className="text-lg text-white">
+          <Label htmlFor="recruiter-mode" className="text-lg text-gray-100">
             Recruiter Mode
           </Label>
         </div>
@@ -156,10 +146,12 @@ function RecruiterPage() {
   return (
     <Background>
       <NavBar />
-      <Home title={title} ref={(el) => (sectionRefs.current.home = el)} />
-      <Experience ref={(el) => (sectionRefs.current.experience = el)} />
-      <Projects ref={(el) => (sectionRefs.current.projects = el)} />
-      <Contact ref={(el) => (sectionRefs.current.contact = el)} />
+      <div className="text-white">
+        <Home title={title} ref={(el) => (sectionRefs.current.home = el)} />
+        <Experience ref={(el) => (sectionRefs.current.experience = el)} />
+        <Projects ref={(el) => (sectionRefs.current.projects = el)} />
+        <Contact ref={(el) => (sectionRefs.current.contact = el)} />
+      </div>
     </Background>
   );
 }
