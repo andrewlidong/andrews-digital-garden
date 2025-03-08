@@ -170,9 +170,9 @@ export default function ClassicScrollbar({ children }: ClassicScrollbarProps) {
         <div className="w-8 flex flex-col border-l-2 border-black">
           <button
             onClick={() => handleArrowClick("up")}
-            className="border-b-2 border-black h-8 flex items-center justify-center"
+            className="border-b-2 border-black h-8 flex items-center justify-center bg-neutral-100 hover:bg-neutral-200"
           >
-            <img src="/macos_assets/arrow_up.png" alt="Scroll up" />
+            <span className="text-lg">▲</span>
           </button>
 
           <div
@@ -198,9 +198,9 @@ export default function ClassicScrollbar({ children }: ClassicScrollbarProps) {
 
           <button
             onClick={() => handleArrowClick("down")}
-            className="border-t-2 border-black flex w-8 items-center justify-center"
+            className="border-t-2 border-black h-8 flex items-center justify-center bg-neutral-100 hover:bg-neutral-200"
           >
-            <img src="/macos_assets/arrow_down.png" alt="Scroll down" />
+            <span className="text-lg">▼</span>
           </button>
         </div>
       )}

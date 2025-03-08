@@ -3,18 +3,20 @@ import { Rnd } from "react-rnd";
 import ClassicScrollbar from "./Scrollbar";
 
 interface WindowProps {
+  id: string;
   title: string;
-  initialPosition: { x: number; y: number };
+  initialPosition?: { x: number; y: number };
   width?: number;
   height?: number;
   zIndex: number;
   onFocus: () => void;
   onClose: () => void;
   children: React.ReactNode;
-  sourceElementId?: string; // Optional: ID of element that triggered window open
+  sourceElementId?: string;
 }
 
 export const Window: React.FC<WindowProps> = ({
+  id,
   title,
   width = 600,
   height = 450,
@@ -29,6 +31,27 @@ export const Window: React.FC<WindowProps> = ({
   const [isCloseButtonPressed, setIsCloseButtonPressed] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const windowRef = useRef<Rnd>(null);
+
+  // Calculate initial position if not provided
+  const getInitialPosition = () => {
+    if (initialPosition) return initialPosition;
+    
+    // For terminal, position it in the center bottom
+    if (id === 'terminal') {
+      const windowWidth = window.innerWidth;
+      const windowHeight = window.innerHeight;
+      return {
+        x: (windowWidth - width) / 2,
+        y: (windowHeight - height) / 2,
+      };
+    }
+    
+    // Default position with slight randomization for other windows
+    return {
+      x: Math.max(50, Math.min(window.innerWidth - 400, 100 + Math.random() * 100)),
+      y: Math.max(50, Math.min(window.innerHeight - 300, 100 + Math.random() * 100)),
+    };
+  };
 
   // Simple fade-in animation
   useEffect(() => {
@@ -48,13 +71,22 @@ export const Window: React.FC<WindowProps> = ({
     }, 200); // Short delay for animation
   };
 
+  // Adjust size for terminal
+  useEffect(() => {
+    if (id === 'terminal') {
+      setSize({
+        width: Math.min(800, window.innerWidth * 0.8),
+        height: Math.min(500, window.innerHeight * 0.6),
+      });
+    }
+  }, [id]);
+
   // Render the window with simple fade animation
   return (
     <Rnd
       ref={windowRef}
       default={{
-        x: initialPosition.x,
-        y: initialPosition.y,
+        ...getInitialPosition(),
         width: size.width,
         height: size.height,
       }}
@@ -109,9 +141,13 @@ export const Window: React.FC<WindowProps> = ({
 
         {/* Window content */}
         <div className="flex-grow overflow-hidden bg-gray-900 text-white">
-          <ClassicScrollbar>
-            <div className="p-4 font-mono">{children}</div>
-          </ClassicScrollbar>
+          {id === 'terminal' ? (
+            <div className="h-full">{children}</div>
+          ) : (
+            <ClassicScrollbar>
+              <div className="p-4 font-mono">{children}</div>
+            </ClassicScrollbar>
+          )}
         </div>
       </div>
     </Rnd>

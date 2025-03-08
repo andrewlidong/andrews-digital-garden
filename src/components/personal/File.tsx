@@ -33,15 +33,17 @@ export const File: React.FC<FileProps> = ({
   const FileContent = (
     <div
       id={id}
-      className={`file-container flex items-center p-2 ${!disabled ? "cursor-pointer" : ""} ${clicked ? "bg-gray-800 bg-opacity-50 rounded" : ""}`}
+      className={`file-container flex items-center p-2 w-full ${!disabled ? "cursor-pointer" : ""} ${clicked ? "bg-gray-800 bg-opacity-50 rounded" : ""}`}
       onDoubleClick={!disabled ? handleDoubleClick : undefined}
       onClick={!disabled ? handleClick : undefined}
     >
-      <div className="mr-2 text-blue-400 text-xl">
-        📄
+      <div className="mr-2 flex items-center justify-center w-6 h-6 flex-shrink-0">
+        <span className={`text-xl ${disabled ? "text-gray-500" : clicked ? "text-blue-300" : "text-blue-400"}`}>
+          📄
+        </span>
       </div>
       <p
-        className={`font-mono ${disabled ? "text-gray-500" : clicked ? "text-blue-300" : "text-white"} text-lg`}
+        className={`font-mono ${disabled ? "text-gray-500" : clicked ? "text-blue-300" : "text-white"} text-lg break-all`}
       >
         {name}
       </p>

@@ -6,7 +6,11 @@ interface MenuItem {
   onClick?: () => void;
 }
 
-export const Header: React.FC = () => {
+interface HeaderProps {
+  onOpenTerminal?: () => void;
+}
+
+export const Header: React.FC<HeaderProps> = ({ onOpenTerminal }) => {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [currentTime, setCurrentTime] = useState<string>("");
   const navigate = useNavigate();
@@ -124,6 +128,16 @@ export const Header: React.FC = () => {
                 <MenuDropdown items={recruiterMenuItems} />
               )}
             </div>
+            {onOpenTerminal && (
+              <div className="relative">
+                <button
+                  onClick={onOpenTerminal}
+                  className="px-2 py-1 rounded text-gray-300 hover:text-white hover:bg-gray-700"
+                >
+                  terminal
+                </button>
+              </div>
+            )}
           </div>
           
           {/* Terminal Clock */}

@@ -3,6 +3,7 @@ import { Window } from "@/components/personal/Window";
 import { Folder } from "@/components/personal/Folder";
 import { useState, useEffect, useRef } from "react";
 import { TextContent } from "@/components/personal/TextContent";
+import { Terminal } from "@/components/personal/Terminal";
 import fileSystemData from "@/content/filesystem.json";
 import { Header } from "@/components/personal/Header";
 import StartupScreen from "@/components/personal/StartupScreen";
@@ -22,7 +23,7 @@ type WindowState = {
   content: FileItem[] | string;
   zIndex: number;
   isOpen: boolean;
-  windowType: "folder" | "text";
+  windowType: "folder" | "text" | "terminal";
   parentId?: string;
   sourceElementId?: string;
 };
@@ -186,17 +187,6 @@ function PersonalPage() {
     loadAllContents();
   }, []);
 
-  // Auto-open README.txt when startup is complete
-  useEffect(() => {
-    if (startupComplete && fileSystem.length > 0 && !readmeOpenedRef.current) {
-      const readmeFile = fileSystem.find(item => item.id === "readme");
-      if (readmeFile) {
-        openWindow(readmeFile);
-        readmeOpenedRef.current = true;
-      }
-    }
-  }, [startupComplete, fileSystem]);
-
   useEffect(() => {
     window.addEventListener("resize", handleWindowResize);
     return () => window.removeEventListener("resize", handleWindowResize);
@@ -207,6 +197,49 @@ function PersonalPage() {
       setIsMobile(true);
     } else {
       setIsMobile(false);
+    }
+  };
+
+  // Add a function to open the terminal
+  const openTerminal = () => {
+    // Check if terminal is already open
+    const existingTerminal = windows.find((w) => w.windowType === "terminal");
+    if (existingTerminal) {
+      bringToFront(existingTerminal.id);
+      return;
+    }
+
+    const newWindow: WindowState = {
+      id: "terminal",
+      title: "Terminal",
+      content: "",
+      zIndex: maxZIndex + 1,
+      isOpen: true,
+      windowType: "terminal",
+    };
+    setWindows([...windows, newWindow]);
+    setMaxZIndex(maxZIndex + 1);
+  };
+
+  // Function to open a file by ID (used by terminal)
+  const openFileById = (fileId: string) => {
+    // Find the file in the filesystem
+    const findFile = (items: FileItem[]): FileItem | null => {
+      for (const item of items) {
+        if (item.id === fileId) {
+          return item;
+        }
+        if (item.type === "folder" && item.children) {
+          const found = findFile(item.children);
+          if (found) return found;
+        }
+      }
+      return null;
+    };
+
+    const file = findFile(fileSystem);
+    if (file) {
+      openWindow(file);
     }
   };
 
@@ -246,7 +279,7 @@ function PersonalPage() {
         setStartupComplete(true);
       }} />}
       <div className="font-mono fixed top-0 left-0 w-full h-full bg-gray-900 text-white">
-        <Header />
+        <Header onOpenTerminal={openTerminal} />
 
         <div className="flex h-[calc(100vh-60px)] pt-4">
           {/* Left sidebar with filesystem */}
@@ -308,6 +341,7 @@ function PersonalPage() {
                 return (
                   <Window
                     key={win.id}
+                    id={win.id}
                     title={win.title}
                     width={windowWidth}
                     height={windowHeight}
@@ -327,41 +361,41 @@ function PersonalPage() {
                           <span className="text-gray-400">:</span>
                           <span className="text-green-400">~/documents/</span>
                           <span className="text-yellow-300">{win.title}</span>
-                          <span className="text-gray-400">$</span>
-                          <span className="text-white ml-2">ls -la</span>
                         </div>
-                        <div className="grid gap-2">
-                          <div className="flex text-gray-500 text-sm mb-1">
-                            <span className="w-6 mr-2">Type</span>
-                            <span className="flex-1">Name</span>
-                          </div>
-                          {win.content.map((item) => (
-                            <div 
-                              key={item.id}
-                              className="flex items-center hover:bg-gray-800 p-1 rounded cursor-pointer"
-                              onClick={() => !isDisabled(item.id) && openWindow(item, win.id)}
-                            >
-                              <span className="w-6 mr-2">
-                                {item.type === 'folder' ? 
-                                  <span className="text-yellow-500">📁</span> : 
-                                  <span className="text-blue-400">📄</span>
-                                }
-                              </span>
-                              <span className={`flex-1 ${isDisabled(item.id) ? 'text-gray-500' : 'text-white'}`}>
-                                {item.name}
-                              </span>
-                            </div>
-                          ))}
+                        <div className="grid grid-cols-1 gap-4">
+                          {win.content.map((item) => renderFileOrFolder(item, win.id))}
                         </div>
                       </div>
-                    ) : (
-                      <TextContent content={win.content as string} />
-                    )}
+                    ) : win.windowType === "text" && typeof win.content === "string" ? (
+                      <TextContent content={win.content} />
+                    ) : win.windowType === "terminal" ? (
+                      <Terminal 
+                        onOpenFile={openFileById}
+                        fileSystem={fileSystem}
+                      />
+                    ) : null}
                   </Window>
                 );
               })}
           </div>
         </div>
+
+        {/* Terminal Welcome Message */}
+        {startupComplete && !isMobile && (
+          <div className="fixed bottom-4 left-4 right-4 bg-black bg-opacity-70 p-3 rounded-md text-sm max-w-md">
+            <p>
+              Welcome to my digital garden! Explore my projects and interests by clicking on the folders above.
+            </p>
+            <p className="mt-2">
+              <button 
+                onClick={openTerminal}
+                className="text-blue-400 hover:underline focus:outline-none"
+              >
+                Click here
+              </button> to open the terminal for a more interactive experience.
+            </p>
+          </div>
+        )}
       </div>
     </>
   );
