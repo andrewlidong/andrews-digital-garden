@@ -270,28 +270,31 @@ function PersonalPage() {
           </div>
         </div>
 
-        <div className="grid grid-flow-row justify-start pl-6 pt-4 gap-2 max-w-xs">
-          {fileSystem.map((item) => renderFileOrFolder(item))}
+        {/* File system container - fixed width and position */}
+        <div className="absolute left-0 top-[300px] w-[320px] pl-6 pr-4">
+          <div className="grid grid-flow-row gap-2">
+            {fileSystem.map((item) => renderFileOrFolder(item))}
+          </div>
         </div>
 
         {windows
           .filter((w) => w.isOpen)
           .map((win, index) => {
-            // Position windows on the right side to avoid blocking folders
-            // Calculate a position that's about 1/3 from the right edge of the screen
-            const screenWidth = window.innerWidth;
-            const screenHeight = window.innerHeight;
+            // Position windows just to the right of the folders
+            // The max-w-xs class on the folder container is about 320px wide
+            // Add some margin (20px) to avoid overlapping
+            const folderAreaWidth = 340; // 320px + 20px margin
             
-            const windowWidth = isMobile ? 350 : 600;
-            const windowHeight = isMobile ? 300 : 400;
-            
-            // Position the window on the right side, leaving space for folders on the left
-            const baseX = Math.max(200, screenWidth / 3);
-            const baseY = 80; // Some space from the top for the header
+            // Start windows just after the folder area
+            const baseX = folderAreaWidth;
+            const baseY = 120; // Below the welcome message
             
             // Add offset based on window index (25px per window)
             const offsetX = index * 25;
             const offsetY = index * 25;
+            
+            const windowWidth = isMobile ? 350 : 600;
+            const windowHeight = isMobile ? 300 : 400;
             
             return (
               <Window
