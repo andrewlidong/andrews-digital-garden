@@ -63,7 +63,7 @@ const Home = forwardRef<HTMLElement, { title: string }>((props, ref) => {
     >
       <main className="text-center flex flex-col gap-8 text-white mt-36">
         <h1 className="text-8xl font-bold">
-          Introducing... <Title />
+          Introducing <Title />
         </h1>
         <h1 className="text-6xl font-bold">Senior Software Engineer.</h1>
         {/* <p className="text-2xl">

@@ -135,7 +135,7 @@
     ],
     "projects": [
         {
-            "name": "ThisIsWater",
+            "name": "This Is Water",
             "description": [
                 "Developed ThisIsWater, a full-stack blogging platform, enabling seamless content creation and management with a scalable architecture. Designed an intuitive user experience, integrating modern web technologies for dynamic and responsive publishing."
             ],
@@ -146,57 +146,58 @@
                 "AWS"
             ],
             "live_url": "https://thisiswater.herokuapp.com/",
-            "image_url": "fck.png"
+            "image_url": "thisiswater.jpg"
         },
         {
-            "name": "Resonant",
+            "name": "Sorting Octopus",
             "description": [
-                "Implemented a friend-nominated dating algorithm in 6 days, earning 100k+ Twitter impressions and fostering 2 relationships"
+                "A fun, interactive chatbot that sorts Recurse Center students into Hogwarts houses based on their programming interests and personality traits."
             ],
             "technologies": [
-                "GPT-4",
-                "Jupyter Notebook",
-                "Python"
-            ],
-            "live_url": "https://x.com/ansonyuu/status/1755307905383879133",
-            "image_url": "resonant.webp"
-        },
-        {
-            "name": "Resume Generator",
-            "description": [
-                "Generate resume and cover letter based on prior work experience"
-            ],
-            "technologies": [
-                "React",
-                "GPT-3.5",
-                "JavaScript"
-            ],
-            "live_url": "https://github.com/yourusername/resume-generator",
-            "image_url": "resume_generator.png"
-        },
-        {
-            "name": "Mini Games",
-            "description": [
-                "Created real-time multiplayer game in 36 hours using WebSockets and React, ran a successful live demo for a 100+ person audience"
-            ],
-            "technologies": [
-                "React",
-                "Socket.IO",
-                "Next.js"
-            ],
-            "live_url": "https://github.com/yourusername/mini-games"
-        },
-        {
-            "name": "Podcast Summarizer",
-            "description": [
-                "Uses AI to summarize podcasts into a few sentences, allowing users to quickly understand the content of a podcast without listening to the entire episode"
-            ],
-            "technologies": [
-                "Jupyter Notebook",
-                "Python",
+                "Elixir",
+                "JavaScript",
+                "Phoenix",
                 "GPT-3.5"
             ],
-            "live_url": "https://github.com/levp22/Podcast-Summarizer"
+            "live_url": "https://sorting-octopus.fly.dev/",
+            "image_url": "sorting-octopus.jpg"
+        },
+        {
+            "name": "Profound Sound",
+            "description": [
+                "A music visualization app that allows users to watch, listen and dance along to visual representations of This Must Be The Place by The Talking Heads"
+            ],
+            "technologies": [
+                "JavaScript",
+                "Web Audio API",
+                "D3"
+            ],
+            "live_url": "https://andrewlidong.xyz/ProfoundSound/",
+            "image_url": "profound-sound.jpg"
+        },
+        {
+            "name": "Moonshine",
+            "description": [
+                "An interactive presentation exploring the fascinating connection between the Monster Group and modular functions, known as Monstrous Moonshine."
+            ],
+            "technologies": [
+                "React",
+                "Reveal.js",
+                "Vite",
+                "KaTeX"
+            ],
+            "live_url": "https://andrewlidong.xyz/moonshine-slides/",
+            "image_url": "moonshine.jpg"
+        },
+        {
+            "name": "MSG MVC",
+            "description": [
+                "MSG MVC is a lightweight MVC Framework inspired by Ruby on Rails."
+            ],
+            "technologies": [
+                "Ruby"
+            ],
+            "live_url": "https://github.com/andrewlidong/MSG_MVC"
         },
         {
             "name": "Chess Engine",
