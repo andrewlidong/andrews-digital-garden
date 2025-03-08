@@ -33,31 +33,31 @@ export const Header: React.FC = () => {
     {
       name: "Twitter",
       onClick: () => {
-        window.open("https://twitter.com/yourusername");
+        window.open("https://twitter.com/AndrewDong1994");
       },
     },
     {
       name: "LinkedIn",
       onClick: () => {
-        window.open("https://linkedin.com/in/yourusername");
+        window.open("https://www.linkedin.com/in/andrew-dong/");
       },
     },
     {
       name: "Github",
       onClick: () => {
-        window.open("https://github.com/yourusername");
+        window.open("https://github.com/andrewlidong");
       },
     },
     {
       name: "Letterboxd",
       onClick: () => {
-        window.open("https://letterboxd.com/yourusername");
+        window.open("https://letterboxd.com/andrewdong1994/");
       },
     },
     {
       name: "Email",
       onClick: () => {
-        window.open("mailto:your.email@example.com");
+        window.open("mailto:andrewdong1994@gmail.com");
       },
     },
   ];
