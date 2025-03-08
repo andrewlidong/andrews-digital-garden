@@ -367,7 +367,7 @@ function PersonalPage() {
                         </div>
                       </div>
                     ) : win.windowType === "text" && typeof win.content === "string" ? (
-                      <TextContent content={win.content} />
+                      <TextContent content={win.content} filename={win.title} />
                     ) : win.windowType === "terminal" ? (
                       <Terminal 
                         onOpenFile={openFileById}

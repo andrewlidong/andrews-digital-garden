@@ -1,67 +1,17 @@
 # Triathlons
 
-## My Journey as a Triathlete
+My triathlon journey started in college when I decided, in typical fashion, to jump straight into a half Ironman without working my way up through shorter distances first. Looking back, it was a bit crazy, but that's how I tend to approach challenges.
 
-Triathlons have become a significant part of my athletic journey and personal development. The combination of swimming, cycling, and running has challenged me physically and mentally, providing a comprehensive test of endurance, strategy, and determination.
+I was completely broke at the time, attempting the race on a hybrid bike that was comically inadequate for the 56-mile ride. The night before the race, a fellow competitor noticed my setup at the transition area and actually bought me dinner, saying he could tell I needed the calories more than he needed the twenty bucks. That random act of kindness from a complete stranger is something I've never forgotten.
 
-### My Triathlon Experience
+After a long hiatus, I got back into triathlons post-COVID with my friend Walter. We trained together for months and completed another half Ironman. Having someone to share those early morning training sessions and race-day nerves made the experience completely different.
 
-My triathlon journey has included participation in various distances and formats:
+Running has always been the most challenging discipline for me due to persistent knee injuries. I've had to modify my training and expectations around what my body can handle. But this limitation led me to develop a deeper appreciation for swimming and cycling.
 
-- Sprint triathlons (750m swim, 20km bike, 5km run)
-- Olympic distance (1.5km swim, 40km bike, 10km run)
-- Half Ironman/70.3 (1.9km swim, 90km bike, 21.1km run)
-- Full Ironman (3.8km swim, 180km bike, 42.2km run)
+Swimming has become a constant in my life. I've found masters swim clubs both in Alameda when I lived in the Bay Area and now in New York. Currently, I swim with the Equinox team here, which provides both structure and community. There's something meditative about early morning laps that centers me for the day.
 
-Each distance presents its own unique challenges and rewards, requiring different training approaches and race strategies.
+Cycling evolved from a triathlon discipline to my primary mode of transportation around New York. I love the efficiency and freedom of navigating the city on two wheels. My favorite cycling experience was a backroads trip through Vermont, pedaling from town to town through rolling hills and stopping at small inns along the way. The combination of physical challenge and beautiful scenery was perfect.
 
-### Training Regimen
+I may never complete a full Ironman due to my knees, but I've found my own balance - focusing on open water swimming events and longer bike rides while keeping running to a minimum. It's taught me to work with my body's limitations rather than fighting against them.
 
-The multidisciplinary nature of triathlons demands a balanced training approach:
-
-- Swimming: Technique work, interval training, and open water practice
-- Cycling: Long rides, hill repeats, and indoor trainer sessions
-- Running: Speed work, tempo runs, and long distance endurance building
-- Brick workouts: Combining disciplines to prepare for transitions
-- Strength training: Core work and resistance training to prevent injuries
-- Recovery: Proper nutrition, sleep, and active recovery sessions
-
-### Memorable Races
-
-Throughout my triathlon journey, several races stand out as particularly memorable:
-
-- My first sprint triathlon, where I discovered the thrill of multisport competition
-- Completing my first Olympic distance in challenging weather conditions
-- The sense of accomplishment after finishing a 70.3 race
-- The incredible atmosphere of major triathlon events with thousands of participants
-- Racing in scenic locations that provided breathtaking views during the bike leg
-
-### Mental Aspects
-
-Beyond the physical challenge, triathlons have taught me valuable mental skills:
-
-- Perseverance through difficult training sessions and race conditions
-- Strategic pacing to optimize performance across three disciplines
-- Mindfulness during long training sessions
-- Overcoming self-doubt during challenging moments
-- Finding joy in the process rather than focusing solely on results
-
-### Community Connection
-
-The triathlon community has been an unexpected benefit of the sport:
-
-- Training groups that provide motivation and camaraderie
-- Race day encouragement from fellow competitors
-- Sharing knowledge and experiences with newcomers to the sport
-- Volunteering at events to give back to the community
-- The inclusive nature of a sport that welcomes participants of all abilities
-
-### Future Goals
-
-My triathlon journey continues with several goals on the horizon:
-
-- Improving my personal records across various distances
-- Qualifying for championship events
-- Racing in iconic triathlon locations around the world
-- Maintaining lifelong fitness through multisport training
-- Inspiring others to challenge themselves through endurance sports 
+The variety keeps it interesting. Tired of running? Bike. Bored with biking? Swim. Works different muscles, keeps training fresh.

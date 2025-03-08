@@ -1,65 +1,13 @@
 # BigVision
 
-## My Journey with Non-Profit Leadership
+BigVision is a non-profit that holds a special place in my heart. They create substance-free social events for young adults in recovery, and I became involved after witnessing firsthand how limited the options are for people who want to socialize without alcohol or drugs being the center of everything.
 
-BigVision has been a significant part of my journey in non-profit leadership and community service. This organization focuses on providing support, mentorship, and opportunities for individuals in recovery from substance use disorders, helping them build fulfilling lives in sobriety.
+What makes BigVision truly special is their approach. They don't focus on clinical treatment or therapy - there are already wonderful organizations doing that important work. Instead, they create warm, welcoming spaces where people can simply be themselves, enjoy each other's company, and build meaningful connections. From cooking classes and art workshops to outdoor adventures and game nights, these events provide the normal social experiences that many of us take for granted, but without substances.
 
-### Mission and Impact
+I've had the privilege of volunteering at several events, and I'm always moved by the transformations I witness. Seeing someone's face light up when they realize they can still have a fulfilling social life in recovery is incredibly touching. Those moments when individuals who have felt isolated for so long finally find their community - it's difficult to put into words how meaningful that is.
 
-BigVision's mission centers on creating a supportive community and offering engaging activities for young adults in recovery:
+The stigma surrounding addiction and recovery remains a significant challenge in our society. BigVision is working to change perceptions by demonstrating that recovery can be a journey filled with joy, friendship, and personal growth. Sobriety doesn't mean giving up fun - it often means rediscovering what genuine connection feels like.
 
-- Providing a safe, substance-free social environment
-- Organizing events that foster connection and community
-- Offering skill-building workshops and career development opportunities
-- Creating pathways to meaningful employment and volunteer work
-- Supporting long-term recovery through peer connections
+In my opinion, what truly distinguishes BigVision is their emphasis on peer relationships rather than structured support groups. While traditional recovery programs are essential, sometimes people just need to experience normal social interactions without constantly discussing their recovery journey.
 
-### My Involvement
-
-My role with BigVision has allowed me to contribute to this important mission through:
-
-- Event planning and coordination for community gatherings
-- Mentorship of program participants
-- Fundraising initiatives to support program expansion
-- Strategic planning for organizational growth
-- Partnership development with other community organizations
-
-### Memorable Experiences
-
-Throughout my time with BigVision, several experiences stand out as particularly meaningful:
-
-- Witnessing program participants achieve significant recovery milestones
-- The annual gala that brings together supporters, participants, and community partners
-- Collaborative projects with other recovery-focused organizations
-- Innovative programming that addresses the evolving needs of the recovery community
-- Personal stories of transformation shared by program participants
-
-### Community Impact
-
-BigVision's approach has created meaningful impact in the recovery community:
-
-- Building a network of hundreds of young adults in recovery
-- Creating pathways to employment for individuals rebuilding their lives
-- Reducing isolation and stigma associated with recovery
-- Demonstrating that a fulfilling, fun life in sobriety is possible
-- Changing public perceptions about recovery and substance use disorders
-
-### Personal Growth
-
-My involvement with BigVision has contributed to my own personal and professional development:
-
-- Deepening my understanding of addiction and recovery
-- Developing leadership skills in the non-profit sector
-- Building meaningful connections with diverse community members
-- Finding purpose through service to others
-- Learning to measure impact and communicate organizational value
-
-### Future Vision
-
-The future of BigVision includes several exciting directions:
-
-- Expanding programming to reach more individuals in need
-- Developing innovative approaches to support long-term recovery
-- Building stronger partnerships with healthcare providers and treatment centers
-- Advocating for policy changes that support recovery
-- Creating sustainable funding models to ensure organizational longevity 
+If you're interested in getting involved, I'd be more than happy to connect you. They're always looking for compassionate volunteers and supporters to help expand their mission. It's been one of the most rewarding experiences of my life, and I'm grateful to be part of such a meaningful organization. 
