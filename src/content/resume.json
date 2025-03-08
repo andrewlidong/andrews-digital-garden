@@ -201,18 +201,18 @@
             "image_url": "/horizn.png"
         },
         {
-            "name": "Chess Engine",
+            "name": "RayquazaORM",
             "description": [
-                "Developed a chess engine in C++ that can play at an intermediate level. Implemented minimax algorithm with alpha-beta pruning for move evaluation, opening book for early game strategy, and endgame tablebase for optimal endgame play."
+                "Developed a lightweight Object Relational Mapping (ORM) system inspired by Active Record. Implemented functionality to interact with databases through a SQLObject, query the database with methods such as 'all' and 'where', and build associations that use joins."
             ],
             "technologies": [
-                "C++",
-                "Algorithms",
-                "Game Theory",
-                "Data Structures"
+                "Ruby",
+                "SQL",
+                "ORM",
+                "Database Design"
             ],
-            "live_url": "https://github.com/yourusername/chess-engine",
-            "image_url": "/chess.png"
+            "github_url": "https://github.com/andrewlidong/RayquazaORM",
+            "image_url": "/horizn.png"
         }
     ]
 }
