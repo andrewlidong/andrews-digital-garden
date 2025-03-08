@@ -12,7 +12,11 @@ export default {
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
   		},
-  		colors: {},
+  		colors: {
+        background: "#ffffff",
+        foreground: "#000000",
+        border: "#e2e8f0",
+      },
       fontFamily: {
         macos: 'ChiKareGo2, ui-serif', // Adds a new `font-display` class
       },

@@ -203,45 +203,16 @@
         {
             "name": "Chess Engine",
             "description": [
-                "Created chess engine in C++ following object-oriented design patterns, with multiple levels of computer AI"
+                "Developed a chess engine in C++ that can play at an intermediate level. Implemented minimax algorithm with alpha-beta pruning for move evaluation, opening book for early game strategy, and endgame tablebase for optimal endgame play."
             ],
             "technologies": [
-                "C++"
+                "C++",
+                "Algorithms",
+                "Game Theory",
+                "Data Structures"
             ],
             "live_url": "https://github.com/yourusername/chess-engine",
             "image_url": "/chess.png"
-        }
-    ],
-    "extracurriculars": [
-        {
-            "name": "Socratica",
-            "position": "Host",
-            "startDate": "05/2024",
-            "endDate": "Present",
-            "description": [
-                "Community building in Waterloo (and worldwide), giving makers a space to pursue passion projects with weekly co-working sessions",
-                "Planned and hosted various events for our over 400 unique attendees, including bonfires, paint nights, and an end-of-term showcase"
-            ]
-        },
-        {
-            "name": "UW Blueprint",
-            "position": "Project Developer, Internal Director",
-            "startDate": "09/2023",
-            "endDate": "Present",
-            "description": [
-                "Worked with Feeding Canadian Kids to develop a web platform to streamline the volunteering process, helping to feed over 150,000 children - built with React, GraphQL, Python (Flask), and MongoDB",
-                "Currently serving as Internal Director, running community events and managing logistics for our team of over 100 students"
-            ]
-        },
-        {
-            "name": "UW Mario Kart",
-            "position": "Co-founder, CEO",
-            "startDate": "05/2023",
-            "endDate": "04/2023",
-            "description": [
-                "Founded Waterloo's first Mario Kart club, lead weekly meetings, and organize tournaments",
-                "Organized live band to perform soundtrack while members raced"
-            ]
         }
     ]
 }

@@ -1,1 +1,0 @@
-Created a friend-nominated [dating algorithm](https://x.com/ansonyuu/status/1755307905383879133) for Valentine's Day. Used LLMs with obnoxiously long context windows. Helped 2 couples meet, got 10k+ impressions on Twitter, built in less than a week!
