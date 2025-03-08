@@ -1,116 +1,87 @@
 [
     {
         "id": "projects",
-        "name": "Projects",
+        "name": "projects",
         "type": "folder",
         "children": [
             {
                 "id": "this_is_water",
-                "name": "This Is Water.txt",
+                "name": "this_is_water.txt",
                 "type": "file",
                 "path": "/files/this_is_water.md"
             },
             {
                 "id": "sorting_octopus",
-                "name": "Sorting Octopus.txt",
+                "name": "sorting_octopus.txt",
                 "type": "file",
                 "path": "/files/sorting_octopus.md"
             },
             {
                 "id": "profound_sound",
-                "name": "Profound Sound.txt",
+                "name": "profound_sound.txt",
                 "type": "file",
                 "path": "/files/profound_sound.md"
-            },
-            {
-                "id": "moonshine",
-                "name": "Moonshine.txt",
-                "type": "file",
-                "path": "/files/moonshine.md"
-            },
-            {
-                "id": "msg_mvc",
-                "name": "MSG MVC.txt",
-                "type": "file",
-                "path": "/files/msg_mvc.md"
             }
         ]
     },
     {
         "id": "interests",
-        "name": "Interests",
+        "name": "interests",
         "type": "folder",
         "children": [
             {
-                "id": "phish",
-                "name": "Phish.txt",
+                "id": "starcraft",
+                "name": "starcraft.txt",
                 "type": "file",
-                "path": "/files/phish.md"
-            },
-            {
-                "id": "starcraft_2",
-                "name": "StarCraft 2.txt",
-                "type": "file",
-                "path": "/files/starcraft_2.md"
-            },
-            {
-                "id": "lakers",
-                "name": "Lakers.txt",
-                "type": "file",
-                "path": "/files/lakers.md"
-            },
-            {
-                "id": "packers",
-                "name": "Packers.txt",
-                "type": "file",
-                "path": "/files/packers.md"
-            },
-            {
-                "id": "yankees",
-                "name": "Yankees.txt",
-                "type": "file",
-                "path": "/files/yankees.md"
-            },
-            {
-                "id": "triathlons",
-                "name": "Triathlons.txt",
-                "type": "file",
-                "path": "/files/triathlons.md"
+                "path": "/files/starcraft.md"
             },
             {
                 "id": "bigvision",
-                "name": "BigVision.txt",
+                "name": "bigvision.txt",
                 "type": "file",
                 "path": "/files/bigvision.md"
             }
         ]
     },
     {
-        "id": "film",
-        "name": "Film",
+        "id": "sports",
+        "name": "sports",
         "type": "folder",
         "children": [
             {
-                "id": "film_appreciation",
-                "name": "Film Appreciation.txt",
+                "id": "lakers",
+                "name": "lakers.txt",
                 "type": "file",
-                "path": "/files/film_appreciation.md"
+                "path": "/files/lakers.md"
             },
             {
-                "id": "filmmaking",
-                "name": "Filmmaking.txt",
+                "id": "packers",
+                "name": "packers.txt",
                 "type": "file",
-                "path": "/files/filmmaking.md"
+                "path": "/files/packers.md"
             },
             {
-                "id": "film_festivals",
-                "name": "Film Festivals.txt",
+                "id": "yankees",
+                "name": "yankees.txt",
                 "type": "file",
-                "path": "/files/film_festivals.md"
+                "path": "/files/yankees.md"
             },
+            {
+                "id": "triathlons",
+                "name": "triathlons.txt",
+                "type": "file",
+                "path": "/files/triathlons.md"
+            }
+        ]
+    },
+    {
+        "id": "film",
+        "name": "film",
+        "type": "folder",
+        "children": [
             {
                 "id": "favorite_films",
-                "name": "Favorite Films.txt",
+                "name": "favorite_films.txt",
                 "type": "file",
                 "path": "/files/favorite_films.md"
             }
@@ -118,30 +89,36 @@
     },
     {
         "id": "music",
-        "name": "Music",
+        "name": "music",
         "type": "folder",
         "children": [
             {
+                "id": "phish",
+                "name": "phish.txt",
+                "type": "file",
+                "path": "/files/phish.md"
+            },
+            {
                 "id": "musical_journey",
-                "name": "Musical Journey.txt",
+                "name": "musical_journey.txt",
                 "type": "file",
                 "path": "/files/musical_journey.md"
             },
             {
                 "id": "music_production",
-                "name": "Music Production.txt",
+                "name": "music_production.txt",
                 "type": "file",
                 "path": "/files/music_production.md"
             },
             {
                 "id": "live_music",
-                "name": "Live Music.txt",
+                "name": "live_music.txt",
                 "type": "file",
                 "path": "/files/live_music.md"
             },
             {
                 "id": "playlists_and_curation",
-                "name": "Playlists & Curation.txt",
+                "name": "playlists_and_curation.txt",
                 "type": "file",
                 "path": "/files/playlists_and_curation.md"
             }
@@ -149,7 +126,7 @@
     },
     {
         "id": "readme",
-        "name": "README.txt",
+        "name": "readme.txt",
         "type": "file",
         "path": "/files/README.md"
     }
