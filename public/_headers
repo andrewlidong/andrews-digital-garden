@@ -8,4 +8,10 @@
   Content-Type: text/css
 
 /*.module.js
-  Content-Type: text/javascript 
+  Content-Type: text/javascript
+
+/favicon.ico
+  Cache-Control: public, max-age=3600
+
+/favicon.svg
+  Cache-Control: public, max-age=3600 
