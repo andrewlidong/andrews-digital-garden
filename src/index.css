@@ -9,14 +9,8 @@
   }
 }
 
-@font-face {
-  font-family: "ChiKareGo2";
-  src: url("/fonts/ChiKareGo2.ttf") format("truetype");
-  font-display: swap;
-}
-
 body {
-  font-family: "Inter", sans-serif;
+  font-family: ui-monospace, "Cascadia Mono", "Segoe UI Mono", "Ubuntu Mono", "Roboto Mono", Menlo, Monaco, "Courier New", monospace;
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
