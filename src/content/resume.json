@@ -145,7 +145,7 @@
                 "PostgreSQL",
                 "AWS"
             ],
-            "live_url": "https://thisiswater.herokuapp.com/",
+            "github_url": "https://github.com/andrewlidong/ThisIsWater",
             "image_url": "/thisiswater.png"
         },
         {
@@ -159,7 +159,7 @@
                 "Phoenix",
                 "GPT-3.5"
             ],
-            "live_url": "https://sorting-octopus.fly.dev/",
+            "github_url": "https://github.com/andrewlidong/sorting-octopus",
             "image_url": "/sortingOctopus.jpg"
         },
         {

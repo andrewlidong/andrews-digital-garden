@@ -8,7 +8,7 @@ import {
 import { Badge } from "../ui/badge";
 import * as resume from "../../content/resume.json";
 import { forwardRef } from "react";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, GithubIcon } from "lucide-react";
 
 const Projects = forwardRef<HTMLElement>((_, ref) => {
   return (
@@ -44,6 +44,16 @@ const Projects = forwardRef<HTMLElement>((_, ref) => {
                     <ExternalLink className="w-6 h-6 text-white" />
                   </a>
                 )}
+                {project.github_url && (
+                  <a
+                    href={project.github_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="absolute top-4 right-4 z-10 p-2 bg-gray-700 rounded hover:bg-gray-600 transition-colors"
+                  >
+                    <GithubIcon className="w-6 h-6 text-white" />
+                  </a>
+                )}
                 <CardHeader className="bg-gray-800">
                   {project.image_url && (
                     <div className="overflow-hidden rounded-t-lg">
@@ -58,7 +68,7 @@ const Projects = forwardRef<HTMLElement>((_, ref) => {
                 <CardContent className="flex-grow bg-gray-800">
                   <CardTitle className="text-xl mb-2 text-white">{project.name}</CardTitle>
                   <CardDescription className="text-gray-300 mb-4">
-                    {project.description}
+                    {project.description[0]}
                   </CardDescription>
                   <div className="flex flex-wrap gap-2 mt-2">
                     {project.technologies.map((tech, techIndex) => (
@@ -76,5 +86,7 @@ const Projects = forwardRef<HTMLElement>((_, ref) => {
     </section>
   );
 });
+
+Projects.displayName = "Projects";
 
 export default Projects;
