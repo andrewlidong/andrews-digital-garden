@@ -12,6 +12,12 @@
 
 /favicon.ico
   Cache-Control: public, max-age=3600
+  Content-Type: image/x-icon
 
 /favicon.svg
-  Cache-Control: public, max-age=3600 
+  Cache-Control: public, max-age=3600
+  Content-Type: image/svg+xml
+
+/favicon.png
+  Cache-Control: public, max-age=3600
+  Content-Type: image/png 
