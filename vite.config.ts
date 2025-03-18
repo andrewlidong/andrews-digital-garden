@@ -5,7 +5,7 @@ import { plugin as markdownPlugin, Mode } from "vite-plugin-markdown";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: '/',
+  base: '',  // Empty string for GitHub Pages
   plugins: [
     react(),
     markdownPlugin({
