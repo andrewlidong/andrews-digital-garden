@@ -1,7 +1,7 @@
+@import './styles/animations.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import './styles/animations.css';
 
 @layer base {
   :root {
@@ -11,7 +11,8 @@
 
 @font-face {
   font-family: "ChiKareGo2";
-  src: url("/ChiKareGo2.ttf") format("truetype");
+  src: url("./fonts/ChiKareGo2.ttf") format("truetype");
+  font-display: swap;
 }
 
 body {
