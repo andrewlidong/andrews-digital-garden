@@ -5,7 +5,7 @@ import { plugin as markdownPlugin, Mode } from "vite-plugin-markdown";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: '/',
+  base: '',
   plugins: [
     react(),
     markdownPlugin({
@@ -17,4 +17,15 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    outDir: 'dist',
+    rollupOptions: {
+      output: {
+        format: 'es',
+        entryFileNames: 'assets/[name].[hash].mjs',
+        chunkFileNames: 'assets/[name].[hash].mjs',
+        assetFileNames: 'assets/[name].[hash][extname]'
+      }
+    }
+  }
 });
