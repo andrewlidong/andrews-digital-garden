@@ -18,9 +18,13 @@ npm install
 # Start dev server
 npm run dev
 
-# Build and deploy
-npm run deploy
+# Build for production
+npm run build
 ```
+
+## Deployment
+
+The site automatically deploys to GitHub Pages when changes are pushed to the main branch.
 
 ## License
 
