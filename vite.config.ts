@@ -25,10 +25,20 @@ export default defineConfig({
         entryFileNames: 'assets/[name].[hash].js',
         chunkFileNames: 'assets/[name].[hash].js',
         assetFileNames: ({ name }) => {
-          if (name && (name.endsWith('favicon.ico') || name.endsWith('favicon.svg') || 
-              name.endsWith('.png') || name.endsWith('.webmanifest'))) {
+          if (!name) return 'assets/[name].[hash][extname]';
+          
+          // Keep these files in the root directory
+          if (name.endsWith('favicon.ico') || 
+              name.endsWith('favicon.svg') || 
+              name.endsWith('favicon-16x16.png') ||
+              name.endsWith('favicon-32x32.png') ||
+              name.endsWith('apple-touch-icon.png') ||
+              name.endsWith('site.webmanifest') ||
+              name.endsWith('CNAME') ||
+              name.endsWith('404.html')) {
             return '[name][extname]';
           }
+          
           return 'assets/[name].[hash][extname]';
         }
       }
