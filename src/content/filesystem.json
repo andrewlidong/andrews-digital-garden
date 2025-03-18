@@ -125,6 +125,25 @@
         ]
     },
     {
+        "id": "webrings",
+        "name": "webrings",
+        "type": "folder",
+        "children": [
+            {
+                "id": "rc_webring",
+                "name": "rc_webring.txt",
+                "type": "file",
+                "path": "/files/rc_webring.md"
+            },
+            {
+                "id": "rc_webring_v2",
+                "name": "rc_webring_v2.txt",
+                "type": "file",
+                "path": "/files/rc_webring_v2.md"
+            }
+        ]
+    },
+    {
         "id": "readme",
         "name": "readme.txt",
         "type": "file",

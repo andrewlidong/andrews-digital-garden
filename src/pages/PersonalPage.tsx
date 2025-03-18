@@ -396,6 +396,27 @@ function PersonalPage() {
             </p>
           </div>
         )}
+
+        {/* Webrings */}
+        <div className="fixed bottom-4 right-4 z-50 flex flex-col gap-2">
+          {/* RC Webring V1 */}
+          <a href="https://ring.recurse.com" target="_blank" rel="noopener noreferrer">
+            <img 
+              src="/rc-webring.gif" 
+              alt="Recurse Center Webring" 
+              className="w-12 h-12 rounded-full hover:scale-110 transition-transform duration-200"
+              onError={(e) => {
+                const img = e.currentTarget;
+                img.style.display = 'none';
+                console.error('Failed to load RC webring image');
+              }}
+            />
+          </a>
+          {/* RC Webring V2 */}
+          <div className="bg-white rounded-lg p-2">
+            <webring-element site="andrewlidong.xyz"></webring-element>
+          </div>
+        </div>
       </div>
     </>
   );
