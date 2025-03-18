@@ -19,7 +19,7 @@ type AutoplayType = {
 const Home = forwardRef<HTMLElement, { title?: string }>((props, ref) => {
   const [autoplay, setAutoplay] = useState<AutoplayType | null>(null);
   const [typedText, setTypedText] = useState("");
-  const fullName = "Andrew Dong";
+  const fullName = "Andrew Li Dong";
   const typingIntervalRef = useRef<NodeJS.Timeout | null>(null);
   
   // Simple typing effect
@@ -91,7 +91,7 @@ const Home = forwardRef<HTMLElement, { title?: string }>((props, ref) => {
       
       <main className="text-center flex flex-col gap-8 text-white mt-36 z-10">
         <h1 className="text-8xl font-bold animate-on-scroll fade-up is-visible">
-          Introducing <span className="font-bold text-slate-200 relative">
+           <span className="font-bold text-slate-200 relative">
             {typedText}<span className="animate-pulse inline-block ml-1">|</span>
           </span>
         </h1>
@@ -101,7 +101,7 @@ const Home = forwardRef<HTMLElement, { title?: string }>((props, ref) => {
         </h1>
         
         <p className="text-2xl text-slate-200 animate-on-scroll fade-up is-visible" style={{ transitionDelay: '400ms' }}>
-          A versatile developer with a track record of building innovative solutions, fostering communities, and delivering meaningful impact - <b>bringing value that goes far beyond just code.</b>
+          A versatile developer with a track record of building innovative solutions, fostering communities, and delivering <b>meaningful impact</b>.
         </p>
       </main>
 

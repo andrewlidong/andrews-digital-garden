@@ -8,9 +8,16 @@ import {
 import { Badge } from "../ui/badge";
 import * as resume from "../../content/resume.json";
 import { forwardRef } from "react";
-import { ExternalLink, GithubIcon } from "lucide-react";
+import { GithubIcon } from "lucide-react";
 
 const Projects = forwardRef<HTMLElement>((_, ref) => {
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>, fallbackSrc: string) => {
+    const img = e.currentTarget;
+    if (img.src !== fallbackSrc) {
+      img.src = fallbackSrc;
+    }
+  };
+
   return (
     <section
       id="projects"
@@ -34,16 +41,6 @@ const Projects = forwardRef<HTMLElement>((_, ref) => {
               style={{ transitionDelay: `${index * 100}ms` }}
             >
               <Card className="flex flex-col relative border-gray-700 bg-gray-800 h-full hover-lift">
-                {project.live_url && (
-                  <a
-                    href={project.live_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="absolute top-4 right-4 z-10 p-2 bg-gray-700 rounded hover:bg-gray-600 transition-colors"
-                  >
-                    <ExternalLink className="w-6 h-6 text-white" />
-                  </a>
-                )}
                 {project.github_url && (
                   <a
                     href={project.github_url}
@@ -60,6 +57,7 @@ const Projects = forwardRef<HTMLElement>((_, ref) => {
                       <img
                         src={project.image_url}
                         alt={project.name}
+                        onError={(e) => handleImageError(e, project.fallback_image_url)}
                         className="w-full h-48 object-cover transition-transform duration-500 hover:scale-110"
                       />
                     </div>

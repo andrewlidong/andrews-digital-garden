@@ -25,5 +25,5 @@ The core of the application is powered by GPT-3.5, which analyzes user responses
 
 The frontend is built with JavaScript, providing a clean and responsive interface that mimics a natural conversation. The design is inspired by both terminal interfaces and magical themes to create an engaging experience.
 
-### Live Demo
-[Try Sorting Octopus](https://sorting-octopus.fly.dev/) 
+### GitHub Repository
+For more details and to view the source code, visit the [GitHub repository](https://github.com/andrewlidong/sorting-octopus).

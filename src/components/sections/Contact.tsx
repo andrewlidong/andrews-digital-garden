@@ -36,12 +36,12 @@ const Contact = forwardRef<HTMLElement>((_, ref) => {
             alt: "X",
             delay: 300
           },
-          {
-            href: "/resume.pdf",
-            src: "/resume.svg",
-            alt: "Resume",
-            delay: 400
-          }
+          // {
+          //   href: "/resume.pdf",
+          //   src: "/resume.svg",
+          //   alt: "Resume",
+          //   delay: 400
+          // }
         ].map((item, index) => (
           <a
             key={index}

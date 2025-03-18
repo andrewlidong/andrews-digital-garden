@@ -146,7 +146,8 @@
                 "AWS"
             ],
             "github_url": "https://github.com/andrewlidong/ThisIsWater",
-            "image_url": "/thisiswater.png"
+            "image_url": "/thisiswater.png",
+            "fallback_image_url": "/default_project.png"
         },
         {
             "name": "Sorting Octopus",
@@ -160,7 +161,8 @@
                 "GPT-3.5"
             ],
             "github_url": "https://github.com/andrewlidong/sorting-octopus",
-            "image_url": "/sortingOctopus.jpg"
+            "image_url": "/sortingOctopus.jpg",
+            "fallback_image_url": "/default_project.png"
         },
         {
             "name": "Profound Sound",
@@ -172,8 +174,9 @@
                 "Web Audio API",
                 "D3"
             ],
-            "live_url": "https://andrewlidong.xyz/ProfoundSound/",
-            "image_url": "/profoundSound.gif"
+            "github_url": "https://github.com/andrewlidong/ProfoundSound",
+            "image_url": "/profoundSound.gif",
+            "fallback_image_url": "/default_project.png"
         },
         {
             "name": "Moonshine",
@@ -186,8 +189,9 @@
                 "Vite",
                 "KaTeX"
             ],
-            "live_url": "https://andrewlidong.xyz/moonshine-slides/",
-            "image_url": "https://raw.githubusercontent.com/andrewlidong/andrews-digital-garden/main/public/moonshine_project.png"
+            "github_url": "https://github.com/andrewlidong/moonshine-slides",
+            "image_url": "/moonshine_project.png",
+            "fallback_image_url": "/default_project.png"
         },
         {
             "name": "MSG MVC",
@@ -197,8 +201,9 @@
             "technologies": [
                 "Ruby"
             ],
-            "live_url": "https://github.com/andrewlidong/MSG_MVC",
-            "image_url": "https://raw.githubusercontent.com/andrewlidong/andrews-digital-garden/main/public/msg_mvc_project.png"
+            "github_url": "https://github.com/andrewlidong/MSG_MVC",
+            "image_url": "/msg_mvc_project.png",
+            "fallback_image_url": "/default_project.png"
         },
         {
             "name": "RayquazaORM",
@@ -212,7 +217,8 @@
                 "Database Design"
             ],
             "github_url": "https://github.com/andrewlidong/RayquazaORM",
-            "image_url": "https://raw.githubusercontent.com/andrewlidong/andrews-digital-garden/main/public/rayquaza_orm_project.png"
+            "image_url": "/rayquaza_orm_project.png",
+            "fallback_image_url": "/default_project.png"
         }
     ]
 }

@@ -24,5 +24,5 @@ The development of This Is Water was driven by a desire to create a blogging pla
 
 The backend is built with Ruby on Rails, providing a robust API for the React frontend. PostgreSQL was chosen for its reliability and advanced features like full-text search. The application is hosted on AWS, utilizing S3 for media storage and CloudFront for content delivery.
 
-### Live Demo
-[Visit This Is Water](https://thisiswater.herokuapp.com/) 
+### GitHub Repository
+For more details and to view the source code, visit the [GitHub repository](https://github.com/andrewlidong/ThisIsWater).
