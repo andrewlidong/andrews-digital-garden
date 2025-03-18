@@ -147,7 +147,7 @@
             ],
             "github_url": "https://github.com/andrewlidong/ThisIsWater",
             "image_url": "/thisiswater.png",
-            "fallback_image_url": "/default_project.png"
+            "fallback_image_url": "/default_project.svg"
         },
         {
             "name": "Sorting Octopus",
@@ -162,7 +162,7 @@
             ],
             "github_url": "https://github.com/andrewlidong/sorting-octopus",
             "image_url": "/sortingOctopus.jpg",
-            "fallback_image_url": "/default_project.png"
+            "fallback_image_url": "/default_project.svg"
         },
         {
             "name": "Profound Sound",
@@ -176,7 +176,7 @@
             ],
             "github_url": "https://github.com/andrewlidong/ProfoundSound",
             "image_url": "/profoundSound.gif",
-            "fallback_image_url": "/default_project.png"
+            "fallback_image_url": "/default_project.svg"
         },
         {
             "name": "Moonshine",
@@ -190,20 +190,8 @@
                 "KaTeX"
             ],
             "github_url": "https://github.com/andrewlidong/moonshine-slides",
-            "image_url": "/moonshine_project.png",
-            "fallback_image_url": "/default_project.png"
-        },
-        {
-            "name": "MSG MVC",
-            "description": [
-                "MSG MVC is a lightweight MVC Framework inspired by Ruby on Rails."
-            ],
-            "technologies": [
-                "Ruby"
-            ],
-            "github_url": "https://github.com/andrewlidong/MSG_MVC",
-            "image_url": "/msg_mvc_project.png",
-            "fallback_image_url": "/default_project.png"
+            "image_url": "/moonshine_project.svg",
+            "fallback_image_url": "/default_project.svg"
         },
         {
             "name": "RayquazaORM",
@@ -217,8 +205,21 @@
                 "Database Design"
             ],
             "github_url": "https://github.com/andrewlidong/RayquazaORM",
-            "image_url": "/rayquaza_orm_project.png",
-            "fallback_image_url": "/default_project.png"
+            "image_url": "/rayquaza_orm_project.svg",
+            "fallback_image_url": "/default_project.svg"
+        },
+        {
+            "name": "Keystone Light",
+            "description": [
+                "A lightweight key-value store written in Rust."
+            ],
+            "technologies": [
+                "Rust",
+                "SQL"
+            ],
+            "github_url": "https://github.com/andrewlidong/keystonelight",
+            "image_url": "/keystone_project.svg",
+            "fallback_image_url": "/default_project.svg"
         }
     ]
 }

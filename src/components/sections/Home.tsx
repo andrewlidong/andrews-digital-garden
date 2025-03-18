@@ -97,7 +97,7 @@ const Home = forwardRef<HTMLElement, { title?: string }>((props, ref) => {
         </h1>
         
         <h1 className="text-6xl font-bold animate-on-scroll fade-up is-visible" style={{ transitionDelay: '200ms' }}>
-          Senior Software Engineer.
+          Senior Software Engineer
         </h1>
         
         <p className="text-2xl text-slate-200 animate-on-scroll fade-up is-visible" style={{ transitionDelay: '400ms' }}>
