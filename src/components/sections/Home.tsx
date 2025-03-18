@@ -89,28 +89,28 @@ const Home = forwardRef<HTMLElement, { title?: string }>((props, ref) => {
       <div className="absolute top-40 left-40 w-80 h-80 rounded-full bg-blue-500/10 blur-3xl"></div>
       <div className="absolute bottom-40 right-40 w-96 h-96 rounded-full bg-purple-500/10 blur-3xl"></div>
       
-      <main className="text-center flex flex-col gap-8 text-white mt-36 z-10">
-        <h1 className="text-8xl font-bold animate-on-scroll fade-up is-visible">
+      <main className="text-center flex flex-col gap-8 text-white mt-36 z-10 px-4">
+        <h1 className="text-4xl md:text-8xl font-bold animate-on-scroll fade-up is-visible">
            <span className="font-bold text-slate-200 relative">
             {typedText}<span className="animate-pulse inline-block ml-1">|</span>
           </span>
         </h1>
         
-        <h1 className="text-6xl font-bold animate-on-scroll fade-up is-visible" style={{ transitionDelay: '200ms' }}>
+        <h1 className="text-3xl md:text-6xl font-bold animate-on-scroll fade-up is-visible" style={{ transitionDelay: '200ms' }}>
           Senior Software Engineer
         </h1>
         
-        <p className="text-2xl text-slate-200 animate-on-scroll fade-up is-visible" style={{ transitionDelay: '400ms' }}>
+        <p className="text-lg md:text-2xl text-slate-200 animate-on-scroll fade-up is-visible" style={{ transitionDelay: '400ms' }}>
           A versatile developer with a track record of building innovative solutions, fostering communities, and delivering <b>meaningful impact</b>.
         </p>
       </main>
 
-      <div className="animate-on-scroll fade-in is-visible z-10" style={{ transitionDelay: '600ms' }}>
+      <div className="animate-on-scroll fade-in is-visible z-10 px-4 w-full" style={{ transitionDelay: '600ms' }}>
         <Carousel
           plugins={[plugin.current]}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
-          className="text-white text-center max-w-3xl"
+          className="text-white text-center max-w-3xl mx-auto"
         >
           <CarouselContent>
             {resume.experience.map((item) => {
@@ -130,12 +130,12 @@ const Home = forwardRef<HTMLElement, { title?: string }>((props, ref) => {
         </Carousel>
       </div>
 
-      <div className="max-w-4xl mx-auto mb-6 text-center z-10 animate-on-scroll fade-up is-visible" style={{ transitionDelay: '800ms' }}>
+      <div className="max-w-4xl mx-auto mb-6 text-center z-10 animate-on-scroll fade-up is-visible px-4" style={{ transitionDelay: '800ms' }}>
         <span className="text-white text-lg">★★★★★</span>
         <p className="text-xl text-gray-300 mt-2 text-center mb-4">
           Proudly contributed to:
         </p>
-        <div className="flex justify-center space-x-10 relative z-40 stagger-children">
+        <div className="flex flex-wrap justify-center gap-6 md:gap-10 relative z-40 stagger-children">
           {[
             {
               href: "https://capitalone.com/",
@@ -174,7 +174,7 @@ const Home = forwardRef<HTMLElement, { title?: string }>((props, ref) => {
               <img
                 src={company.src}
                 alt={company.alt}
-                className="h-14 relative z-10"
+                className="h-10 md:h-14 relative z-10"
               />
             </a>
           ))}

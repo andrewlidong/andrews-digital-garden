@@ -111,21 +111,9 @@ function RecruiterPage() {
           ></div>
         </div>
         
-        {/* Desktop Content */}
-        <div className="hidden md:block relative z-10 flex flex-col justify-between min-h-screen w-9/12">
+        {/* Responsive Content */}
+        <div className="relative z-10 flex flex-col justify-between min-h-screen w-full px-4 md:px-0 md:w-9/12">
           {children}
-        </div>
-
-        {/* Mobile warning */}
-        <div className="fixed inset-0 bg-gray-900 text-white p-6 flex flex-col items-center justify-center md:hidden">
-          <h1 className="text-2xl font-bold mb-4">Desktop Only</h1>
-          <p className="text-center mb-4">
-            Sorry, but this portfolio is optimized for desktop use only.
-          </p>
-          <p className="text-center">
-            Please visit on a desktop or laptop computer for the best
-            experience. 
-          </p>
         </div>
       </div>
     );

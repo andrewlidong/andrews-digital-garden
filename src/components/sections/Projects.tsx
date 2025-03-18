@@ -29,11 +29,11 @@ const Projects = forwardRef<HTMLElement>((_, ref) => {
       <div className="absolute bottom-40 right-40 w-96 h-96 rounded-full bg-amber-500/10 blur-3xl"></div>
       
       <div className="max-w-6xl mx-auto px-4 z-10">
-        <h2 className="text-6xl font-bold text-center text-white mb-8 animate-on-scroll fade-up is-visible">
+        <h2 className="text-4xl md:text-6xl font-bold text-center text-white mb-8 animate-on-scroll fade-up is-visible">
           Selected Projects
         </h2>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
           {resume.projects.map((project, index) => (
             <div 
               key={index} 
@@ -46,36 +46,38 @@ const Projects = forwardRef<HTMLElement>((_, ref) => {
                     href={project.github_url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="absolute top-4 right-4 z-10 p-2 bg-gray-700 rounded hover:bg-gray-600 transition-colors"
+                    className="absolute top-2 right-2 md:top-4 md:right-4 z-10 p-2 bg-gray-700 rounded hover:bg-gray-600 transition-colors"
                   >
-                    <GithubIcon className="w-6 h-6 text-white" />
+                    <GithubIcon className="w-4 h-4 md:w-6 md:h-6 text-white" />
                   </a>
                 )}
-                <CardHeader className="bg-gray-800">
+                <CardHeader className="bg-gray-800 p-3 md:p-6">
                   {project.image_url && (
                     <div className="overflow-hidden rounded-t-lg">
                       <img
                         src={project.image_url}
                         alt={project.name}
                         onError={(e) => handleImageError(e, project.fallback_image_url)}
-                        className="w-full h-48 object-cover transition-transform duration-500 hover:scale-110"
+                        className="w-full h-32 md:h-48 object-cover transition-transform duration-500 hover:scale-110"
                       />
                     </div>
                   )}
-                </CardHeader>
-                <CardContent className="flex-grow bg-gray-800">
-                  <CardTitle className="text-xl mb-2 text-white">{project.name}</CardTitle>
-                  <CardDescription className="text-gray-300 mb-4">
+                  <CardTitle className="text-lg md:text-xl text-white mt-3">{project.name}</CardTitle>
+                  <CardDescription className="text-sm md:text-base text-gray-300">
                     {project.description[0]}
                   </CardDescription>
-                  <div className="flex flex-wrap gap-2 mt-2">
+                  <div className="flex flex-wrap gap-1 md:gap-2 mt-2">
                     {project.technologies.map((tech, techIndex) => (
-                      <Badge key={techIndex} variant="secondary" className="bg-gray-600 text-white">
+                      <Badge
+                        key={techIndex}
+                        variant="secondary"
+                        className="text-xs md:text-sm bg-gray-700 text-gray-200"
+                      >
                         {tech}
                       </Badge>
                     ))}
                   </div>
-                </CardContent>
+                </CardHeader>
               </Card>
             </div>
           ))}
