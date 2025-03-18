@@ -24,7 +24,12 @@ export default defineConfig({
         format: 'es',
         entryFileNames: 'assets/[name].[hash].mjs',
         chunkFileNames: 'assets/[name].[hash].mjs',
-        assetFileNames: 'assets/[name].[hash][extname]'
+        assetFileNames: ({ name }) => {
+          if (name && (name.endsWith('favicon.ico') || name.endsWith('favicon.svg'))) {
+            return '[name][extname]';
+          }
+          return 'assets/[name].[hash][extname]';
+        }
       }
     }
   }
