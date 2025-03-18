@@ -5,7 +5,7 @@ import { plugin as markdownPlugin, Mode } from "vite-plugin-markdown";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: './',  // Use relative paths
+  base: '/',  // Use absolute paths for production
   plugins: [
     react(),
     markdownPlugin({
@@ -30,8 +30,8 @@ export default defineConfig({
           // Keep these files in the root directory
           if (name.endsWith('favicon.ico') || 
               name.endsWith('favicon.svg') || 
-              name.endsWith('favicon-16x16.png') ||
               name.endsWith('favicon-32x32.png') ||
+              name.endsWith('favicon-16x16.png') ||
               name.endsWith('apple-touch-icon.png') ||
               name.endsWith('site.webmanifest') ||
               name.endsWith('CNAME') ||
