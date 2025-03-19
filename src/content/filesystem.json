@@ -8,19 +8,49 @@
                 "id": "this_is_water",
                 "name": "this_is_water.txt",
                 "type": "file",
-                "path": "/files/this_is_water.md"
+                "path": "/files/projects/this_is_water.md"
             },
             {
                 "id": "sorting_octopus",
                 "name": "sorting_octopus.txt",
                 "type": "file",
-                "path": "/files/sorting_octopus.md"
+                "path": "/files/projects/sorting_octopus.md"
             },
             {
                 "id": "profound_sound",
                 "name": "profound_sound.txt",
                 "type": "file",
-                "path": "/files/profound_sound.md"
+                "path": "/files/projects/profound_sound.md"
+            },
+            {
+                "id": "flight_simulator",
+                "name": "flight_simulator.txt",
+                "type": "file",
+                "path": "/files/projects/flight_simulator.md"
+            },
+            {
+                "id": "rayquaza_orm",
+                "name": "rayquaza_orm.txt",
+                "type": "file",
+                "path": "/files/projects/rayquaza_orm.md"
+            },
+            {
+                "id": "big2s",
+                "name": "big2s.txt",
+                "type": "file",
+                "path": "/files/projects/big2s.md"
+            },
+            {
+                "id": "keystone_light",
+                "name": "keystone_light.txt",
+                "type": "file",
+                "path": "/files/projects/keystone_light.md"
+            },
+            {
+                "id": "moonshine",
+                "name": "moonshine.txt",
+                "type": "file",
+                "path": "/files/projects/moonshine.md"
             }
         ]
     },
@@ -33,13 +63,13 @@
                 "id": "starcraft",
                 "name": "starcraft.txt",
                 "type": "file",
-                "path": "/files/starcraft.md"
+                "path": "/files/interests/starcraft.md"
             },
             {
                 "id": "bigvision",
                 "name": "bigvision.txt",
                 "type": "file",
-                "path": "/files/bigvision.md"
+                "path": "/files/interests/bigvision.md"
             }
         ]
     },
@@ -52,25 +82,25 @@
                 "id": "lakers",
                 "name": "lakers.txt",
                 "type": "file",
-                "path": "/files/lakers.md"
+                "path": "/files/sports/lakers.md"
             },
             {
                 "id": "packers",
                 "name": "packers.txt",
                 "type": "file",
-                "path": "/files/packers.md"
+                "path": "/files/sports/packers.md"
             },
             {
                 "id": "yankees",
                 "name": "yankees.txt",
                 "type": "file",
-                "path": "/files/yankees.md"
+                "path": "/files/sports/yankees.md"
             },
             {
                 "id": "triathlons",
                 "name": "triathlons.txt",
                 "type": "file",
-                "path": "/files/triathlons.md"
+                "path": "/files/sports/triathlons.md"
             }
         ]
     },
@@ -83,7 +113,7 @@
                 "id": "favorite_films",
                 "name": "favorite_films.txt",
                 "type": "file",
-                "path": "/files/favorite_films.md"
+                "path": "/files/film/favorite_films.md"
             }
         ]
     },
@@ -96,31 +126,31 @@
                 "id": "phish",
                 "name": "phish.txt",
                 "type": "file",
-                "path": "/files/phish.md"
+                "path": "/files/music/phish.md"
             },
             {
                 "id": "musical_journey",
                 "name": "musical_journey.txt",
                 "type": "file",
-                "path": "/files/musical_journey.md"
+                "path": "/files/music/musical_journey.md"
             },
             {
                 "id": "music_production",
                 "name": "music_production.txt",
                 "type": "file",
-                "path": "/files/music_production.md"
+                "path": "/files/music/music_production.md"
             },
             {
                 "id": "live_music",
                 "name": "live_music.txt",
                 "type": "file",
-                "path": "/files/live_music.md"
+                "path": "/files/music/live_music.md"
             },
             {
                 "id": "playlists_and_curation",
                 "name": "playlists_and_curation.txt",
                 "type": "file",
-                "path": "/files/playlists_and_curation.md"
+                "path": "/files/music/playlists_and_curation.md"
             }
         ]
     },
@@ -133,13 +163,13 @@
                 "id": "rc_webring",
                 "name": "rc_webring.txt",
                 "type": "file",
-                "path": "/files/rc_webring.md"
+                "path": "/files/webrings/rc_webring.md"
             },
             {
                 "id": "rc_webring_v2",
                 "name": "rc_webring_v2.txt",
                 "type": "file",
-                "path": "/files/rc_webring_v2.md"
+                "path": "/files/webrings/rc_webring_v2.md"
             }
         ]
     },
