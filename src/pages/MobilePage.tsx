@@ -152,9 +152,18 @@ function MobilePage() {
     );
   };
 
+  const MobileBanner = () => {
+    return (
+      <div className="fixed top-20 left-4 right-4 z-40 bg-gradient-to-r from-blue-600 to-purple-600 text-white p-3 rounded-lg shadow-lg text-center text-sm animate-fade-in">
+        💻 For the full experience with interactive elements and more content, try visiting on desktop!
+      </div>
+    );
+  };
+
   return (
     <Background>
       <NavBar />
+      {isMobile && <MobileBanner />}
       <div className="text-white">
         <Home ref={(el) => (sectionRefs.current.home = el)} isMobile={true} />
         <Projects ref={(el) => (sectionRefs.current.projects = el)} />
