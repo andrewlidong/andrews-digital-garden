@@ -16,7 +16,12 @@ type AutoplayType = {
   destroy: () => void;
 };
 
-const Home = forwardRef<HTMLElement, { title?: string }>((props, ref) => {
+interface HomeProps {
+  title?: string;
+  isMobile?: boolean;
+}
+
+const Home = forwardRef<HTMLElement, HomeProps>(({ isMobile = false }, ref) => {
   const [autoplay, setAutoplay] = useState<AutoplayType | null>(null);
   const [typedText, setTypedText] = useState("");
   const fullName = "Andrew Li Dong";
@@ -105,30 +110,32 @@ const Home = forwardRef<HTMLElement, { title?: string }>((props, ref) => {
         </p>
       </main>
 
-      <div className="animate-on-scroll fade-in is-visible z-10 px-4 w-full" style={{ transitionDelay: '600ms' }}>
-        <Carousel
-          plugins={[plugin.current]}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-          className="text-white text-center max-w-3xl mx-auto"
-        >
-          <CarouselContent>
-            {resume.experience.map((item) => {
-              if (item.quote) {
-                return (
-                  <CarouselItem key={item.company}>
-                    <span className="flex items-center justify-center h-full">
-                      {item.quote}, {item.company}
-                    </span>
-                  </CarouselItem>
-                );
-              }
-            })}
-          </CarouselContent>
-          <CarouselPrevious className="text-slate-500" />
-          <CarouselNext className="text-slate-500" />
-        </Carousel>
-      </div>
+      {!isMobile && (
+        <div className="animate-on-scroll fade-in is-visible z-10 px-4 w-full" style={{ transitionDelay: '600ms' }}>
+          <Carousel
+            plugins={[plugin.current]}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            className="text-white text-center max-w-3xl mx-auto"
+          >
+            <CarouselContent>
+              {resume.experience.map((item) => {
+                if (item.quote) {
+                  return (
+                    <CarouselItem key={item.company}>
+                      <span className="flex items-center justify-center h-full">
+                        {item.quote}, {item.company}
+                      </span>
+                    </CarouselItem>
+                  );
+                }
+              })}
+            </CarouselContent>
+            <CarouselPrevious className="text-slate-500" />
+            <CarouselNext className="text-slate-500" />
+          </Carousel>
+        </div>
+      )}
 
       <div className="max-w-4xl mx-auto mb-6 text-center z-10 animate-on-scroll fade-up is-visible px-4" style={{ transitionDelay: '800ms' }}>
         <span className="text-white text-lg">★★★★★</span>

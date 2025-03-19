@@ -156,7 +156,7 @@ function MobilePage() {
     <Background>
       <NavBar />
       <div className="text-white">
-        <Home ref={(el) => (sectionRefs.current.home = el)} />
+        <Home ref={(el) => (sectionRefs.current.home = el)} isMobile={true} />
         <Projects ref={(el) => (sectionRefs.current.projects = el)} />
         <Contact ref={(el) => (sectionRefs.current.contact = el)} />
       </div>
