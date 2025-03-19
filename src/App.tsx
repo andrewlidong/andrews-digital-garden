@@ -1,13 +1,20 @@
 import PersonalPage from "./pages/PersonalPage";
-import RecruiterPage from "./pages/RecruiterPage";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import MobilePage from "./pages/MobilePage";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { useMobileDetect } from "./hooks/useMobileDetect";
 
 function App() {
+  const isMobile = useMobileDetect();
+
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<PersonalPage />} />
-        <Route path="/recruiter" element={<RecruiterPage />} />
+        <Route path="/" element={
+          isMobile ? 
+            <Navigate to="/mobile" replace /> : 
+            <PersonalPage />
+        } />
+        <Route path="/mobile" element={<MobilePage />} />
       </Routes>
     </Router>
   );

@@ -54,4 +54,4 @@ I believe in balancing technical work with activities that nourish the body, min
 
 I'm always open to interesting conversations, collaborations, and opportunities. Feel free to explore this digital garden and reach out if something catches your interest.
 
-*PS - If you're a recruiter, check out Recruiter Mode for a more traditional presentation of my professional background.*
+*PS - For a more traditional presentation of my professional background, check out Mobile Mode, which is automatically enabled on mobile devices.*

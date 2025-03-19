@@ -10,31 +10,30 @@ import { useNavigate } from "react-router-dom";
 import { ScrollProgressBar } from "@/components/ui/ScrollProgressBar";
 import { AnimatedElement } from "@/components/ui/AnimatedElement";
 import { ParallaxBackground } from "@/components/ui/ParallaxBackground";
+import { useMobileDetect } from "@/hooks/useMobileDetect";
 import "../styles/animations.css";
 
-function RecruiterPage() {
+function MobilePage() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("home");
   const [isScrolling, setIsScrolling] = useState(false);
+  const isMobile = useMobileDetect();
   
   // Ref for the scroll progress bar
   const progressBarRef = useRef<HTMLDivElement>(null);
   
   const navItems = [
     { id: "home", label: "Home" },
-    { id: "experience", label: "Experience" },
     { id: "projects", label: "Projects" },
     { id: "contact", label: "Contact" },
   ];
   
   const sectionRefs = useRef<{
     home: HTMLElement | null;
-    experience: HTMLElement | null;
     projects: HTMLElement | null;
     contact: HTMLElement | null;
   }>({
     home: null,
-    experience: null,
     projects: null,
     contact: null,
   });
@@ -121,12 +120,12 @@ function RecruiterPage() {
 
   const NavBar = () => {
     return (
-      <nav className="fixed top-10 left-60 right-60 z-50 bg-gray-800/90 backdrop-blur-sm border border-gray-700 shadow-md rounded-full p-1 flex justify-between items-center">
+      <nav className={`fixed ${isMobile ? 'bottom-4 left-4 right-4' : 'top-10 left-60 right-60'} z-50 bg-gray-800/90 backdrop-blur-sm border border-gray-700 shadow-md rounded-full p-1 flex justify-between items-center`}>
         {navItems.map((item) => (
           <Button
             key={item.id}
             variant="ghost"
-            className={`text-lg px-6 py-6 rounded-full transition-all duration-300 ${
+            className={`text-sm md:text-lg px-2 md:px-6 py-2 md:py-6 rounded-full transition-all duration-300 ${
               activeTab === item.id
                 ? "text-gray-900 bg-gray-100 hover:bg-white"
                 : "text-gray-100 hover:bg-gray-700 hover:text-white"
@@ -136,17 +135,19 @@ function RecruiterPage() {
             {item.label}
           </Button>
         ))}
-        <div className="flex items-center space-x-3 mx-4 bg-white px-5 py-3 rounded-full">
-          <Switch
-            id="recruiter-mode"
-            checked={true}
-            onCheckedChange={() => navigate("/")}
-            className="data-[state=checked]:bg-green-500 scale-150"
-          />
-          <Label htmlFor="recruiter-mode" className="text-lg font-bold text-black">
-            Recruiter Mode
-          </Label>
-        </div>
+        {!isMobile && (
+          <div className="flex items-center space-x-3 mx-4 bg-white px-5 py-3 rounded-full">
+            <Switch
+              id="mobile-mode"
+              checked={true}
+              onCheckedChange={() => navigate("/")}
+              className="data-[state=checked]:bg-green-500 scale-150"
+            />
+            <Label htmlFor="mobile-mode" className="text-lg font-bold text-black">
+              Mobile Mode
+            </Label>
+          </div>
+        )}
       </nav>
     );
   };
@@ -156,7 +157,6 @@ function RecruiterPage() {
       <NavBar />
       <div className="text-white">
         <Home ref={(el) => (sectionRefs.current.home = el)} />
-        <Experience ref={(el) => (sectionRefs.current.experience = el)} />
         <Projects ref={(el) => (sectionRefs.current.projects = el)} />
         <Contact ref={(el) => (sectionRefs.current.contact = el)} />
       </div>
@@ -164,4 +164,4 @@ function RecruiterPage() {
   );
 }
 
-export default RecruiterPage;
+export default MobilePage;

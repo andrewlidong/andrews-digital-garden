@@ -66,14 +66,14 @@ export const Header: React.FC<HeaderProps> = ({ onOpenTerminal }) => {
     },
   ];
 
-  const recruiterMenuItems: MenuItem[] = [
+  const mobileMenuItems: MenuItem[] = [
     {
       name: "Off",
     },
     {
       name: "On",
       onClick: () => {
-        navigate("/recruiter");
+        navigate("/mobile");
       },
     },
   ];
@@ -119,13 +119,13 @@ export const Header: React.FC<HeaderProps> = ({ onOpenTerminal }) => {
             </div>
             <div className="relative">
               <button
-                onClick={() => handleMenuClick("recruiter")}
-                className={`px-2 py-1 rounded ${activeDropdown === "recruiter" ? "bg-gray-700 text-green-400" : "text-gray-300 hover:text-white"}`}
+                onClick={() => handleMenuClick("mobile")}
+                className={`px-2 py-1 rounded ${activeDropdown === "mobile" ? "bg-gray-700 text-green-400" : "text-gray-300 hover:text-white"}`}
               >
-                recruiter-mode
+                mobile-mode
               </button>
-              {activeDropdown === "recruiter" && (
-                <MenuDropdown items={recruiterMenuItems} />
+              {activeDropdown === "mobile" && (
+                <MenuDropdown items={mobileMenuItems} />
               )}
             </div>
             {onOpenTerminal && (
