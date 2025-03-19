@@ -205,7 +205,7 @@
                 "Database Design"
             ],
             "github_url": "https://github.com/andrewlidong/RayquazaORM",
-            "image_url": "/rayquaza_orm_project.svg",
+            "image_url": "/rayquaza.png",
             "fallback_image_url": "/default_project.svg"
         },
         {
@@ -214,11 +214,38 @@
                 "A lightweight key-value store written in Rust."
             ],
             "technologies": [
-                "Rust",
-                "SQL"
+                "Rust"
             ],
             "github_url": "https://github.com/andrewlidong/keystonelight",
             "image_url": "/keystone_project.svg",
+            "fallback_image_url": "/default_project.svg"
+        },
+        {
+            "name": "Flight Simulator",
+            "description": [
+                "A 3D flight simulator built with OpenGL and GLUT."
+            ],
+            "technologies": [
+                "C",
+                "GLUT",
+                "OpenGL"
+            ],
+            "github_url": "https://github.com/andrewlidong/flight_simulator",
+            "image_url": "/flight_simulator.png",
+            "fallback_image_url": "/default_project.svg"
+        },
+        {
+            "name": "Big2s",
+            "description": [
+                "A Haskell implementation of the popular card game Big 2."
+            ],
+            "technologies": [
+                "Haskell",
+                "Gloss"
+
+            ],
+            "github_url": "https://github.com/andrewlidong/big2s",
+            "image_url": "/big2s.png",
             "fallback_image_url": "/default_project.svg"
         }
     ]
