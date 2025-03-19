@@ -120,7 +120,7 @@ function MobilePage() {
 
   const NavBar = () => {
     return (
-      <nav className={`fixed ${isMobile ? 'bottom-4 left-4 right-4' : 'top-10 left-60 right-60'} z-50 bg-gray-800/90 backdrop-blur-sm border border-gray-700 shadow-md rounded-full p-1 flex justify-between items-center`}>
+      <nav className={`fixed ${isMobile ? 'top-4 left-4 right-4' : 'top-10 left-60 right-60'} z-50 bg-gray-800/90 backdrop-blur-sm border border-gray-700 shadow-md rounded-full p-1 flex justify-between items-center`}>
         {navItems.map((item) => (
           <Button
             key={item.id}
