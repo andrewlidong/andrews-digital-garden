@@ -142,8 +142,7 @@
             "technologies": [
                 "React",
                 "Rails",
-                "PostgreSQL",
-                "AWS"
+                "PostgreSQL"
             ],
             "github_url": "https://github.com/andrewlidong/ThisIsWater",
             "image_url": "/thisiswater.png",
@@ -156,7 +155,6 @@
             ],
             "technologies": [
                 "Elixir",
-                "JavaScript",
                 "Phoenix",
                 "GPT-3.5"
             ],
@@ -184,9 +182,7 @@
                 "An interactive presentation exploring the fascinating connection between the Monster Group and modular functions, known as Monstrous Moonshine."
             ],
             "technologies": [
-                "React",
                 "Reveal.js",
-                "Vite",
                 "KaTeX"
             ],
             "github_url": "https://github.com/andrewlidong/moonshine-slides",
@@ -200,9 +196,7 @@
             ],
             "technologies": [
                 "Ruby",
-                "SQL",
-                "ORM",
-                "Database Design"
+                "SQL"
             ],
             "github_url": "https://github.com/andrewlidong/RayquazaORM",
             "image_url": "/rayquaza.png",
