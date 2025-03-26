@@ -106,7 +106,7 @@ const Home = forwardRef<HTMLElement, HomeProps>(({ isMobile = false }, ref) => {
         </h1>
         
         <p className="text-lg md:text-2xl text-slate-200 animate-on-scroll fade-up is-visible" style={{ transitionDelay: '400ms' }}>
-          A versatile developer with a track record of building innovative solutions, fostering communities, and delivering <b>meaningful impact</b>.
+        Okay, here we go. Exterior. Cemetery. Night. The shoot-out. Yeah! The Jack O' Diamonds is waiting there with Bonny, and he's arranged to give him back and have this whole thing end because all he really wants is <b>peace</b>. 
         </p>
       </main>
 
