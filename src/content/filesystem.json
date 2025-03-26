@@ -5,6 +5,12 @@
         "type": "folder",
         "children": [
             {
+                "id": "catch_that_qubit",
+                "name": "catch_that_qubit.txt",
+                "type": "file",
+                "path": "/files/projects/catch_that_qubit.md"
+            },
+            {
                 "id": "this_is_water",
                 "name": "this_is_water.txt",
                 "type": "file",
@@ -51,6 +57,12 @@
                 "name": "moonshine.txt",
                 "type": "file",
                 "path": "/files/projects/moonshine.md"
+            },
+            {
+                "id": "monges_theorem",
+                "name": "monges_theorem.txt",
+                "type": "file",
+                "path": "/files/projects/monges_theorem.md"
             }
         ]
     },

@@ -241,6 +241,36 @@
             "github_url": "https://github.com/andrewlidong/big2s",
             "image_url": "/big2s.png",
             "fallback_image_url": "/default_project.svg"
+        },
+        {
+            "name": "Catch That Qubit",
+            "description": [
+                "A quantum computing-based Pokémon Safari Zone game that uses Grover's Algorithm to search for Pokémon, demonstrating quantum search concepts through an interactive game interface."
+            ],
+            "technologies": [
+                "Python",
+                "Flask",
+                "Qiskit",
+                "NumPy"
+            ],
+            "github_url": "https://github.com/andrewlidong/catch-that-qubit",
+            "image_url": "/catch_that_qubit.png",
+            "fallback_image_url": "/default_project.svg"
+        },
+        {
+            "name": "Monge's Theorem",
+            "description": [
+                "A visualization of Monge's theorem using React and Canvas, demonstrating that for any three circles in a plane, none of which is completely inside another, the intersection points of their external tangent lines are collinear."
+            ],
+            "technologies": [
+                "TypeScript",
+                "React",
+                "Canvas",
+                "Vite"
+            ],
+            "github_url": "https://github.com/andrewlidong/monges-theorem",
+            "image_url": "/monges_theorem.png",
+            "fallback_image_url": "/default_project.svg"
         }
     ]
 }
