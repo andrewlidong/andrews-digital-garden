@@ -1,4 +1,4 @@
-# RC Webring Implementation
+# RC Webring
 
 This site is a proud member of the [Recurse Center Webring](https://ring.recurse.com).
 
