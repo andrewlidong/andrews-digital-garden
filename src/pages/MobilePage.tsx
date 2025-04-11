@@ -3,14 +3,11 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import Home from "../components/sections/Home";
-import Experience from "../components/sections/Experience";
 import Contact from "../components/sections/Contact";
 import Projects from "../components/sections/Projects";
 import { useNavigate } from "react-router-dom";
-import { ScrollProgressBar } from "@/components/ui/ScrollProgressBar";
-import { AnimatedElement } from "@/components/ui/AnimatedElement";
-import { ParallaxBackground } from "@/components/ui/ParallaxBackground";
 import { useMobileDetect } from "@/hooks/useMobileDetect";
+import { FloatingIcon } from "@/components/ui/FloatingIcon";
 import "../styles/animations.css";
 
 function MobilePage() {
@@ -60,9 +57,7 @@ function MobilePage() {
         lastScrollTime = now;
         
         const scrollPosition = window.scrollY + window.innerHeight / 2;
-        let foundActive = false;
         
-        // Find which section is currently in view
         for (const [id, ref] of Object.entries(sectionRefs.current)) {
           if (
             ref &&
@@ -70,7 +65,6 @@ function MobilePage() {
             ref.offsetTop + ref.offsetHeight > scrollPosition
           ) {
             setActiveTab(id);
-            foundActive = true;
             break;
           }
         }
@@ -163,6 +157,7 @@ function MobilePage() {
   return (
     <Background>
       <NavBar />
+      <FloatingIcon />
       {isMobile && <MobileBanner />}
       <div className="text-white">
         <Home ref={(el) => (sectionRefs.current.home = el)} isMobile={true} />
