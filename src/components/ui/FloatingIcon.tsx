@@ -2,33 +2,42 @@ import { useEffect, useRef } from 'react';
 
 export const FloatingIcon = () => {
   const iconRef = useRef<HTMLDivElement>(null);
+  const dogRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
-      if (iconRef.current) {
+      if (iconRef.current && dogRef.current) {
         const scrollY = window.scrollY;
         const viewportHeight = window.innerHeight;
         
-        // Keep the icon visible by making yOffset relative to viewport
-        const yOffset = (viewportHeight * 0.4) + (Math.sin(scrollY * 0.002) * 50);
+        // More dynamic vertical movement with bouncing
+        const bounce = Math.sin(scrollY * 0.01) * 20;
+        const yOffset = (viewportHeight * 0.4) + bounce;
         
-        // More dramatic sine waves for movement
+        // More playful horizontal movement
         const xOffset = 
-          Math.sin(scrollY * 0.002) * 60 + // Larger primary wave
-          Math.sin(scrollY * 0.005) * 30 + // Larger secondary wave
-          Math.sin(scrollY * 0.001) * 20;  // Larger slow wave
+          Math.sin(scrollY * 0.002) * 80 + // Primary wave
+          Math.sin(scrollY * 0.005) * 40 + // Secondary wave
+          Math.sin(scrollY * 0.001) * 20;  // Slow wave
         
-        // More dramatic rotation
-        const rotation = scrollY * 0.2 + Math.sin(scrollY * 0.003) * 30;
+        // More dynamic rotation with wagging effect
+        const wag = Math.sin(scrollY * 0.02) * 15;
+        const rotation = scrollY * 0.1 + wag;
         
         // More dramatic scale pulsing
-        const scale = 1.2 + Math.sin(scrollY * 0.005) * 0.2;
+        const scale = 1.2 + Math.sin(scrollY * 0.005) * 0.3;
         
-        // Apply all transforms and effects
+        // Apply transforms to the container
         iconRef.current.style.transform = `
           translate(${xOffset}px, ${yOffset}px)
           rotate(${rotation}deg)
           scale(${scale})
+        `;
+
+        // Add a wagging animation to the dog emoji
+        dogRef.current.style.transform = `
+          rotate(${Math.sin(scrollY * 0.05) * 10}deg)
+          scaleX(${1 + Math.sin(scrollY * 0.1) * 0.1})
         `;
       }
     };
@@ -46,7 +55,12 @@ export const FloatingIcon = () => {
       style={{ top: '0' }}
     >
       <div className="relative text-9xl">
-        <span className="text-amber-200 filter brightness-150">🐶</span>
+        <span 
+          ref={dogRef}
+          className="text-amber-200 filter brightness-150 inline-block transition-transform duration-200"
+        >
+          🐶
+        </span>
       </div>
     </div>
   );
