@@ -51,10 +51,10 @@ export const FloatingIcon = () => {
   return (
     <div 
       ref={iconRef}
-      className="fixed left-20 z-30 transition-all duration-100 ease-out"
+      className="pointer-events-none fixed left-20 z-30 transition-all duration-100 ease-out"
       style={{ top: '0' }}
     >
-      <div className="relative text-9xl">
+      <div className="relative text-5xl">
         <span 
           ref={dogRef}
           className="text-amber-200 filter brightness-150 inline-block transition-transform duration-200"
