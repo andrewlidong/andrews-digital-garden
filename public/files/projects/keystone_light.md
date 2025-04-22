@@ -2,7 +2,8 @@
 
 ## Lightweight Key-Value Store in Rust
 
-A lightweight and efficient key-value store implementation written in Rust, focusing on performance and reliability.
+A lightweight, concurrent key-value database written in Rust, featuring in-memory storage with file persistence and proper Unix service behavior.
+
 
 ### Technologies Used
 - Rust
@@ -25,4 +26,4 @@ A lightweight and efficient key-value store implementation written in Rust, focu
 - Implemented basic error handling and recovery mechanisms
 
 ### GitHub Repository
-For more details and to view the source code, visit the [Keystone Light GitHub repository](https://github.com/andrewlidong/keystonelight). 
+For more details and to view the source code, visit the [Keystone Light GitHub repository](https://github.com/andrewlidong/keystonelight).
