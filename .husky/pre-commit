@@ -1,8 +1,0 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
-
-# Update filesystem.json
-node scripts/updateFilesystem.js --pre-commit
-
-# Add the updated filesystem.json to the commit
-git add src/content/filesystem.json

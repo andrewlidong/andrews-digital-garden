@@ -23,9 +23,13 @@ export function MobileFileSystem() {
       const promises = items.map(async (item) => {
         if (item.type === "file" && item.path) {
           try {
-            const response = await fetch(item.path);
+            const response = await fetch(`/public${item.path}`);
+            if (!response.ok) {
+              throw new Error(`Failed to load file: ${item.path}`);
+            }
             const content = await response.text();
-            return { ...item, content };
+            const fileType = item.path.split('.').pop()?.toLowerCase() || '';
+            return { ...item, content, fileType: `.${fileType}` };
           } catch (error) {
             console.error(`Error loading file: ${item.path}`, error);
             return { ...item, content: "Error loading content" };
