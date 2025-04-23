@@ -7,7 +7,6 @@ import Contact from "../components/sections/Contact";
 import Projects from "../components/sections/Projects";
 import { useNavigate } from "react-router-dom";
 import { useMobileDetect } from "@/hooks/useMobileDetect";
-import { FloatingIcon } from "@/components/ui/FloatingIcon";
 import { MobileFileSystem } from "../components/sections/MobileFileSystem";
 import type { FileItem } from "../components/sections/MobileFileSystem";
 import "../styles/animations.css";
@@ -193,7 +192,6 @@ function MobilePage() {
   return (
     <Background>
       <NavBar />
-      <FloatingIcon />
       {isMobile && <MobileBanner />}
       <div className="text-white">
         <Home ref={(el) => (sectionRefs.current.home = el)} isMobile={true} />
