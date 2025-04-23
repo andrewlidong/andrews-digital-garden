@@ -8,6 +8,7 @@ import Projects from "../components/sections/Projects";
 import { useNavigate } from "react-router-dom";
 import { useMobileDetect } from "@/hooks/useMobileDetect";
 import { FloatingIcon } from "@/components/ui/FloatingIcon";
+import { MobileFileSystem } from "../components/sections/MobileFileSystem";
 import "../styles/animations.css";
 
 function MobilePage() {
@@ -15,23 +16,26 @@ function MobilePage() {
   const [activeTab, setActiveTab] = useState("home");
   const [isScrolling, setIsScrolling] = useState(false);
   const isMobile = useMobileDetect();
-  
+
   // Ref for the scroll progress bar
   const progressBarRef = useRef<HTMLDivElement>(null);
-  
+
   const navItems = [
     { id: "home", label: "Home" },
     { id: "projects", label: "Projects" },
+    { id: "notes", label: "Notes" },
     { id: "contact", label: "Contact" },
   ];
-  
+
   const sectionRefs = useRef<{
     home: HTMLElement | null;
     projects: HTMLElement | null;
+    notes: HTMLElement | null;
     contact: HTMLElement | null;
   }>({
     home: null,
     projects: null,
+    notes: null,
     contact: null,
   });
 
@@ -39,10 +43,10 @@ function MobilePage() {
   useEffect(() => {
     let lastScrollTime = 0;
     const throttleTime = 100; // ms between scroll event processing
-    
+
     const handleScroll = () => {
       const now = Date.now();
-      
+
       // Update progress bar directly with DOM manipulation for better performance
       if (progressBarRef.current) {
         const scrollTop = window.scrollY;
@@ -51,29 +55,30 @@ function MobilePage() {
         const scrollPercent = Math.min(scrollTop / (docHeight - winHeight), 1);
         progressBarRef.current.style.width = `${scrollPercent * 100}%`;
       }
-      
+
       // Throttle the more expensive section detection
       if (now - lastScrollTime > throttleTime && !isScrolling) {
         lastScrollTime = now;
-        
-        const scrollPosition = window.scrollY + window.innerHeight / 2;
-        
+
+        // Find the section that's currently in view
+        let currentSection = "home";
         for (const [id, ref] of Object.entries(sectionRefs.current)) {
-          if (
-            ref &&
-            ref.offsetTop <= scrollPosition &&
-            ref.offsetTop + ref.offsetHeight > scrollPosition
-          ) {
-            setActiveTab(id);
-            break;
+          if (ref) {
+            const rect = ref.getBoundingClientRect();
+            if (rect.top <= window.innerHeight / 2 && rect.bottom >= window.innerHeight / 2) {
+              currentSection = id;
+              break;
+            }
           }
         }
+
+        setActiveTab(currentSection);
       }
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll(); // Call once to set initial values
-    
+
     return () => window.removeEventListener("scroll", handleScroll);
   }, [isScrolling]);
 
@@ -94,16 +99,16 @@ function MobilePage() {
       <div className="relative min-h-screen overflow-hidden flex flex-col items-center bg-gray-900">
         {/* Subtle pattern overlay */}
         <div className="absolute inset-0 bg-gray-800 opacity-50 pattern-grid-dark"></div>
-        
+
         {/* Simple progress bar - using ref for direct DOM manipulation */}
         <div className="fixed top-0 left-0 right-0 h-1 z-50 bg-gray-800">
-          <div 
+          <div
             ref={progressBarRef}
             className="h-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500"
             style={{ width: '0%' }}
           ></div>
         </div>
-        
+
         {/* Responsive Content */}
         <div className="relative z-10 flex flex-col justify-between min-h-screen w-full px-4 md:px-0 md:w-9/12">
           {children}
@@ -162,6 +167,9 @@ function MobilePage() {
       <div className="text-white">
         <Home ref={(el) => (sectionRefs.current.home = el)} isMobile={true} />
         <Projects ref={(el) => (sectionRefs.current.projects = el)} />
+        <div id="notes" ref={(el) => (sectionRefs.current.notes = el)} className="min-h-screen py-20">
+          <MobileFileSystem />
+        </div>
         <Contact ref={(el) => (sectionRefs.current.contact = el)} />
       </div>
     </Background>
