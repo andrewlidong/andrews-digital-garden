@@ -1,6 +1,5 @@
 import fs from 'fs';
 import path from 'path';
-import chokidar from 'chokidar';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -52,35 +51,48 @@ function updateFilesystem() {
         console.log('✅ filesystem.json updated successfully');
     } catch (error) {
         console.error('❌ Error updating filesystem.json:', error);
+        process.exit(1);
     }
 }
 
-// Watch for changes
-const watcher = chokidar.watch(PUBLIC_FILES_DIR, {
-    ignored: /(^|[\/\\])\../, // ignore dotfiles
-    persistent: true
-});
+// Check if we're running in pre-commit mode
+const isPreCommit = process.argv.includes('--pre-commit');
 
-console.log('👀 Watching for file changes in', PUBLIC_FILES_DIR);
+if (isPreCommit) {
+    // Just update the filesystem and exit
+    updateFilesystem();
+    process.exit(0);
+} else {
+    // Import chokidar only when not in pre-commit mode
+    import('chokidar').then(chokidar => {
+        // Watch for changes
+        const watcher = chokidar.watch(PUBLIC_FILES_DIR, {
+            ignored: /(^|[\/\\])\../, // ignore dotfiles
+            persistent: true
+        });
 
-watcher
-    .on('add', path => {
-        console.log(`📄 File ${path} has been added`);
-        updateFilesystem();
-    })
-    .on('unlink', path => {
-        console.log(`🗑️ File ${path} has been removed`);
-        updateFilesystem();
-    })
-    .on('addDir', path => {
-        console.log(`📁 Directory ${path} has been added`);
-        updateFilesystem();
-    })
-    .on('unlinkDir', path => {
-        console.log(`🗑️ Directory ${path} has been removed`);
-        updateFilesystem();
-    })
-    .on('error', error => console.error('❌ Watcher error:', error));
+        console.log('👀 Watching for file changes in', PUBLIC_FILES_DIR);
 
-// Initial update
-updateFilesystem();
+        watcher
+            .on('add', path => {
+                console.log(`📄 File ${path} has been added`);
+                updateFilesystem();
+            })
+            .on('unlink', path => {
+                console.log(`🗑️ File ${path} has been removed`);
+                updateFilesystem();
+            })
+            .on('addDir', path => {
+                console.log(`📁 Directory ${path} has been added`);
+                updateFilesystem();
+            })
+            .on('unlinkDir', path => {
+                console.log(`🗑️ Directory ${path} has been removed`);
+                updateFilesystem();
+            })
+            .on('error', error => console.error('❌ Watcher error:', error));
+
+        // Initial update
+        updateFilesystem();
+    });
+}
