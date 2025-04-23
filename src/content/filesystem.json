@@ -974,6 +974,12 @@
                 ]
             },
             {
+                "id": "test_file_md",
+                "name": "test_file.md",
+                "type": "file",
+                "path": "/files/notes/test_file.md"
+            },
+            {
                 "id": "weekly_notes",
                 "name": "weekly_notes",
                 "type": "folder",
