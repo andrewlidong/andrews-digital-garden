@@ -156,19 +156,31 @@ function MobilePage() {
 
   const MobileBanner = () => {
     const [isVisible, setIsVisible] = useState(true);
+    const [isMounted, setIsMounted] = useState(true);
 
     useEffect(() => {
-      const timer = setTimeout(() => {
+      const fadeOutTimer = setTimeout(() => {
         setIsVisible(false);
-      }, 5000); // Hide after 5 seconds
+      }, 3000); // Start fade out after 3 seconds
 
-      return () => clearTimeout(timer);
+      const removeTimer = setTimeout(() => {
+        setIsMounted(false);
+      }, 3500); // Remove from DOM after fade out completes
+
+      return () => {
+        clearTimeout(fadeOutTimer);
+        clearTimeout(removeTimer);
+      };
     }, []);
 
-    if (!isVisible) return null;
+    if (!isMounted) return null;
 
     return (
-      <div className={`fixed top-20 left-4 right-4 z-40 bg-gradient-to-r from-blue-600 to-purple-600 text-white p-3 rounded-lg shadow-lg text-center text-sm transition-opacity duration-500 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
+      <div
+        className={`fixed top-20 left-4 right-4 z-40 bg-gradient-to-r from-blue-600 to-purple-600 text-white p-3 rounded-lg shadow-lg text-center text-sm transition-all duration-500 ease-in-out ${
+          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'
+        }`}
+      >
         💻 For the full experience with interactive elements and more content, try visiting on desktop!
       </div>
     );
