@@ -18,6 +18,9 @@ function MobilePage() {
   const [isScrolling, setIsScrolling] = useState(false);
   const [currentContent, setCurrentContent] = useState<string | null>(null);
   const [currentFile, setCurrentFile] = useState<FileItem | null>(null);
+  const [bannerVisible, setBannerVisible] = useState(true);
+  const [bannerMounted, setBannerMounted] = useState(true);
+  const bannerShown = useRef(false);
   const isMobile = useMobileDetect();
 
   // Ref for the scroll progress bar
@@ -84,6 +87,25 @@ function MobilePage() {
 
     return () => window.removeEventListener("scroll", handleScroll);
   }, [isScrolling]);
+
+  useEffect(() => {
+    if (isMobile && !bannerShown.current) {
+      const fadeOutTimer = setTimeout(() => {
+        setBannerVisible(false);
+      }, 3000);
+
+      const removeTimer = setTimeout(() => {
+        setBannerMounted(false);
+      }, 3500);
+
+      bannerShown.current = true;
+
+      return () => {
+        clearTimeout(fadeOutTimer);
+        clearTimeout(removeTimer);
+      };
+    }
+  }, [isMobile]);
 
   const handleNavClick = (id: string) => {
     setIsScrolling(true);
@@ -155,30 +177,12 @@ function MobilePage() {
   };
 
   const MobileBanner = () => {
-    const [isVisible, setIsVisible] = useState(true);
-    const [isMounted, setIsMounted] = useState(true);
-
-    useEffect(() => {
-      const fadeOutTimer = setTimeout(() => {
-        setIsVisible(false);
-      }, 3000); // Start fade out after 3 seconds
-
-      const removeTimer = setTimeout(() => {
-        setIsMounted(false);
-      }, 3500); // Remove from DOM after fade out completes
-
-      return () => {
-        clearTimeout(fadeOutTimer);
-        clearTimeout(removeTimer);
-      };
-    }, []);
-
-    if (!isMounted) return null;
+    if (!bannerMounted) return null;
 
     return (
       <div
         className={`fixed top-20 left-4 right-4 z-40 bg-gradient-to-r from-blue-600 to-purple-600 text-white p-3 rounded-lg shadow-lg text-center text-sm transition-all duration-500 ease-in-out ${
-          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'
+          bannerVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'
         }`}
       >
         💻 For the full experience with interactive elements and more content, try visiting on desktop!
