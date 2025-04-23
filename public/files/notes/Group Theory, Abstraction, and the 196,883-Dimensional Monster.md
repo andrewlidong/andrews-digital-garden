@@ -1,0 +1,63 @@
+An Introduction to Group Theory
+- Symmetry
+- Symmetry -> Action
+- This collection of actions is a group
+- Groups are pretty fundamental.  
+- The action of doing nothing is part of the group.  Group of symmetries of a snowflake are D6
+- Group of actions on a face are called C2. 
+- There are lots of groups.  
+- There is a structure being preserved.  
+- There are 24 rotations on a cube to keep it preserved.  But if we allow for reflections, we have 48 symmetries.  
+- The loosest sense of structure is a collection of points.  All permutations.  Permutation groups can get really big.  6! permutations.  Or if you made them the corners of a hexagon, then we only get 12 snowflake symmetries.  
+- Largeness in and of itself is not necessarily interesting.  
+- 101! is 9 * 10^159.  Permutation groups go by the name S_n.  Permutation groups encompass all other groups.  
+- The structure of these permutation groups tells us something about the solutions to polynomial equations.  
+- Quadratic formula
+- Cubic formula
+- Quartic formula
+- We try to find something for degree 5 polynomials.  If we think about the group that permutes the roots of these polynomials, we learn that no quintile formula exists.  
+- S_5 shows that quintile formula doesn't exist.  
+- Noether's theorem: Conversation law <=> Symmetry
+- Momentum <=> Translation in space
+- Energy <=> Translation in time
+- Groups really are fundamental.  They are one of the most natural things you can study.  
+- Group actions vs Groups.  
+- Combining actions
+- Abstraction -> Less cumbersome
+- Groups are abstractions above symmetry levels.  
+- Groups -> Symmetric Actions
+- Numbers -> Counts
+- Permutation group 4 is identical to symmetry actions on a square, not counting the identity
+- There is a 1-1 mapping of rotations of a cube and permutations of four elements that preserves composition.  
+- Isomorphism when this is true for all products.  
+- A group is not about symmetries of a particular object, but an abstract way about how things can be symmetric.  
+- What are all the groups up to isomorphism? A group is the same if there is an isomorphism between them.  What are all the ways things can be symmetric?  Some formula, pattern, algorithm?  
+- This is kind of a hard problem.  
+- Infinite groups (line and circle), vs finite groups (D6 or C2)
+- Let's limit our view to finite groups.  
+- Integers break down into primes
+- Molecules break down into atoms.  
+- Finite groups break down into simple groups (Jordan-Holder Theorem)
+- Group theory can be used to prove that there's no formula for a degree 5 polynomial like for quadratic formula.  
+- Quintic formula - if there were a formula using only basic arithmetic and radicals, it would imply that the permutation group on 5 elements decomposes into a special kind of simple group (cyclic groups of prime order).  S_5 -> A_5, C_2.  A_5 doesn't allow polynomial solution built from radicals.  
+- How to categorize all finite groups
+- Find all the simple groups (find elements of the periodic table)
+	- Prove that you have them all.  
+	- 1955-2004, 10000+ pages, 100s of mathematicians, plenty of computers
+	- The Classification of Quasithin Groups (Aschbacher and Smith (2004) 12,000 pages!)
+	- One of the most monumental achievements in the history of math.  
+- Find all the ways to combine simple groups.  (all of chemistry)
+- 18 infinite families of simple groups.  26 leftovers.  Sporadic groups.  
+- Infinite famillies is all the cyclic groups with prime order.  Symmetries of a regular polygon with a prime number of sides but you can't flip.  
+- Preserve parity.  A_group.  If they act on five or more elements they are simple.  Why polynomials of degree 5 or more can't be written without using radicals.  The other 16 families are groups of Lie Groups.  
+- 26 sporadic groups are different.  The Monster group is gigantic.  
+- The second largest is the baby monster group.  Also really big.  19 of the sporadic groups are children of the monster.  These are the happy family.  Then there's another 6, which are the pariahs.  
+- Having a group that is big is not that big of a deal.  Its weird that this is finite. 
+- What object does the monster group describe the symmetries of?  Doesn't fit into 2 or 3 dimensions, or 5.  You have to jump to 196,883 dimensions.  Just describing one of the elements of this group takes 4.5Gigabytes of data.  Plenty of groups that are way bigger have a smaller computational description.  
+- The permutation group on 101! elements.  We can describe each element in as a list of 100 numbers.  
+- No one really understands why the sporadic groups or the monster are there.  They are deeply fundamental to math and arguably to physics as well.  
+- 1979 Group Theory -> Galois Theory.  John McKay. 196,884 is in the series expansion of a fundamental function in modular forms and elliptic functions.  Moonshine!  by John Conway.  
+- Monstrous Moonshine Conjecture by Richard Borcherds solidifies a connection between different groups of math.  
+- Sporadic Groups <-> String Theory.  
+- The monster and its absurd size is a reminder that fundamental objects are not necessarily simple.  
+- They are what they are by logical necessity.  

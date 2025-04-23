@@ -1,5 +1,252 @@
 [
     {
+        "id": "notes",
+        "name": "notes",
+        "type": "folder",
+        "children": [
+            {
+                "id": "math_and_theory",
+                "name": "math_and_theory",
+                "type": "folder",
+                "children": [
+                    {
+                        "id": "analysis",
+                        "name": "Analysis in Rn.md",
+                        "type": "file",
+                        "path": "/files/notes/Analysis in Rn.md"
+                    },
+                    {
+                        "id": "baby_rudin",
+                        "name": "Baby Rudin Notes.md",
+                        "type": "file",
+                        "path": "/files/notes/Baby Rudin Notes.md"
+                    },
+                    {
+                        "id": "linear_algebra",
+                        "name": "Linear Algebra.md",
+                        "type": "file",
+                        "path": "/files/notes/Linear Algebra.md"
+                    },
+                    {
+                        "id": "linear_algebra_apps",
+                        "name": "Linear Algebra Applications.md",
+                        "type": "file",
+                        "path": "/files/notes/Linear Algebra Applications.md"
+                    },
+                    {
+                        "id": "principles_analysis",
+                        "name": "Principles of Mathematical Analysis.md",
+                        "type": "file",
+                        "path": "/files/notes/Principles of Mathematical Analysis.md"
+                    }
+                ]
+            },
+            {
+                "id": "systems_and_databases",
+                "name": "systems_and_databases",
+                "type": "folder",
+                "children": [
+                    {
+                        "id": "database_design",
+                        "name": "1 Database Design.md",
+                        "type": "file",
+                        "path": "/files/notes/1 Database Design.md"
+                    },
+                    {
+                        "id": "spanner",
+                        "name": "32 Google Spanner.md",
+                        "type": "file",
+                        "path": "/files/notes/32 Google Spanner.md"
+                    },
+                    {
+                        "id": "spanner_perfect",
+                        "name": "Spanner - The Perfect Database?.md",
+                        "type": "file",
+                        "path": "/files/notes/Spanner - The Perfect Database?.md"
+                    },
+                    {
+                        "id": "crdts",
+                        "name": "Jan 2025 - CRDTs and distributed replication.md",
+                        "type": "file",
+                        "path": "/files/notes/Jan 2025 - CRDTs and distributed replication.md"
+                    }
+                ]
+            },
+            {
+                "id": "programming_languages",
+                "name": "programming_languages",
+                "type": "folder",
+                "children": [
+                    {
+                        "id": "go",
+                        "name": "Where X=Go.md",
+                        "type": "file",
+                        "path": "/files/notes/Where X=Go.md"
+                    },
+                    {
+                        "id": "python",
+                        "name": "Where X=Python.md",
+                        "type": "file",
+                        "path": "/files/notes/Where X=Python.md"
+                    },
+                    {
+                        "id": "rust",
+                        "name": "Where X=Rust.md",
+                        "type": "file",
+                        "path": "/files/notes/Where X=Rust.md"
+                    },
+                    {
+                        "id": "scala",
+                        "name": "Where X=Scala.md",
+                        "type": "file",
+                        "path": "/files/notes/Where X=Scala.md"
+                    },
+                    {
+                        "id": "typescript",
+                        "name": "Where X=TypeScript.md",
+                        "type": "file",
+                        "path": "/files/notes/Where X=TypeScript.md"
+                    }
+                ]
+            },
+            {
+                "id": "weekly_notes",
+                "name": "weekly_notes",
+                "type": "folder",
+                "children": [
+                    {
+                        "id": "week1",
+                        "name": "Week 1 Course Introduction.md",
+                        "type": "file",
+                        "path": "/files/notes/Week 1 Course Introduction.md"
+                    },
+                    {
+                        "id": "week2",
+                        "name": "Week 2 Filesystems, part 1.md",
+                        "type": "file",
+                        "path": "/files/notes/Week 2 Filesystems, part 1.md"
+                    },
+                    {
+                        "id": "week3",
+                        "name": "Week 3 Filesystems, part 2.md",
+                        "type": "file",
+                        "path": "/files/notes/Week 3 Filesystems, part 2.md"
+                    },
+                    {
+                        "id": "week4",
+                        "name": "Week 4 Process Control.md",
+                        "type": "file",
+                        "path": "/files/notes/Week 4 Process Control.md"
+                    },
+                    {
+                        "id": "week5",
+                        "name": "Week 5 Interprocess communication.md",
+                        "type": "file",
+                        "path": "/files/notes/Week 5 Interprocess communication.md"
+                    },
+                    {
+                        "id": "week6",
+                        "name": "Week 6 Networking.md",
+                        "type": "file",
+                        "path": "/files/notes/Week 6 Networking.md"
+                    },
+                    {
+                        "id": "week7",
+                        "name": "Week 7 Multithreading.md",
+                        "type": "file",
+                        "path": "/files/notes/Week 7 Multithreading.md"
+                    },
+                    {
+                        "id": "week8",
+                        "name": "Week 8 Signals.md",
+                        "type": "file",
+                        "path": "/files/notes/Week 8 Signals.md"
+                    }
+                ]
+            },
+            {
+                "id": "meetups",
+                "name": "meetups",
+                "type": "folder",
+                "children": [
+                    {
+                        "id": "meetup_001",
+                        "name": "Meetup_001-HugePages *.md",
+                        "type": "file",
+                        "path": "/files/notes/Meetup_001-HugePages *.md"
+                    },
+                    {
+                        "id": "meetup_002",
+                        "name": "Meetup_002-MeltdownAndSpecter.md",
+                        "type": "file",
+                        "path": "/files/notes/Meetup_002-MeltdownAndSpecter.md"
+                    },
+                    {
+                        "id": "meetup_003",
+                        "name": "Meetup_003-OperatingSystemEvolution.md",
+                        "type": "file",
+                        "path": "/files/notes/Meetup_003-OperatingSystemEvolution.md"
+                    },
+                    {
+                        "id": "meetup_004",
+                        "name": "Meetup_004-KLL *.md",
+                        "type": "file",
+                        "path": "/files/notes/Meetup_004-KLL *.md"
+                    },
+                    {
+                        "id": "meetup_005",
+                        "name": "Meetup_005-Percolator *.md",
+                        "type": "file",
+                        "path": "/files/notes/Meetup_005-Percolator *.md"
+                    }
+                ]
+            },
+            {
+                "id": "paper_summaries",
+                "name": "paper_summaries",
+                "type": "folder",
+                "children": [
+                    {
+                        "id": "jan_2024",
+                        "name": "2024-01 January Paper Summaries.md",
+                        "type": "file",
+                        "path": "/files/notes/2024-01 January Paper Summaries.md"
+                    },
+                    {
+                        "id": "feb_2024",
+                        "name": "2024-02 February Paper Summaries.md",
+                        "type": "file",
+                        "path": "/files/notes/2024-02 February Paper Summaries.md"
+                    },
+                    {
+                        "id": "mar_2024",
+                        "name": "2024-03 March Paper Summaries.md",
+                        "type": "file",
+                        "path": "/files/notes/2024-03 March Paper Summaries.md"
+                    },
+                    {
+                        "id": "apr_2024",
+                        "name": "2024-04 April Paper Summaries.md",
+                        "type": "file",
+                        "path": "/files/notes/2024-04 April Paper Summaries.md"
+                    },
+                    {
+                        "id": "jan_2025",
+                        "name": "2025-01 January Paper Summaries.md",
+                        "type": "file",
+                        "path": "/files/notes/2025-01 January Paper Summaries.md"
+                    },
+                    {
+                        "id": "feb_2025",
+                        "name": "2025-02 February Paper Summaries.md",
+                        "type": "file",
+                        "path": "/files/notes/2025-02 February Paper Summaries.md"
+                    }
+                ]
+            }
+        ]
+    },
+    {
         "id": "projects",
         "name": "projects",
         "type": "folder",
