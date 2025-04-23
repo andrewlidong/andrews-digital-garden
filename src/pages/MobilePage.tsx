@@ -152,8 +152,20 @@ function MobilePage() {
   };
 
   const MobileBanner = () => {
+    const [isVisible, setIsVisible] = useState(true);
+
+    useEffect(() => {
+      const timer = setTimeout(() => {
+        setIsVisible(false);
+      }, 5000); // Hide after 5 seconds
+
+      return () => clearTimeout(timer);
+    }, []);
+
+    if (!isVisible) return null;
+
     return (
-      <div className="fixed top-20 left-4 right-4 z-40 bg-gradient-to-r from-blue-600 to-purple-600 text-white p-3 rounded-lg shadow-lg text-center text-sm animate-fade-in">
+      <div className={`fixed top-20 left-4 right-4 z-40 bg-gradient-to-r from-blue-600 to-purple-600 text-white p-3 rounded-lg shadow-lg text-center text-sm transition-opacity duration-500 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
         💻 For the full experience with interactive elements and more content, try visiting on desktop!
       </div>
     );
