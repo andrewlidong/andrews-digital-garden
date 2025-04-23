@@ -1,317 +1,9 @@
 [
     {
-        "id": "notes",
-        "name": "notes",
-        "type": "folder",
-        "children": [
-            {
-                "id": "math_and_theory",
-                "name": "math_and_theory",
-                "type": "folder",
-                "children": [
-                    {
-                        "id": "analysis",
-                        "name": "Analysis in Rn.md",
-                        "type": "file",
-                        "path": "/files/notes/Analysis in Rn.md"
-                    },
-                    {
-                        "id": "baby_rudin",
-                        "name": "Baby Rudin Notes.md",
-                        "type": "file",
-                        "path": "/files/notes/Baby Rudin Notes.md"
-                    },
-                    {
-                        "id": "linear_algebra",
-                        "name": "Linear Algebra.md",
-                        "type": "file",
-                        "path": "/files/notes/Linear Algebra.md"
-                    },
-                    {
-                        "id": "linear_algebra_apps",
-                        "name": "Linear Algebra Applications.md",
-                        "type": "file",
-                        "path": "/files/notes/Linear Algebra Applications.md"
-                    },
-                    {
-                        "id": "principles_analysis",
-                        "name": "Principles of Mathematical Analysis.md",
-                        "type": "file",
-                        "path": "/files/notes/Principles of Mathematical Analysis.md"
-                    }
-                ]
-            },
-            {
-                "id": "systems_and_databases",
-                "name": "systems_and_databases",
-                "type": "folder",
-                "children": [
-                    {
-                        "id": "database_design",
-                        "name": "1 Database Design.md",
-                        "type": "file",
-                        "path": "/files/notes/1 Database Design.md"
-                    },
-                    {
-                        "id": "spanner",
-                        "name": "32 Google Spanner.md",
-                        "type": "file",
-                        "path": "/files/notes/32 Google Spanner.md"
-                    },
-                    {
-                        "id": "spanner_perfect",
-                        "name": "Spanner - The Perfect Database?.md",
-                        "type": "file",
-                        "path": "/files/notes/Spanner - The Perfect Database?.md"
-                    },
-                    {
-                        "id": "crdts",
-                        "name": "Jan 2025 - CRDTs and distributed replication.md",
-                        "type": "file",
-                        "path": "/files/notes/Jan 2025 - CRDTs and distributed replication.md"
-                    }
-                ]
-            },
-            {
-                "id": "programming_languages",
-                "name": "programming_languages",
-                "type": "folder",
-                "children": [
-                    {
-                        "id": "go",
-                        "name": "Where X=Go.md",
-                        "type": "file",
-                        "path": "/files/notes/Where X=Go.md"
-                    },
-                    {
-                        "id": "python",
-                        "name": "Where X=Python.md",
-                        "type": "file",
-                        "path": "/files/notes/Where X=Python.md"
-                    },
-                    {
-                        "id": "rust",
-                        "name": "Where X=Rust.md",
-                        "type": "file",
-                        "path": "/files/notes/Where X=Rust.md"
-                    },
-                    {
-                        "id": "scala",
-                        "name": "Where X=Scala.md",
-                        "type": "file",
-                        "path": "/files/notes/Where X=Scala.md"
-                    },
-                    {
-                        "id": "typescript",
-                        "name": "Where X=TypeScript.md",
-                        "type": "file",
-                        "path": "/files/notes/Where X=TypeScript.md"
-                    }
-                ]
-            },
-            {
-                "id": "weekly_notes",
-                "name": "weekly_notes",
-                "type": "folder",
-                "children": [
-                    {
-                        "id": "week1",
-                        "name": "Week 1 Course Introduction.md",
-                        "type": "file",
-                        "path": "/files/notes/Week 1 Course Introduction.md"
-                    },
-                    {
-                        "id": "week2",
-                        "name": "Week 2 Filesystems, part 1.md",
-                        "type": "file",
-                        "path": "/files/notes/Week 2 Filesystems, part 1.md"
-                    },
-                    {
-                        "id": "week3",
-                        "name": "Week 3 Filesystems, part 2.md",
-                        "type": "file",
-                        "path": "/files/notes/Week 3 Filesystems, part 2.md"
-                    },
-                    {
-                        "id": "week4",
-                        "name": "Week 4 Process Control.md",
-                        "type": "file",
-                        "path": "/files/notes/Week 4 Process Control.md"
-                    },
-                    {
-                        "id": "week5",
-                        "name": "Week 5 Interprocess communication.md",
-                        "type": "file",
-                        "path": "/files/notes/Week 5 Interprocess communication.md"
-                    },
-                    {
-                        "id": "week6",
-                        "name": "Week 6 Networking.md",
-                        "type": "file",
-                        "path": "/files/notes/Week 6 Networking.md"
-                    },
-                    {
-                        "id": "week7",
-                        "name": "Week 7 Multithreading.md",
-                        "type": "file",
-                        "path": "/files/notes/Week 7 Multithreading.md"
-                    },
-                    {
-                        "id": "week8",
-                        "name": "Week 8 Signals.md",
-                        "type": "file",
-                        "path": "/files/notes/Week 8 Signals.md"
-                    }
-                ]
-            },
-            {
-                "id": "meetups",
-                "name": "meetups",
-                "type": "folder",
-                "children": [
-                    {
-                        "id": "meetup_001",
-                        "name": "Meetup_001-HugePages *.md",
-                        "type": "file",
-                        "path": "/files/notes/Meetup_001-HugePages *.md"
-                    },
-                    {
-                        "id": "meetup_002",
-                        "name": "Meetup_002-MeltdownAndSpecter.md",
-                        "type": "file",
-                        "path": "/files/notes/Meetup_002-MeltdownAndSpecter.md"
-                    },
-                    {
-                        "id": "meetup_003",
-                        "name": "Meetup_003-OperatingSystemEvolution.md",
-                        "type": "file",
-                        "path": "/files/notes/Meetup_003-OperatingSystemEvolution.md"
-                    },
-                    {
-                        "id": "meetup_004",
-                        "name": "Meetup_004-KLL *.md",
-                        "type": "file",
-                        "path": "/files/notes/Meetup_004-KLL *.md"
-                    },
-                    {
-                        "id": "meetup_005",
-                        "name": "Meetup_005-Percolator *.md",
-                        "type": "file",
-                        "path": "/files/notes/Meetup_005-Percolator *.md"
-                    }
-                ]
-            },
-            {
-                "id": "paper_summaries",
-                "name": "paper_summaries",
-                "type": "folder",
-                "children": [
-                    {
-                        "id": "jan_2024",
-                        "name": "2024-01 January Paper Summaries.md",
-                        "type": "file",
-                        "path": "/files/notes/2024-01 January Paper Summaries.md"
-                    },
-                    {
-                        "id": "feb_2024",
-                        "name": "2024-02 February Paper Summaries.md",
-                        "type": "file",
-                        "path": "/files/notes/2024-02 February Paper Summaries.md"
-                    },
-                    {
-                        "id": "mar_2024",
-                        "name": "2024-03 March Paper Summaries.md",
-                        "type": "file",
-                        "path": "/files/notes/2024-03 March Paper Summaries.md"
-                    },
-                    {
-                        "id": "apr_2024",
-                        "name": "2024-04 April Paper Summaries.md",
-                        "type": "file",
-                        "path": "/files/notes/2024-04 April Paper Summaries.md"
-                    },
-                    {
-                        "id": "jan_2025",
-                        "name": "2025-01 January Paper Summaries.md",
-                        "type": "file",
-                        "path": "/files/notes/2025-01 January Paper Summaries.md"
-                    },
-                    {
-                        "id": "feb_2025",
-                        "name": "2025-02 February Paper Summaries.md",
-                        "type": "file",
-                        "path": "/files/notes/2025-02 February Paper Summaries.md"
-                    }
-                ]
-            }
-        ]
-    },
-    {
-        "id": "projects",
-        "name": "projects",
-        "type": "folder",
-        "children": [
-            {
-                "id": "catch_that_qubit",
-                "name": "catch_that_qubit.txt",
-                "type": "file",
-                "path": "/files/projects/catch_that_qubit.md"
-            },
-            {
-                "id": "this_is_water",
-                "name": "this_is_water.txt",
-                "type": "file",
-                "path": "/files/projects/this_is_water.md"
-            },
-            {
-                "id": "sorting_octopus",
-                "name": "sorting_octopus.txt",
-                "type": "file",
-                "path": "/files/projects/sorting_octopus.md"
-            },
-            {
-                "id": "profound_sound",
-                "name": "profound_sound.txt",
-                "type": "file",
-                "path": "/files/projects/profound_sound.md"
-            },
-            {
-                "id": "flight_simulator",
-                "name": "flight_simulator.txt",
-                "type": "file",
-                "path": "/files/projects/flight_simulator.md"
-            },
-            {
-                "id": "rayquaza_orm",
-                "name": "rayquaza_orm.txt",
-                "type": "file",
-                "path": "/files/projects/rayquaza_orm.md"
-            },
-            {
-                "id": "big2s",
-                "name": "big2s.txt",
-                "type": "file",
-                "path": "/files/projects/big2s.md"
-            },
-            {
-                "id": "keystone_light",
-                "name": "keystone_light.txt",
-                "type": "file",
-                "path": "/files/projects/keystone_light.md"
-            },
-            {
-                "id": "moonshine",
-                "name": "moonshine.txt",
-                "type": "file",
-                "path": "/files/projects/moonshine.md"
-            },
-            {
-                "id": "monges_theorem",
-                "name": "monges_theorem.txt",
-                "type": "file",
-                "path": "/files/projects/monges_theorem.md"
-            }
-        ]
+        "id": "readme_md",
+        "name": "README.md",
+        "type": "file",
+        "path": "/files/README.md"
     },
     {
         "id": "interests",
@@ -319,47 +11,10 @@
         "type": "folder",
         "children": [
             {
-                "id": "starcraft",
-                "name": "starcraft.txt",
-                "type": "file",
-                "path": "/files/interests/starcraft.md"
-            },
-            {
-                "id": "bigvision",
-                "name": "bigvision.txt",
+                "id": "bigvision_md",
+                "name": "bigvision.md",
                 "type": "file",
                 "path": "/files/interests/bigvision.md"
-            },
-            {
-                "id": "sports",
-                "name": "sports",
-                "type": "folder",
-                "children": [
-                    {
-                        "id": "lakers",
-                        "name": "lakers.txt",
-                        "type": "file",
-                        "path": "/files/interests/sports/lakers.md"
-                    },
-                    {
-                        "id": "packers",
-                        "name": "packers.txt",
-                        "type": "file",
-                        "path": "/files/interests/sports/packers.md"
-                    },
-                    {
-                        "id": "yankees",
-                        "name": "yankees.txt",
-                        "type": "file",
-                        "path": "/files/interests/sports/yankees.md"
-                    },
-                    {
-                        "id": "triathlons",
-                        "name": "triathlons.txt",
-                        "type": "file",
-                        "path": "/files/interests/sports/triathlons.md"
-                    }
-                ]
             },
             {
                 "id": "film",
@@ -367,8 +22,8 @@
                 "type": "folder",
                 "children": [
                     {
-                        "id": "favorite_films",
-                        "name": "favorite_films.txt",
+                        "id": "favorite_films_md",
+                        "name": "favorite_films.md",
                         "type": "file",
                         "path": "/files/interests/film/favorite_films.md"
                     }
@@ -380,36 +35,1497 @@
                 "type": "folder",
                 "children": [
                     {
-                        "id": "phish",
-                        "name": "phish.txt",
-                        "type": "file",
-                        "path": "/files/interests/music/phish.md"
-                    },
-                    {
-                        "id": "musical_journey",
-                        "name": "musical_journey.txt",
-                        "type": "file",
-                        "path": "/files/interests/music/musical_journey.md"
-                    },
-                    {
-                        "id": "music_production",
-                        "name": "music_production.txt",
-                        "type": "file",
-                        "path": "/files/interests/music/music_production.md"
-                    },
-                    {
-                        "id": "live_music",
-                        "name": "live_music.txt",
+                        "id": "live_music_md",
+                        "name": "live_music.md",
                         "type": "file",
                         "path": "/files/interests/music/live_music.md"
                     },
                     {
-                        "id": "playlists_and_curation",
-                        "name": "playlists_and_curation.txt",
+                        "id": "music_production_md",
+                        "name": "music_production.md",
+                        "type": "file",
+                        "path": "/files/interests/music/music_production.md"
+                    },
+                    {
+                        "id": "musical_journey_md",
+                        "name": "musical_journey.md",
+                        "type": "file",
+                        "path": "/files/interests/music/musical_journey.md"
+                    },
+                    {
+                        "id": "phish_md",
+                        "name": "phish.md",
+                        "type": "file",
+                        "path": "/files/interests/music/phish.md"
+                    },
+                    {
+                        "id": "playlists_and_curation_md",
+                        "name": "playlists_and_curation.md",
                         "type": "file",
                         "path": "/files/interests/music/playlists_and_curation.md"
                     }
                 ]
+            },
+            {
+                "id": "sports",
+                "name": "sports",
+                "type": "folder",
+                "children": [
+                    {
+                        "id": "lakers_md",
+                        "name": "lakers.md",
+                        "type": "file",
+                        "path": "/files/interests/sports/lakers.md"
+                    },
+                    {
+                        "id": "packers_md",
+                        "name": "packers.md",
+                        "type": "file",
+                        "path": "/files/interests/sports/packers.md"
+                    },
+                    {
+                        "id": "triathlons_md",
+                        "name": "triathlons.md",
+                        "type": "file",
+                        "path": "/files/interests/sports/triathlons.md"
+                    },
+                    {
+                        "id": "yankees_md",
+                        "name": "yankees.md",
+                        "type": "file",
+                        "path": "/files/interests/sports/yankees.md"
+                    }
+                ]
+            },
+            {
+                "id": "starcraft_md",
+                "name": "starcraft.md",
+                "type": "file",
+                "path": "/files/interests/starcraft.md"
+            }
+        ]
+    },
+    {
+        "id": "notes",
+        "name": "notes",
+        "type": "folder",
+        "children": [
+            {
+                "id": "ai_and_ml",
+                "name": "ai_and_ml",
+                "type": "folder",
+                "children": [
+                    {
+                        "id": "ai_agents_fundamentals_in_21_minutes_md",
+                        "name": "AI Agents Fundamentals in 21 Minutes.md",
+                        "type": "file",
+                        "path": "/files/notes/ai_and_ml/AI Agents Fundamentals in 21 Minutes.md"
+                    },
+                    {
+                        "id": "ai_native_in_2025_md",
+                        "name": "AI-Native in 2025.md",
+                        "type": "file",
+                        "path": "/files/notes/ai_and_ml/AI-Native in 2025.md"
+                    },
+                    {
+                        "id": "deep_dive_into_llms_like_chatgpt_md",
+                        "name": "Deep Dive into LLMs like ChatGPT.md",
+                        "type": "file",
+                        "path": "/files/notes/ai_and_ml/Deep Dive into LLMs like ChatGPT.md"
+                    },
+                    {
+                        "id": "google_s_9_hour_ai_prompt_engineering_course_in_20_minutes_md",
+                        "name": "Google's 9 Hour AI Prompt Engineering Course in 20 Minutes.md",
+                        "type": "file",
+                        "path": "/files/notes/ai_and_ml/Google's 9 Hour AI Prompt Engineering Course in 20 Minutes.md"
+                    }
+                ]
+            },
+            {
+                "id": "coursework",
+                "name": "coursework",
+                "type": "folder",
+                "children": [
+                    {
+                        "id": "conways_game_of_life_md",
+                        "name": "Conways Game of Life.md",
+                        "type": "file",
+                        "path": "/files/notes/coursework/Conways Game of Life.md"
+                    },
+                    {
+                        "id": "coursework_md",
+                        "name": "Coursework.md",
+                        "type": "file",
+                        "path": "/files/notes/coursework/Coursework.md"
+                    }
+                ]
+            },
+            {
+                "id": "daily_notes",
+                "name": "daily_notes",
+                "type": "folder",
+                "children": [
+                    {
+                        "id": "2025_04_14_md",
+                        "name": "2025-04-14.md",
+                        "type": "file",
+                        "path": "/files/notes/daily_notes/2025-04-14.md"
+                    },
+                    {
+                        "id": "2025_04_15_md",
+                        "name": "2025-04-15.md",
+                        "type": "file",
+                        "path": "/files/notes/daily_notes/2025-04-15.md"
+                    },
+                    {
+                        "id": "day1notes_md",
+                        "name": "Day1Notes.md",
+                        "type": "file",
+                        "path": "/files/notes/daily_notes/Day1Notes.md"
+                    }
+                ]
+            },
+            {
+                "id": "entertainment",
+                "name": "entertainment",
+                "type": "folder",
+                "children": [
+                    {
+                        "id": "hawkeye_recap_md",
+                        "name": "Hawkeye Recap.md",
+                        "type": "file",
+                        "path": "/files/notes/entertainment/Hawkeye Recap.md"
+                    },
+                    {
+                        "id": "marvel_recap_md",
+                        "name": "Marvel Recap.md",
+                        "type": "file",
+                        "path": "/files/notes/entertainment/Marvel Recap.md"
+                    },
+                    {
+                        "id": "moon_knight_recap_md",
+                        "name": "Moon Knight Recap.md",
+                        "type": "file",
+                        "path": "/files/notes/entertainment/Moon Knight Recap.md"
+                    },
+                    {
+                        "id": "ms_marvel_md",
+                        "name": "Ms Marvel.md",
+                        "type": "file",
+                        "path": "/files/notes/entertainment/Ms Marvel.md"
+                    },
+                    {
+                        "id": "to_zanarkind_md",
+                        "name": "To Zanarkind.md",
+                        "type": "file",
+                        "path": "/files/notes/entertainment/To Zanarkind.md"
+                    }
+                ]
+            },
+            {
+                "id": "math_and_theory",
+                "name": "math_and_theory",
+                "type": "folder",
+                "children": [
+                    {
+                        "id": "analysis_in_rn_md",
+                        "name": "Analysis in Rn.md",
+                        "type": "file",
+                        "path": "/files/notes/math_and_theory/Analysis in Rn.md"
+                    },
+                    {
+                        "id": "baby_rudin_notes_md",
+                        "name": "Baby Rudin Notes.md",
+                        "type": "file",
+                        "path": "/files/notes/math_and_theory/Baby Rudin Notes.md"
+                    },
+                    {
+                        "id": "definitions_md",
+                        "name": "Definitions.md",
+                        "type": "file",
+                        "path": "/files/notes/math_and_theory/Definitions.md"
+                    },
+                    {
+                        "id": "graph_isomorphism_problem_md",
+                        "name": "Graph Isomorphism Problem.md",
+                        "type": "file",
+                        "path": "/files/notes/math_and_theory/Graph Isomorphism Problem.md"
+                    },
+                    {
+                        "id": "group_theory__abstraction__and_the_196_883_dimensional_monster_md",
+                        "name": "Group Theory, Abstraction, and the 196,883-Dimensional Monster.md",
+                        "type": "file",
+                        "path": "/files/notes/math_and_theory/Group Theory, Abstraction, and the 196,883-Dimensional Monster.md"
+                    },
+                    {
+                        "id": "honors_basic_algebra_md",
+                        "name": "Honors Basic Algebra.md",
+                        "type": "file",
+                        "path": "/files/notes/math_and_theory/Honors Basic Algebra.md"
+                    },
+                    {
+                        "id": "intro_to_proofs_md",
+                        "name": "Intro to Proofs.md",
+                        "type": "file",
+                        "path": "/files/notes/math_and_theory/Intro to Proofs.md"
+                    },
+                    {
+                        "id": "linear_algebra_applications_md",
+                        "name": "Linear Algebra Applications.md",
+                        "type": "file",
+                        "path": "/files/notes/math_and_theory/Linear Algebra Applications.md"
+                    },
+                    {
+                        "id": "linear_algebra_md",
+                        "name": "Linear Algebra.md",
+                        "type": "file",
+                        "path": "/files/notes/math_and_theory/Linear Algebra.md"
+                    },
+                    {
+                        "id": "principles_of_mathematical_analysis_md",
+                        "name": "Principles of Mathematical Analysis.md",
+                        "type": "file",
+                        "path": "/files/notes/math_and_theory/Principles of Mathematical Analysis.md"
+                    },
+                    {
+                        "id": "the_chromatic_number_of_the_plane_is_at_least_5_md",
+                        "name": "The Chromatic number of the plane is at least 5.md",
+                        "type": "file",
+                        "path": "/files/notes/math_and_theory/The Chromatic number of the plane is at least 5.md"
+                    }
+                ]
+            },
+            {
+                "id": "meetups",
+                "name": "meetups",
+                "type": "folder",
+                "children": [
+                    {
+                        "id": "building_a_deep_tech_company_md",
+                        "name": "Building a Deep Tech Company.md",
+                        "type": "file",
+                        "path": "/files/notes/meetups/Building a Deep Tech Company.md"
+                    },
+                    {
+                        "id": "everything_they_teach_you_at_goldman_sachs_in_36_minutes_md",
+                        "name": "Everything They Teach You at Goldman Sachs in 36 Minutes.md",
+                        "type": "file",
+                        "path": "/files/notes/meetups/Everything They Teach You at Goldman Sachs in 36 Minutes.md"
+                    },
+                    {
+                        "id": "meetup_000_slicer___md",
+                        "name": "Meetup_000-Slicer *.md",
+                        "type": "file",
+                        "path": "/files/notes/meetups/Meetup_000-Slicer *.md"
+                    },
+                    {
+                        "id": "meetup_001_hugepages___md",
+                        "name": "Meetup_001-HugePages *.md",
+                        "type": "file",
+                        "path": "/files/notes/meetups/Meetup_001-HugePages *.md"
+                    },
+                    {
+                        "id": "meetup_002_meltdownandspecter_md",
+                        "name": "Meetup_002-MeltdownAndSpecter.md",
+                        "type": "file",
+                        "path": "/files/notes/meetups/Meetup_002-MeltdownAndSpecter.md"
+                    },
+                    {
+                        "id": "meetup_003_operatingsystemevolution_md",
+                        "name": "Meetup_003-OperatingSystemEvolution.md",
+                        "type": "file",
+                        "path": "/files/notes/meetups/Meetup_003-OperatingSystemEvolution.md"
+                    },
+                    {
+                        "id": "meetup_004_kll___md",
+                        "name": "Meetup_004-KLL *.md",
+                        "type": "file",
+                        "path": "/files/notes/meetups/Meetup_004-KLL *.md"
+                    },
+                    {
+                        "id": "meetup_005_percolator___md",
+                        "name": "Meetup_005-Percolator *.md",
+                        "type": "file",
+                        "path": "/files/notes/meetups/Meetup_005-Percolator *.md"
+                    },
+                    {
+                        "id": "meetup_006_exascale___md",
+                        "name": "Meetup_006-Exascale *.md",
+                        "type": "file",
+                        "path": "/files/notes/meetups/Meetup_006-Exascale *.md"
+                    },
+                    {
+                        "id": "meetup_007_anisotropicvectorquantization___md",
+                        "name": "Meetup_007-AnisotropicVectorQuantization *.md",
+                        "type": "file",
+                        "path": "/files/notes/meetups/Meetup_007-AnisotropicVectorQuantization *.md"
+                    },
+                    {
+                        "id": "meetup_008_xen_md",
+                        "name": "Meetup_008-Xen.md",
+                        "type": "file",
+                        "path": "/files/notes/meetups/Meetup_008-Xen.md"
+                    },
+                    {
+                        "id": "meetup_009_miraibotnet___md",
+                        "name": "Meetup_009-MiraiBotnet *.md",
+                        "type": "file",
+                        "path": "/files/notes/meetups/Meetup_009-MiraiBotnet *.md"
+                    },
+                    {
+                        "id": "meetup_010_dtrace___md",
+                        "name": "Meetup_010-DTrace *.md",
+                        "type": "file",
+                        "path": "/files/notes/meetups/Meetup_010-DTrace *.md"
+                    },
+                    {
+                        "id": "meetup_011_maglev___md",
+                        "name": "Meetup_011-Maglev *.md",
+                        "type": "file",
+                        "path": "/files/notes/meetups/Meetup_011-Maglev *.md"
+                    },
+                    {
+                        "id": "meetup_012_dynamo___md",
+                        "name": "Meetup_012-Dynamo *.md",
+                        "type": "file",
+                        "path": "/files/notes/meetups/Meetup_012-Dynamo *.md"
+                    },
+                    {
+                        "id": "meetup_013_lz4_md",
+                        "name": "Meetup_013-LZ4.md",
+                        "type": "file",
+                        "path": "/files/notes/meetups/Meetup_013-LZ4.md"
+                    },
+                    {
+                        "id": "meetup_014_asymmetricnumeralsystems_md",
+                        "name": "Meetup_014-AsymmetricNumeralSystems.md",
+                        "type": "file",
+                        "path": "/files/notes/meetups/Meetup_014-AsymmetricNumeralSystems.md"
+                    },
+                    {
+                        "id": "meetup_015_snap___md",
+                        "name": "Meetup_015-Snap *.md",
+                        "type": "file",
+                        "path": "/files/notes/meetups/Meetup_015-Snap *.md"
+                    },
+                    {
+                        "id": "meetup_016_ceph___md",
+                        "name": "Meetup_016-Ceph *.md",
+                        "type": "file",
+                        "path": "/files/notes/meetups/Meetup_016-Ceph *.md"
+                    },
+                    {
+                        "id": "meetup_017_doubleratchet___md",
+                        "name": "Meetup_017-DoubleRatchet *.md",
+                        "type": "file",
+                        "path": "/files/notes/meetups/Meetup_017-DoubleRatchet *.md"
+                    },
+                    {
+                        "id": "meetup_018_crush___md",
+                        "name": "Meetup_018-CRUSH *.md",
+                        "type": "file",
+                        "path": "/files/notes/meetups/Meetup_018-CRUSH *.md"
+                    },
+                    {
+                        "id": "meetup_019_buildsystems___md",
+                        "name": "Meetup_019-BuildSystems *.md",
+                        "type": "file",
+                        "path": "/files/notes/meetups/Meetup_019-BuildSystems *.md"
+                    },
+                    {
+                        "id": "meetup_020_thinlto___md",
+                        "name": "Meetup_020-ThinLTO *.md",
+                        "type": "file",
+                        "path": "/files/notes/meetups/Meetup_020-ThinLTO *.md"
+                    },
+                    {
+                        "id": "meetup_021_scuba___md",
+                        "name": "Meetup_021-Scuba *.md",
+                        "type": "file",
+                        "path": "/files/notes/meetups/Meetup_021-Scuba *.md"
+                    },
+                    {
+                        "id": "meetup_022_rocksdb_md",
+                        "name": "Meetup_022-RocksDB.md",
+                        "type": "file",
+                        "path": "/files/notes/meetups/Meetup_022-RocksDB.md"
+                    },
+                    {
+                        "id": "meetup_023_bigtable___md",
+                        "name": "Meetup_023-Bigtable *.md",
+                        "type": "file",
+                        "path": "/files/notes/meetups/Meetup_023-Bigtable *.md"
+                    },
+                    {
+                        "id": "meetup_024_towardsmoderndevelopmentofcloud___md",
+                        "name": "Meetup_024-TowardsModernDevelopmentofCloud *.md",
+                        "type": "file",
+                        "path": "/files/notes/meetups/Meetup_024-TowardsModernDevelopmentofCloud *.md"
+                    },
+                    {
+                        "id": "meetup_025_alphago___md",
+                        "name": "Meetup_025-Alphago *.md",
+                        "type": "file",
+                        "path": "/files/notes/meetups/Meetup_025-Alphago *.md"
+                    },
+                    {
+                        "id": "meetup_026_alphazero___md",
+                        "name": "Meetup_026-AlphaZero *.md",
+                        "type": "file",
+                        "path": "/files/notes/meetups/Meetup_026-AlphaZero *.md"
+                    },
+                    {
+                        "id": "meetup_027_twine___md",
+                        "name": "Meetup_027-Twine *.md",
+                        "type": "file",
+                        "path": "/files/notes/meetups/Meetup_027-Twine *.md"
+                    },
+                    {
+                        "id": "meetup_028_remus___md",
+                        "name": "Meetup_028-Remus *.md",
+                        "type": "file",
+                        "path": "/files/notes/meetups/Meetup_028-Remus *.md"
+                    },
+                    {
+                        "id": "meetup_029_borg___md",
+                        "name": "Meetup_029-Borg *.md",
+                        "type": "file",
+                        "path": "/files/notes/meetups/Meetup_029-Borg *.md"
+                    },
+                    {
+                        "id": "meetup_030_borgnextgenerations___md",
+                        "name": "Meetup_030-BorgNextGenerations *.md",
+                        "type": "file",
+                        "path": "/files/notes/meetups/Meetup_030-BorgNextGenerations *.md"
+                    },
+                    {
+                        "id": "meetup_031_borgautopilot___md",
+                        "name": "Meetup_031-BorgAutopilot *.md",
+                        "type": "file",
+                        "path": "/files/notes/meetups/Meetup_031-BorgAutopilot *.md"
+                    },
+                    {
+                        "id": "meetup_032_appliedmlfacebook___md",
+                        "name": "Meetup_032-AppliedMLFacebook *.md",
+                        "type": "file",
+                        "path": "/files/notes/meetups/Meetup_032-AppliedMLFacebook *.md"
+                    },
+                    {
+                        "id": "meetup_033_linearizablestatemachinereplication___md",
+                        "name": "Meetup_033-LinearizableStateMachineReplication *.md",
+                        "type": "file",
+                        "path": "/files/notes/meetups/Meetup_033-LinearizableStateMachineReplication *.md"
+                    },
+                    {
+                        "id": "meetup_034_gorilla___md",
+                        "name": "Meetup_034-Gorilla *.md",
+                        "type": "file",
+                        "path": "/files/notes/meetups/Meetup_034-Gorilla *.md"
+                    },
+                    {
+                        "id": "meetup_035_clickhouse___md",
+                        "name": "Meetup_035-ClickHouse *.md",
+                        "type": "file",
+                        "path": "/files/notes/meetups/Meetup_035-ClickHouse *.md"
+                    },
+                    {
+                        "id": "meetup_036_tao___md",
+                        "name": "Meetup_036-TAO *.md",
+                        "type": "file",
+                        "path": "/files/notes/meetups/Meetup_036-TAO *.md"
+                    },
+                    {
+                        "id": "meetup_037_jupiterrising___md",
+                        "name": "Meetup_037-JupiterRising *.md",
+                        "type": "file",
+                        "path": "/files/notes/meetups/Meetup_037-JupiterRising *.md"
+                    },
+                    {
+                        "id": "meetup_038_jupiterevolving___md",
+                        "name": "Meetup_038-JupiterEvolving *.md",
+                        "type": "file",
+                        "path": "/files/notes/meetups/Meetup_038-JupiterEvolving *.md"
+                    },
+                    {
+                        "id": "meetup_039_fboss___md",
+                        "name": "Meetup_039-FBOSS *.md",
+                        "type": "file",
+                        "path": "/files/notes/meetups/Meetup_039-FBOSS *.md"
+                    },
+                    {
+                        "id": "meetup_040_runningbgp___md",
+                        "name": "Meetup_040-RunningBGP *.md",
+                        "type": "file",
+                        "path": "/files/notes/meetups/Meetup_040-RunningBGP *.md"
+                    },
+                    {
+                        "id": "meetup_041_ebpfxdp___md",
+                        "name": "Meetup_041-eBPFXDP *.md",
+                        "type": "file",
+                        "path": "/files/notes/meetups/Meetup_041-eBPFXDP *.md"
+                    },
+                    {
+                        "id": "meetup_042_datacenternetworkreliability___md",
+                        "name": "Meetup_042-DataCenterNetworkReliability *.md",
+                        "type": "file",
+                        "path": "/files/notes/meetups/Meetup_042-DataCenterNetworkReliability *.md"
+                    },
+                    {
+                        "id": "meetup_043_discoballs___md",
+                        "name": "Meetup_043-Discoballs *.md",
+                        "type": "file",
+                        "path": "/files/notes/meetups/Meetup_043-Discoballs *.md"
+                    },
+                    {
+                        "id": "meetup_044_continuousprofiling___md",
+                        "name": "Meetup_044-ContinuousProfiling *.md",
+                        "type": "file",
+                        "path": "/files/notes/meetups/Meetup_044-ContinuousProfiling *.md"
+                    },
+                    {
+                        "id": "meetup_045_dapper___md",
+                        "name": "Meetup_045-Dapper *.md",
+                        "type": "file",
+                        "path": "/files/notes/meetups/Meetup_045-Dapper *.md"
+                    },
+                    {
+                        "id": "meetup_046_profiling___md",
+                        "name": "Meetup_046-Profiling *.md",
+                        "type": "file",
+                        "path": "/files/notes/meetups/Meetup_046-Profiling *.md"
+                    },
+                    {
+                        "id": "meetup_047_dhalion___md",
+                        "name": "Meetup_047-Dhalion *.md",
+                        "type": "file",
+                        "path": "/files/notes/meetups/Meetup_047-Dhalion *.md"
+                    },
+                    {
+                        "id": "meetup_048_fathom___md",
+                        "name": "Meetup_048-Fathom *.md",
+                        "type": "file",
+                        "path": "/files/notes/meetups/Meetup_048-Fathom *.md"
+                    },
+                    {
+                        "id": "meetup_049_fay___md",
+                        "name": "Meetup_049-Fay *.md",
+                        "type": "file",
+                        "path": "/files/notes/meetups/Meetup_049-Fay *.md"
+                    },
+                    {
+                        "id": "presentations_2_20_25_md",
+                        "name": "Presentations 2-20-25.md",
+                        "type": "file",
+                        "path": "/files/notes/meetups/Presentations 2-20-25.md"
+                    },
+                    {
+                        "id": "recurse_intros_notes_md",
+                        "name": "Recurse Intros Notes.md",
+                        "type": "file",
+                        "path": "/files/notes/meetups/Recurse Intros Notes.md"
+                    }
+                ]
+            },
+            {
+                "id": "paper_summaries",
+                "name": "paper_summaries",
+                "type": "folder",
+                "children": [
+                    {
+                        "id": "2024_01_january_paper_summaries_md",
+                        "name": "2024-01 January Paper Summaries.md",
+                        "type": "file",
+                        "path": "/files/notes/paper_summaries/2024-01 January Paper Summaries.md"
+                    },
+                    {
+                        "id": "2024_02_february_paper_summaries_md",
+                        "name": "2024-02 February Paper Summaries.md",
+                        "type": "file",
+                        "path": "/files/notes/paper_summaries/2024-02 February Paper Summaries.md"
+                    },
+                    {
+                        "id": "2024_03_march_paper_summaries_md",
+                        "name": "2024-03 March Paper Summaries.md",
+                        "type": "file",
+                        "path": "/files/notes/paper_summaries/2024-03 March Paper Summaries.md"
+                    },
+                    {
+                        "id": "2024_04_april_paper_summaries_md",
+                        "name": "2024-04 April Paper Summaries.md",
+                        "type": "file",
+                        "path": "/files/notes/paper_summaries/2024-04 April Paper Summaries.md"
+                    },
+                    {
+                        "id": "2024_05_may_paper_summaries_md",
+                        "name": "2024-05 May Paper Summaries.md",
+                        "type": "file",
+                        "path": "/files/notes/paper_summaries/2024-05 May Paper Summaries.md"
+                    },
+                    {
+                        "id": "2024_06_june_paper_summaries_md",
+                        "name": "2024-06 June Paper Summaries.md",
+                        "type": "file",
+                        "path": "/files/notes/paper_summaries/2024-06 June Paper Summaries.md"
+                    },
+                    {
+                        "id": "2024_07_july_paper_summaries_md",
+                        "name": "2024-07 July Paper Summaries.md",
+                        "type": "file",
+                        "path": "/files/notes/paper_summaries/2024-07 July Paper Summaries.md"
+                    },
+                    {
+                        "id": "2024_08_august_paper_summaries_md",
+                        "name": "2024-08 August Paper Summaries.md",
+                        "type": "file",
+                        "path": "/files/notes/paper_summaries/2024-08 August Paper Summaries.md"
+                    },
+                    {
+                        "id": "2024_09_september_paper_summaries_md",
+                        "name": "2024-09 September Paper Summaries.md",
+                        "type": "file",
+                        "path": "/files/notes/paper_summaries/2024-09 September Paper Summaries.md"
+                    },
+                    {
+                        "id": "2024_10_october_paper_summaries_md",
+                        "name": "2024-10 October Paper Summaries.md",
+                        "type": "file",
+                        "path": "/files/notes/paper_summaries/2024-10 October Paper Summaries.md"
+                    },
+                    {
+                        "id": "2024_11_november_paper_summaries_md",
+                        "name": "2024-11 November Paper Summaries.md",
+                        "type": "file",
+                        "path": "/files/notes/paper_summaries/2024-11 November Paper Summaries.md"
+                    },
+                    {
+                        "id": "2024_12_december_paper_summaries_md",
+                        "name": "2024-12 December Paper Summaries.md",
+                        "type": "file",
+                        "path": "/files/notes/paper_summaries/2024-12 December Paper Summaries.md"
+                    },
+                    {
+                        "id": "2025_01_january_paper_summaries_md",
+                        "name": "2025-01 January Paper Summaries.md",
+                        "type": "file",
+                        "path": "/files/notes/paper_summaries/2025-01 January Paper Summaries.md"
+                    },
+                    {
+                        "id": "2025_02_february_paper_summaries_md",
+                        "name": "2025-02 February Paper Summaries.md",
+                        "type": "file",
+                        "path": "/files/notes/paper_summaries/2025-02 February Paper Summaries.md"
+                    },
+                    {
+                        "id": "step3annotated_md",
+                        "name": "Step3Annotated.md",
+                        "type": "file",
+                        "path": "/files/notes/paper_summaries/Step3Annotated.md"
+                    },
+                    {
+                        "id": "step4annotated_md",
+                        "name": "Step4Annotated.md",
+                        "type": "file",
+                        "path": "/files/notes/paper_summaries/Step4Annotated.md"
+                    },
+                    {
+                        "id": "codependencyannotated_md",
+                        "name": "codependencyAnnotated.md",
+                        "type": "file",
+                        "path": "/files/notes/paper_summaries/codependencyAnnotated.md"
+                    },
+                    {
+                        "id": "dapperannotated_md",
+                        "name": "dapperAnnotated.md",
+                        "type": "file",
+                        "path": "/files/notes/paper_summaries/dapperAnnotated.md"
+                    },
+                    {
+                        "id": "fbossannotated_md",
+                        "name": "fbossAnnotated.md",
+                        "type": "file",
+                        "path": "/files/notes/paper_summaries/fbossAnnotated.md"
+                    },
+                    {
+                        "id": "jupiterevolvingannotated_md",
+                        "name": "jupiterEvolvingAnnotated.md",
+                        "type": "file",
+                        "path": "/files/notes/paper_summaries/jupiterEvolvingAnnotated.md"
+                    },
+                    {
+                        "id": "jupiterrisingannotated_md",
+                        "name": "jupiterRisingAnnotated.md",
+                        "type": "file",
+                        "path": "/files/notes/paper_summaries/jupiterRisingAnnotated.md"
+                    },
+                    {
+                        "id": "runningbgpannotated_md",
+                        "name": "runningBGPAnnotated.md",
+                        "type": "file",
+                        "path": "/files/notes/paper_summaries/runningBGPAnnotated.md"
+                    }
+                ]
+            },
+            {
+                "id": "programming_languages",
+                "name": "programming_languages",
+                "type": "folder",
+                "children": [
+                    {
+                        "id": "crash_course_in_c_md",
+                        "name": "Crash Course in C.md",
+                        "type": "file",
+                        "path": "/files/notes/programming_languages/Crash Course in C.md"
+                    },
+                    {
+                        "id": "javascript_md",
+                        "name": "JavaScript.md",
+                        "type": "file",
+                        "path": "/files/notes/programming_languages/JavaScript.md"
+                    },
+                    {
+                        "id": "rust_programming_language_overview_md",
+                        "name": "Rust Programming Language Overview.md",
+                        "type": "file",
+                        "path": "/files/notes/programming_languages/Rust Programming Language Overview.md"
+                    },
+                    {
+                        "id": "teach_yourself_programming_in_10_years_md",
+                        "name": "Teach Yourself Programming in 10 years.md",
+                        "type": "file",
+                        "path": "/files/notes/programming_languages/Teach Yourself Programming in 10 years.md"
+                    },
+                    {
+                        "id": "where_x_go_md",
+                        "name": "Where X=Go.md",
+                        "type": "file",
+                        "path": "/files/notes/programming_languages/Where X=Go.md"
+                    },
+                    {
+                        "id": "where_x_python_md",
+                        "name": "Where X=Python.md",
+                        "type": "file",
+                        "path": "/files/notes/programming_languages/Where X=Python.md"
+                    },
+                    {
+                        "id": "where_x_rust_md",
+                        "name": "Where X=Rust.md",
+                        "type": "file",
+                        "path": "/files/notes/programming_languages/Where X=Rust.md"
+                    },
+                    {
+                        "id": "where_x_scala_md",
+                        "name": "Where X=Scala.md",
+                        "type": "file",
+                        "path": "/files/notes/programming_languages/Where X=Scala.md"
+                    },
+                    {
+                        "id": "where_x_typescript_md",
+                        "name": "Where X=TypeScript.md",
+                        "type": "file",
+                        "path": "/files/notes/programming_languages/Where X=TypeScript.md"
+                    }
+                ]
+            },
+            {
+                "id": "system_architecture",
+                "name": "system_architecture",
+                "type": "folder",
+                "children": [
+                    {
+                        "id": "v8_md",
+                        "name": "V8.md",
+                        "type": "file",
+                        "path": "/files/notes/system_architecture/V8.md"
+                    },
+                    {
+                        "id": "whatsapp_md",
+                        "name": "WhatsApp.md",
+                        "type": "file",
+                        "path": "/files/notes/system_architecture/WhatsApp.md"
+                    },
+                    {
+                        "id": "zoom_architecture_md",
+                        "name": "Zoom Architecture.md",
+                        "type": "file",
+                        "path": "/files/notes/system_architecture/Zoom Architecture.md"
+                    }
+                ]
+            },
+            {
+                "id": "systems_and_databases",
+                "name": "systems_and_databases",
+                "type": "folder",
+                "children": [
+                    {
+                        "id": "1_database_design_md",
+                        "name": "1 Database Design.md",
+                        "type": "file",
+                        "path": "/files/notes/systems_and_databases/1 Database Design.md"
+                    },
+                    {
+                        "id": "2_single_leader_replication_md",
+                        "name": "2 Single Leader Replication.md",
+                        "type": "file",
+                        "path": "/files/notes/systems_and_databases/2 Single Leader Replication.md"
+                    },
+                    {
+                        "id": "3_multi_leader_replication_md",
+                        "name": "3 Multi-leader Replication.md",
+                        "type": "file",
+                        "path": "/files/notes/systems_and_databases/3 Multi-leader Replication.md"
+                    },
+                    {
+                        "id": "32_google_spanner_md",
+                        "name": "32 Google Spanner.md",
+                        "type": "file",
+                        "path": "/files/notes/systems_and_databases/32 Google Spanner.md"
+                    },
+                    {
+                        "id": "4_leaderless_replication_md",
+                        "name": "4 Leaderless Replication.md",
+                        "type": "file",
+                        "path": "/files/notes/systems_and_databases/4 Leaderless Replication.md"
+                    },
+                    {
+                        "id": "5_partitioning_md",
+                        "name": "5 Partitioning.md",
+                        "type": "file",
+                        "path": "/files/notes/systems_and_databases/5 Partitioning.md"
+                    },
+                    {
+                        "id": "claude_md",
+                        "name": "Claude.md",
+                        "type": "file",
+                        "path": "/files/notes/systems_and_databases/Claude.md"
+                    },
+                    {
+                        "id": "core_features_md",
+                        "name": "Core Features.md",
+                        "type": "file",
+                        "path": "/files/notes/systems_and_databases/Core Features.md"
+                    },
+                    {
+                        "id": "giphy_md",
+                        "name": "Giphy.md",
+                        "type": "file",
+                        "path": "/files/notes/systems_and_databases/Giphy.md"
+                    },
+                    {
+                        "id": "is_google_spanner_the_best_database__md",
+                        "name": "Is Google Spanner the BEST Database?.md",
+                        "type": "file",
+                        "path": "/files/notes/systems_and_databases/Is Google Spanner the BEST Database?.md"
+                    },
+                    {
+                        "id": "jan_2025___crdts_and_distributed_replication_md",
+                        "name": "Jan 2025 - CRDTs and distributed replication.md",
+                        "type": "file",
+                        "path": "/files/notes/systems_and_databases/Jan 2025 - CRDTs and distributed replication.md"
+                    },
+                    {
+                        "id": "spanner___the_perfect_database__md",
+                        "name": "Spanner - The Perfect Database?.md",
+                        "type": "file",
+                        "path": "/files/notes/systems_and_databases/Spanner - The Perfect Database?.md"
+                    },
+                    {
+                        "id": "template_md",
+                        "name": "Template.md",
+                        "type": "file",
+                        "path": "/files/notes/systems_and_databases/Template.md"
+                    },
+                    {
+                        "id": "uber_md",
+                        "name": "Uber.md",
+                        "type": "file",
+                        "path": "/files/notes/systems_and_databases/Uber.md"
+                    },
+                    {
+                        "id": "welcome_md",
+                        "name": "Welcome.md",
+                        "type": "file",
+                        "path": "/files/notes/systems_and_databases/Welcome.md"
+                    },
+                    {
+                        "id": "youtube_md",
+                        "name": "YouTube.md",
+                        "type": "file",
+                        "path": "/files/notes/systems_and_databases/YouTube.md"
+                    }
+                ]
+            },
+            {
+                "id": "technical_deep_dives",
+                "name": "technical_deep_dives",
+                "type": "folder",
+                "children": [
+                    {
+                        "id": "feb_2025___gpu_kernel_programming_md",
+                        "name": "Feb 2025 - GPU kernel programming.md",
+                        "type": "file",
+                        "path": "/files/notes/technical_deep_dives/Feb 2025 - GPU kernel programming.md"
+                    },
+                    {
+                        "id": "gpu_kernel_programming_md",
+                        "name": "GPU Kernel Programming.md",
+                        "type": "file",
+                        "path": "/files/notes/technical_deep_dives/GPU Kernel Programming.md"
+                    }
+                ]
+            },
+            {
+                "id": "weekly_notes",
+                "name": "weekly_notes",
+                "type": "folder",
+                "children": [
+                    {
+                        "id": "week_1___writing_git_from_scratch_md",
+                        "name": "Week 1 - Writing git from scratch.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 1 - Writing git from scratch.md"
+                    },
+                    {
+                        "id": "week_1_computer_networks__speedrun__md",
+                        "name": "Week 1 Computer networks \"speedrun\".md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 1 Computer networks \"speedrun\".md"
+                    },
+                    {
+                        "id": "week_1_course_introduction_md",
+                        "name": "Week 1 Course Introduction.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 1 Course Introduction.md"
+                    },
+                    {
+                        "id": "week_10___time_series_databases_md",
+                        "name": "Week 10 - Time series databases.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 10 - Time series databases.md"
+                    },
+                    {
+                        "id": "week_10___webassembly_md",
+                        "name": "Week 10 - WebAssembly.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 10 - WebAssembly.md"
+                    },
+                    {
+                        "id": "week_11___make_a_plasmid_viewer_md",
+                        "name": "Week 11 - Make a plasmid viewer.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 11 - Make a plasmid viewer.md"
+                    },
+                    {
+                        "id": "week_11___nix_reproducible_builds_md",
+                        "name": "Week 11 - Nix Reproducible builds.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 11 - Nix Reproducible builds.md"
+                    },
+                    {
+                        "id": "week_12___ethereum_md",
+                        "name": "Week 12 - Ethereum.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 12 - Ethereum.md"
+                    },
+                    {
+                        "id": "week_12___the_jvm_specification_md",
+                        "name": "Week 12 - The JVM specification.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 12 - The JVM specification.md"
+                    },
+                    {
+                        "id": "week_13___compilers_compiling_compilers_md",
+                        "name": "Week 13 - Compilers compiling compilers.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 13 - Compilers compiling compilers.md"
+                    },
+                    {
+                        "id": "week_13___regular_expressions_md",
+                        "name": "Week 13 - Regular expressions.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 13 - Regular expressions.md"
+                    },
+                    {
+                        "id": "week_14___compression_with_ztsd_md",
+                        "name": "Week 14 - Compression with ztsd.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 14 - Compression with ztsd.md"
+                    },
+                    {
+                        "id": "week_14___containers_md",
+                        "name": "Week 14 - Containers.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 14 - Containers.md"
+                    },
+                    {
+                        "id": "week_15___gpu_computing_with_webgl_md",
+                        "name": "Week 15 - GPU computing with WebGL.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 15 - GPU computing with WebGL.md"
+                    },
+                    {
+                        "id": "week_15___media_codecs_md",
+                        "name": "Week 15 - Media codecs.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 15 - Media codecs.md"
+                    },
+                    {
+                        "id": "week_16___jax_md",
+                        "name": "Week 16 - JAX.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 16 - JAX.md"
+                    },
+                    {
+                        "id": "week_16___zstd_spec__revisited_md",
+                        "name": "Week 16 - zstd spec, revisited.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 16 - zstd spec, revisited.md"
+                    },
+                    {
+                        "id": "week_17___linux_executables_md",
+                        "name": "Week 17 - Linux executables.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 17 - Linux executables.md"
+                    },
+                    {
+                        "id": "week_17___software_architecture_via_lichess_md",
+                        "name": "Week 17 - Software architecture via Lichess.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 17 - Software architecture via Lichess.md"
+                    },
+                    {
+                        "id": "week_18___twitters_recommendation_algorithm_md",
+                        "name": "Week 18 - Twitters recommendation algorithm.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 18 - Twitters recommendation algorithm.md"
+                    },
+                    {
+                        "id": "week_18___zig_compiler_internals_md",
+                        "name": "Week 18 - Zig compiler internals.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 18 - Zig compiler internals.md"
+                    },
+                    {
+                        "id": "week_19___gossip_glomers_md",
+                        "name": "Week 19 - Gossip Glomers.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 19 - Gossip Glomers.md"
+                    },
+                    {
+                        "id": "week_19___the_wireguard_protocol_md",
+                        "name": "Week 19 - The WireGuard protocol.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 19 - The WireGuard protocol.md"
+                    },
+                    {
+                        "id": "week_2___compiling_mlc__the_course_md",
+                        "name": "Week 2 - Compiling mlc, the course.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 2 - Compiling mlc, the course.md"
+                    },
+                    {
+                        "id": "week_2___networking_redux_md",
+                        "name": "Week 2 - Networking redux.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 2 - Networking redux.md"
+                    },
+                    {
+                        "id": "week_2_filesystems__part_1_md",
+                        "name": "Week 2 Filesystems, part 1.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 2 Filesystems, part 1.md"
+                    },
+                    {
+                        "id": "week_20___dataframe_libraries_md",
+                        "name": "Week 20 - Dataframe libraries.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 20 - Dataframe libraries.md"
+                    },
+                    {
+                        "id": "week_20___string_indexing_algorithms_md",
+                        "name": "Week 20 - String indexing algorithms.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 20 - String indexing algorithms.md"
+                    },
+                    {
+                        "id": "week_21___distributed_training_md",
+                        "name": "Week 21 - Distributed training.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 21 - Distributed training.md"
+                    },
+                    {
+                        "id": "week_21___numeric_performance_optimization_md",
+                        "name": "Week 21 - Numeric performance optimization.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 21 - Numeric performance optimization.md"
+                    },
+                    {
+                        "id": "week_22___langchain_md",
+                        "name": "Week 22 - LangChain.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 22 - LangChain.md"
+                    },
+                    {
+                        "id": "week_22___linux_kernel_programming_md",
+                        "name": "Week 22 - Linux kernel programming.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 22 - Linux kernel programming.md"
+                    },
+                    {
+                        "id": "week_23___io_uring_md",
+                        "name": "Week 23 - io_uring.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 23 - io_uring.md"
+                    },
+                    {
+                        "id": "week_24___memory_allocators_md",
+                        "name": "Week 24 - Memory allocators.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 24 - Memory allocators.md"
+                    },
+                    {
+                        "id": "week_25___aosa_volume_1_md",
+                        "name": "Week 25 - AOSA Volume 1.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 25 - AOSA Volume 1.md"
+                    },
+                    {
+                        "id": "week_26___aosa_volume_2__part_1_md",
+                        "name": "Week 26 - AOSA Volume 2, part 1.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 26 - AOSA Volume 2, part 1.md"
+                    },
+                    {
+                        "id": "week_27___the_ceph_trilogy__parts_1_2_md",
+                        "name": "Week 27 - The Ceph trilogy, parts 1+2.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 27 - The Ceph trilogy, parts 1+2.md"
+                    },
+                    {
+                        "id": "week_28___the_ceph_trilogy__part_3_md",
+                        "name": "Week 28 - The Ceph trilogy, part 3.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 28 - The Ceph trilogy, part 3.md"
+                    },
+                    {
+                        "id": "week_3___concurrency_in_swift_md",
+                        "name": "Week 3 - Concurrency in Swift.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 3 - Concurrency in Swift.md"
+                    },
+                    {
+                        "id": "week_3___perspectives_on_async_md",
+                        "name": "Week 3 - Perspectives on async.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 3 - Perspectives on async.md"
+                    },
+                    {
+                        "id": "week_3_filesystems__part_2_md",
+                        "name": "Week 3 Filesystems, part 2.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 3 Filesystems, part 2.md"
+                    },
+                    {
+                        "id": "week_30___code_reading_wasmi_md",
+                        "name": "Week 30 - Code reading Wasmi.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 30 - Code reading Wasmi.md"
+                    },
+                    {
+                        "id": "week_30___jax_from_scratch_md",
+                        "name": "Week 30 - JAX from scratch.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 30 - JAX from scratch.md"
+                    },
+                    {
+                        "id": "week_31___disaggregated_databases_md",
+                        "name": "Week 31 - disaggregated databases.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 31 - disaggregated databases.md"
+                    },
+                    {
+                        "id": "week_32___foundationdb_md",
+                        "name": "Week 32 - FoundationDB.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 32 - FoundationDB.md"
+                    },
+                    {
+                        "id": "week_33___memory_models_md",
+                        "name": "Week 33 - Memory models.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 33 - Memory models.md"
+                    },
+                    {
+                        "id": "week_34___new_sorting_implementations_md",
+                        "name": "Week 34 - New sorting implementations.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 34 - New sorting implementations.md"
+                    },
+                    {
+                        "id": "week_35___code_reading_redis_md",
+                        "name": "Week 35 - Code reading Redis.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 35 - Code reading Redis.md"
+                    },
+                    {
+                        "id": "week_36___kernel_instrumentation_md",
+                        "name": "Week 36 - kernel instrumentation.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 36 - kernel instrumentation.md"
+                    },
+                    {
+                        "id": "week_37___intel_sgx_md",
+                        "name": "Week 37 - Intel SGX.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 37 - Intel SGX.md"
+                    },
+                    {
+                        "id": "week_38___code_reading_solid_js_md",
+                        "name": "Week 38 - Code reading Solid.js.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 38 - Code reading Solid.js.md"
+                    },
+                    {
+                        "id": "week_39___garbage_collection_md",
+                        "name": "Week 39 - Garbage collection.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 39 - Garbage collection.md"
+                    },
+                    {
+                        "id": "week_4___distributed_oltp_sql_md",
+                        "name": "Week 4 - Distributed OLTP SQL.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 4 - Distributed OLTP SQL.md"
+                    },
+                    {
+                        "id": "week_4___the_database_storage_layer_md",
+                        "name": "Week 4 - The database storage layer.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 4 - The database storage layer.md"
+                    },
+                    {
+                        "id": "week_4_process_control_md",
+                        "name": "Week 4 Process Control.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 4 Process Control.md"
+                    },
+                    {
+                        "id": "week_40___code_reading_moonray_md",
+                        "name": "Week 40 - Code reading MoonRay.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 40 - Code reading MoonRay.md"
+                    },
+                    {
+                        "id": "week_41___embedded_rust_md",
+                        "name": "Week 41 - Embedded Rust.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 41 - Embedded Rust.md"
+                    },
+                    {
+                        "id": "week_42___amazon_s_distributed_storage_md",
+                        "name": "Week 42 - Amazon's distributed storage.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 42 - Amazon's distributed storage.md"
+                    },
+                    {
+                        "id": "week_43___tapl_speedrun_week_1_md",
+                        "name": "Week 43 - TAPL speedrun week 1.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 43 - TAPL speedrun week 1.md"
+                    },
+                    {
+                        "id": "week_44___tapl_speedrun_week_2_md",
+                        "name": "Week 44 - TAPL speedrun week 2.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 44 - TAPL speedrun week 2.md"
+                    },
+                    {
+                        "id": "week_45___tapl_speedrun_week_3_md",
+                        "name": "Week 45 - TAPL speedrun week 3.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 45 - TAPL speedrun week 3.md"
+                    },
+                    {
+                        "id": "week_46___50_years_of_sql_md",
+                        "name": "Week 46 - 50 years of SQL.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 46 - 50 years of SQL.md"
+                    },
+                    {
+                        "id": "week_47___gpu_sharing_md",
+                        "name": "Week 47 - GPU sharing.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 47 - GPU sharing.md"
+                    },
+                    {
+                        "id": "week_48___code_reading_chalk_md",
+                        "name": "Week 48 - Code reading Chalk.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 48 - Code reading Chalk.md"
+                    },
+                    {
+                        "id": "week_49___code_reading_simdjson_md",
+                        "name": "Week 49 - Code reading simdjson.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 49 - Code reading simdjson.md"
+                    },
+                    {
+                        "id": "week_5___fuzzing_with_afl_md",
+                        "name": "Week 5 - Fuzzing with AFL.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 5 - Fuzzing with AFL.md"
+                    },
+                    {
+                        "id": "week_5___web_browser_security_md",
+                        "name": "Week 5 - Web browser security.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 5 - Web browser security.md"
+                    },
+                    {
+                        "id": "week_5_interprocess_communication_md",
+                        "name": "Week 5 Interprocess communication.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 5 Interprocess communication.md"
+                    },
+                    {
+                        "id": "week_50___eg_walker__hybrid_crdt_md",
+                        "name": "Week 50 - Eg-walker, hybrid CRDT.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 50 - Eg-walker, hybrid CRDT.md"
+                    },
+                    {
+                        "id": "week_6___build_systems_md",
+                        "name": "Week 6 - Build systems.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 6 - Build systems.md"
+                    },
+                    {
+                        "id": "week_6___the_essence_of_graph_databases_md",
+                        "name": "Week 6 - The essence of graph databases.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 6 - The essence of graph databases.md"
+                    },
+                    {
+                        "id": "week_6_networking_md",
+                        "name": "Week 6 Networking.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 6 Networking.md"
+                    },
+                    {
+                        "id": "week_7___storage_level_systems_engineering_md",
+                        "name": "Week 7 - Storage-level systems engineering.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 7 - Storage-level systems engineering.md"
+                    },
+                    {
+                        "id": "week_7___virtualization_with_kvm_md",
+                        "name": "Week 7 - Virtualization with KVM.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 7 - Virtualization with KVM.md"
+                    },
+                    {
+                        "id": "week_7_multithreading_md",
+                        "name": "Week 7 Multithreading.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 7 Multithreading.md"
+                    },
+                    {
+                        "id": "week_8___structured_data_encoding_md",
+                        "name": "Week 8 - Structured data encoding.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 8 - Structured data encoding.md"
+                    },
+                    {
+                        "id": "week_8___web_compiler_infrastructure_md",
+                        "name": "Week 8 - Web compiler infrastructure.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 8 - Web compiler infrastructure.md"
+                    },
+                    {
+                        "id": "week_8_signals_md",
+                        "name": "Week 8 Signals.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 8 Signals.md"
+                    },
+                    {
+                        "id": "week_9___practical_authenticated_encryption_md",
+                        "name": "Week 9 - Practical authenticated encryption.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 9 - Practical authenticated encryption.md"
+                    },
+                    {
+                        "id": "week_9___what_the_k8s__md",
+                        "name": "Week 9 - What the k8s!.md",
+                        "type": "file",
+                        "path": "/files/notes/weekly_notes/Week 9 - What the k8s!.md"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": "projects",
+        "name": "projects",
+        "type": "folder",
+        "children": [
+            {
+                "id": "big2s_md",
+                "name": "big2s.md",
+                "type": "file",
+                "path": "/files/projects/big2s.md"
+            },
+            {
+                "id": "catch_that_qubit_md",
+                "name": "catch_that_qubit.md",
+                "type": "file",
+                "path": "/files/projects/catch_that_qubit.md"
+            },
+            {
+                "id": "flight_simulator_md",
+                "name": "flight_simulator.md",
+                "type": "file",
+                "path": "/files/projects/flight_simulator.md"
+            },
+            {
+                "id": "keystone_light_md",
+                "name": "keystone_light.md",
+                "type": "file",
+                "path": "/files/projects/keystone_light.md"
+            },
+            {
+                "id": "monges_theorem_md",
+                "name": "monges_theorem.md",
+                "type": "file",
+                "path": "/files/projects/monges_theorem.md"
+            },
+            {
+                "id": "moonshine_md",
+                "name": "moonshine.md",
+                "type": "file",
+                "path": "/files/projects/moonshine.md"
+            },
+            {
+                "id": "profound_sound_md",
+                "name": "profound_sound.md",
+                "type": "file",
+                "path": "/files/projects/profound_sound.md"
+            },
+            {
+                "id": "rayquaza_orm_md",
+                "name": "rayquaza_orm.md",
+                "type": "file",
+                "path": "/files/projects/rayquaza_orm.md"
+            },
+            {
+                "id": "sorting_octopus_md",
+                "name": "sorting_octopus.md",
+                "type": "file",
+                "path": "/files/projects/sorting_octopus.md"
+            },
+            {
+                "id": "this_is_water_md",
+                "name": "this_is_water.md",
+                "type": "file",
+                "path": "/files/projects/this_is_water.md"
             }
         ]
     },
@@ -419,23 +1535,17 @@
         "type": "folder",
         "children": [
             {
-                "id": "rc_webring",
-                "name": "rc_webring.txt",
+                "id": "rc_webring_md",
+                "name": "rc_webring.md",
                 "type": "file",
                 "path": "/files/webrings/rc_webring.md"
             },
             {
-                "id": "rc_webring_v2",
-                "name": "rc_webring_v2.txt",
+                "id": "rc_webring_v2_md",
+                "name": "rc_webring_v2.md",
                 "type": "file",
                 "path": "/files/webrings/rc_webring_v2.md"
             }
         ]
-    },
-    {
-        "id": "readme",
-        "name": "readme.txt",
-        "type": "file",
-        "path": "/files/README.md"
     }
 ]
