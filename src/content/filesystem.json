@@ -161,31 +161,6 @@
                 ]
             },
             {
-                "id": "daily_notes",
-                "name": "daily_notes",
-                "type": "folder",
-                "children": [
-                    {
-                        "id": "2025_04_14_md",
-                        "name": "2025-04-14.md",
-                        "type": "file",
-                        "path": "/files/notes/daily_notes/2025-04-14.md"
-                    },
-                    {
-                        "id": "2025_04_15_md",
-                        "name": "2025-04-15.md",
-                        "type": "file",
-                        "path": "/files/notes/daily_notes/2025-04-15.md"
-                    },
-                    {
-                        "id": "day1notes_md",
-                        "name": "Day1Notes.md",
-                        "type": "file",
-                        "path": "/files/notes/daily_notes/Day1Notes.md"
-                    }
-                ]
-            },
-            {
                 "id": "entertainment",
                 "name": "entertainment",
                 "type": "folder",
@@ -611,18 +586,6 @@
                         "name": "Meetup_049-Fay *.md",
                         "type": "file",
                         "path": "/files/notes/meetups/Meetup_049-Fay *.md"
-                    },
-                    {
-                        "id": "presentations_2_20_25_md",
-                        "name": "Presentations 2-20-25.md",
-                        "type": "file",
-                        "path": "/files/notes/meetups/Presentations 2-20-25.md"
-                    },
-                    {
-                        "id": "recurse_intros_notes_md",
-                        "name": "Recurse Intros Notes.md",
-                        "type": "file",
-                        "path": "/files/notes/meetups/Recurse Intros Notes.md"
                     }
                 ]
             },
@@ -972,12 +935,6 @@
                         "path": "/files/notes/technical_deep_dives/GPU Kernel Programming.md"
                     }
                 ]
-            },
-            {
-                "id": "test_file_md",
-                "name": "test_file.md",
-                "type": "file",
-                "path": "/files/notes/test_file.md"
             },
             {
                 "id": "weekly_notes",
