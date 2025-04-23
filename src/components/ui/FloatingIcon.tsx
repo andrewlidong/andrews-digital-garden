@@ -35,17 +35,22 @@ export function FloatingIcon() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const handleClick = () => {
+    window.open('https://i.ytimg.com/vi/k5W3oHV1u9o/maxresdefault.jpg', '_blank');
+  };
+
   return (
     <div
       ref={containerRef}
-      className="fixed right-4 top-0 z-50 transition-transform duration-300 ease-out"
+      className="fixed right-4 top-0 z-50 transition-transform duration-300 ease-out cursor-pointer"
       style={{
         transform: 'translateY(0)',
       }}
+      onClick={handleClick}
     >
       <span
         ref={dogRef}
-        className="text-4xl inline-block transition-transform duration-300"
+        className="text-4xl inline-block transition-transform duration-300 hover:scale-110"
         style={{
           textShadow: '0 0 10px rgba(255, 255, 255, 0.5)',
           filter: 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.3))',
