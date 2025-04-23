@@ -10,8 +10,8 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={
-          isMobile ? 
-            <Navigate to="/mobile" replace /> : 
+          isMobile ?
+            <Navigate to="/mobile" replace /> :
             <PersonalPage />
         } />
         <Route path="/mobile" element={<MobilePage />} />
