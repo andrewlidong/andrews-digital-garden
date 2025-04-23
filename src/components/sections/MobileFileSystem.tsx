@@ -120,7 +120,11 @@ export function MobileFileSystem({
       {currentContent ? (
         <div className="bg-white/5 backdrop-blur-sm rounded-lg p-6 border border-white/10 shadow-lg">
           <button
-            onClick={() => setCurrentContent(null)}
+            onClick={() => {
+              setCurrentContent(null);
+              setCurrentFile(null);
+              setCurrentPath([]);
+            }}
             className="mb-4 px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 flex items-center gap-2"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
