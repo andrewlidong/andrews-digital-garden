@@ -9,12 +9,15 @@ import { useNavigate } from "react-router-dom";
 import { useMobileDetect } from "@/hooks/useMobileDetect";
 import { FloatingIcon } from "@/components/ui/FloatingIcon";
 import { MobileFileSystem } from "../components/sections/MobileFileSystem";
+import type { FileItem } from "../components/sections/MobileFileSystem";
 import "../styles/animations.css";
 
 function MobilePage() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("home");
   const [isScrolling, setIsScrolling] = useState(false);
+  const [currentContent, setCurrentContent] = useState<string | null>(null);
+  const [currentFile, setCurrentFile] = useState<FileItem | null>(null);
   const isMobile = useMobileDetect();
 
   // Ref for the scroll progress bar
@@ -180,7 +183,12 @@ function MobilePage() {
         <Home ref={(el) => (sectionRefs.current.home = el)} isMobile={true} />
         <Projects ref={(el) => (sectionRefs.current.projects = el)} />
         <div id="notes" ref={(el) => (sectionRefs.current.notes = el)} className="min-h-screen py-20">
-          <MobileFileSystem />
+          <MobileFileSystem
+            currentContent={currentContent}
+            setCurrentContent={setCurrentContent}
+            currentFile={currentFile}
+            setCurrentFile={setCurrentFile}
+          />
         </div>
         <Contact ref={(el) => (sectionRefs.current.contact = el)} />
       </div>

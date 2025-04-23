@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import fileSystemData from '@/content/filesystem.json';
 import { FileContent } from '../personal/FileContent';
 
-type FileItem = {
+export type FileItem = {
   id: string;
   name: string;
   type: "file" | "folder";
@@ -12,11 +12,21 @@ type FileItem = {
   children?: FileItem[];
 };
 
-export function MobileFileSystem() {
+interface MobileFileSystemProps {
+  currentContent: string | null;
+  setCurrentContent: (content: string | null) => void;
+  currentFile: FileItem | null;
+  setCurrentFile: (file: FileItem | null) => void;
+}
+
+export function MobileFileSystem({
+  currentContent,
+  setCurrentContent,
+  currentFile,
+  setCurrentFile
+}: MobileFileSystemProps) {
   const [fileSystem, setFileSystem] = useState<FileItem[]>([]);
   const [currentPath, setCurrentPath] = useState<string[]>([]);
-  const [currentContent, setCurrentContent] = useState<string | null>(null);
-  const [currentFile, setCurrentFile] = useState<FileItem | null>(null);
 
   useEffect(() => {
     const loadContent = async (items: FileItem[]): Promise<FileItem[]> => {
