@@ -6,106 +6,6 @@
         "path": "/files/README.md"
     },
     {
-        "id": "interests",
-        "name": "interests",
-        "type": "folder",
-        "children": [
-            {
-                "id": "bigvision_md",
-                "name": "bigvision.md",
-                "type": "file",
-                "path": "/files/interests/bigvision.md"
-            },
-            {
-                "id": "film",
-                "name": "film",
-                "type": "folder",
-                "children": [
-                    {
-                        "id": "favorite_films_md",
-                        "name": "favorite_films.md",
-                        "type": "file",
-                        "path": "/files/interests/film/favorite_films.md"
-                    }
-                ]
-            },
-            {
-                "id": "music",
-                "name": "music",
-                "type": "folder",
-                "children": [
-                    {
-                        "id": "live_music_md",
-                        "name": "live_music.md",
-                        "type": "file",
-                        "path": "/files/interests/music/live_music.md"
-                    },
-                    {
-                        "id": "music_production_md",
-                        "name": "music_production.md",
-                        "type": "file",
-                        "path": "/files/interests/music/music_production.md"
-                    },
-                    {
-                        "id": "musical_journey_md",
-                        "name": "musical_journey.md",
-                        "type": "file",
-                        "path": "/files/interests/music/musical_journey.md"
-                    },
-                    {
-                        "id": "phish_md",
-                        "name": "phish.md",
-                        "type": "file",
-                        "path": "/files/interests/music/phish.md"
-                    },
-                    {
-                        "id": "playlists_and_curation_md",
-                        "name": "playlists_and_curation.md",
-                        "type": "file",
-                        "path": "/files/interests/music/playlists_and_curation.md"
-                    }
-                ]
-            },
-            {
-                "id": "sports",
-                "name": "sports",
-                "type": "folder",
-                "children": [
-                    {
-                        "id": "lakers_md",
-                        "name": "lakers.md",
-                        "type": "file",
-                        "path": "/files/interests/sports/lakers.md"
-                    },
-                    {
-                        "id": "packers_md",
-                        "name": "packers.md",
-                        "type": "file",
-                        "path": "/files/interests/sports/packers.md"
-                    },
-                    {
-                        "id": "triathlons_md",
-                        "name": "triathlons.md",
-                        "type": "file",
-                        "path": "/files/interests/sports/triathlons.md"
-                    },
-                    {
-                        "id": "yankees_md",
-                        "name": "yankees.md",
-                        "type": "file",
-                        "path": "/files/interests/sports/yankees.md"
-                    }
-                ]
-            },
-            {
-                "id": "starcraft_md",
-                "name": "starcraft.md",
-                "type": "file",
-                "path": "/files/interests/starcraft.md"
-            }
-        ]
-    },
-    {
         "id": "notes",
         "name": "notes",
         "type": "folder",
@@ -194,6 +94,106 @@
                         "name": "To Zanarkind.md",
                         "type": "file",
                         "path": "/files/notes/entertainment/To Zanarkind.md"
+                    }
+                ]
+            },
+            {
+                "id": "interests",
+                "name": "interests",
+                "type": "folder",
+                "children": [
+                    {
+                        "id": "bigvision_md",
+                        "name": "bigvision.md",
+                        "type": "file",
+                        "path": "/files/notes/interests/bigvision.md"
+                    },
+                    {
+                        "id": "film",
+                        "name": "film",
+                        "type": "folder",
+                        "children": [
+                            {
+                                "id": "favorite_films_md",
+                                "name": "favorite_films.md",
+                                "type": "file",
+                                "path": "/files/notes/interests/film/favorite_films.md"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "music",
+                        "name": "music",
+                        "type": "folder",
+                        "children": [
+                            {
+                                "id": "live_music_md",
+                                "name": "live_music.md",
+                                "type": "file",
+                                "path": "/files/notes/interests/music/live_music.md"
+                            },
+                            {
+                                "id": "music_production_md",
+                                "name": "music_production.md",
+                                "type": "file",
+                                "path": "/files/notes/interests/music/music_production.md"
+                            },
+                            {
+                                "id": "musical_journey_md",
+                                "name": "musical_journey.md",
+                                "type": "file",
+                                "path": "/files/notes/interests/music/musical_journey.md"
+                            },
+                            {
+                                "id": "phish_md",
+                                "name": "phish.md",
+                                "type": "file",
+                                "path": "/files/notes/interests/music/phish.md"
+                            },
+                            {
+                                "id": "playlists_and_curation_md",
+                                "name": "playlists_and_curation.md",
+                                "type": "file",
+                                "path": "/files/notes/interests/music/playlists_and_curation.md"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "sports",
+                        "name": "sports",
+                        "type": "folder",
+                        "children": [
+                            {
+                                "id": "lakers_md",
+                                "name": "lakers.md",
+                                "type": "file",
+                                "path": "/files/notes/interests/sports/lakers.md"
+                            },
+                            {
+                                "id": "packers_md",
+                                "name": "packers.md",
+                                "type": "file",
+                                "path": "/files/notes/interests/sports/packers.md"
+                            },
+                            {
+                                "id": "triathlons_md",
+                                "name": "triathlons.md",
+                                "type": "file",
+                                "path": "/files/notes/interests/sports/triathlons.md"
+                            },
+                            {
+                                "id": "yankees_md",
+                                "name": "yankees.md",
+                                "type": "file",
+                                "path": "/files/notes/interests/sports/yankees.md"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "starcraft_md",
+                        "name": "starcraft.md",
+                        "type": "file",
+                        "path": "/files/notes/interests/starcraft.md"
                     }
                 ]
             },
