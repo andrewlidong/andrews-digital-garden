@@ -20,23 +20,9 @@ With software engineering, I discovered that the familiar systematic approach to
 
 ## My Philosophy
 
-I've been blessed to have had several friends and mentors who have supported, motivated, and inspired me. I'm especially drawn to two sayings. The first was that good engineers ought to deliver products with "style and taste." The other claimed that his proudest achievement in life was to have walked through it with "dignity and grace." 
+I've been blessed to have had several friends and mentors who have supported, motivated, and inspired me. I'm especially drawn to two sayings. The first was that good engineers ought to deliver products with "style and taste." The other claimed that his proudest achievement in life was to have walked through it with "dignity and grace."
 
 I believe that the most important part of my career is how it moves and touches those around me. To that end, I strive to work with style, taste, dignity, and grace.
-
-## What You'll Find Here
-
-### Projects
-Explore my software development work, from full-stack applications to experimental tools. Each project represents a unique challenge and learning opportunity.
-
-### Interests
-Dive into my personal interests including sports (Lakers, Packers, Yankees), music (Phish), gaming (StarCraft 2), athletic pursuits (triathlons), and community involvement (BigVision).
-
-### Film
-Discover my passion for cinema through sections on film appreciation, filmmaking experiences, festival involvement, and favorite films across various genres and eras.
-
-### Music
-Explore my musical journey as both a listener and creator, including production work, live music experiences, and thoughtfully curated playlists.
 
 ## Beyond Coding
 
@@ -48,10 +34,6 @@ When I'm not coding, you can find me:
 - Attending live music events
 - Making use of my library card
 
-I believe in balancing technical work with activities that nourish the body, mind, and spirit.
-
 ## Let's Connect
 
 I'm always open to interesting conversations, collaborations, and opportunities. Feel free to explore this digital garden and reach out if something catches your interest.
-
-*PS - For a more traditional presentation of my professional background, check out Mobile Mode, which is automatically enabled on mobile devices.*
