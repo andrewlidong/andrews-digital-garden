@@ -18,7 +18,7 @@ While working at Restaurant Daniel, I decided to pursue a new career. Software e
 
 With software engineering, I discovered that the familiar systematic approach to thinking about problems I'd formerly encountered as a mathematician could be applied creatively towards applications and scalable good. During my time as an engineer, I've had the opportunity to work across the stack, from frontend to backend to devops and analytics. I'm particularly interested in understanding interrelations between systems, having worked on complex distributed systems in the past.
 
-## My Philosophy
+## Style, Taste, Dignity, and Grace
 
 I've been blessed to have had several friends and mentors who have supported, motivated, and inspired me. I'm especially drawn to two sayings. The first was that good engineers ought to deliver products with "style and taste." The other claimed that his proudest achievement in life was to have walked through it with "dignity and grace."
 
