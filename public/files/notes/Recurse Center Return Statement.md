@@ -2,7 +2,7 @@
 
 I've been carrying around imposter syndrome like a chef's knife I never learned to properly hold - always there, a little dangerous, never quite fitting into my hand. Going from restaurants to engineering wasn't some romantic pivot story about following my passion. The truth is I needed a job after leaving Daniel, something that would make me employable and help me stop being this black sheep living in Manhattan amongst its white collar ivy league professionals. And I also wasn't one of these Recursers who grew up loving computers; I just wanted work that made sense.
 
-Getting my first programming job was brutal. Even now, sitting pretty close to a staff engineering title, this imposter branded knife still sits in my bag. But sometimes - when I'm helping a junior debug a docker build issue or when I ship something that actually impresses people - I get a temporary reprieve. I still remember at Recurse presenting my data storage engine at half-baked demo-day and hearing Richard (someone I genuinely look up to) go "wow" when I showed off the compaction feature. That meant a lot to me.
+Getting my first programming job was brutal. Even now, sitting pretty close to a staff engineer title, this imposter branded knife still sits in my bag. But sometimes - when I'm helping a junior debug a docker build issue or when I ship something that actually impresses people - I get a temporary reprieve. I still remember at Recurse presenting my data storage engine at half-baked demo-day and hearing Richard (someone I genuinely look up to) go "wow" when I showed off the compaction feature. That meant a lot to me.
 
 ## My Time at RC
 
