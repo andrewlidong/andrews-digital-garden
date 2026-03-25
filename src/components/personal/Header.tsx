@@ -8,9 +8,11 @@ interface MenuItem {
 
 interface HeaderProps {
   onOpenTerminal?: () => void;
+  pawModeActive?: boolean;
+  onTogglePawMode?: () => void;
 }
 
-export const Header: React.FC<HeaderProps> = ({ onOpenTerminal }) => {
+export const Header: React.FC<HeaderProps> = ({ onOpenTerminal, pawModeActive, onTogglePawMode }) => {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [currentTime, setCurrentTime] = useState<string>("");
   const navigate = useNavigate();
@@ -135,6 +137,25 @@ export const Header: React.FC<HeaderProps> = ({ onOpenTerminal }) => {
                   className="px-2 py-1 rounded text-gray-300 hover:text-white hover:bg-gray-700"
                 >
                   terminal
+                </button>
+              </div>
+            )}
+            {onTogglePawMode && (
+              <div className="relative">
+                <button
+                  onClick={onTogglePawMode}
+                  className={`px-2 py-1 rounded flex items-center gap-1 ${
+                    pawModeActive ? "bg-gray-700 text-blue-400" : "text-gray-300 hover:text-white hover:bg-gray-700"
+                  }`}
+                >
+                  <svg width="14" height="14" viewBox="0 0 64 64" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <ellipse cx="32" cy="42" rx="14" ry="12" />
+                    <ellipse cx="16" cy="18" rx="7" ry="9" />
+                    <ellipse cx="28" cy="12" rx="7" ry="9" />
+                    <ellipse cx="40" cy="12" rx="7" ry="9" transform="rotate(-5 40 12)" />
+                    <ellipse cx="50" cy="18" rx="7" ry="9" transform="rotate(-10 50 18)" />
+                  </svg>
+                  paw
                 </button>
               </div>
             )}

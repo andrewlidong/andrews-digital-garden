@@ -7,6 +7,7 @@ import { Terminal } from "@/components/personal/Terminal";
 import fileSystemData from "@/content/filesystem.json";
 import { Header } from "@/components/personal/Header";
 import StartupScreen from "@/components/personal/StartupScreen";
+import PawStampMode from "@/components/personal/PawStampMode";
 
 type FileItem = {
   id: string;
@@ -47,6 +48,7 @@ function PersonalPage() {
   const [windows, setWindows] = useState<WindowState[]>([]);
   const [maxZIndex, setMaxZIndex] = useState(0);
   const [disabledItems, setDisabledItems] = useState<Set<string>>(new Set());
+  const [pawModeActive, setPawModeActive] = useState(false);
   const [clickedItem, setClickedItem] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [isStarting, setIsStarting] = useState(true);
@@ -279,7 +281,7 @@ function PersonalPage() {
         setStartupComplete(true);
       }} />}
       <div className="font-mono fixed top-0 left-0 w-full h-full bg-gray-900 text-white">
-        <Header onOpenTerminal={openTerminal} />
+        <Header onOpenTerminal={openTerminal} pawModeActive={pawModeActive} onTogglePawMode={() => setPawModeActive(prev => !prev)} />
 
         <div className="flex h-[calc(100vh-60px)] pt-4">
           {/* Left sidebar with filesystem */}
@@ -397,6 +399,7 @@ function PersonalPage() {
           </div>
         )}
       </div>
+    <PawStampMode isActive={pawModeActive} />
     </>
   );
 }
