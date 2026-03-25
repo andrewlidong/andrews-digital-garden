@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { useMobileDetect } from "@/hooks/useMobileDetect";
 import { MobileFileSystem } from "../components/sections/MobileFileSystem";
 import type { FileItem } from "../components/sections/MobileFileSystem";
+import PawStampMode from "@/components/personal/PawStampMode";
 import "../styles/animations.css";
 
 function MobilePage() {
@@ -19,6 +20,7 @@ function MobilePage() {
   const [currentFile, setCurrentFile] = useState<FileItem | null>(null);
   const [bannerVisible, setBannerVisible] = useState(true);
   const [bannerMounted, setBannerMounted] = useState(true);
+  const [pawModeActive, setPawModeActive] = useState(false);
   const bannerShown = useRef(false);
   const isMobile = useMobileDetect();
 
@@ -158,6 +160,23 @@ function MobilePage() {
             {item.label}
           </Button>
         ))}
+        <Button
+          variant="ghost"
+          className={`px-2 md:px-4 py-2 md:py-6 rounded-full transition-all duration-300 ${
+            pawModeActive
+              ? "text-blue-400 bg-gray-700"
+              : "text-gray-100 hover:bg-gray-700 hover:text-white"
+          }`}
+          onClick={() => setPawModeActive((prev) => !prev)}
+        >
+          <svg width="18" height="18" viewBox="0 0 64 64" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="32" cy="42" rx="14" ry="12" />
+            <ellipse cx="16" cy="18" rx="7" ry="9" />
+            <ellipse cx="28" cy="12" rx="7" ry="9" />
+            <ellipse cx="40" cy="12" rx="7" ry="9" transform="rotate(-5 40 12)" />
+            <ellipse cx="50" cy="18" rx="7" ry="9" transform="rotate(-10 50 18)" />
+          </svg>
+        </Button>
         {!isMobile && (
           <div className="flex items-center space-x-3 mx-4 bg-white px-5 py-3 rounded-full">
             <Switch
@@ -192,6 +211,7 @@ function MobilePage() {
   return (
     <Background>
       <NavBar />
+      <PawStampMode isActive={pawModeActive} />
       {isMobile && <MobileBanner />}
       <div className="text-white">
         <Home ref={(el) => (sectionRefs.current.home = el)} isMobile={true} />
