@@ -1,12 +1,14 @@
 import { useState, useEffect, useRef } from "react";
 
 const STAMP_DURATION = 2000;
+const PAW_COLORS = ["#2196F3", "#E91E63", "#4CAF50", "#FF9800", "#9C27B0", "#00BCD4", "#F44336", "#FFEB3B"];
 
 interface Stamp {
   x: number;
   y: number;
   id: number;
   rotation: number;
+  color: string;
   fading: boolean;
 }
 
@@ -39,12 +41,17 @@ export default function PawStampMode({ isActive }: { isActive: boolean }) {
     const handleClick = (e: MouseEvent) => {
       if (!isActiveRef.current) return;
 
+      // Don't stamp on interactive element clicks (buttons, links, etc.)
+      const target = e.target as HTMLElement;
+      if (target.closest('a, button, input, select, textarea, [role="button"]')) return;
+
       const id = Date.now() + Math.random();
       const stamp: Stamp = {
         x: e.clientX,
         y: e.clientY,
         id,
         rotation: Math.random() * 40 - 20,
+        color: PAW_COLORS[Math.floor(Math.random() * PAW_COLORS.length)],
         fading: false,
       };
 
@@ -77,7 +84,7 @@ export default function PawStampMode({ isActive }: { isActive: boolean }) {
             transform: `rotate(${stamp.rotation}deg)`,
           }}
         >
-          <PawSvg size={50} />
+          <PawSvg size={50} color={stamp.color} />
         </div>
       ))}
     </div>
