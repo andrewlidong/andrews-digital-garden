@@ -107,20 +107,20 @@ export const Window: React.FC<WindowProps> = ({
       }}
     >
       <div
-        className={`flex flex-col h-full border border-gray-700 bg-gray-800 shadow-lg overflow-hidden`}
+        className={`flex flex-col h-full border border-term-border bg-term-elevated shadow-lg overflow-hidden`}
       >
         {/* Window header */}
         <div
-          className="window-drag-handle flex items-center justify-between px-3 py-2 bg-gray-900 border-b border-gray-700 text-white"
+          className="window-drag-handle flex items-center justify-between px-3 py-2 bg-term-inset border-b border-term-border text-term-fg"
         >
           <div className="flex items-center">
-            <span className="text-green-500 mr-2">$</span>
+            <span className="text-term-green mr-2">$</span>
             <span className="font-mono text-sm">{title}</span>
           </div>
           <button
             className={`w-5 h-5 flex items-center justify-center rounded-full ${
-              isCloseButtonPressed ? "bg-red-700" : "bg-red-500"
-            } text-white text-xs`}
+              isCloseButtonPressed ? "opacity-70" : ""
+            } bg-term-red text-term-inset text-xs`}
             onMouseDown={() => setIsCloseButtonPressed(true)}
             onMouseUp={() => setIsCloseButtonPressed(false)}
             onMouseLeave={() => setIsCloseButtonPressed(false)}
@@ -129,17 +129,17 @@ export const Window: React.FC<WindowProps> = ({
             ×
           </button>
         </div>
-        
+
         {/* File path breadcrumb */}
-        <div className="bg-gray-800 px-3 py-1 border-b border-gray-700 text-xs font-mono">
-          <span className="text-blue-400">andrew@digital-garden</span>
-          <span className="text-gray-400">:</span>
-          <span className="text-green-400">~/documents/</span>
-          <span className="text-yellow-300">{title}</span>
+        <div className="bg-term-elevated px-3 py-1 border-b border-term-border text-xs font-mono">
+          <span className="text-term-accent">andrew@digital-garden</span>
+          <span className="text-term-dim">:</span>
+          <span className="text-term-green">~/documents/</span>
+          <span className="text-term-yellow">{title}</span>
         </div>
 
         {/* Window content */}
-        <div className="flex-grow overflow-hidden bg-gray-900 text-white">
+        <div className="flex-grow overflow-hidden bg-term-bg text-term-fg">
           {id === 'terminal' ? (
             <div className="h-full">{children}</div>
           ) : (

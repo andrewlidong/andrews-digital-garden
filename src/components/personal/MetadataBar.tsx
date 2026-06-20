@@ -50,8 +50,8 @@ const Field: React.FC<{ label: string; children: React.ReactNode }> = ({
   children,
 }) => (
   <div className="flex items-baseline gap-1.5 whitespace-nowrap">
-    <span className="text-gray-500">{label}</span>
-    <span className="text-gray-300">{children}</span>
+    <span className="text-term-faint">{label}</span>
+    <span className="text-term-dim">{children}</span>
   </div>
 );
 
@@ -61,7 +61,7 @@ const CommitValue: React.FC = () =>
       href={`${__REPO_URL__}/commit/${__COMMIT_FULL__}`}
       target="_blank"
       rel="noopener noreferrer"
-      className="text-gray-300 hover:text-green-400 hover:underline"
+      className="text-term-dim hover:text-term-accent hover:underline"
     >
       {__COMMIT_HASH__}
     </a>
@@ -93,7 +93,7 @@ export const MetadataBar: React.FC<{ compact?: boolean }> = ({ compact = false }
   }, []);
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-30 border-t border-gray-700 bg-gray-900/90 backdrop-blur-sm px-4 py-1 font-mono text-xs">
+    <div className="fixed bottom-0 left-0 right-0 z-30 border-t border-term-border bg-[color-mix(in_srgb,var(--term-bg-inset)_88%,transparent)] backdrop-blur-sm px-4 py-1 font-mono text-xs">
       <div className="flex items-center gap-x-5 gap-y-1 overflow-x-auto">
         <Field label="commit">
           <CommitValue />
