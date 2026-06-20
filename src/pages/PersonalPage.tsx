@@ -16,6 +16,7 @@ import { readerPath } from "@/lib/frontmatter";
 import { MetadataBar } from "@/components/personal/MetadataBar";
 import { loadFileContent } from "@/lib/loadFileContent";
 import { useTheme } from "@/hooks/useTheme";
+import { getTheme } from "@/lib/themes";
 
 type FileItem = {
   id: string;
@@ -359,7 +360,7 @@ function PersonalPage() {
                   }}
                   aria-hidden="true"
                 >
-                  <ShaderFlower className="h-full w-full" />
+                  <ShaderFlower className="h-full w-full" tokens={getTheme(themeId).tokens} />
                 </div>
               </Suspense>
             )}
