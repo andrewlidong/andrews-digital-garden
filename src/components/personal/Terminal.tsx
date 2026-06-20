@@ -14,6 +14,10 @@ type FileItem = {
 type TerminalProps = {
   onOpenFile: (fileId: string) => void;
   fileSystem: FileItem[];
+  // A command to run automatically (e.g. one typed in the home-page prompt).
+  initialCommand?: string;
+  // Bumped each time a new initialCommand should run, so repeated commands re-fire.
+  commandNonce?: number;
 };
 
 type TerminalHistory = {
@@ -22,7 +26,7 @@ type TerminalHistory = {
   isError?: boolean;
 };
 
-export function Terminal({ onOpenFile, fileSystem }: TerminalProps) {
+export function Terminal({ onOpenFile, fileSystem, initialCommand, commandNonce }: TerminalProps) {
   const [input, setInput] = useState('');
   const [history, setHistory] = useState<TerminalHistory[]>([
     { 
@@ -220,10 +224,19 @@ export function Terminal({ onOpenFile, fileSystem }: TerminalProps) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim()) return;
-    
+
     handleCommand(input);
     setInput('');
   };
+
+  // Run a command handed in from outside (e.g. typed in the home-page prompt).
+  // Fires on mount and whenever commandNonce changes.
+  useEffect(() => {
+    if (initialCommand && initialCommand.trim()) {
+      handleCommand(initialCommand);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [commandNonce]);
 
   return (
     <div 
