@@ -1,5 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
+import { readerPath } from '@/lib/frontmatter';
+import type { Theme } from '@/lib/themes';
 
 type FileItem = {
   id: string;
@@ -17,6 +20,10 @@ type TerminalProps = {
   initialCommand?: string;
   // Bumped each time a new initialCommand should run, so repeated commands re-fire.
   commandNonce?: number;
+  // Theme registry + active id + setter, so the `theme` command can switch the rice.
+  themes?: Theme[];
+  themeId?: string;
+  onSetTheme?: (id: string) => void;
 };
 
 type TerminalHistory = {
@@ -25,7 +32,7 @@ type TerminalHistory = {
   isError?: boolean;
 };
 
-export function Terminal({ onOpenFile, fileSystem, initialCommand, commandNonce }: TerminalProps) {
+export function Terminal({ onOpenFile, fileSystem, initialCommand, commandNonce, themes, themeId, onSetTheme }: TerminalProps) {
   const [input, setInput] = useState('');
   const [history, setHistory] = useState<TerminalHistory[]>([
     { 
@@ -37,6 +44,7 @@ export function Terminal({ onOpenFile, fileSystem, initialCommand, commandNonce 
   const [currentDir, setCurrentDir] = useState<FileItem[]>(fileSystem);
   const inputRef = useRef<HTMLInputElement>(null);
   const terminalRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
   // Auto-scroll to bottom when history changes
   useEffect(() => {
@@ -112,11 +120,56 @@ export function Terminal({ onOpenFile, fileSystem, initialCommand, commandNonce 
         output = `Available commands:
   ls - List files and directories
   cd [path] - Change directory
-  cat [file] - Display file contents
+  cat [file] - Open file in a window
+  vim [file] - Open file full screen (alias: nvim)
   pwd - Show current directory
+  theme - List or switch color themes (try 'theme list')
   clear - Clear terminal
   help - Show this help message`;
         break;
+
+      case 'theme': {
+        if (!themes || !onSetTheme) {
+          output = 'Themes are not available.';
+          isError = true;
+          break;
+        }
+        const sub = (args[1] || '').toLowerCase();
+        const active = themes.find((t) => t.id === themeId);
+
+        if (!sub || sub === 'list') {
+          const rows = themes.map((t) => {
+            const marker = t.id === themeId ? '<span class="text-term-accent">*</span>' : ' ';
+            const swatch = `<span style="color:${t.tokens.accent}">●</span><span style="color:${t.tokens.green}">●</span><span style="color:${t.tokens.yellow}">●</span>`;
+            return `  ${marker} ${swatch} <span class="text-term-fg">${t.id.padEnd(18)}</span><span class="text-term-faint">${t.name}</span>`;
+          });
+          output = `Available themes (current: <span class="text-term-accent">${active?.name ?? 'unknown'}</span>):<br/>${rows.join('<br/>')}<br/><br/>Switch with: <span class="text-term-yellow">theme set &lt;id&gt;</span>`;
+        } else if (sub === 'set') {
+          const id = (args[2] || '').toLowerCase();
+          const match = themes.find((t) => t.id === id);
+          if (!id) {
+            output = "Usage: theme set &lt;id&gt;  (run 'theme list' to see ids)";
+            isError = true;
+          } else if (!match) {
+            output = `Unknown theme: ${id}. Run 'theme list' to see available ids.`;
+            isError = true;
+          } else {
+            onSetTheme(match.id);
+            output = `Theme set to <span class="text-term-accent">${match.name}</span>.`;
+          }
+        } else {
+          // Allow the shorthand `theme <id>`.
+          const match = themes.find((t) => t.id === sub);
+          if (match) {
+            onSetTheme(match.id);
+            output = `Theme set to <span class="text-term-accent">${match.name}</span>.`;
+          } else {
+            output = `Usage: theme list | theme set &lt;id&gt;`;
+            isError = true;
+          }
+        }
+        break;
+      }
 
       case 'ls':
         if (currentDir.length === 0) {
@@ -124,11 +177,11 @@ export function Terminal({ onOpenFile, fileSystem, initialCommand, commandNonce 
         } else {
           const folders = currentDir
             .filter(item => item.type === 'folder')
-            .map(item => `<span class="text-blue-400">📁 ${item.name}/</span>`);
-          
+            .map(item => `<span class="text-term-accent">📁 ${item.name}/</span>`);
+
           const files = currentDir
             .filter(item => item.type === 'file')
-            .map(item => `<span class="text-green-400">📄 ${item.name}</span>`);
+            .map(item => `<span class="text-term-green">📄 ${item.name}</span>`);
           
           output = [...folders, ...files].join('<br />');
         }
@@ -204,6 +257,33 @@ export function Terminal({ onOpenFile, fileSystem, initialCommand, commandNonce 
         }
         break;
 
+      case 'vim':
+      case 'nvim':
+      case 'edit':
+        if (args.length < 2) {
+          output = `Usage: ${command} [filename]`;
+          isError = true;
+        } else {
+          const fileName = args[1];
+          const file = currentDir.find(
+            item => item.type === 'file' &&
+            (item.name.toLowerCase() === fileName.toLowerCase() ||
+             item.name.toLowerCase() === `${fileName.toLowerCase()}.md` ||
+             item.name.toLowerCase().replace(/\.md$/, '') === fileName.toLowerCase())
+          );
+
+          if (file && file.path) {
+            output = `Opening ${file.name} full screen...`;
+            setHistory(prev => [...prev, { command: cmd, output, isError }]);
+            setTimeout(() => navigate(readerPath(file.path)), 150);
+            return;
+          } else {
+            output = `File not found: ${fileName}`;
+            isError = true;
+          }
+        }
+        break;
+
       case 'pwd':
         output = currentPath;
         break;
@@ -228,7 +308,9 @@ export function Terminal({ onOpenFile, fileSystem, initialCommand, commandNonce 
     setInput('');
   };
 
-  const COMMANDS = ['help', 'ls', 'cd', 'cat', 'pwd', 'clear'];
+  const COMMANDS = ['help', 'ls', 'cd', 'cat', 'vim', 'nvim', 'edit', 'pwd', 'theme', 'clear'];
+  // Commands that take a file argument (for argument completion).
+  const FILE_COMMANDS = ['cat', 'vim', 'nvim', 'edit'];
 
   // Find the longest common prefix shared by all candidate strings.
   const longestCommonPrefix = (items: string[]): string => {
@@ -261,13 +343,14 @@ export function Terminal({ onOpenFile, fileSystem, initialCommand, commandNonce 
     } else {
       // Completing an argument (file or folder name in the current directory).
       const command = parts[0].toLowerCase();
-      if (command !== 'cd' && command !== 'cat') return;
+      const isFileCommand = FILE_COMMANDS.includes(command);
+      if (command !== 'cd' && !isFileCommand) return;
 
       fragment = /\s$/.test(input) ? '' : parts[parts.length - 1];
       const matches = currentDir.filter(item =>
         item.name.toLowerCase().startsWith(fragment.toLowerCase())
       );
-      // cat only operates on files; cd only on folders.
+      // File commands only operate on files; cd only on folders.
       const filtered =
         command === 'cd'
           ? matches.filter(item => item.type === 'folder')
@@ -321,37 +404,37 @@ export function Terminal({ onOpenFile, fileSystem, initialCommand, commandNonce 
   }, [commandNonce]);
 
   return (
-    <div 
+    <div
       ref={terminalRef}
-      className="bg-gray-900 text-green-400 p-4 font-mono text-sm h-full overflow-y-auto"
+      className="bg-term-bg text-term-green p-4 font-mono text-sm h-full overflow-y-auto"
     >
       {history.map((item, index) => (
         <div key={index} className="mb-2">
           {item.command && (
             <div className="flex">
-              <span className="text-blue-400 mr-2">guest@andrews-garden:~{currentPath}$</span>
-              <span>{item.command}</span>
+              <span className="text-term-accent mr-2">guest@andrews-garden:~{currentPath}$</span>
+              <span className="text-term-fg">{item.command}</span>
             </div>
           )}
-          <div 
+          <div
             className={cn(
-              "whitespace-pre-wrap", 
-              item.isError ? "text-red-400" : ""
+              "whitespace-pre-wrap",
+              item.isError ? "text-term-red" : ""
             )}
             dangerouslySetInnerHTML={{ __html: item.output }}
           />
         </div>
       ))}
-      
+
       <form onSubmit={handleSubmit} className="flex">
-        <span className="text-blue-400 mr-2">guest@andrews-garden:~{currentPath}$</span>
+        <span className="text-term-accent mr-2">guest@andrews-garden:~{currentPath}$</span>
         <input
           ref={inputRef}
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
-          className="flex-1 bg-transparent outline-none"
+          className="flex-1 bg-transparent outline-none text-term-fg"
           autoFocus
         />
       </form>

@@ -9,6 +9,40 @@ const __dirname = path.dirname(__filename);
 const PUBLIC_FILES_DIR = path.join(__dirname, '../public/files');
 const FILESYSTEM_JSON_PATH = path.join(__dirname, '../src/content/filesystem.json');
 
+// Pull `title` and `date` out of a markdown file's YAML frontmatter so the UI
+// can show/sort posts without fetching their full contents.
+function readFrontmatter(filePath) {
+    if (!/\.(md|markdown)$/i.test(filePath)) return {};
+    const raw = fs.readFileSync(filePath, 'utf8');
+    const match = raw.match(/^﻿?---\s*\n([\s\S]*?)\n---\s*\n?/);
+    if (!match) return {};
+    const meta = {};
+    for (const line of match[1].split('\n')) {
+        const idx = line.indexOf(':');
+        if (idx === -1) continue;
+        const key = line.slice(0, idx).trim();
+        let value = line.slice(idx + 1).trim();
+        if (
+            (value.startsWith('"') && value.endsWith('"')) ||
+            (value.startsWith("'") && value.endsWith("'"))
+        ) {
+            value = value.slice(1, -1);
+        }
+        if ((key === 'title' || key === 'date' || key === 'subtitle') && value) {
+            meta[key] = value;
+        }
+        if (key === 'tags' && value) {
+            const tags = value
+                .replace(/^\[|\]$/g, '')
+                .split(',')
+                .map((t) => t.trim().replace(/^["']|["']$/g, ''))
+                .filter(Boolean);
+            if (tags.length) meta.tags = tags;
+        }
+    }
+    return meta;
+}
+
 // Function to generate filesystem structure
 function generateFilesystemStructure(dir) {
     const stats = fs.statSync(dir);
@@ -19,7 +53,8 @@ function generateFilesystemStructure(dir) {
             id: name.replace(/[^a-zA-Z0-9]/g, '_').toLowerCase(),
             name: name,
             type: 'file',
-            path: `/files/${path.relative(PUBLIC_FILES_DIR, dir).replace(/\\/g, '/')}`
+            path: `/files/${path.relative(PUBLIC_FILES_DIR, dir).replace(/\\/g, '/')}`,
+            ...readFrontmatter(dir)
         };
     }
 

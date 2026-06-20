@@ -184,17 +184,17 @@ export default function ClassicScrollbar({ children, alwaysShow = false }: Class
       </div>
 
       {(scrollState.isOverflowing || alwaysShow) && !isTouchDevice && (
-        <div className="w-8 flex flex-col border-l border-gray-800">
+        <div className="w-8 flex flex-col border-l border-term-border">
           <button
             onClick={() => handleArrowClick("up")}
-            className="border-b border-gray-800 h-8 flex items-center justify-center bg-gray-900 hover:bg-gray-800"
+            className="border-b border-term-border h-8 flex items-center justify-center bg-term-inset hover:bg-term-elevated"
           >
-            <span className="text-lg text-white">▲</span>
+            <span className="text-lg text-term-fg">▲</span>
           </button>
 
           <div
             ref={scrollTrackRef}
-            className="flex-grow relative bg-gray-900"
+            className="flex-grow relative bg-term-inset"
           >
             <div
               ref={scrollThumbRef}
@@ -209,15 +209,15 @@ export default function ClassicScrollbar({ children, alwaysShow = false }: Class
                 height: getThumbHeight(),
                 touchAction: "none",
               }}
-              className="absolute w-full bg-white bg-opacity-60 hover:bg-opacity-80 cursor-pointer"
+              className="absolute w-full bg-term-fg bg-opacity-50 hover:bg-opacity-80 cursor-pointer"
             />
           </div>
 
           <button
             onClick={() => handleArrowClick("down")}
-            className="border-t border-gray-800 h-8 flex items-center justify-center bg-gray-900 hover:bg-gray-800"
+            className="border-t border-term-border h-8 flex items-center justify-center bg-term-inset hover:bg-term-elevated"
           >
-            <span className="text-lg text-white">▼</span>
+            <span className="text-lg text-term-fg">▼</span>
           </button>
         </div>
       )}
