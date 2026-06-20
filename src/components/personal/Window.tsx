@@ -114,7 +114,7 @@ export const Window: React.FC<WindowProps> = ({
           isActive
             ? "border-[color-mix(in_srgb,var(--term-accent)_55%,transparent)] shadow-[0_16px_50px_-12px_rgba(0,0,0,0.7),0_0_0_1px_color-mix(in_srgb,var(--term-accent)_25%,transparent),0_0_40px_-8px_color-mix(in_srgb,var(--term-accent)_45%,transparent)]"
             : "border-[color-mix(in_srgb,var(--term-fg)_14%,transparent)] shadow-[0_16px_50px_-12px_rgba(0,0,0,0.6)]"
-        } bg-[color-mix(in_srgb,var(--term-bg-elevated)_72%,transparent)]`}
+        } bg-[color-mix(in_srgb,var(--term-bg-elevated)_92%,transparent)]`}
       >
         {/* Window header */}
         <div

@@ -296,7 +296,7 @@ export function Terminal({ onOpenFile, fileSystem, initialCommand, commandNonce,
   return (
     <div
       ref={terminalRef}
-      className="bg-[color-mix(in_srgb,var(--term-bg)_60%,transparent)] text-term-green p-4 font-mono text-sm h-full overflow-y-auto"
+      className="bg-[color-mix(in_srgb,var(--term-bg)_88%,transparent)] text-term-green p-4 font-mono text-sm h-full overflow-y-auto"
     >
       {history.map((item, index) => (
         <div key={index} className="mb-2">
