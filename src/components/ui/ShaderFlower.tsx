@@ -1,14 +1,20 @@
 import { useEffect, useRef } from "react";
+import type { ThemeTokens } from "@/lib/themes";
 
 /**
  * A self-contained WebGL fragment-shader "enchanted rose" rendered into a canvas.
  *
- * Draws a single deep-crimson rose with bold tattoo-style linework — inspired by
- * the enchanted rose from Beauty and the Beast. The bloom is a spiral of layered
+ * Draws a single rose with bold tattoo-style linework — inspired by the
+ * enchanted rose from Beauty and the Beast. The bloom is a spiral of layered
  * petals (built in log-polar space), set on a thorned stem with two leaves, with
  * a couple of slowly drifting fallen petals and a faint glass-cloche silhouette.
  * It paints onto a transparent canvas so it can sit behind page content. No
  * external dependencies — raw WebGL.
+ *
+ * The palette is derived from the active "rice" theme tokens (see `tokens`
+ * prop): petals take the accent colour, the core glow takes yellow, leaves take
+ * green, and the glass cloche takes cyan. Passing no tokens falls back to the
+ * original deep-crimson rose.
  *
  * It respects `prefers-reduced-motion` (renders a single static frame) and
  * pauses rendering when the tab is hidden to save battery.
@@ -21,9 +27,77 @@ void main() {
 }
 `;
 
+type RGB = [number, number, number];
+
+type Palette = {
+  ink: RGB; // dark tattoo outline
+  deep: RGB; // shadow / crease
+  mid: RGB; // body
+  bright: RGB; // lit highlight
+  gold: RGB; // enchanted core glow
+  leaf: RGB; // stem / leaf
+  leaflit: RGB; // lit leaf
+  jar: RGB; // glass cloche line
+};
+
+// The original deep-velvet-crimson rose — used when no theme tokens are given.
+const DEFAULT_PALETTE: Palette = {
+  ink: [0.06, 0.01, 0.02],
+  deep: [0.26, 0.02, 0.05],
+  mid: [0.68, 0.05, 0.1],
+  bright: [0.96, 0.28, 0.26],
+  gold: [1.0, 0.78, 0.42],
+  leaf: [0.1, 0.3, 0.12],
+  leaflit: [0.3, 0.62, 0.28],
+  jar: [0.55, 0.75, 0.95],
+};
+
+function hexToRgb(hex: string): RGB {
+  const h = hex.replace("#", "");
+  return [
+    parseInt(h.slice(0, 2), 16) / 255,
+    parseInt(h.slice(2, 4), 16) / 255,
+    parseInt(h.slice(4, 6), 16) / 255,
+  ];
+}
+
+const scale = (c: RGB, s: number): RGB => [
+  Math.min(1, c[0] * s),
+  Math.min(1, c[1] * s),
+  Math.min(1, c[2] * s),
+];
+const mix = (a: RGB, b: RGB, t: number): RGB => [
+  a[0] + (b[0] - a[0]) * t,
+  a[1] + (b[1] - a[1]) * t,
+  a[2] + (b[2] - a[2]) * t,
+];
+
+// Map a theme's tokens onto the rose palette. The rose keeps its structure
+// (dark outline, shaded body, glowing core, leaves) but adopts the theme's hues:
+// accent → petals, yellow → core, green → foliage, cyan → glass.
+function paletteFromTokens(tokens: ThemeTokens): Palette {
+  const accent = hexToRgb(tokens.accent);
+  const green = hexToRgb(tokens.green);
+  return {
+    ink: scale(hexToRgb(tokens.bgInset), 0.55),
+    deep: scale(accent, 0.32),
+    mid: accent,
+    bright: mix(accent, [1, 1, 1], 0.45),
+    gold: hexToRgb(tokens.yellow),
+    leaf: scale(green, 0.45),
+    leaflit: green,
+    jar: hexToRgb(tokens.cyan),
+  };
+}
+
+const glsl = (c: RGB) =>
+  `vec3(${c[0].toFixed(4)}, ${c[1].toFixed(4)}, ${c[2].toFixed(4)})`;
+
 // A single rose drawn as line art: a spiral bloom of petals tiled in log-polar
-// space, a thorned stem with leaves, drifting petals, and a glass dome.
-const FRAG_SRC = `
+// space, a thorned stem with leaves, drifting petals, and a glass dome. The
+// palette is baked in as constants so swapping themes recompiles the shader.
+function makeFragSrc(p: Palette): string {
+  return `
 precision highp float;
 
 uniform vec2 u_resolution;
@@ -32,14 +106,14 @@ uniform float u_time;
 #define PI 3.14159265359
 #define TAU 6.28318530718
 
-// --- palette (deep velvet crimson with warm magical highlights) ---
-const vec3 INK     = vec3(0.06, 0.01, 0.02);   // near-black tattoo outline
-const vec3 DEEP    = vec3(0.26, 0.02, 0.05);   // shadow / crease red
-const vec3 MID     = vec3(0.68, 0.05, 0.10);   // body red
-const vec3 BRIGHT  = vec3(0.96, 0.28, 0.26);   // lit petal red
-const vec3 GOLD    = vec3(1.00, 0.78, 0.42);   // enchanted core glow
-const vec3 LEAF    = vec3(0.10, 0.30, 0.12);   // stem / leaf green
-const vec3 LEAFLIT = vec3(0.30, 0.62, 0.28);
+// --- palette (derived from the active theme) ---
+const vec3 INK     = ${glsl(p.ink)};
+const vec3 DEEP    = ${glsl(p.deep)};
+const vec3 MID     = ${glsl(p.mid)};
+const vec3 BRIGHT  = ${glsl(p.bright)};
+const vec3 GOLD    = ${glsl(p.gold)};
+const vec3 LEAF    = ${glsl(p.leaf)};
+const vec3 LEAFLIT = ${glsl(p.leaflit)};
 
 mat2 rot(float a) { float c = cos(a), s = sin(a); return mat2(c, -s, s, c); }
 
@@ -198,7 +272,7 @@ void main() {
     float jar = abs(length(vec2(g.x, max(0.0, g.y - 0.15))) - 0.62);
     jar = min(jar, abs(g.y + 0.55) + step(0.5, abs(g.x)) * 9.0); // base line
     float jarLine = smoothstep(0.02, 0.0, jar) * step(g.y, 0.78);
-    vec3 jc = vec3(0.55, 0.75, 0.95);
+    vec3 jc = ${glsl(p.jar)};
     acc = over(acc, vec4(jc * jarLine * 0.10, jarLine * 0.10));
   }
 
@@ -226,7 +300,7 @@ void main() {
   float vig = smoothstep(1.25, 0.35, length(uv - vec2(0.0, -0.05)));
   acc *= vig;
 
-  // Subtle filmic tone-map for richer reds.
+  // Subtle filmic tone-map for richer colour.
   acc.rgb = acc.rgb / (acc.rgb + 0.55);
   acc.rgb = pow(acc.rgb, vec3(0.85));
 
@@ -235,6 +309,7 @@ void main() {
   gl_FragColor = vec4(outRGB, clamp(acc.a, 0.0, 1.0));
 }
 `;
+}
 
 function compileShader(gl: WebGLRenderingContext, type: number, src: string) {
   const shader = gl.createShader(type);
@@ -250,10 +325,18 @@ function compileShader(gl: WebGLRenderingContext, type: number, src: string) {
 
 interface ShaderFlowerProps {
   className?: string;
+  /** Active theme tokens — the rose recolours to match. */
+  tokens?: ThemeTokens;
 }
 
-export function ShaderFlower({ className }: ShaderFlowerProps) {
+export function ShaderFlower({ className, tokens }: ShaderFlowerProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  // Re-run WebGL setup (recompiling the shader with a fresh palette) whenever
+  // the theme's relevant colours change. Theme switches are rare and manual, so
+  // a full rebuild is fine and keeps the render loop free of colour uniforms.
+  const paletteKey = tokens
+    ? `${tokens.accent}|${tokens.green}|${tokens.yellow}|${tokens.cyan}|${tokens.bgInset}`
+    : "default";
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -266,8 +349,9 @@ export function ShaderFlower({ className }: ShaderFlowerProps) {
       (canvas.getContext("experimental-webgl") as WebGLRenderingContext | null);
     if (!gl) return;
 
+    const palette = tokens ? paletteFromTokens(tokens) : DEFAULT_PALETTE;
     const vert = compileShader(gl, gl.VERTEX_SHADER, VERT_SRC);
-    const frag = compileShader(gl, gl.FRAGMENT_SHADER, FRAG_SRC);
+    const frag = compileShader(gl, gl.FRAGMENT_SHADER, makeFragSrc(palette));
     if (!vert || !frag) return;
 
     const program = gl.createProgram();
@@ -379,7 +463,8 @@ export function ShaderFlower({ className }: ShaderFlowerProps) {
       gl.deleteShader(frag);
       gl.deleteBuffer(buffer);
     };
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [paletteKey]);
 
   return (
     <canvas
