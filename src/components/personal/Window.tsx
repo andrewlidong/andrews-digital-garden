@@ -28,7 +28,6 @@ export const Window: React.FC<WindowProps> = ({
   onFocus,
   onClose,
   children,
-  sourceElementId,
   expandUrl,
 }) => {
   const [size, setSize] = useState({ width, height });

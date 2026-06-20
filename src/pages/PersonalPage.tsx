@@ -8,7 +8,9 @@ import fileSystemData from "@/content/filesystem.json";
 import { Header } from "@/components/personal/Header";
 import StartupScreen from "@/components/personal/StartupScreen";
 import PawStampMode from "@/components/personal/PawStampMode";
-import { readerPath, parseFrontmatter } from "@/lib/frontmatter";
+import { readerPath } from "@/lib/frontmatter";
+import { MetadataBar } from "@/components/personal/MetadataBar";
+import { loadFileContent } from "@/lib/loadFileContent";
 
 type FileItem = {
   id: string;
@@ -17,6 +19,9 @@ type FileItem = {
   path: string;
   content?: string;
   children?: FileItem[];
+  // Pulled from frontmatter at build time (see scripts/updateFilesystem.js).
+  date?: string;
+  title?: string;
 };
 
 type WindowState = {
@@ -34,10 +39,8 @@ type WindowState = {
 // Sort a folder's children: dated files (blog posts) newest-first, folders and
 // undated files keep a stable alphabetical order after them.
 function sortFolderChildren(items: FileItem[]): FileItem[] {
-  const dateOf = (item: FileItem): string => {
-    if (item.type !== "file" || !item.content) return "";
-    return parseFrontmatter(item.content).meta.date || "";
-  };
+  const dateOf = (item: FileItem): string =>
+    item.type === "file" ? item.date || "" : "";
   return [...items].sort((a, b) => {
     const da = dateOf(a);
     const db = dateOf(b);
@@ -72,7 +75,13 @@ function PersonalPage() {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [isStarting, setIsStarting] = useState(true);
   const [startupComplete, setStartupComplete] = useState(false);
+  const [homeInput, setHomeInput] = useState("");
+  const [terminalInitialCommand, setTerminalInitialCommand] = useState<string | undefined>(undefined);
+  const [commandNonce, setCommandNonce] = useState(0);
   const readmeOpenedRef = useRef(false);
+  // Cache of successfully loaded file contents, keyed by path. Failures are not
+  // cached so reopening a file retries the fetch.
+  const contentCache = useRef<Record<string, string>>({});
 
   const isDisabled = (id: string) => disabledItems.has(id);
 
@@ -95,10 +104,11 @@ function PersonalPage() {
     });
 
     if (item.type === "file") {
+      const cached = item.path ? contentCache.current[item.path] : undefined;
       const newWindow: WindowState = {
         id: item.id,
         title: item.name,
-        content: item.content || "Error: Content not loaded",
+        content: cached ?? "Loading…",
         zIndex: maxZIndex + 1,
         isOpen: true,
         windowType: "text",
@@ -107,6 +117,19 @@ function PersonalPage() {
         filePath: item.path,
       };
       setWindows([...windows, newWindow]);
+
+      // Lazily fetch the content the first time the file is opened.
+      if (item.path && cached === undefined) {
+        const path = item.path;
+        loadFileContent(path).then((text) => {
+          if (text !== "Error loading content") {
+            contentCache.current[path] = text;
+          }
+          setWindows((prev) =>
+            prev.map((w) => (w.id === item.id ? { ...w, content: text } : w))
+          );
+        });
+      }
     } else if (item.type === "folder") {
       const newWindow: WindowState = {
         id: item.id,
@@ -175,38 +198,11 @@ function PersonalPage() {
   }, []);
 
   useEffect(() => {
+    // Set up the file tree structure. File contents are loaded lazily when a
+    // file is opened (see openWindow), rather than eagerly fetching every file
+    // at once.
     const processedFileSystem = processFileSystem(fileSystemData as FileItem[]);
     setFileSystem(processedFileSystem);
-
-    // Load all file contents
-    const loadAllContents = async () => {
-      const loadContent = async (items: FileItem[]): Promise<FileItem[]> => {
-        const promises = items.map(async (item) => {
-          if (item.type === "file" && item.path) {
-            try {
-              const response = await fetch(item.path);
-              const content = await response.text();
-              return { ...item, content };
-            } catch (error) {
-              console.error(`Error loading file: ${item.path}`, error);
-              return { ...item, content: "Error loading content" };
-            }
-          }
-          if (item.type === "folder" && item.children) {
-            const children = await loadContent(item.children);
-            return { ...item, children };
-          }
-          return item;
-        });
-
-        return Promise.all(promises);
-      };
-
-      const updatedFileSystem = await loadContent(processedFileSystem);
-      setFileSystem(updatedFileSystem);
-    };
-
-    loadAllContents();
   }, []);
 
   useEffect(() => {
@@ -224,6 +220,9 @@ function PersonalPage() {
 
   // Add a function to open the terminal
   const openTerminal = () => {
+    // Opened directly (Header button / welcome link): no command to auto-run.
+    setTerminalInitialCommand(undefined);
+
     // Check if terminal is already open
     const existingTerminal = windows.find((w) => w.windowType === "terminal");
     if (existingTerminal) {
@@ -241,6 +240,36 @@ function PersonalPage() {
     };
     setWindows([...windows, newWindow]);
     setMaxZIndex(maxZIndex + 1);
+  };
+
+  // Open the terminal and run a command typed in the home-page prompt.
+  const openTerminalWithCommand = (cmd: string) => {
+    setTerminalInitialCommand(cmd);
+    setCommandNonce((n) => n + 1);
+
+    const existingTerminal = windows.find((w) => w.windowType === "terminal");
+    if (existingTerminal) {
+      bringToFront(existingTerminal.id);
+      return;
+    }
+
+    const newWindow: WindowState = {
+      id: "terminal",
+      title: "Terminal",
+      content: "",
+      zIndex: maxZIndex + 1,
+      isOpen: true,
+      windowType: "terminal",
+    };
+    setWindows([...windows, newWindow]);
+    setMaxZIndex(maxZIndex + 1);
+  };
+
+  const handleHomeCommandSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!homeInput.trim()) return;
+    openTerminalWithCommand(homeInput);
+    setHomeInput("");
   };
 
   // Function to open a file by ID (used by terminal)
@@ -335,10 +364,17 @@ function PersonalPage() {
               <div className="mt-1 text-gray-300 text-sm">
                 <p>Welcome to Andrew's Digital Garden v1.0.0</p>
                 <p className="text-xs text-gray-500 mt-1 mb-2">A personal space for projects, interests, and creative explorations.</p>
-                <div className="flex items-center">
+                <form onSubmit={handleHomeCommandSubmit} className="flex items-center">
                   <span className="text-green-500 mr-2">andrew@digital-garden:~$</span>
-                  <span className="text-yellow-300 animate-pulse">▌</span>
-                </div>
+                  <input
+                    type="text"
+                    value={homeInput}
+                    onChange={(e) => setHomeInput(e.target.value)}
+                    placeholder="type a command (try 'help') and press enter…"
+                    aria-label="Terminal command input"
+                    className="flex-1 bg-transparent outline-none text-green-300 placeholder-gray-600 caret-yellow-300"
+                  />
+                </form>
               </div>
             </div>
             
@@ -396,9 +432,11 @@ function PersonalPage() {
                     ) : win.windowType === "text" && typeof win.content === "string" ? (
                       <TextContent content={win.content} filename={win.title} />
                     ) : win.windowType === "terminal" ? (
-                      <Terminal 
+                      <Terminal
                         onOpenFile={openFileById}
                         fileSystem={fileSystem}
+                        initialCommand={terminalInitialCommand}
+                        commandNonce={commandNonce}
                       />
                     ) : null}
                   </Window>
@@ -409,7 +447,7 @@ function PersonalPage() {
 
         {/* Terminal Welcome Message */}
         {startupComplete && !isMobile && (
-          <div className="fixed bottom-4 left-4 right-4 bg-black bg-opacity-70 p-3 rounded-md text-sm max-w-md">
+          <div className="fixed bottom-10 left-4 right-4 bg-black bg-opacity-70 p-3 rounded-md text-sm max-w-md">
             <p>
               Welcome to my digital garden! Explore my projects and interests by clicking on the folders above.
             </p>
@@ -423,6 +461,7 @@ function PersonalPage() {
             </p>
           </div>
         )}
+        {startupComplete && !isMobile && <MetadataBar />}
       </div>
     <PawStampMode isActive={pawModeActive} />
     </>
