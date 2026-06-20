@@ -25,7 +25,6 @@ export const Window: React.FC<WindowProps> = ({
   onFocus,
   onClose,
   children,
-  sourceElementId,
 }) => {
   const [size, setSize] = useState({ width, height });
   const [isCloseButtonPressed, setIsCloseButtonPressed] = useState(false);

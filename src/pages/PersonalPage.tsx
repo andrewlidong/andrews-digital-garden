@@ -8,6 +8,7 @@ import fileSystemData from "@/content/filesystem.json";
 import { Header } from "@/components/personal/Header";
 import StartupScreen from "@/components/personal/StartupScreen";
 import PawStampMode from "@/components/personal/PawStampMode";
+import { MetadataBar } from "@/components/personal/MetadataBar";
 import { loadFileContent } from "@/lib/loadFileContent";
 import { useTheme } from "@/hooks/useTheme";
 
@@ -55,6 +56,9 @@ function PersonalPage() {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [isStarting, setIsStarting] = useState(true);
   const [startupComplete, setStartupComplete] = useState(false);
+  const [homeInput, setHomeInput] = useState("");
+  const [terminalInitialCommand, setTerminalInitialCommand] = useState<string | undefined>(undefined);
+  const [commandNonce, setCommandNonce] = useState(0);
   const readmeOpenedRef = useRef(false);
   // Applies the active terminal "rice" theme as CSS variables on mount.
   useTheme();
@@ -198,6 +202,9 @@ function PersonalPage() {
 
   // Add a function to open the terminal
   const openTerminal = () => {
+    // Opened directly (Header button / welcome link): no command to auto-run.
+    setTerminalInitialCommand(undefined);
+
     // Check if terminal is already open
     const existingTerminal = windows.find((w) => w.windowType === "terminal");
     if (existingTerminal) {
@@ -215,6 +222,36 @@ function PersonalPage() {
     };
     setWindows([...windows, newWindow]);
     setMaxZIndex(maxZIndex + 1);
+  };
+
+  // Open the terminal and run a command typed in the home-page prompt.
+  const openTerminalWithCommand = (cmd: string) => {
+    setTerminalInitialCommand(cmd);
+    setCommandNonce((n) => n + 1);
+
+    const existingTerminal = windows.find((w) => w.windowType === "terminal");
+    if (existingTerminal) {
+      bringToFront(existingTerminal.id);
+      return;
+    }
+
+    const newWindow: WindowState = {
+      id: "terminal",
+      title: "Terminal",
+      content: "",
+      zIndex: maxZIndex + 1,
+      isOpen: true,
+      windowType: "terminal",
+    };
+    setWindows([...windows, newWindow]);
+    setMaxZIndex(maxZIndex + 1);
+  };
+
+  const handleHomeCommandSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!homeInput.trim()) return;
+    openTerminalWithCommand(homeInput);
+    setHomeInput("");
   };
 
   // Function to open a file by ID (used by terminal)
@@ -309,10 +346,17 @@ function PersonalPage() {
               <div className="mt-1 text-term-dim text-sm">
                 <p>Welcome to Andrew's Digital Garden v1.0.0</p>
                 <p className="text-xs text-term-faint mt-1 mb-2">A personal space for projects, interests, and creative explorations.</p>
-                <div className="flex items-center">
+                <form onSubmit={handleHomeCommandSubmit} className="flex items-center">
                   <span className="text-term-green mr-2">andrew@digital-garden:~$</span>
-                  <span className="text-term-yellow animate-pulse">▌</span>
-                </div>
+                  <input
+                    type="text"
+                    value={homeInput}
+                    onChange={(e) => setHomeInput(e.target.value)}
+                    placeholder="type a command (try 'help') and press enter…"
+                    aria-label="Terminal command input"
+                    className="flex-1 bg-transparent outline-none text-term-fg placeholder-term-faint caret-term-yellow"
+                  />
+                </form>
               </div>
             </div>
             
@@ -365,9 +409,11 @@ function PersonalPage() {
                     ) : win.windowType === "text" && typeof win.content === "string" ? (
                       <TextContent content={win.content} filename={win.title} />
                     ) : win.windowType === "terminal" ? (
-                      <Terminal 
+                      <Terminal
                         onOpenFile={openFileById}
                         fileSystem={fileSystem}
+                        initialCommand={terminalInitialCommand}
+                        commandNonce={commandNonce}
                       />
                     ) : null}
                   </Window>
@@ -378,7 +424,7 @@ function PersonalPage() {
 
         {/* Terminal Welcome Message */}
         {startupComplete && !isMobile && (
-          <div className="fixed bottom-4 left-4 right-4 bg-term-inset bg-opacity-80 border border-term-border p-3 rounded-md text-sm max-w-md">
+          <div className="fixed bottom-10 left-4 right-4 bg-term-inset bg-opacity-80 border border-term-border p-3 rounded-md text-sm max-w-md">
             <p>
               Welcome to my digital garden! Explore my projects and interests by clicking on the folders above.
             </p>
@@ -392,6 +438,7 @@ function PersonalPage() {
             </p>
           </div>
         )}
+        {startupComplete && !isMobile && <MetadataBar />}
       </div>
     <PawStampMode isActive={pawModeActive} />
     </>
