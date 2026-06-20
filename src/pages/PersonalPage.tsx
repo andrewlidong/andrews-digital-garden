@@ -5,6 +5,9 @@ import { useState, useEffect, useRef, lazy, Suspense } from "react";
 const TextContent = lazy(() =>
   import("@/components/personal/TextContent").then((m) => ({ default: m.TextContent }))
 );
+const ShaderFlower = lazy(() =>
+  import("@/components/ui/ShaderFlower").then((m) => ({ default: m.ShaderFlower }))
+);
 import { Terminal } from "@/components/personal/Terminal";
 import fileSystemData from "@/content/filesystem.json";
 import { Header } from "@/components/personal/Header";
@@ -317,8 +320,26 @@ function PersonalPage() {
           
           {/* Main content area */}
           <div className="flex-1 relative overflow-hidden">
+            {/* Decorative enchanted-rose shader in the background, anchored right */}
+            {!isMobile && (
+              <Suspense fallback={null}>
+                <div
+                  className="pointer-events-none absolute top-0 right-0 h-full z-0 opacity-70"
+                  style={{
+                    width: "min(40vw, 560px)",
+                    maskImage:
+                      "radial-gradient(ellipse at 50% 45%, black 45%, transparent 80%)",
+                    WebkitMaskImage:
+                      "radial-gradient(ellipse at 50% 45%, black 45%, transparent 80%)",
+                  }}
+                  aria-hidden="true"
+                >
+                  <ShaderFlower className="h-full w-full" />
+                </div>
+              </Suspense>
+            )}
             {/* Terminal Welcome Message */}
-            <div className="px-6 pt-4 pb-2 text-green-400">
+            <div className="relative px-6 pt-4 pb-2 text-green-400">
               <pre className="text-xs">
 {`
   █████╗ ███╗   ██╗██████╗ ██████╗ ███████╗██╗    ██╗███████╗
