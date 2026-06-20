@@ -72,6 +72,8 @@ const Projects = forwardRef<HTMLElement>((_, ref) => {
                       <img
                         src={project.image_url}
                         alt={project.name}
+                        loading="lazy"
+                        decoding="async"
                         onError={(e) => handleImageError(e, project.fallback_image_url)}
                         className="w-full h-32 md:h-48 object-cover transition-transform duration-500 hover:scale-110"
                       />
