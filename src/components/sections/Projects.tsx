@@ -8,7 +8,7 @@ import {
 import { Badge } from "../ui/badge";
 import * as resume from "../../content/resume.json";
 import { forwardRef } from "react";
-import { GithubIcon } from "lucide-react";
+import { GithubIcon, ExternalLinkIcon } from "lucide-react";
 
 const Projects = forwardRef<HTMLElement>((_, ref) => {
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>, fallbackSrc: string) => {
@@ -34,23 +34,39 @@ const Projects = forwardRef<HTMLElement>((_, ref) => {
         </h2>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
-          {resume.projects.map((project, index) => (
-            <div 
-              key={index} 
+          {resume.projects.map((project, index) => {
+            const liveUrl = (project as { live_url?: string }).live_url;
+            return (
+            <div
+              key={index}
               className="animate-on-scroll scale-up is-visible"
               style={{ transitionDelay: `${index * 100}ms` }}
             >
               <Card className="flex flex-col relative border-gray-700 bg-gray-800 h-full hover-lift">
-                {project.github_url && (
-                  <a
-                    href={project.github_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="absolute top-2 right-2 md:top-4 md:right-4 z-10 p-2 bg-gray-700 rounded hover:bg-gray-600 transition-colors"
-                  >
-                    <GithubIcon className="w-4 h-4 md:w-6 md:h-6 text-white" />
-                  </a>
-                )}
+                <div className="absolute top-2 right-2 md:top-4 md:right-4 z-10 flex gap-1 md:gap-2">
+                  {liveUrl && (
+                    <a
+                      href={liveUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Live demo"
+                      className="p-2 bg-gray-700 rounded hover:bg-gray-600 transition-colors"
+                    >
+                      <ExternalLinkIcon className="w-4 h-4 md:w-6 md:h-6 text-white" />
+                    </a>
+                  )}
+                  {project.github_url && (
+                    <a
+                      href={project.github_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Source on GitHub"
+                      className="p-2 bg-gray-700 rounded hover:bg-gray-600 transition-colors"
+                    >
+                      <GithubIcon className="w-4 h-4 md:w-6 md:h-6 text-white" />
+                    </a>
+                  )}
+                </div>
                 <CardHeader className="bg-gray-800 p-3 md:p-6">
                   {project.image_url && (
                     <div className="overflow-hidden rounded-t-lg">
@@ -80,7 +96,8 @@ const Projects = forwardRef<HTMLElement>((_, ref) => {
                 </CardHeader>
               </Card>
             </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>
