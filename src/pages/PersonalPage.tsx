@@ -60,8 +60,9 @@ function PersonalPage() {
   const [terminalInitialCommand, setTerminalInitialCommand] = useState<string | undefined>(undefined);
   const [commandNonce, setCommandNonce] = useState(0);
   const readmeOpenedRef = useRef(false);
-  // Applies the active terminal "rice" theme as CSS variables on mount.
-  useTheme();
+  // Active terminal "rice" theme. Applied as CSS variables; shared with the
+  // Header (palette dropdown) and Terminal (`theme` command) so users can switch.
+  const { themeId, setTheme, themes } = useTheme();
   // Cache of successfully loaded file contents, keyed by path. Failures are not
   // cached so reopening a file retries the fetch.
   const contentCache = useRef<Record<string, string>>({});
@@ -312,7 +313,7 @@ function PersonalPage() {
         setStartupComplete(true);
       }} />}
       <div className="font-mono fixed top-0 left-0 w-full h-full bg-term-bg text-term-fg">
-        <Header onOpenTerminal={openTerminal} pawModeActive={pawModeActive} onTogglePawMode={() => setPawModeActive(prev => !prev)} />
+        <Header onOpenTerminal={openTerminal} pawModeActive={pawModeActive} onTogglePawMode={() => setPawModeActive(prev => !prev)} themes={themes} themeId={themeId} onSetTheme={setTheme} />
 
         <div className="flex h-[calc(100vh-60px)] pt-4">
           {/* Left sidebar with filesystem */}
@@ -414,6 +415,9 @@ function PersonalPage() {
                         fileSystem={fileSystem}
                         initialCommand={terminalInitialCommand}
                         commandNonce={commandNonce}
+                        themes={themes}
+                        themeId={themeId}
+                        onSetTheme={setTheme}
                       />
                     ) : null}
                   </Window>

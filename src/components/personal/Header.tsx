@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import type { Theme } from "@/lib/themes";
 
 interface MenuItem {
   name: string;
@@ -10,9 +11,12 @@ interface HeaderProps {
   onOpenTerminal?: () => void;
   pawModeActive?: boolean;
   onTogglePawMode?: () => void;
+  themes?: Theme[];
+  themeId?: string;
+  onSetTheme?: (id: string) => void;
 }
 
-export const Header: React.FC<HeaderProps> = ({ onOpenTerminal, pawModeActive, onTogglePawMode }) => {
+export const Header: React.FC<HeaderProps> = ({ onOpenTerminal, pawModeActive, onTogglePawMode, themes, themeId, onSetTheme }) => {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [currentTime, setCurrentTime] = useState<string>("");
   const navigate = useNavigate();
@@ -138,6 +142,45 @@ export const Header: React.FC<HeaderProps> = ({ onOpenTerminal, pawModeActive, o
                 >
                   terminal
                 </button>
+              </div>
+            )}
+            {themes && onSetTheme && (
+              <div className="relative">
+                <button
+                  onClick={() => handleMenuClick("theme")}
+                  className={`px-2 py-1 rounded flex items-center gap-1.5 ${activeDropdown === "theme" ? "bg-term-elevated text-term-accent" : "text-term-dim hover:text-term-fg hover:bg-term-elevated"}`}
+                >
+                  <span
+                    className="w-3 h-3 rounded-full border border-term-border"
+                    style={{ backgroundColor: "var(--term-accent)" }}
+                  />
+                  theme
+                </button>
+                {activeDropdown === "theme" && (
+                  <div className="absolute top-full left-0 mt-1 bg-term-elevated border border-term-border shadow-md min-w-[180px] z-20">
+                    {themes.map((theme) => (
+                      <button
+                        key={theme.id}
+                        onClick={() => {
+                          onSetTheme(theme.id);
+                          setActiveDropdown(null);
+                        }}
+                        className={`w-full flex items-center gap-2 px-3 py-1.5 cursor-pointer border-b border-term-border last:border-b-0 font-mono text-left ${
+                          theme.id === themeId ? "text-term-accent" : "text-term-dim hover:text-term-fg hover:bg-term-inset"
+                        }`}
+                      >
+                        <span className="flex gap-0.5 flex-shrink-0">
+                          <span className="w-2.5 h-2.5 rounded-sm" style={{ backgroundColor: theme.tokens.bg }} />
+                          <span className="w-2.5 h-2.5 rounded-sm" style={{ backgroundColor: theme.tokens.accent }} />
+                          <span className="w-2.5 h-2.5 rounded-sm" style={{ backgroundColor: theme.tokens.green }} />
+                          <span className="w-2.5 h-2.5 rounded-sm" style={{ backgroundColor: theme.tokens.yellow }} />
+                        </span>
+                        <span className="flex-1">{theme.name}</span>
+                        {theme.id === themeId && <span className="text-term-accent">✓</span>}
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
             )}
             {onTogglePawMode && (
