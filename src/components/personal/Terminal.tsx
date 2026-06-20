@@ -121,11 +121,11 @@ export function Terminal({ onOpenFile, fileSystem }: TerminalProps) {
         } else {
           const folders = currentDir
             .filter(item => item.type === 'folder')
-            .map(item => `<span class="text-blue-400">📁 ${item.name}/</span>`);
-          
+            .map(item => `<span class="text-term-accent">📁 ${item.name}/</span>`);
+
           const files = currentDir
             .filter(item => item.type === 'file')
-            .map(item => `<span class="text-green-400">📄 ${item.name}</span>`);
+            .map(item => `<span class="text-term-green">📄 ${item.name}</span>`);
           
           output = [...folders, ...files].join('<br />');
         }
@@ -226,36 +226,36 @@ export function Terminal({ onOpenFile, fileSystem }: TerminalProps) {
   };
 
   return (
-    <div 
+    <div
       ref={terminalRef}
-      className="bg-gray-900 text-green-400 p-4 font-mono text-sm h-full overflow-y-auto"
+      className="bg-term-bg text-term-green p-4 font-mono text-sm h-full overflow-y-auto"
     >
       {history.map((item, index) => (
         <div key={index} className="mb-2">
           {item.command && (
             <div className="flex">
-              <span className="text-blue-400 mr-2">guest@andrews-garden:~{currentPath}$</span>
-              <span>{item.command}</span>
+              <span className="text-term-accent mr-2">guest@andrews-garden:~{currentPath}$</span>
+              <span className="text-term-fg">{item.command}</span>
             </div>
           )}
-          <div 
+          <div
             className={cn(
-              "whitespace-pre-wrap", 
-              item.isError ? "text-red-400" : ""
+              "whitespace-pre-wrap",
+              item.isError ? "text-term-red" : ""
             )}
             dangerouslySetInnerHTML={{ __html: item.output }}
           />
         </div>
       ))}
-      
+
       <form onSubmit={handleSubmit} className="flex">
-        <span className="text-blue-400 mr-2">guest@andrews-garden:~{currentPath}$</span>
+        <span className="text-term-accent mr-2">guest@andrews-garden:~{currentPath}$</span>
         <input
           ref={inputRef}
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          className="flex-1 bg-transparent outline-none"
+          className="flex-1 bg-transparent outline-none text-term-fg"
           autoFocus
         />
       </form>

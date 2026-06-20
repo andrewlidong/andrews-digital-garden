@@ -9,6 +9,7 @@ import { Header } from "@/components/personal/Header";
 import StartupScreen from "@/components/personal/StartupScreen";
 import PawStampMode from "@/components/personal/PawStampMode";
 import { loadFileContent } from "@/lib/loadFileContent";
+import { useTheme } from "@/hooks/useTheme";
 
 type FileItem = {
   id: string;
@@ -55,6 +56,8 @@ function PersonalPage() {
   const [isStarting, setIsStarting] = useState(true);
   const [startupComplete, setStartupComplete] = useState(false);
   const readmeOpenedRef = useRef(false);
+  // Applies the active terminal "rice" theme as CSS variables on mount.
+  useTheme();
   // Cache of successfully loaded file contents, keyed by path. Failures are not
   // cached so reopening a file retries the fetch.
   const contentCache = useRef<Record<string, string>>({});
@@ -271,12 +274,12 @@ function PersonalPage() {
         setIsStarting(false);
         setStartupComplete(true);
       }} />}
-      <div className="font-mono fixed top-0 left-0 w-full h-full bg-gray-900 text-white">
+      <div className="font-mono fixed top-0 left-0 w-full h-full bg-term-bg text-term-fg">
         <Header onOpenTerminal={openTerminal} pawModeActive={pawModeActive} onTogglePawMode={() => setPawModeActive(prev => !prev)} />
 
         <div className="flex h-[calc(100vh-60px)] pt-4">
           {/* Left sidebar with filesystem */}
-          <div className="w-[320px] min-w-[320px] border-r border-gray-700 pl-6 pr-4 overflow-y-auto">
+          <div className="w-[320px] min-w-[320px] border-r border-term-border pl-6 pr-4 overflow-y-auto">
             <div className="grid grid-flow-row gap-2 pb-20">
               {fileSystem.map((item) => renderFileOrFolder(item))}
             </div>
@@ -285,7 +288,7 @@ function PersonalPage() {
           {/* Main content area */}
           <div className="flex-1 relative overflow-hidden">
             {/* Terminal Welcome Message */}
-            <div className="px-6 pt-4 pb-2 text-green-400">
+            <div className="px-6 pt-4 pb-2 text-term-green">
               <pre className="text-xs">
 {`
   █████╗ ███╗   ██╗██████╗ ██████╗ ███████╗██╗    ██╗███████╗
@@ -303,12 +306,12 @@ function PersonalPage() {
   ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝ ╚══════╝╚═╝  ╚═══╝         
 `}
               </pre>
-              <div className="mt-1 text-gray-300 text-sm">
+              <div className="mt-1 text-term-dim text-sm">
                 <p>Welcome to Andrew's Digital Garden v1.0.0</p>
-                <p className="text-xs text-gray-500 mt-1 mb-2">A personal space for projects, interests, and creative explorations.</p>
+                <p className="text-xs text-term-faint mt-1 mb-2">A personal space for projects, interests, and creative explorations.</p>
                 <div className="flex items-center">
-                  <span className="text-green-500 mr-2">andrew@digital-garden:~$</span>
-                  <span className="text-yellow-300 animate-pulse">▌</span>
+                  <span className="text-term-green mr-2">andrew@digital-garden:~$</span>
+                  <span className="text-term-yellow animate-pulse">▌</span>
                 </div>
               </div>
             </div>
@@ -348,12 +351,12 @@ function PersonalPage() {
                     sourceElementId={win.sourceElementId}
                   >
                     {win.windowType === "folder" && Array.isArray(win.content) ? (
-                      <div className="p-4 bg-gray-900">
-                        <div className="mb-3 pb-2 border-b border-gray-700">
-                          <span className="text-blue-400 font-mono">andrew@digital-garden</span>
-                          <span className="text-gray-400">:</span>
-                          <span className="text-green-400">~/documents/</span>
-                          <span className="text-yellow-300">{win.title}</span>
+                      <div className="p-4 bg-term-bg">
+                        <div className="mb-3 pb-2 border-b border-term-border">
+                          <span className="text-term-accent font-mono">andrew@digital-garden</span>
+                          <span className="text-term-dim">:</span>
+                          <span className="text-term-green">~/documents/</span>
+                          <span className="text-term-yellow">{win.title}</span>
                         </div>
                         <div className="grid grid-cols-1 gap-4">
                           {win.content.map((item) => renderFileOrFolder(item, win.id))}
@@ -375,14 +378,14 @@ function PersonalPage() {
 
         {/* Terminal Welcome Message */}
         {startupComplete && !isMobile && (
-          <div className="fixed bottom-4 left-4 right-4 bg-black bg-opacity-70 p-3 rounded-md text-sm max-w-md">
+          <div className="fixed bottom-4 left-4 right-4 bg-term-inset bg-opacity-80 border border-term-border p-3 rounded-md text-sm max-w-md">
             <p>
               Welcome to my digital garden! Explore my projects and interests by clicking on the folders above.
             </p>
             <p className="mt-2">
-              <button 
+              <button
                 onClick={openTerminal}
-                className="text-blue-400 hover:underline focus:outline-none"
+                className="text-term-accent hover:underline focus:outline-none"
               >
                 Click here
               </button> to open the terminal for a more interactive experience.

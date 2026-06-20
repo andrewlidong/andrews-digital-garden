@@ -16,6 +16,23 @@ export default {
         background: "#ffffff",
         foreground: "#000000",
         border: "#e2e8f0",
+        // Terminal "rice" palette — driven by CSS variables set from the active
+        // theme (see src/lib/themes.ts). Swapping a theme re-skins everything.
+        term: {
+          bg: "var(--term-bg)",
+          elevated: "var(--term-bg-elevated)",
+          inset: "var(--term-bg-inset)",
+          border: "var(--term-border)",
+          fg: "var(--term-fg)",
+          dim: "var(--term-fg-dim)",
+          faint: "var(--term-fg-faint)",
+          accent: "var(--term-accent)",
+          green: "var(--term-green)",
+          yellow: "var(--term-yellow)",
+          red: "var(--term-red)",
+          cyan: "var(--term-cyan)",
+          magenta: "var(--term-magenta)",
+        },
       },
       fontFamily: {
         macos: 'ChiKareGo2, ui-serif', // Adds a new `font-display` class

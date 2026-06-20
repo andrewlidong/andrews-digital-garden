@@ -55,32 +55,33 @@ const StartupScreen = ({ onComplete }: { onComplete: () => void }) => {
     <div
       className="fixed inset-0 z-50 flex items-center justify-center"
       style={{
-        backgroundColor: "#121212",
-        backgroundImage: "radial-gradient(circle at center, #1a1a1a 0%, #0a0a0a 100%)",
+        backgroundColor: "var(--term-bg-inset)",
+        backgroundImage:
+          "radial-gradient(circle at center, var(--term-bg) 0%, var(--term-bg-inset) 100%)",
       }}
     >
       <div className="flex flex-col items-center justify-center w-full max-w-3xl">
         {currentImage === "first" && (
-          <div className="font-mono text-green-500 text-sm w-full max-w-xl bg-black bg-opacity-90 p-6 rounded-md border border-gray-800 shadow-lg">
+          <div className="font-mono text-term-green text-sm w-full max-w-xl bg-term-inset bg-opacity-90 p-6 rounded-md border border-term-border shadow-lg">
             {bootMessages.map((message, index) => (
               <div key={index} className="mb-1">
-                <span className="text-green-300 mr-2">[OK]</span> {message}
+                <span className="text-term-green mr-2">[OK]</span> {message}
               </div>
             ))}
-            <div className="w-full bg-gray-800 rounded-full h-1.5 mt-6 mb-2 overflow-hidden">
-              <div 
-                className="bg-green-500 h-1.5 rounded-full transition-all duration-300 ease-out" 
+            <div className="w-full bg-term-elevated rounded-full h-1.5 mt-6 mb-2 overflow-hidden">
+              <div
+                className="bg-term-green h-1.5 rounded-full transition-all duration-300 ease-out"
                 style={{ width: `${bootProgress}%` }}
               ></div>
             </div>
-            <div className="text-gray-500 text-xs text-right mt-1">
+            <div className="text-term-faint text-xs text-right mt-1">
               {Math.min(bootProgress, 99)}%
             </div>
           </div>
         )}
         {currentImage === "second" && (
-          <div className="text-center bg-black bg-opacity-90 p-8 rounded-md border border-gray-800 shadow-lg">
-            <pre className="text-green-500 text-xs sm:text-sm md:text-base font-mono">
+          <div className="text-center bg-term-inset bg-opacity-90 p-8 rounded-md border border-term-border shadow-lg">
+            <pre className="text-term-green text-xs sm:text-sm md:text-base font-mono">
 {`
   █████╗ ███╗   ██╗██████╗ ██████╗ ███████╗██╗    ██╗███████╗
  ██╔══██╗████╗  ██║██╔══██╗██╔══██╗██╔════╝██║    ██║██╔════╝
@@ -104,14 +105,14 @@ const StartupScreen = ({ onComplete }: { onComplete: () => void }) => {
   ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝ ╚══════╝╚═╝  ╚═══╝         
 `}
             </pre>
-            <p className="text-gray-300 mt-6 mb-3">Version 1.0.0</p>
-            <div className="w-64 bg-gray-800 rounded-full h-2.5 mb-4 mx-auto overflow-hidden">
-              <div 
-                className="bg-green-500 h-2.5 rounded-full transition-all duration-300 ease-out" 
+            <p className="text-term-dim mt-6 mb-3">Version 1.0.0</p>
+            <div className="w-64 bg-term-elevated rounded-full h-2.5 mb-4 mx-auto overflow-hidden">
+              <div
+                className="bg-term-green h-2.5 rounded-full transition-all duration-300 ease-out"
                 style={{ width: `${bootProgress}%` }}
               ></div>
             </div>
-            <p className="text-gray-400 text-sm">Loading environment...</p>
+            <p className="text-term-dim text-sm">Loading environment...</p>
           </div>
         )}
       </div>

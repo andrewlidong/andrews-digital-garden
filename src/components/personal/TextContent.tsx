@@ -43,12 +43,12 @@ export const TextContent: React.FC<TextContentProps> = ({ content, filename = "f
   }, [content]);
 
   return (
-    <div className="w-full h-full markdown-body font-mono text-green-300 bg-gray-900">
+    <div className="w-full h-full markdown-body font-mono text-term-fg bg-term-bg">
       <div className="flex items-start mb-4">
-        <span className="text-green-500 mr-2 whitespace-nowrap">andrew@digital-garden:~$</span>
-        <span className="text-yellow-300 whitespace-nowrap">cat {filename}</span>
+        <span className="text-term-green mr-2 whitespace-nowrap">andrew@digital-garden:~$</span>
+        <span className="text-term-yellow whitespace-nowrap">cat {filename}</span>
       </div>
-      <div className="border-l-2 border-gray-700 pl-4 ml-2">
+      <div className="border-l-2 border-term-border pl-4 ml-2">
         {typingComplete ? (
           <ReactMarkdown>{content}</ReactMarkdown>
         ) : (
