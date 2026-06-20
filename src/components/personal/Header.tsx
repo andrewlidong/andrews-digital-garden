@@ -157,7 +157,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenTerminal, pawModeActive, o
                   theme
                 </button>
                 {activeDropdown === "theme" && (
-                  <div className="absolute top-full left-0 mt-1 bg-term-elevated border border-term-border shadow-md min-w-[180px] z-20">
+                  <div className="absolute top-full left-0 mt-1 bg-term-elevated border border-term-border shadow-md min-w-[180px] max-h-[70vh] overflow-y-auto z-20">
                     {themes.map((theme) => (
                       <button
                         key={theme.id}
