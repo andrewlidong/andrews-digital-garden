@@ -230,9 +230,16 @@ export function Terminal({ onOpenFile, fileSystem, initialCommand, commandNonce 
   };
 
   // Run a command handed in from outside (e.g. typed in the home-page prompt).
-  // Fires on mount and whenever commandNonce changes.
+  // Fires whenever commandNonce changes. The ref guards against running the
+  // same nonce twice (e.g. StrictMode's double-invoke of effects in dev).
+  const lastRunNonceRef = useRef<number | undefined>(undefined);
   useEffect(() => {
-    if (initialCommand && initialCommand.trim()) {
+    if (
+      initialCommand &&
+      initialCommand.trim() &&
+      commandNonce !== lastRunNonceRef.current
+    ) {
+      lastRunNonceRef.current = commandNonce;
       handleCommand(initialCommand);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
