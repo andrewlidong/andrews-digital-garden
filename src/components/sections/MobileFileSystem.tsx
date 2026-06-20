@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import fileSystemData from '@/content/filesystem.json';
 import { FileContent } from '../personal/FileContent';
+import { loadFileContent } from '@/lib/loadFileContent';
 
 export type FileItem = {
   id: string;
@@ -29,39 +30,9 @@ export function MobileFileSystem({
   const [currentPath, setCurrentPath] = useState<string[]>([]);
 
   useEffect(() => {
-    const loadContent = async (items: FileItem[]): Promise<FileItem[]> => {
-      const promises = items.map(async (item) => {
-        if (item.type === "file" && item.path) {
-          try {
-            console.log('Fetching file:', item.path);
-            const response = await fetch(item.path);
-            if (!response.ok) {
-              throw new Error(`Failed to load file: ${item.path} (Status: ${response.status})`);
-            }
-            const content = await response.text();
-            const fileType = item.path.split('.').pop()?.toLowerCase() || '';
-            return { ...item, content, fileType: `.${fileType}` };
-          } catch (error: unknown) {
-            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-            console.error(`Error loading file: ${item.path}`, error);
-            return { ...item, content: `Error loading content: ${errorMessage}` };
-          }
-        }
-        if (item.type === "folder" && item.children) {
-          const children = await loadContent(item.children);
-          return { ...item, children };
-        }
-        return item;
-      });
-      return Promise.all(promises);
-    };
-
-    const initializeFileSystem = async () => {
-      const processedFileSystem = await loadContent(fileSystemData as FileItem[]);
-      setFileSystem(processedFileSystem);
-    };
-
-    initializeFileSystem();
+    // Set up the file tree structure. File contents are loaded lazily when a
+    // file is tapped (see handleItemClick), not eagerly for every file at once.
+    setFileSystem(fileSystemData as FileItem[]);
   }, []);
 
   const getCurrentItems = () => {
@@ -77,14 +48,19 @@ export function MobileFileSystem({
     return items;
   };
 
-  const handleItemClick = (item: FileItem) => {
+  const handleItemClick = async (item: FileItem) => {
     if (item.type === "folder") {
       setCurrentPath([...currentPath, item.id]);
       setCurrentContent(null);
       setCurrentFile(null);
-    } else if (item.type === "file" && item.content) {
-      setCurrentContent(item.content);
-      setCurrentFile(item);
+    } else if (item.type === "file" && item.path) {
+      const fileType = `.${item.path.split('.').pop()?.toLowerCase() || ''}`;
+      // Show the file immediately with a loading placeholder, then fetch.
+      setCurrentContent("Loading…");
+      setCurrentFile({ ...item, fileType });
+      const content = await loadFileContent(item.path);
+      setCurrentContent(content);
+      setCurrentFile({ ...item, content, fileType });
     }
   };
 

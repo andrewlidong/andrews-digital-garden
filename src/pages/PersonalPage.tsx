@@ -8,6 +8,8 @@ import fileSystemData from "@/content/filesystem.json";
 import { Header } from "@/components/personal/Header";
 import StartupScreen from "@/components/personal/StartupScreen";
 import PawStampMode from "@/components/personal/PawStampMode";
+import { MetadataBar } from "@/components/personal/MetadataBar";
+import { loadFileContent } from "@/lib/loadFileContent";
 
 type FileItem = {
   id: string;
@@ -57,6 +59,9 @@ function PersonalPage() {
   const [terminalInitialCommand, setTerminalInitialCommand] = useState<string | undefined>(undefined);
   const [commandNonce, setCommandNonce] = useState(0);
   const readmeOpenedRef = useRef(false);
+  // Cache of successfully loaded file contents, keyed by path. Failures are not
+  // cached so reopening a file retries the fetch.
+  const contentCache = useRef<Record<string, string>>({});
 
   const isDisabled = (id: string) => disabledItems.has(id);
 
@@ -79,10 +84,11 @@ function PersonalPage() {
     });
 
     if (item.type === "file") {
+      const cached = item.path ? contentCache.current[item.path] : undefined;
       const newWindow: WindowState = {
         id: item.id,
         title: item.name,
-        content: item.content || "Error: Content not loaded",
+        content: cached ?? "Loading…",
         zIndex: maxZIndex + 1,
         isOpen: true,
         windowType: "text",
@@ -90,6 +96,19 @@ function PersonalPage() {
         sourceElementId: item.id,
       };
       setWindows([...windows, newWindow]);
+
+      // Lazily fetch the content the first time the file is opened.
+      if (item.path && cached === undefined) {
+        const path = item.path;
+        loadFileContent(path).then((text) => {
+          if (text !== "Error loading content") {
+            contentCache.current[path] = text;
+          }
+          setWindows((prev) =>
+            prev.map((w) => (w.id === item.id ? { ...w, content: text } : w))
+          );
+        });
+      }
     } else if (item.type === "folder") {
       const newWindow: WindowState = {
         id: item.id,
@@ -158,38 +177,11 @@ function PersonalPage() {
   }, []);
 
   useEffect(() => {
+    // Set up the file tree structure. File contents are loaded lazily when a
+    // file is opened (see openWindow), rather than eagerly fetching every file
+    // at once.
     const processedFileSystem = processFileSystem(fileSystemData as FileItem[]);
     setFileSystem(processedFileSystem);
-
-    // Load all file contents
-    const loadAllContents = async () => {
-      const loadContent = async (items: FileItem[]): Promise<FileItem[]> => {
-        const promises = items.map(async (item) => {
-          if (item.type === "file" && item.path) {
-            try {
-              const response = await fetch(item.path);
-              const content = await response.text();
-              return { ...item, content };
-            } catch (error) {
-              console.error(`Error loading file: ${item.path}`, error);
-              return { ...item, content: "Error loading content" };
-            }
-          }
-          if (item.type === "folder" && item.children) {
-            const children = await loadContent(item.children);
-            return { ...item, children };
-          }
-          return item;
-        });
-
-        return Promise.all(promises);
-      };
-
-      const updatedFileSystem = await loadContent(processedFileSystem);
-      setFileSystem(updatedFileSystem);
-    };
-
-    loadAllContents();
   }, []);
 
   useEffect(() => {
@@ -429,7 +421,7 @@ function PersonalPage() {
 
         {/* Terminal Welcome Message */}
         {startupComplete && !isMobile && (
-          <div className="fixed bottom-4 left-4 right-4 bg-black bg-opacity-70 p-3 rounded-md text-sm max-w-md">
+          <div className="fixed bottom-10 left-4 right-4 bg-black bg-opacity-70 p-3 rounded-md text-sm max-w-md">
             <p>
               Welcome to my digital garden! Explore my projects and interests by clicking on the folders above.
             </p>
@@ -443,6 +435,7 @@ function PersonalPage() {
             </p>
           </div>
         )}
+        {startupComplete && !isMobile && <MetadataBar />}
       </div>
     <PawStampMode isActive={pawModeActive} />
     </>
