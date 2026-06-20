@@ -37,44 +37,6 @@ body {
   scrollbar-width: none; /* Firefox */
 }
 
-/* Markdown styling */
-.markdown-body {
-  font-size: 1.1rem;
-  line-height: 1.6;
-}
-
-.markdown-body h1,
-.markdown-body h2,
-.markdown-body h3,
-.markdown-body h4,
-.markdown-body h5,
-.markdown-body h6 {
-  margin-top: 1.5em;
-  margin-bottom: 0.5em;
-  font-weight: 600;
-}
-
-.markdown-body a {
-  color: #3b82f6;
-  text-decoration: none;
-}
-
-.markdown-body code {
-  background-color: rgba(0, 0, 0, 0.05);
-  padding: 0.2em 0.4em;
-  border-radius: 3px;
-}
-
-.markdown-body pre {
-  padding: 1em;
-}
-
-.markdown-body blockquote {
-  border-left: 4px solid #ddd;
-  padding-left: 1em;
-  color: #666;
-}
-
 .text-white h1,
 .text-white h2,
 .text-white h3,
@@ -93,20 +55,4 @@ body {
 
 .text-white .bg-opacity-50 {
   background-color: rgba(0, 0, 0, 0.5);
-}
-
-.markdown-body ul {
-  list-style-type: disc;
-  padding-left: 2em;
-}
-
-.markdown-body ol {
-  list-style-type: decimal;
-  padding-left: 2em;
-}
-
-@media (max-width: 767px) {
-  .markdown-body {
-    font-size: 1rem;
-  }
 }
