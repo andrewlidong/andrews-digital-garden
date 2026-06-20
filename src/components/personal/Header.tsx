@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 interface MenuItem {
@@ -14,22 +14,7 @@ interface HeaderProps {
 
 export const Header: React.FC<HeaderProps> = ({ onOpenTerminal, pawModeActive, onTogglePawMode }) => {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
-  const [currentTime, setCurrentTime] = useState<string>("");
   const navigate = useNavigate();
-
-  // Update the clock every second
-  useEffect(() => {
-    const updateClock = () => {
-      const now = new Date();
-      const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-      setCurrentTime(timeString);
-    };
-    
-    updateClock(); // Initial call
-    const intervalId = setInterval(updateClock, 1000);
-    
-    return () => clearInterval(intervalId);
-  }, []);
 
   const handleMenuClick = (menu: string) => {
     setActiveDropdown(activeDropdown === menu ? null : menu);
@@ -159,11 +144,6 @@ export const Header: React.FC<HeaderProps> = ({ onOpenTerminal, pawModeActive, o
                 </button>
               </div>
             )}
-          </div>
-          
-          {/* Terminal Clock */}
-          <div className="font-mono text-yellow-300 bg-gray-800 px-3 py-1 rounded border border-gray-700">
-            {currentTime}
           </div>
         </div>
       </div>
