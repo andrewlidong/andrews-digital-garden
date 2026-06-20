@@ -42,26 +42,26 @@ export const TextContent: React.FC<TextContentProps> = ({ content, filename = "f
   }, [body]);
 
   return (
-    <div className="w-full h-full bg-gray-900">
+    <div className="w-full h-full bg-term-bg">
       {/* Terminal flourish */}
       <div className="flex items-start mb-4 font-mono text-sm">
-        <span className="text-green-500 mr-2 whitespace-nowrap">andrew@digital-garden:~$</span>
-        <span className="text-yellow-300 whitespace-nowrap">cat {filename}</span>
+        <span className="text-term-green mr-2 whitespace-nowrap">andrew@digital-garden:~$</span>
+        <span className="text-term-yellow whitespace-nowrap">cat {filename}</span>
       </div>
 
       {/* Post header from frontmatter */}
       {(meta.title || meta.date) && (
-        <div className="mb-5 border-l-2 border-green-700 pl-4">
+        <div className="mb-5 border-l-2 border-term-green pl-4">
           {meta.title && (
-            <h1 className="text-xl font-bold text-white">{meta.title}</h1>
+            <h1 className="text-xl font-bold text-term-fg">{meta.title}</h1>
           )}
           {meta.subtitle && (
-            <p className="mt-1 text-sm text-gray-400">{meta.subtitle}</p>
+            <p className="mt-1 text-sm text-term-dim">{meta.subtitle}</p>
           )}
           {meta.date && (
-            <p className="mt-1 text-xs text-gray-500">{formatDate(meta.date)}</p>
+            <p className="mt-1 text-xs text-term-faint">{formatDate(meta.date)}</p>
           )}
-          <p className="mt-2 text-xs text-gray-600 font-mono">
+          <p className="mt-2 text-xs text-term-faint font-mono">
             Tip: click the green ⤢ button to read full screen.
           </p>
         </div>
@@ -77,7 +77,7 @@ export const TextContent: React.FC<TextContentProps> = ({ content, filename = "f
           </ReactMarkdown>
         </div>
       ) : (
-        <div className="font-mono text-sm text-green-300">
+        <div className="font-mono text-sm text-term-green">
           <span className="whitespace-pre-wrap">{displayedContent}</span>
           <span className="animate-pulse">▌</span>
         </div>
