@@ -10,6 +10,7 @@ import { useMobileDetect } from "@/hooks/useMobileDetect";
 import { MobileFileSystem } from "../components/sections/MobileFileSystem";
 import type { FileItem } from "../components/sections/MobileFileSystem";
 import PawStampMode from "@/components/personal/PawStampMode";
+import { MetadataBar } from "@/components/personal/MetadataBar";
 import "../styles/animations.css";
 
 function MobilePage() {
@@ -213,7 +214,7 @@ function MobilePage() {
       <NavBar />
       <PawStampMode isActive={pawModeActive} />
       {isMobile && <MobileBanner />}
-      <div className="text-white">
+      <div className="text-white pb-10">
         <Home ref={(el) => (sectionRefs.current.home = el)} isMobile={true} />
         <Projects ref={(el) => (sectionRefs.current.projects = el)} />
         <div id="notes" ref={(el) => (sectionRefs.current.notes = el)} className="min-h-screen py-20">
@@ -226,6 +227,7 @@ function MobilePage() {
         </div>
         <Contact ref={(el) => (sectionRefs.current.contact = el)} />
       </div>
+      <MetadataBar compact />
     </Background>
   );
 }

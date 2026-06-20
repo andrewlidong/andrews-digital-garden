@@ -8,6 +8,7 @@ import fileSystemData from "@/content/filesystem.json";
 import { Header } from "@/components/personal/Header";
 import StartupScreen from "@/components/personal/StartupScreen";
 import PawStampMode from "@/components/personal/PawStampMode";
+import { MetadataBar } from "@/components/personal/MetadataBar";
 import { loadFileContent } from "@/lib/loadFileContent";
 
 type FileItem = {
@@ -54,7 +55,6 @@ function PersonalPage() {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [isStarting, setIsStarting] = useState(true);
   const [startupComplete, setStartupComplete] = useState(false);
-  const readmeOpenedRef = useRef(false);
   // Cache of successfully loaded file contents, keyed by path. Failures are not
   // cached so reopening a file retries the fetch.
   const contentCache = useRef<Record<string, string>>({});
@@ -375,7 +375,7 @@ function PersonalPage() {
 
         {/* Terminal Welcome Message */}
         {startupComplete && !isMobile && (
-          <div className="fixed bottom-4 left-4 right-4 bg-black bg-opacity-70 p-3 rounded-md text-sm max-w-md">
+          <div className="fixed bottom-10 left-4 right-4 bg-black bg-opacity-70 p-3 rounded-md text-sm max-w-md">
             <p>
               Welcome to my digital garden! Explore my projects and interests by clicking on the folders above.
             </p>
@@ -389,6 +389,7 @@ function PersonalPage() {
             </p>
           </div>
         )}
+        {startupComplete && !isMobile && <MetadataBar />}
       </div>
     <PawStampMode isActive={pawModeActive} />
     </>
