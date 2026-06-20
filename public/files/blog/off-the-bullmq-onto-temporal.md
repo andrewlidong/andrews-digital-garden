@@ -3,7 +3,6 @@ title: "Off the Bull(MQ), Onto Temporal"
 date: "2025-06-28"
 subtitle: "and what we learned along the way"
 slug: "off-the-bullmq-onto-temporal"
-source: "https://andrewdong.substack.com/p/off-the-bullmq-onto-temporal"
 ---
 
 > When we started out, [Bull](https://github.com/OptimalBits/bull) was our go-to solution for job queues. It was simple, reliable enough, and gave us the ability to offload things like sending emails and syncing data into background jobs. But as our system matured, those background tasks started getting more complex: some needed retries, others spanned days, and several required human approvals or needed to coordinate with other services.

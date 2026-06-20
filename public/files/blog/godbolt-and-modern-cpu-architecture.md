@@ -3,7 +3,6 @@ title: "Godbolt and Modern CPU Architecture"
 date: "2025-12-26"
 subtitle: "When writing C++ code or even assembly, we often imagine the CPU executing instructions one by one but the reality inside the silicon is far more chaotic."
 slug: "godbolt-and-modern-cpu-architecture"
-source: "https://andrewdong.substack.com/p/godbolt-and-modern-cpu-architecture"
 ---
 
 When writing C++ code or even assembly, we often imagine the CPU executing instructions one by one but the reality inside the silicon is far more chaotic. In a recent [talk](https://www.youtube.com/watch?v=BVVNtG5dgks&t=3424s), Matt Godbolt explores modern CPU architecture (specifically the Intel Skylake architecture) and explains how it works to translate, rename, reorder and speculate upon code execution.

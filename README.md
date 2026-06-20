@@ -41,14 +41,16 @@ up as a clickable file in the desktop UI and can be opened full screen.
    title: "My Post Title"
    date: "2026-06-20"
    subtitle: "An optional one-line dek"
+   tags: [zig, cli]
    ---
 
    Your markdown body goes here…
    ```
 
-   Only `title` and `date` are required. Posts in a folder are sorted
-   newest-first by `date`. Put images in `public/blog-images/` and reference
-   them as `/blog-images/your-image.png`.
+   Only `title` and `date` are required. `subtitle` and `tags` are optional.
+   Posts are sorted newest-first by `date`. Put images in `public/blog-images/`
+   and reference them as `/blog-images/your-image.png`. Fenced code blocks get
+   syntax highlighting — tag them with a language (` ```zig `).
 
 2. Commit. The pre-commit hook regenerates `src/content/filesystem.json` so the
    post appears in the file tree. (Or run `npm run watch-filesystem` while you
@@ -56,28 +58,34 @@ up as a clickable file in the desktop UI and can be opened full screen.
 
 ### Reading a post
 
+- Browse to `/blog` for a chronological index of all posts.
 - Click a file to open it in a draggable window, then click the green **⤢**
   button to expand it full screen.
-- Each post has a permalink: `/read/blog/my-post-slug`.
+- Each post has a permalink: `/read/blog/my-post-slug`, with reading time and
+  previous/next navigation.
 - In the on-site terminal, `vim <file>` (or `nvim`) opens a post full screen;
   `cat <file>` opens it in a window.
 
-### Importing from Substack
+### Feeds and sharing
 
-`scripts/importSubstack.js` pulls posts from the Substack RSS feed, converts
-them to markdown with frontmatter, and downloads inline images:
+- **RSS:** `scripts/generateRss.js` writes `public/rss.xml` from the blog
+  frontmatter at build time (subscribe at `/rss.xml`).
+- **Share cards:** `scripts/genOgPages.js` runs after `vite build` and emits a
+  static `dist/read/blog/<slug>/index.html` per post with Open Graph / Twitter
+  meta tags, so shared post links unfurl with their own title and subtitle.
+
+Both run automatically as part of `npm run build`.
+
+### Importing posts (one-off migration)
+
+`scripts/importSubstack.js` converts an RSS feed of existing posts into the
+markdown + frontmatter format above and downloads inline images:
 
 ```bash
-# Fetch the live feed
-node scripts/importSubstack.js
-
-# …or convert a saved feed file
 node scripts/importSubstack.js path/to/feed.xml
 ```
 
 Re-running overwrites the imported posts but leaves hand-written files alone.
-Note: Substack's RSS only exposes recent posts — for a full archive, use
-Substack's official export (Settings → Exports) and point the script at it.
 
 ## License
 

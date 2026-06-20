@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import rehypeHighlight from 'rehype-highlight';
+import { parseFrontmatter, formatDate } from '@/lib/frontmatter';
 
 interface FileContentProps {
   content: string;
@@ -11,37 +13,34 @@ export const FileContent: React.FC<FileContentProps> = ({ content, fileType }) =
   const renderContent = () => {
     switch (fileType.toLowerCase()) {
       case '.md':
-      case '.markdown':
+      case '.markdown': {
+        const { meta, body } = parseFrontmatter(content);
         return (
-          <div className="prose prose-invert max-w-none">
-            <ReactMarkdown
-              remarkPlugins={[remarkGfm]}
-              components={{
-                h1: ({...props}) => <h1 className="text-3xl font-bold mb-4 text-white" {...props} />,
-                h2: ({...props}) => <h2 className="text-2xl font-bold mb-3 text-white" {...props} />,
-                h3: ({...props}) => <h3 className="text-xl font-bold mb-2 text-white" {...props} />,
-                p: ({...props}) => <p className="mb-4 text-gray-100 leading-relaxed" {...props} />,
-                ul: ({...props}) => <ul className="list-disc pl-6 mb-4 text-gray-100" {...props} />,
-                ol: ({...props}) => <ol className="list-decimal pl-6 mb-4 text-gray-100" {...props} />,
-                li: ({...props}) => <li className="mb-2 text-gray-100" {...props} />,
-                code: ({className, ...props}) =>
-                  className?.includes('inline') ? (
-                    <code className="bg-gray-900 px-1.5 py-0.5 rounded text-gray-100" {...props} />
-                  ) : (
-                    <code className="block bg-gray-900 p-4 rounded-lg text-gray-100 mb-4" {...props} />
-                  ),
-                pre: ({...props}) => <pre className="bg-gray-900 p-4 rounded-lg mb-4 overflow-x-auto" {...props} />,
-                blockquote: ({...props}) => <blockquote className="border-l-4 border-gray-700 pl-4 italic text-gray-200 mb-4" {...props} />,
-                a: ({...props}) => <a className="text-blue-300 hover:text-blue-200 underline" {...props} />,
-                table: ({...props}) => <table className="w-full border-collapse mb-4" {...props} />,
-                th: ({...props}) => <th className="border border-gray-700 px-4 py-2 text-left bg-gray-900 text-gray-100" {...props} />,
-                td: ({...props}) => <td className="border border-gray-700 px-4 py-2 text-gray-100" {...props} />,
-              }}
-            >
-              {content}
-            </ReactMarkdown>
+          <div>
+            {(meta.title || meta.date) && (
+              <div className="mb-5 border-l-2 border-green-700 pl-4">
+                {meta.title && (
+                  <h1 className="text-2xl font-bold text-white">{meta.title}</h1>
+                )}
+                {meta.subtitle && (
+                  <p className="mt-1 text-sm text-gray-400">{meta.subtitle}</p>
+                )}
+                {meta.date && (
+                  <p className="mt-1 text-xs text-gray-500">{formatDate(meta.date)}</p>
+                )}
+              </div>
+            )}
+            <div className="prose prose-invert max-w-none prose-headings:text-white prose-a:text-green-400 prose-a:no-underline hover:prose-a:underline prose-code:rounded prose-code:bg-gray-800 prose-code:px-1.5 prose-code:py-0.5 prose-code:text-green-300 prose-code:before:content-none prose-code:after:content-none prose-pre:border prose-pre:border-gray-800 prose-pre:bg-gray-950 prose-blockquote:border-l-green-700 prose-blockquote:text-gray-300 prose-img:rounded-lg">
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm]}
+                rehypePlugins={[[rehypeHighlight, { detect: true, ignoreMissing: true }]]}
+              >
+                {body}
+              </ReactMarkdown>
+            </div>
           </div>
         );
+      }
       case '.txt':
       case '.log':
         return (

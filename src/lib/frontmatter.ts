@@ -6,7 +6,6 @@ export interface PostMeta {
   date?: string;
   subtitle?: string;
   slug?: string;
-  source?: string;
   tags?: string[];
 }
 
@@ -58,6 +57,13 @@ export function parseFrontmatter(raw: string): ParsedDoc {
 /** Strip a frontmatter block, returning just the markdown body. */
 export function stripFrontmatter(raw: string): string {
   return parseFrontmatter(raw).body;
+}
+
+/** Estimated reading time, e.g. "4 min read", from a markdown body. */
+export function readingTime(body: string): string {
+  const words = body.trim().split(/\s+/).filter(Boolean).length;
+  const minutes = Math.max(1, Math.round(words / 200));
+  return `${minutes} min read`;
 }
 
 /** A readable date like "June 17, 2026" from an ISO date string. */

@@ -3,7 +3,6 @@ title: "writing a cli in zig"
 date: "2026-05-26"
 subtitle: "baby's first babyline"
 slug: "writing-a-cli-in-zig"
-source: "https://andrewdong.substack.com/p/writing-a-cli-in-zig"
 ---
 
 this last week i decided to sit down and write a small zig cli called [babyline](https://github.com/andrewlidong/babyline). i started by basically following this [tutorial](https://rebuild-x.github.io/docs/#/./zig/terminal/cli) which walks you through building a small subcommand-style cli in zig.

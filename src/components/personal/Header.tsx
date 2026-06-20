@@ -130,6 +130,14 @@ export const Header: React.FC<HeaderProps> = ({ onOpenTerminal, pawModeActive, o
                 <MenuDropdown items={mobileMenuItems} />
               )}
             </div>
+            <div className="relative">
+              <button
+                onClick={() => navigate("/blog")}
+                className="px-2 py-1 rounded text-gray-300 hover:text-white hover:bg-gray-700"
+              >
+                blog
+              </button>
+            </div>
             {onOpenTerminal && (
               <div className="relative">
                 <button

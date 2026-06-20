@@ -3,7 +3,6 @@ title: "Grace, Interruptions and the Signals Beneath"
 date: "2025-12-26"
 subtitle: "Why Tokyo Godfathers is the Greatest Christmas Movie of All Time"
 slug: "grace-interruptions-and-the-signals"
-source: "https://andrewdong.substack.com/p/grace-interruptions-and-the-signals"
 ---
 
 When people think of Christmas movies, several classics come to mind: *It’s a Wonderful Life, Home Alone, A Charlie Brown Christmas, Die Hard(?)….* These films shape our holiday playlists with familiarity and comfort, well-worn jingling sleighbells to our seasonal soundscape. But there’s another Christmas movie that doesn’t just play like tradition ~ it teaches it… a movie where the spirit of Christmas arrives not with tinsel and carols but with grit, chance and improbable connection. That masterpiece of a Christmas movie is *Tokyo Godfathers.*

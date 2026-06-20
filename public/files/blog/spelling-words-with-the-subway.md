@@ -3,7 +3,6 @@ title: "Spelling words with the Subway"
 date: "2026-06-17"
 subtitle: "We love creative coding"
 slug: "spelling-words-with-the-subway"
-source: "https://andrewdong.substack.com/p/spelling-words-with-the-subway"
 ---
 
 This last week my friend [Maxime](https://maximeheckel.com/) and I were hanging out at [Betty’s](https://bettynewyork.com/) for a 1-hour fable hackathon. Fable got cancelled, the restaurant (which slaps) didn’t have good wifi and Maxime left feeling unsatisfied with his subway map re-rendering. I left with the idea to spell anagrams out of subway train lines.

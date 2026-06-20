@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import rehypeHighlight from "rehype-highlight";
 import { parseFrontmatter, formatDate } from "@/lib/frontmatter";
 
 interface TextContentProps {
@@ -68,7 +69,12 @@ export const TextContent: React.FC<TextContentProps> = ({ content, filename = "f
 
       {typingComplete ? (
         <div className="prose prose-invert prose-sm max-w-none prose-headings:text-white prose-a:text-green-400 prose-a:no-underline hover:prose-a:underline prose-code:rounded prose-code:bg-gray-800 prose-code:px-1.5 prose-code:py-0.5 prose-code:text-green-300 prose-code:before:content-none prose-code:after:content-none prose-pre:border prose-pre:border-gray-800 prose-pre:bg-gray-950 prose-blockquote:border-l-green-700 prose-blockquote:text-gray-300 prose-img:rounded-lg">
-          <ReactMarkdown remarkPlugins={[remarkGfm]}>{body}</ReactMarkdown>
+          <ReactMarkdown
+            remarkPlugins={[remarkGfm]}
+            rehypePlugins={[[rehypeHighlight, { detect: true, ignoreMissing: true }]]}
+          >
+            {body}
+          </ReactMarkdown>
         </div>
       ) : (
         <div className="font-mono text-sm text-green-300">

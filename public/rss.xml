@@ -1,0 +1,646 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Andrew Dong</title>
+    <link>https://andrewlidong.xyz/blog</link>
+    <atom:link href="https://andrewlidong.xyz/rss.xml" rel="self" type="application/rss+xml" />
+    <description>Writing on software, languages, and creative coding.</description>
+    <language>en-us</language>
+    <item>
+      <title>Spelling words with the Subway</title>
+      <link>https://andrewlidong.xyz/read/blog/spelling-words-with-the-subway</link>
+      <guid isPermaLink="true">https://andrewlidong.xyz/read/blog/spelling-words-with-the-subway</guid>
+      <pubDate>Wed, 17 Jun 2026 12:00:00 GMT</pubDate>
+      <description>We love creative coding</description>
+      <content:encoded><![CDATA[<p>This last week my friend <a href="https://maximeheckel.com/">Maxime</a> and I were hanging out at <a href="https://bettynewyork.com/">Betty’s</a> for a 1-hour fable hackathon. Fable got cancelled, the restaurant (which slaps) didn’t have good wifi and Maxime left feeling unsatisfied with his subway map re-rendering. I left with the idea to spell anagrams out of subway train lines.</p>
+<p>The New York City subway has a wonderful coincidence baked into it: a bunch of its lines are named with single letters. There’s an A train, a C, an E, an F, a G, a J… sixteen lettered services in total. Which means you can <em>spell</em> things with them. To spell <a href="https://andrewlidong.github.io/train-anagrams/?word=ILOVECREATIVECODING">FACE</a> you board the F, transfer to the A, and then the C, then the E - and because the subway is a real network, it’s an actual trip you could take, with real transfers at a real stations, for $3.00.</p>
+<p>Thanks for reading! Subscribe for free to receive new posts and support my work.</p>
+<p>I built <a href="https://andrewlidong.github.io/train-anagrams/">Subway Spell</a> to do exactly that: type a word and it finds a ridable path whose line letters spell it, then animates a little train riding the route on a map of the real network. It’s a static site - no backend- running entirely against public open data. Here’s how it works, including a few problems that I found interesting.</p>
+<p><img src="/blog-images/spelling-words-with-the-subway-1.gif" alt=""></p>
+<h2>The Data</h2>
+<p>Two datasets from New York State’s Socrata-powered open-data portal do almost all the work, and both are queryable directly from the browser with CORS:</p>
+<ul>
+<li><p><strong><a href="https://data.ny.gov/resource/39hk-dx4f.json">MTA Subway Staations</a> -</strong> one row per station, with <code>stop_name</code>, <code>daytime_routes</code> (a space separated list like <code>”N Q R W S 1 2 3 7”</code>), <code>complex_id</code>, <code>borough</code>, and <code>gtfs_latitude / gtfs_longitude</code>.</p>
+</li>
+<li><p><strong><a href="https://data.ny.gov/resource/s692-irgq.json">MTA Subway Service Lines</a></strong> - one row per service with a <code>geometry</code> MultiLineString of the actual track alignment. This is what lets the highlighted route follow the real curves of the tracks instead of drawing straight lines between stations.</p>
+</li>
+</ul>
+<p>I fetch both once on load (?$limit=2000 pulls everything), cache them in <code>localStorage</code> for 30 days, and never touch a server of my own again. The whole app is approximately 500 lines of routing logic plus a React/Leaflet UI.</p>
+<p>The single most important field is <code>complex_id</code>. A “station complex” is a group of physically-connected platforms you can transfer between without leaving the system. Times Sq-42 St is one complex spanning the N/Q/R/W, the 1/2/3, the 7, and the S shuttle. I group stations by <code>complex_id</code>, union their <code>daytime_routes</code>, and average their coordinates into a centroid. Two lines are connected if some complex serves both of them.</p>
+<h2>Modeling transfers as a graph</h2>
+<pre><code>class SubwayGraph {
+  // line -&gt; set of lines reachable by one transfer
+  private adjacency = new Map&lt;string, Set&lt;string&gt;&gt;();
+  // ...
+}
+</code></pre>
+<p>I build a line-to-line adjacency in two passes:</p>
+<ol>
+<li><p><strong>In-system transfers</strong>. For every complex, every pair of routes it serves gets an edge. (A complex serving A, C, E gives you A←→C, A←→ E, C←→E)</p>
+</li>
+<li><p><strong>Out-of-system walking transfers</strong>. For every pair of complexes within ~400m (haversine), I add edges between their routes too. This captures the real “exit here, walk a block, re-enter” transfers the MTA actually honors, plus a few it doesn’t but a human reasonably would.</p>
+</li>
+</ol>
+<p>The neat realization that makes the whole thing tractable is that each lettered train ies exactly one line. The A in your word can only be the A train, so a word doesn’t design a search over which lines to take - it defines the line sequence completely. For example, <code>MADAGASCAR</code> is unambiguously M-A-D-A-G-A-S-C-A-R. The only freedom left is <em>which station you transfer</em> <em>at</em> between each consecutive pair of lines.</p>
+<h2>Path-finding as a layered shortest path</h2>
+<p>So the problem reduces to: for the fixed line sequence <code>L_0, L_1, … L_k</code> choose a transfer station for each adjacent pair (L_t, L_t+1) to minimize some cost.</p>
+<p>Each transition t has a set of candidate “transfer options”:</p>
+<pre><code class="language-typescript">interface TransferOption {
+  arrive: Complex; // station where you get off line L_t
+  depart: Complex; // station where you board line L_t+1
+  walk: number; // metres walked during the transfer (0 if in-system)
+}
+</code></pre>
+<p>In-system transfers have <code>arrive === depart</code> and <code>walk === 0</code>. Walking transfers are pairs of nearby complexes. If a pair of lines genuinely shares no station and has no nearby pair, I fall back to the single closest pair of stations (a long walk, surfaced to the user).</p>
+<p>Then it’s a textbook layered DP. The cost of riding line L_(t+1) from one transition’s <code>depart</code> to the next transition’s <code>arrive</code> is the haversine between them; I sum ride costs plus walk costs across the chain and reconstruct the cheapest path with back-pointers. It’s small - a handful of transitions, each with at most a few dozen candidate stations - so it runs in well under a millisecond.</p>
+<p>The interesting part wasn’t the algorithm. It was the cost function!</p>
+<h2>The cost function went through three rewrites</h2>
+<p>v1 weighted ride meters and walk meters equally. The result technically spelled the word but was deeply unsatisfying: for <code>FACE</code>, every one of F, A, C, and E stops at W 4th street - Washington Square, so the “optimal” route was to stand at W 4 St and transfer four times without going anywhere. Minimal distance, zero riding, no fun.</p>
+<p>v2 added two ideas: make rides cheap (so the planner doesn’t mind a longer trip), weight walking much higher (so it avoids out-of-system transfers), and add a penalty for “same-station” transfers - any ride shorter than 60m counts as not really riding and gets dinged. That fixed <code>FACE</code> (it now rides to four distinct stations) but I’d only applied the penalty to one of three routing “strategies” I’d added, so the others still produced the stand-still routes.</p>
+<p>v3 (the one that’s live) makes the hierarchy explicit and applies it to every strategy:</p>
+<pre><code>walk cost &gt;&gt; same-station penalty &gt;&gt; ride cost
+</code></pre>
+<pre><code>const STRATEGY_WEIGHTS = {
+  scenic: { ride: 0.1, walk: 60, samePenalty: 6000 }, // long rides fine
+  &quot;least-walk: { ride: 0.5, walk: 120, samePenalty: 1500 }, // accept a boring transfer over a walk
+  fastest: { ride: 1, walk: 60, samePenalty: 6000 }, // nearest distinct station
+};
+</code></pre>
+<p>The magnitudes matter. With <code>samePenalty = 6000</code> and <code>ride = 0.1</code>, the planner will happily ride up to 60km to reach a different transfer station rather than stand still - but because <code>walk=60</code> per meter, even a 100m walk costs 6000, so it will <em>never walk</em> just to avoid a same-station transfer. That ordering - walking being worse than a boring transfer, which is worse than a long ride - is exactly the preference that a real rider (or at least me) has, and getting the constants to encode it took some fiddling. Verifying it meant running a few words against the live data and counting zero-length rides.</p>
+<pre><code>FACE: rides=4, sameStation=0 transferWalk=0m
+MADAGACSCAR: rides=10 sameStation=1 transferWalk=0m
+</code></pre>
+<p>The one stubborn same-station hop in <code>MADAGASCAR</code> is genuinely unavoidable - some adjacent letter pairs share exactly one complex - so that’s the right answer.</p>
+<h2>“Another route” and a deterministic jitter</h2>
+<p>I wanted an “🔀 Another Route” button. The honest way to do this is k-shortest paths. The cheap way is to perturb the costs and re-run. I went cheap lol, but with a twist: the perturbation has to be <em>deterministic</em> (so a given variant always yields the same route - important because the result feeds a URL you can share) and <em>bounded</em> (so it reshuffles which distinct station you use without ever crossing the threshold into “now walking is cheaper”).</p>
+<pre><code class="language-javascript">function jitter(seed: number): number {
+  const x = Math.sin(seed) * 1000
+  return x - Math.floor(x); // deterministic pseudo-random in [0,1)
+}
+</code></pre>
+<p>The jitter is scaled to min(samePenalty * 0.4, 1500) - enough to flip between near-equal in-system stations, never enough to make the planner walk or stand still. My first version used a fixed scale and it was useless for the high-magnitude strategies (1200 of jitter is nothing next to a 6km ride cost), which is why “another route” felt broken until I made it proportional.</p>
+<h2>Drawing the route on the real tracks</h2>
+<p>The background map is Leaflet (which I used for <a href="https://traceandpace.com/">traceandpace.com</a> my strava art run club) with a CARTO Positron basemap and the full subway network drawn from the geometry in official MTA colors (rendered on a canvas via <code>preferCanvas</code>, because there are <em>a lot</em> of polylines).</p>
+<p>The highlighted route is the fun bit. For each ride leg I need the slice of the line’s real geometry between the two transfer stations. I project each endpoint onto the line’s polyline - closest point on each segment, planar approximation in lat/lng which is fine at city scale - find the segment that minimizes the sum of the two projection distances, then slice the polyline’s vertices between the two projected points and orient them in travel direction:</p>
+<pre><code>const between = path.filter((_, i) =&gt; cum[i] &gt; lo &amp;&amp; cum[i] &lt; hi);
+return [from, f.point, ...(ascending ? between : between.reverse()), t.point, to];
+</code></pre>
+<p>For a long leg this returns hundreds of points (the E train from Court Square to 7th Ave traces ~1300), so the route hugs the tracks instead of cutting across Queens.</p>
+<h2>The animated train</h2>
+<p>A <code>requestAnimationFrame</code> loop walks a marker along the concatenated geometry of every leg, by cumulative distance so the speed is constant regardless of how the points are spaced. The marker recolors itself to the current line, the speed is adjustable 0.5x-4x, and as it crosses a leg boundary it fires an <code>onLegChange</code> callback that highlights the correponding cell in the “spelling strip” above the map and the matching row in the itinerary. Crucially, the per-frame updates go straight to the Leaflet marker via <code>setLatLng</code> - React never re-renders on a frame; only the once-per-leg highlight goes through state.</p>
+<h2>Letters with no train</h2>
+<p>Even letters have no subway line: H, I, K, O, P, T, U, V, X, Y. Rather than giving up on words containing them, those become walking detours to real places that start with that letter - a bar, cafe, park or landmark, pulled live from OpenStreetMap’s <a href="https://overpass-api.de/">Overpass API</a> near wherever you are on the route:</p>
+<pre><code>nwr[&quot;amenity&quot;~&quot;^(bar|pub|cafe)$&quot;][&quot;name&quot;](around:1000,lat,lng);
+nwr[&quot;leisure&quot;=&quot;park&quot;][&quot;name&quot;](around:1000,lat,lng);
+nwr[&quot;tourism&quot;~&quot;^(attraction|museum|gallery)$&quot;][&quot;name&quot;](around:1000,lat,lng);
+</code></pre>
+<p>I filter the results by first letter, pick the nearest, and chain each detour from the previous stop. Overpass can be slow or rate-limited, so every request has a 7-second timeout and falls back to a small curated list of known NYC spots (High Line, Katz’s, Veselka…). The walk legs themselves get real on-street geometry from the <a href="https://project-osrm.org/">OSRM foot router</a>, again with a timeout and a straight-line fallback.</p>
+<h2>The stack</h2>
+<ul>
+<li><p><strong>React + TypeScript + Vite, Leaflet</strong> for the map, <strong>Vitest</strong> for tests (covering pure routing/graph/dictionary logic)</p>
+</li>
+<li><p>Static deploy to <strong>Github Pages</strong> via a GitHub Actions workflow that runs the tests, builds, and publishes on every push to main.</p>
+</li>
+<li><p>A couple of one-off Node scripts (using @resvg, installed and removed) render the favicon SVG into PNG PWA icons and a 1200x630 Open Graph share care so only the generated PNGs live in the repo.</p>
+</li>
+<li><p>Shareable <code>?word=FACE</code> deep links, save_the-route-as-PNG (via <code>html-to-image</code>, which meant setting <code>crossOrigin</code> on the tile layers so the canvas isn’t tainted), copy-itinerary-as-text, recents and favorites in <code>localStorage</code>.</p>
+</li>
+</ul>
+<h2>What I’d do differently (and still might)</h2>
+<ul>
+<li><p>The transfer model assumes any two lines sharing a complex can always transfer, but service varies by time of day - the W, Z,a and B don’t run nights or weekends. A route isn’t always ridable at 2AM…</p>
+</li>
+<li><p>Doubled letters (the ZZ in JAZZ) can’t really be ridden twice - you can’t transfer a line to itself - so they collapse to one ride that’s labeled as spelling both. Honest, but part of me wants an out and back.</p>
+</li>
+<li><p>Per-word Open Graph preview images would need a server (or an edge function); on GitHub Pages the share card is generic so I use Save-as-PNG as a workaround.</p>
+</li>
+</ul>
+<p>All of this is <a href="https://github.com/andrewlidong/train-anagrams">open source</a> and live at <a href="https://andrewlidong.github.io/train-anagrams/">https://andrewlidong.github.io/train-anagrams/</a>. Type WHATSUP, hit play, and see what happens.</p>
+<p>Thanks for reading! Subscribe for free to receive new posts and support my work.</p>
+]]></content:encoded>
+    </item>
+    <item>
+      <title>writing a cli in zig</title>
+      <link>https://andrewlidong.xyz/read/blog/writing-a-cli-in-zig</link>
+      <guid isPermaLink="true">https://andrewlidong.xyz/read/blog/writing-a-cli-in-zig</guid>
+      <pubDate>Tue, 26 May 2026 12:00:00 GMT</pubDate>
+      <description>baby's first babyline</description>
+      <content:encoded><![CDATA[<p>this last week i decided to sit down and write a small zig cli called <a href="https://github.com/andrewlidong/babyline">babyline</a>. i started by basically following this <a href="https://rebuild-x.github.io/docs/#/./zig/terminal/cli">tutorial</a> which walks you through building a small subcommand-style cli in zig.</p>
+<p>i later extended beyond the tutorial by adding things like:</p>
+<ol>
+<li><p>a persistent config store with real on-disk format, atomic writes and section-aware keys</p>
+</li>
+<li><p>a self-documenting system that generates a markdown reference, a man page, and a plain text help file from a single in-memory table of commands</p>
+</li>
+<li><p>shell completion generation for bash, zsh and fish, from the same table actually</p>
+</li>
+<li><p>an interactive arrow-key driven menu using raw mode and ANSI escape codes</p>
+</li>
+<li><p>tests (yay)</p>
+</li>
+</ol>
+<p>running cloc on it shows ~2200 lines of zig across just 8 files, making it small enough that i can hold the whole program in my head, which was kind of the point. i first decided to start writing zig after having a conversation with my friend andrew about <a href="https://codeberg.org/awebo-chat/awebo">awebo</a>, a small self-hostable chat app written in zig which i’d love to follow and possibly contribute to someday. besides awebo though, we also talked about zig and what the language is really trying to accomplish and the answer really resonated with me ~ get people to write better software.</p>
+<p>the next day i cloned it, got it building locally and then realized i had no servers to join (if you have one plz invite me). i also watched a youtube clip about zig where he points out that airplanes are these wild aluminum tubes that hurl people through the upper atmosphere at hundreds of miles an hour, but are basically the safest mode of transport ever invented, while we barely trust software to track git properly now. jonathan blow gives a talk in the same neighborhood, <a href="https://www.youtube.com/watch?v=pW-SOdj4Kkk">Preventing the Collapse of Civilization</a> where he argues the software stack is getting so tall and abstracted that we’re forgetting how much of it works ~ and as someone who uses a lot of ai assisted coding this is definitely something i resonate with. all to say, when andrew told me his goal with zig is to get people to write better software i decided that i want to be one of those people.</p>
+<h1>the command table</h1>
+<p>so anyways, back to babyline. starting off, i just want to point out a bit of code in my main file:</p>
+<pre><code>const commands = [_]cli.command{
+    cli.command{
+        .name = &quot;hello&quot;,
+        .func = &amp;cmd.methods.commands.helloFn,
+        .req = &amp;.{&quot;greeting&quot;},
+        .opt = &amp;.{&quot;name&quot;},
+        .desc = &quot;Greet someone&quot;,
+    },
+    // ...
+};
+
+const options = [_]cli.option{
+    cli.option{
+        .name = &quot;name&quot;,
+        .short = &#39;n&#39;,
+        .long = &quot;name&quot;,
+        .func = &amp;cmd.methods.options.nameFn,
+        .desc = &quot;Name to greet&quot;,
+    },
+    // ...
+};
+</code></pre>
+<p>this is the entire schema of my program . what’s interesting is that this same table drives four different things ~ the argument parser at runtime, the markdown reference embedded in the README, the man page, and the bash, zsh, and fish completion scripts.</p>
+<p>if you’ve gone ahead and taken a look at the repo you’ll see that the README has a generated section bracketed by <code>&lt;! — BEGIN GENERATED —&gt;</code>. when i add a command, i add one struct literal to <code>main.zig</code> and run <code>zig build docs</code> and the README, the man page, the text help, and the completion scripts all update from the same source.</p>
+<p>if you’ve written CLIs in other languages you know the alternative. in Go , for example, you write your <code>flag.StringVar</code> calls in <code>main</code>, then you separately keep a <code>README.md</code> in sync by hand, and if you want bash completion you either generate it by hand or you reach for <code>cobra</code> which is a gigantic dependency. in Python, <code>argparse</code> will print decent help text but the man page does not exist, and if you want shell completions you have to reach for <code>argcomplete</code> or <code>click</code>. in Rust, <code>clap</code> does all of this, but the way it does is via a derive macro that generates code you cannot read, on top of a builder API that you also cannot easily read. the contract between your code and its documentation is wherever the macro author decides to put it. in babyline that contract is the array literal in <code>main.zig</code>. that’s it. the price of this design is that the array literal is a little ugly and repetitive, but the plus is that nothing is ever out of sync because there is nothing to sync.</p>
+<h1>the parser</h1>
+<p><code>startWithArgs in cli.zig</code> is about 80 lines, and this is pretty much all of it:</p>
+<pre><code>pub fn startWithArgs(commands: []const command, options: []const option, args: anytype, debug: bool) !void {
+    // 1. Bounds checks.
+    // 2. Find the command whose name matches args[1].
+    // 3. Walk args[2..], pulling flags and their following values.
+    // 4. Check that every required option for the command was provided.
+    // 5. Call the command&#39;s handler, then call each option&#39;s handler.
+</code></pre>
+<p>the flag-value association is super simple: if the next argument doesn’t start with -, treat it as the value of the current flag, and if it does, the current flag gets an empty string. there is no <code>—-flag=value</code> syntax, no clustering of short flags like <code>-abc</code> and no positional arguments. baby is crude.</p>
+<p>one thing that took me a moment to internalize is that the function signature is <code>args: anytype</code> which means it’ll accept any array-like that the compiler can figure out how to iterate. this is zig’s generics ~ there are no type parameters, no <T>, no trait bounds. the compiler monomorphizes <code>startWithArgs</code> once per call site and checks that the operations you perform on <code>args</code> are valid for the concrete type that’s passed in. if you pass in something that doesn’t support <code>.len</code>, you get a compile error at the line that says <code>args.len</code>. this feels slightly unnerving as someone whose first systems programming language was Rust, and coming from Go where the generics machinery is heavier and the inference is weaker this was kind of shocking to me.</p>
+<h1>the config store</h1>
+<p>super proud of this one! the on-disk format is a tiny INI dialect:</p>
+<pre><code class="language-toml"># auto-managed by babyline
+[editor]
+theme = &quot;dark&quot;
+font = &quot;Berkeley Mono&quot;
+
+[general]
+username = &quot;andrew&quot;
+</code></pre>
+<p>the data model is two levels deep: sections, then keys. keys can be referenced as <code>editor.theme</code> (section-qualified) or just <code>theme</code> (bare keys live in a <code>general</code> section). the <code>splitKey</code> function validates that each side is a valid identifier and rejects anything weird</p>
+<pre><code>pub fn splitKey(key: []const u8) Error!KeyParts {
+    if (key.len == 0) return Error.InvalidKey;
+    // count dots, find the split point, validate both halves as identifiers
+}
+</code></pre>
+<p>what i love is the <code>Config</code> struct itself:</p>
+<pre><code>pub const Config = struct {
+    allocator: std.mem.Allocator,
+    sections: std.StringHashMap(Section),
+    // ...
+};
+</code></pre>
+<p>the allocator is a field. not a global, not a singleton, not something the standard library hides behind a <code>GlobalAlloc</code> trait you never look at. its a regular struct field, and every function that needs to allocate takes it explicitly. <code>Config.init(allocator)</code> returns a <code>Config</code>. <code>Config.deinit</code> walks the hash map and frees every key and value it ever owned. if you forget to call <code>deinit</code>, the test allocator tells you about it.</p>
+<p>the <code>set</code> method is worth talking about too here:</p>
+<pre><code>pub fn set(self: *Config, key: []const u8, value: []const u8) !void {
+    const parts = try splitKey(key);
+
+    const value_dup = try self.allocator.dupe(u8, value);
+    errdefer self.allocator.free(value_dup);
+
+    var section_res = try self.sections.getOrPut(parts.section);
+    if (!section_res.found_existing) {
+        const section_dup = self.allocator.dupe(u8, parts.section) catch |err| {
+            _ = self.sections.remove(parts.section);
+            return err;
+        };
+        section_res.key_ptr.* = section_dup;
+        section_res.value_ptr.* = Section.init(self.allocator);
+    }
+
+    const kv_res = try section_res.value_ptr.getOrPut(parts.name);
+    if (kv_res.found_existing) {
+        self.allocator.free(kv_res.value_ptr.*);
+        kv_res.value_ptr.* = value_dup;
+    } else {
+        const name_dup = self.allocator.dupe(u8, parts.name) catch |err| {
+            _ = section_res.value_ptr.remove(parts.name);
+            return err;
+        };
+        kv_res.key_ptr.* = name_dup;
+        kv_res.value_ptr.* = value_dup;
+    }
+}
+</code></pre>
+<p>there are three allocations: the duplicated value, the duplicated section name (if the section is new) and the duplicated key name (if the key is new). each of those allocations can fail. <code>errdefer</code> says “if this function returns an error, run this cleanup.” <code>catch |err| { …; return err; }</code> says if this allocation fails undo the partial insert we just did into the hash map and propogate the error.</p>
+<p>the whole function is, in a sense, a tiny transaction. either the key ends up in the map with all of its memory correctly owned, or nothing changes and no memory leaks. THERE IS NO GARBAGE COLLECTOR TO SAVE YOU. there is no <code>try</code> operator that papers over the cleanup. cleanup after yourself!</p>
+<p>coming from python this is a lot of bookkeeping. relative to Go it feels like extra work for problems the runtime would handle. it feels somewhat familiar to Rust, except Rust hides allocator failures behind a global panic so you basically never write the failure path. in zig you write the failure path, and once you have written a few of these you start to feel like you’re starting to grasp the shape of the program.</p>
+<p>the <code>save</code> method writes to a <code>.tmp</code> path first and then atomically renames it:</p>
+<pre><code>const tmp_path = try std.fmt.allocPrint(self.allocator, &quot;{s}.tmp&quot;, .{path});
+defer self.allocator.free(tmp_path);
+
+{
+    const tmp_file = try std.Io.Dir.createFileAbsolute(io, tmp_path, .{ .truncate = true });
+    defer tmp_file.close(io);
+    try tmp_file.writeStreamingAll(io, buf.items);
+}
+
+try std.Io.Dir.renameAbsolute(tmp_path, path, io);
+</code></pre>
+<p>if the program crashes mid-write, the real config file is untouched. this is the kind of detail that the rebuild-x tutorial doesn’t cover and you probably wouldn’t bother with for a toy project, but i figured since it was just a few lines i would include it.</p>
+<h1>self documenting from one source of truth</h1>
+<p><code>docs.zig</code> consumes the same command and option tables and writes them out in three formats: Markdown, troff (for man pages), and plain text. there is also a fourht mode, <code>all</code>, which does all three plus rewrites the generated block inside README.md.</p>
+<p>the format enum looks like this:</p>
+<pre><code>const Format = enum {
+    markdown,
+    man,
+    text,
+
+    fn fileName(self: Format) []const u8 {
+        return switch (self) {
+            .markdown =&gt; &quot;babyline.md&quot;,
+            .man =&gt; &quot;babyline.1&quot;,
+            .text =&gt; &quot;babyline.txt&quot;,
+        };
+    }
+};
+</code></pre>
+<p>methods on enums live next to variants and dispatch off them. there is nothing magical happening but it just feels good.</p>
+<p>the man page writer emits troff directly:</p>
+<pre><code>try w.writeAll(
+    \\.TH BABYLINE 1 &quot;&quot; &quot;&quot; &quot;babyline manual&quot;
+    \\.SH NAME
+    \\babyline \- a small Zig CLI demo
+    \\.SH SYNOPSIS
+    \\.B babyline
+    \\.I command
+    \\.RI [ options ]
+    \\
+);
+</code></pre>
+<p>those \ lines are zig’s multi-line string literal syntax that are exactly what they look like. the leading \ is the marker and everything after it is verbatim, with no escaping required. compared to Go’s backtick strings or Python’s triple-quoted strings, the zig version is a little less aesthetically pleasing in source but a lot easier to compose with other code since each line is its own token and you can indent the whole block freely.</p>
+<p>the README rewriter is kind of surprisng:</p>
+<pre><code>const begin_idx = std.mem.indexOf(u8, existing, readme_begin) orelse { ... };
+const end_idx = std.mem.indexOf(u8, existing, readme_end) orelse { ... };
+const prefix = existing[0 .. begin_idx + readme_begin.len];
+const suffix = existing[end_idx..];
+</code></pre>
+<p>it reads the existing README, finds the markers, takes the bytes before the start marker and the bytes after the end marker, writes a new file with the regenerated reference sandwiched between them. the README in this repo realls is git diff-able because the human-written stuff and the machine-written reference are clearly separated.</p>
+<p>i hadn’t thought before about how rarely projects do this (i’m sure there’s probably good reasons not to). most CLIs either have hand-maintained docs that are always slightly wrong or they auto-generate the whole thing and the doc feels like compiler output. this middle path only took about forty lines of code to implement and i’m quite happy with it.</p>
+<h1>shell completion for THREE SHELLS!</h1>
+<p>this part was kind of hard.</p>
+<p>bash, zsh and fish all support tab completion but all are a little different. each has its own DSL and conventions about how subcommands work, and their own way of registering themselves with the shell.</p>
+<h2>bash</h2>
+<p>bash completion works by setting <code>COMPREPLY</code> to the list of valid completions for the current word. you read <code>COMP_WORDS[COMP_CWORD]</code> to figure out what the user has typed so far, then <code>compgen -W “list of options -- $cur”</code> to filter. the babyline generator emits a <code>case</code> statement on the current subcommand:</p>
+<pre><code class="language-bash">case &quot;$cmd&quot; in
+    hello)
+        opts=&quot;-g --greeting -n --name&quot;
+        ;;
+    user:create)
+        opts=&quot;-u --username&quot;
+        ;;
+    *)
+        opts=&quot;&quot;
+        ;;
+esac
+COMPREPLY=( $(compgen -W &quot;$opts&quot; -- &quot;$cur&quot;) )
+</code></pre>
+<p>one subtlety is that bash treats : as a word break by default, which means user:create gets parsed as two separate words. the completion script fixes this with <code>COMP_WORDBREAKS=&quot;“${COMP_WORDBREAKS//:/}&#39;“</code>. i didnt actually know this existed until i tried typing <code>user:</code> and watched the completion fall apar ):</p>
+<h2>zsh</h2>
+<p>zsh has a way more sophisticated completion system. the standard pattern is:</p>
+<pre><code class="language-bash">#compdef babyline
+_babyline() {
+    local -a commands
+    commands=(
+        &#39;hello:Greet someone&#39;
+        &#39;user\:list:List users&#39;
+    )
+    if (( CURRENT == 2 )); then
+        _describe &#39;command&#39; commands
+        return
+    fi
+    case &quot;$words[2]&quot; in
+        hello)
+            _arguments \
+                &#39;(-g --greeting)&#39;{-g,--greeting}&#39;[Greeting word]:greeting:&#39; \
+                &#39;(-n --name)&#39;{-n,--name}&#39;[Name to greet]:name:&#39;
+            ;;
+    esac
+}
+_babyline &quot;$@&quot;
+</code></pre>
+<p>the zsh quirk is also colons. in zsh, the <code>_describe</code> builtin uses : to separate the completion candidate from its description, so a subcommand named <code>user:list</code> has to be written as <code>user\:list</code>. the generator does this byte by byte:</p>
+<pre><code>for (c.name) |ch| {
+    if (ch == &#39;:&#39;) try w.writeAll(&quot;\\&quot;);
+    try w.print(&quot;{c}&quot;, .{ch});
+}
+</code></pre>
+<p>the _arguments syntax is its own weird sub-language. <code>&#39;(-g --greeting)&#39;{-g,--greeting}&#39;[Greeting word]:greeting:&#39;</code> says: “this argument is <code>-g</code> or <code>--greeting</code>, they are mutually exclusive (the parenthesized prefix), the description is <code>Greeting word</code>, the value placeholder is <code>greeting</code>.” this took me awhile to figure out.</p>
+<h2>fish</h2>
+<p>fish completion was actually the simplest. each completion is a <code>complete</code> call with conditions:</p>
+<pre><code>complete -c babyline -n &#39;__fish_use_subcommand&#39; -a &#39;hello&#39; -d &#39;Greet someone&#39;
+complete -c babyline -n &#39;__fish_seen_subcommand_from hello&#39; -s g -l greeting -d &#39;Greeting word&#39; -r
+</code></pre>
+<p>__fish_use_subcommand is true when no subcommand has been picked yet. __fish_seen_subcommand_from hello is true once you have typed hello. -s g is the short flag, -l greeting is the long flag, -d is the description, -r means “requires an argument.” fish reads exactly like english, and of the three probably the only completion DSL i would willingly write by hand.</p>
+<p>one thing i didn’t expect going in was that writing the completion generator would make writing the man page generator almost free. they are the same data, projected into different syntaxes. once i had walked the command table to emit complete -c babyline -n __fish_seen_subcommand_from hello -s g -l greeting, i had basically figured out how to walk it to emit. .TP\n.B hello\nRequired: \-g, \-\-greeting. the transforms are different but the traversal is not. about two thirds of <code>docs.zig</code> was a port of a structural idea i had already worked out in <code>completion.zig</code>.</p>
+<p>the completion problem is genuinely hard ~ three shells, three syntaxes, three sets of conventions. buy once you do the hard part once, every adjacent problem (man pages, markdown, plain text help) becomes a pretty quick job.</p>
+<h1>the interactive menu</h1>
+<p><code>src/interactive.zig</code> implements an arrow-key driven menu which is the sort of thing you see in <code>npm init</code> or <code>gh repo create</code>. the mechanism is older than any of those tools:</p>
+<ol>
+<li><p>put the terminal in raw mode (no line buffering, no echo, no signal interpretation).</p>
+</li>
+<li><p>read a byte at a time from stdin.</p>
+</li>
+<li><p>if you see 0x1b (the escape character), peek at the next two bytes to see if it is an arrow key escape sequence (\x1b[A is up, \x1b]B is down, etc.</p>
+</li>
+<li><p>use ANSI escapes to redraw the menu in place (\x1b[2k clears a line, \x1b{n}A moves the cursor up n lines).</p>
+</li>
+</ol>
+<p>the raw mode setup looks like this:</p>
+<pre><code>var raw = original;
+raw.lflag.ECHO = false;
+raw.lflag.ICANON = false;
+raw.lflag.ISIG = false;
+raw.iflag.IXON = false;
+// ...
+try std.posix.tcsetattr(fd, .NOW, raw);
+</code></pre>
+<p>std.posix.termios is a thin wrapper over the POSIX struct, and the flag fields are typed enums rather than the bitmask soup you would write in C. the exit path uses defer raw.exit() so the terminal goes back to sane settings even if the program panics. there is something really satisfying about a deferred restore of terminal state. forgetting to put the terminal back into cooked mode is a classic bug, and Zig’s defer makes it nearly impossible.</p>
+<p>the arrow key parser was surprisingly simple in zig:</p>
+<pre><code class="language-javascript">0x1b =&gt; {
+    const b2 = readByteTimeout() orelse return .escape;
+    if (b2 != &#39;[&#39;) return .escape;
+    const b3 = readByteTimeout() orelse return .escape;
+    return switch (b3) {
+        &#39;A&#39; =&gt; .up,
+        &#39;B&#39; =&gt; .down,
+        &#39;C&#39; =&gt; .right,
+        &#39;D&#39; =&gt; .left,
+        else =&gt; .escape,
+    };
+},
+</code></pre>
+<p>Key is a tagged union (union(enum)), which is zig’s sum type. the pattern of read a byte, branch on it, sometimes peek ahead, return a discriminated value, is exactly what an enum union is for, and the code reads like the protocol its implementing.</p>
+<h1>0.15 to 0.16</h1>
+<p>i started this project on zig 0.15, but about midway through as i was adding the docs generator and the test suite i switched to zig 0.16.</p>
+<p>i want to exercise some nuance here because “everything broke” is the kind of thing people say about zig that scares newcomers off, and the reality is more interesting than that.</p>
+<p>the three things that broke, in order of how much they cost me were:</p>
+<h3>std.io became <code>std.Io</code></h3>
+<p>the standard library’s I/O got a major redesign. the capital-I Io interface is not an explicit argument that almost every file operation takes. before you would write something like this:</p>
+<pre><code>const file = try std.fs.cwd().createFile(path, .{});
+try file.writeAll(buf);
+</code></pre>
+<p>after, the same code looks like:</p>
+<pre><code>const io = runtime.io;
+const cwd = std.Io.Dir.cwd();
+const file = try cwd.createFile(io, path, .{});
+try file.writeStreamingAll(io, buf);
+</code></pre>
+<p>io is a std.Io value that you thread through every operation that touches the outside world. it is basically a userspace replacement for the implicit “OS is always there” assumption that most languages make. now you can mock it in tests, replace the underlying implementation and plug in async runtimes without rewriting your call sites.</p>
+<p>this was the biggest change to deal with because almost every file operation i’d written needed an extra argument. i added <code>runtime.zig</code></p>
+<pre><code>pub var io: std.Io = undefined;
+pub var gpa: std.mem.Allocator = undefined;
+pub var arena: *std.heap.ArenaAllocator = undefined;
+pub var environ: std.process.Environ = undefined;
+
+pub fn init(values: std.process.Init) void {
+    io = values.io;
+    gpa = values.gpa;
+    arena = values.arena;
+    environ = values.minimal.environ;
+}
+</code></pre>
+<p>i am of course cheating a little by stashing these in globals. i think the right thing to do is to pass them in as arguments. for a cli this size the globals are fine. for a library you would want to thread them through explicitly.</p>
+<h3>writers and readers got an interface refactor</h3>
+<p>previously you would write to a file with file.writer() and get back a thing you could call .print() on. after 0.16 the writer is bifurcated, meaning that there’s a backing writer (the thing that writes to the file) and an interface (the thing you call <code>.print</code> on, which buffers.</p>
+<p>the pattern looks like this:</p>
+<pre><code>var buf: [8192]u8 = undefined;
+var fw = file.writer(io, &amp;buf);
+const w = &amp;fw.interface;
+
+try w.writeAll(&quot;hello\n&quot;);
+try w.print(&quot;count: {d}\n&quot;, .{42});
+try w.flush();
+</code></pre>
+<p>you provide the buffer and call .flush() at the end. if you forget the flush, your output gets silently truncated (which can be frustrating to debug the first time it happens ):</p>
+<p>this makes the buffer and the flush visible and prevents any hidden states ~ so i’d say its well worth the boilerplate. if you want a different buffer size you just change one number and if you want no buffering just pass a zero-length buffer.</p>
+<p>for the in-memory case there is std.Io.Writer.Allocating which i use in my tests:</p>
+<pre><code>var aw: std.Io.Writer.Allocating = .init(testing.allocator);
+defer aw.deinit();
+
+try writeBash(&amp;aw.writer, &amp;test_commands, &amp;test_options);
+const out = aw.written();
+</code></pre>
+<p>which is the same writer interface but appends to a growable buffer that you can inspect after the fact. this makes testing the doc and completion generators dramatically easier than it would be with a real file.</p>
+<h3>rip std.process.argsAlloc</h3>
+<p>before you got command-line arguments with std.process.argsAlloc(allocator) which would heap-allocate a slice of strings. after, the entry point of your program signature changes:</p>
+<pre><code>pub fn main(init: std.process.Init) !void {
+    runtime.init(init);
+    const args = try init.minimal.args.toSlice(init.arena.allocator());
+    // ...
+}
+</code></pre>
+<p><code>std.process.Init</code> is the new “everything you need at startup” handle. it carries the allocator, the I/O interface, the environment, and the arguments. you call <code>toSlice</code> on the arg list to get a normal slice of strings. the arena allocator inside <code>init.arena</code> is meant to be used for things you do not need to free, like the args themselves.</p>
+<p>once i understood the new shape the migration was not that bad. it was mostly just updating call sites tbh, and the fact that the compiler errors point you at the exact line with the exact type mismatch and often with a ‘did you mean’ suggestion makes it a pretty painless migration.</p>
+<p>the thing i’d like to emphasize though is that the migration was not gratuitous. even as a newbie to the language i felt that each of the changes made the language better in a specific way. std.Io is the foundation of the eventual async/concurrency story that zig seems to be telling. the writer split makes buffering and flushing visible. the Init struct unifies all of the things every program needs at startup so they can be passed around cleanly.</p>
+<p>the elephant in the room is that zig is still pre-1.0. things will keep breaking. you will have to pin your versions. but i think that’s okay! it really feels like a passion project for the members involved and it feels to me like the language will continue to get better and the gap between what the compiler does today and what the zig team wants it to do will continue to shrink.</p>
+<h1>what does zig make me think about differently</h1>
+<p>i’ve mostly written go, typescript and python at work, and at recurse center i worked a fair amount in rust. zig has made me notice three things that none of the languages really force me to confront.</p>
+<ol>
+<li>allocators are arguments, not ambient</li>
+</ol>
+<p>in go and python the allocator is the garbage collector and you kind of don’t really think about it. in rust, the allocator exists but the global allocator is invisible and String::new and Vec::new just work. in zig, every function that can allocate takes the allocator as an argument. this sounds annoying but in practice it is clarifying. you look at a function signature and can immediately tell whether it might allocate. the test allocator can verify that every alocation is matched by a free. the arena allocator lets you batch-free a whole bunch of stuff at once, which is great for parser-style code where you allocate a million little things and then throw all of them awawy. the choice of allocator is a design decision, and zig makes you make it.</p>
+<ol start="2">
+<li>errors are values from a closed set.</li>
+</ol>
+<p>zig errors are an enum. each function declares which errors it can return with !T (where the error set is infered) or MyError!T (where you name the set explicitly). the compiler will not let you catch an error that the function does not actually return. you cannot subclass an error. you cannot attach a stack trace or a backtrace to it. the error is a tag, the union of tags is infinite, and you handle each one or you bubble it up.</p>
+<p>this is restrictive in the way that good type systems are restrictive. you spend a little more time upfront but a lot less time chasing runtime exceptions.</p>
+<ol start="3">
+<li>hidden control flow</li>
+</ol>
+<p>in Go, calling ‘foo()’ might run a finalizer somewhere. in Python, foo() might trigger a <strong>del</strong>. In Rust, let x = foo(); might run a Drop impl when x goes out of scope. in zig, foo() runs foo. that’s it. no destructors, no implicit conversions, no operator overloading, no exceptions. if you want cleanup you write defer. if you want it conditional on an error you write errdefer. if you want resources released you call the deinit function yourself.</p>
+<p>this sounds primitive and in some ways it is. the first time you forget a deinit you are going to wish for RAII (resource allocation is initialization). but the discipline pays off. when i read zig code i know what it does, because everything it does is in front of my face. compare this to a non-trivial rust function where five different traits might be silently coercing types and running drop glue and unwinding through generic monomorphizations. both have their place, but it’s nice to be able to read code and know basically exactly what it does.</p>
+<h1>final thoughts</h1>
+<p>i’m quite happy with this project. the persistent config store, self-documentation, shell completions, interactive arrow-key menu and test suite make this feel like a more or less finished prototype.</p>
+<p>mostly though zig suggests a different way of thinking about software for me, which is “what is the smallest correct thing i can write”.</p>
+<p>that, i think, is what andrew was getting at to me last week. software is not bad because programmers are bad. software is bad because the dominant tools and the dominant culture (especially now with ai) push you toward more layers, more dependencies and more magic. zig feels like a small protest against that, which i’m happy to support.</p>
+<p>now invite me to your awebo server :)</p>
+]]></content:encoded>
+    </item>
+    <item>
+      <title>Godbolt and Modern CPU Architecture</title>
+      <link>https://andrewlidong.xyz/read/blog/godbolt-and-modern-cpu-architecture</link>
+      <guid isPermaLink="true">https://andrewlidong.xyz/read/blog/godbolt-and-modern-cpu-architecture</guid>
+      <pubDate>Fri, 26 Dec 2025 12:00:00 GMT</pubDate>
+      <description>When writing C++ code or even assembly, we often imagine the CPU executing instructions one by one but the reality inside the silicon is far more chaotic.</description>
+      <content:encoded><![CDATA[<p>When writing C++ code or even assembly, we often imagine the CPU executing instructions one by one but the reality inside the silicon is far more chaotic. In a recent <a href="https://www.youtube.com/watch?v=BVVNtG5dgks&t=3424s">talk</a>, Matt Godbolt explores modern CPU architecture (specifically the Intel Skylake architecture) and explains how it works to translate, rename, reorder and speculate upon code execution.</p>
+<h3>The Secret Life of a CPU</h3>
+<p>Intel famously keeps the internal workings of its chips guarded to protect its intellectual property. Most of what we know about microarchitecture (the hardware implementation of an instruction set), comes from a dedicated community of reverse engineers such as <a href="https://en.wikipedia.org/wiki/Agner_Fog">Agner Fog</a>. Such researchers use tools such as hardware performance counters and meticulous timing experiments to map out the complex pipelines that exist in CPU microarchitectures.</p>
+<h4>The Front End:</h4>
+<p>The Front End’s job is to feed the CPU a steady stream of work units, called micro-operations (micro-ops). It works with the following steps:</p>
+<ul>
+<li><p>Instruction Fetching: The CPU fetches machine code in 16-byte chunks. Because x86 instructions vary in length (1 to 15 bytes), the CPU needs to use complex heuristics to figure out where one instruction ends and the next begins.</p>
+</li>
+<li><p>The Micro-op Cache: Decoding x86 is expensive and slow, so to save time, the CPU stores successfully decoded micro-ops in a micro-op cache. When the CPU encounters a loop, it can stream directly from this cache, bypassing the legacy decoders entirely.</p>
+</li>
+<li><p>The Nightmare Bug: A unit called the Loop Stream Detector (LSD) is designed to identify small loops and stream them from a buffer to save power. However, in the Skylake generation, the LSD was disabled via a microcode patch because of a &#39;nightmare level bug’ found by the OCaml community that caused unpredictable behavior when using specific 16-bit registers.</p>
+</li>
+</ul>
+<h4>The Renamer:</h4>
+<p>The Renamer is probably the most critical stage for performance. While programmers have access to a few architectural registers (like EAX or RDI), the physical chip actually has hundreds of physical registers.</p>
+<ul>
+<li><p>Register Renaming: By mapping architectural registers to fresh physical ones, the CPU can break dependencies. This allows it to run multiple iterations of a loop simultaneously because each iteration is assigned different physical storage, preventing them from collding with one another.</p>
+</li>
+<li><p>Zero-Cost Operations: The Renamer is able to recognize the zeroing idiom XOR EAX instantly, and the CPU simply points EAX to a physical register already known to be zero, completing the work without using an execution unit.</p>
+</li>
+</ul>
+<h4>The Back End:</h4>
+<p>Once instructions are renamed, they enter the Back End, a soup of operations waiting to be executed.</p>
+<ul>
+<li><p>The Scheduler: Micro-ops sit in a reservation station until their data is ready and an execution port is free.</p>
+</li>
+<li><p>Speculative Execution: The CPU is constantly guessing which way branches will go ~ because of this it cannot write to real memory immediately.</p>
+</li>
+<li><p>The Memory Order Buffer (MOB): This unit manages the task of speculative memory access. It uses a store buffer to hold data until the CPU is 100% sure the instruction was supposed to happen.</p>
+</li>
+</ul>
+<h4>Retirement:</h4>
+<p>The final stage is Retirement. This is a ledger (reorder buffer) that tracks every instruction in its original program order. Even if the CPU finished a future instruction early, it isn’t officially committed to the system’s permanent state until it reaches the head of this ledger and is proven safe (no mispredicted branches or errors occurred).</p>
+]]></content:encoded>
+    </item>
+    <item>
+      <title>Grace, Interruptions and the Signals Beneath</title>
+      <link>https://andrewlidong.xyz/read/blog/grace-interruptions-and-the-signals</link>
+      <guid isPermaLink="true">https://andrewlidong.xyz/read/blog/grace-interruptions-and-the-signals</guid>
+      <pubDate>Fri, 26 Dec 2025 12:00:00 GMT</pubDate>
+      <description>Why Tokyo Godfathers is the Greatest Christmas Movie of All Time</description>
+      <content:encoded><![CDATA[<p>When people think of Christmas movies, several classics come to mind: <em>It’s a Wonderful Life, Home Alone, A Charlie Brown Christmas, Die Hard(?)….</em> These films shape our holiday playlists with familiarity and comfort, well-worn jingling sleighbells to our seasonal soundscape. But there’s another Christmas movie that doesn’t just play like tradition ~ it teaches it… a movie where the spirit of Christmas arrives not with tinsel and carols but with grit, chance and improbable connection. That masterpiece of a Christmas movie is <em>Tokyo Godfathers.</em></p>
+<p>Directed by <strong>Satoshi Kon</strong>, <em>Tokyo Godfathers</em> follows three homeless misfits in Tokyo who discover an abandoned baby on Christmas Eve and set out to reunite her with her mother. On the surface it’s a secular story of luck and redemption that echoes the Nativity: unplanned birth, unlikely protectors and journeys of reconciliation. But the movie earns its emotional force by refusing fantasy and insisting on the rough edges of modern Tokyo life.</p>
+<p>In <em>A Charlie Brown Christmas</em>, Charlie Brown asks the timeless question: “Isn’t there anyone who knows what Christmas is all about?” Linus answers with the Nativity - a direct line from divine message to human heart. Charlie Brown’s special constructs a spiritual clarity through quiet storytelling: the Christmas meaning is something spoken clearly and simply ~ a direct transmission of the biblical story. <em>Tokyo Godfathers</em> doesn’t give this clarity so crisply - it shows it indirectly, through people who have every reason to look away but choose not to.</p>
+<p>To borrow a metaphor from Matt Godbolt’s talk on <a href="https://www.youtube.com/watch?v=BVVNtG5dgks&t=3426s">CPU microarchitecture</a> (though intended for programmers and engineers), it contains a beautifully apt image: beneath the smooth surface of high-level experience is a dense, intricate architecture of signals, caches and execution in motion. What seems simple ~ executing “Christmas” in a film ~ relies on countless interactions that most of us never see. Christmas spirit isn’t a top-level function call that can be invoked and runs magically, though we often to our frustration wish it would be when we turn on our Christmas Specials and Mariah Carey All I want. Christmas at least in my experience, is a complicated thing, with many signals, decisions and hazards that exist before any satisfying feeling of warm and fuzzies can be felt.</p>
+<p>In <em>Tokyo Godfathers</em> the signal beneath the narrative is human attention. The city around the protagonists lives as a complex system with partygoers, yakuza members and everyday workers whizzing past, indifferent or unaware like instructions flowing past a CPU core. Every once in a while though a micro-interaction happens: a conversation, a remembered kindness, a coincidence that feels almost like a signal. These interactions are glitches in the indifference, tiny sparks of grace.</p>
+<p>This parallels the way <em>A Charlie Brown Christmas</em> works: while Linux delivers the Nativity, what gives it impact isn’t what he says but more so who is listening… Characters institutionalized into familiar roles discover meaning through attention. in both cases, the deeper narrative isn’t about a heavenly broadcast but instead it’s about who receives the message and what they decide to do with it (in this case, decorating Charlie’s sad tree).</p>
+<p>By contrast, many famous Christmas films fall into predictable mechanics: external magic solves everything (a clownish Santa, a time-warping guardian angel, or a city that suddenly cares because the plot demands it). These are undeniably warm, but they function like higher-level abstractions: easy to use, easy to accept but hiding complexity. <em>Tokyo Godfathers</em> refuses that comfort. its magic ~ if we wish to call it that ~ arises from irregular, unpredictable human-level interactions that shape actual life.</p>
+<p>That’s why <em>Tokyo Godfathers</em> speaks to something deeper, namely, about how God speaks to us.</p>
+<p>The Nativity story in <em>Charlie Brown Christmas</em> is explicit: a direct quote, a known narrative with known outcomes. But in <em>Tokyo Godfathers</em>, divinity is not in proclamations - it’s in the messy work of paying attention to each other. It’s in a battered man remembering another’s loss. It’s in a woman insisting on celebrating the baby’s arrival despite every reason to despiar. It’s in a generation of people who don’t fit traditional molds finding, through one night’s wandering, an unexpected community.</p>
+<p>The thing that’s actually doing the work happens not in the obvious layers but underneath, in signals that are subtle, easily overlooked, and deeply interconnected. Many Christmas movies give you the output without the depth but <em>Tokyo Godfathers</em> lets you see the microarchitecture of compassion.</p>
+<p>And maybe that’s the true miracle this film celebrates.</p>
+<p>Because if Christmas is about connection over indifference, about listening when the world would prefer silence, then <em>Tokyo Godfathers</em> isn’t just another holiday movie. It’s a quiet manifesto for empathy - one that asks us to look beneath the surface, to detect the unexpected signals of grace and to act on them. It doesn’t hand you a neat answer. It hands you <em>attention</em> ~ and in our complex world that may be the deepest form of meaning we can find.</p>
+]]></content:encoded>
+    </item>
+    <item>
+      <title>Writing a Spectral Ray Tracer in Tomo</title>
+      <link>https://andrewlidong.xyz/read/blog/writing-a-spectral-ray-tracer-in</link>
+      <guid isPermaLink="true">https://andrewlidong.xyz/read/blog/writing-a-spectral-ray-tracer-in</guid>
+      <pubDate>Wed, 17 Dec 2025 12:00:00 GMT</pubDate>
+      <description>I recently wrote a spectral ray tracer in a programming language called Tomo. This was partly a rendering experiment, partly an excuse to bug Bruce, and partly a way to test whether Tomo could handle real systems-style work.</description>
+      <content:encoded><![CDATA[<p>I recently wrote a <strong><a href="https://github.com/andrewlidong/spectral-ray-tracer">spectral ray tracer</a></strong> in a programming language called <strong><a href="https://tomo.bruce-hill.com/">Tomo</a></strong>. This was partly a rendering experiment, partly an excuse to bug Bruce, and partly a way to test whether Tomo could handle real systems-style work.</p>
+<p>It turns out it can… surprisingly well.</p>
+<h3>Why Spectral Ray Tracing</h3>
+<p>Most ray tracers work in RGB: three color channels, fake dispersion and lots of approximiations. Spectral ray tracing is more literal… instead of tracing red, green, blue, you trace wavelengths of light and integrate them into color at the end. This lets you model stuff like chromatic dispersion correctly - blue light bends more than red in glass because that’s what how physics works.</p>
+<p>It’s also computationally expensive and unforgiving of bugs, which makes it a good stress test.</p>
+<h3>Why Tomo?</h3>
+<p>Because I felt like it.</p>
+<p>But also, Tomo is a small, statically typed language that compiles to C. It’s designed to be safe, readable, and fast without the ceremony of C++ or the lifetime gymnastics of Rust. It feels like safe C with modern ergonomics.</p>
+<p>This turned out to be nice for the ray tracer, as I was able to leverage:</p>
+<ul>
+<li><p>tight numeric loops</p>
+</li>
+<li><p>lots of small structs</p>
+</li>
+<li><p>recursive path tracing</p>
+</li>
+<li><p>no dynamic frameworks or hidden runtime behavior</p>
+</li>
+</ul>
+<p>Tomo lets you write straightforward, math-heavy code and trust that it’ll compile to something efficient and predictable.</p>
+<h3>The Project</h3>
+<p>The renderer traces light across 81 discrete wavelengths (380-780nm) instead of RGB. Each wavelength is refracted using a wavelength-dependent index of refraction, which produces real dispersion effects in glass. After tracing, the spectrum is converted to CIE XYZ and then to sRGB for display.</p>
+<p>The architecture is pretty basic:</p>
+<ul>
+<li><p>basic geometry</p>
+</li>
+<li><p>diffuse, metal, and dielectric (glass) materials</p>
+</li>
+<li><p>recursive path tracing</p>
+</li>
+<li><p>no BVH (yet)</p>
+</li>
+</ul>
+<h3>Lessons Learned</h3>
+<p>The project reinforces something that Bruce I think has been trying to get across to me for awhile: good languages shape good thinking. Tomo pushed me toward simple data structures, explicit control flow and honest performance tradeoffs - all of which map really well to rendering code.</p>
+<p>It also reminded me of why I wanted to learn systems this year in the first place. There’s something very satisfying about building a physically grounded system from scratch and watching it converge toward reality.</p>
+<p>Systems programming is fun folks. And it’s nice that languages like Tomo make it accessible.</p>
+]]></content:encoded>
+    </item>
+    <item>
+      <title>Off the Bull(MQ), Onto Temporal</title>
+      <link>https://andrewlidong.xyz/read/blog/off-the-bullmq-onto-temporal</link>
+      <guid isPermaLink="true">https://andrewlidong.xyz/read/blog/off-the-bullmq-onto-temporal</guid>
+      <pubDate>Sat, 28 Jun 2025 12:00:00 GMT</pubDate>
+      <description>and what we learned along the way</description>
+      <content:encoded><![CDATA[<blockquote>
+<p>When we started out, <a href="https://github.com/OptimalBits/bull">Bull</a> was our go-to solution for job queues. It was simple, reliable enough, and gave us the ability to offload things like sending emails and syncing data into background jobs. But as our system matured, those background tasks started getting more complex: some needed retries, others spanned days, and several required human approvals or needed to coordinate with other services.</p>
+<p>It was becoming clear that we weren&#39;t just queueing jobs anymore—we were building <strong>distributed workflows</strong>, and our job queue wasn&#39;t built for that. So we migrated to <a href="https://temporal.io/">Temporal</a>, and in this post, I’ll explain why.</p>
+</blockquote>
+<h2><strong>What Is Temporal?</strong></h2>
+<blockquote>
+<p>Temporal is a <strong>durable workflow orchestration engine</strong>. It’s not just a job queue; it’s a system that lets you model business logic as workflows with guaranteed execution. A workflow in Temporal can run for minutes, days, or even months and survive restarts, crashes, and failures along the way.</p>
+<p>You might have heard of <a href="https://airflow.apache.org/">Apache Airflow</a>, another popular workflow orchestrator. While Airflow is great for <strong>batch-oriented data pipelines</strong> (think ETL jobs and DAG-based scheduling), Temporal is designed for <strong>event-driven, long-running, and highly concurrent workflows</strong>. Temporal supports native retry, fault-tolerance, and stateful coordination across distributed services. Where Airflow often relies on external scripts and polling, Temporal gives you full control flow with real code and persistent state—think of it as writing workflows as if they were normal async functions, but with crash recovery and observability built in.</p>
+<p>It works by decoupling two pieces:</p>
+</blockquote>
+<ul>
+<li><p><strong>Workflow code</strong>: Defines the high-level orchestration logic.</p>
+</li>
+<li><p><strong>Activities</strong>: The individual, side-effectful tasks (e.g., send an email, charge a card).</p>
+</li>
+</ul>
+<blockquote>
+<p>Every step of a workflow is <strong>durably persisted</strong> via event sourcing. When a workflow runs, Temporal records every event (like an activity starting or completing) in a persistent store (e.g. Cassandra or MySQL/Postgres). If the worker crashes or restarts, Temporal replays the event history to reconstruct the workflow state and continue execution deterministically. This is key to its reliability: your workflow code is treated like a pure function, replayed with the same inputs to restore memory and continue from the last unprocessed event.</p>
+</blockquote>
+<h2><strong>What Our Implementation Looked Like</strong></h2>
+<blockquote>
+<p>We started by migrating a few critical workflows from Bull to Temporal. The whole transition took only <strong>one month</strong>, including internal tooling and infrastructure work.</p>
+<p>We introduced a hybrid architecture where Temporal handled core orchestration, and we used an <strong>outbox pattern</strong> to integrate with existing systems. Here&#39;s how it worked:</p>
+</blockquote>
+<ul>
+<li><p>We stored domain events in <strong>DynamoDB</strong> as an outbox table.</p>
+</li>
+<li><p>Temporal <strong>workflows</strong> monitored these tables and launched <strong>Activities</strong> in response to relevant events.</p>
+</li>
+<li><p>Processed events were exported in batch to <strong>S3</strong> for downstream analytics and archival.</p>
+</li>
+</ul>
+<blockquote>
+<p>This architecture gave us strong durability guarantees without disrupting the rest of our stack. Using DynamoDB allowed us to scale ingestion independently, and Temporal gave us workflow resilience, retries, and long-running coordination.</p>
+<p>We also created specialized <strong>worker services</strong> for different types of workflows: user onboarding, billing, email sequences, and background syncs. Each worker pulled from its own task queue, and we leveraged Temporal’s type-safe TypeScript SDK to keep our workflow logic clean and maintainable.</p>
+</blockquote>
+<h2><strong>Why We Switched from Bull</strong></h2>
+<p>Bull is fantastic for straightforward job queueing. But here are the things we ran into that made us switch:</p>
+<h3><strong>1. Retries and Failure Recovery</strong></h3>
+<p>In Bull, if a job fails, you configure retries manually. You have to worry about what happens when the job crashes halfway through, and often, you&#39;ll need custom logic to track which steps completed.</p>
+<h3><strong>2. Long-Running and Paused Workflows</strong></h3>
+<p>In Bull, long-running jobs are risky - Redis locks might expire, or workers might get killed. Want to wait 24 hours before retrying a job? Good luck.</p>
+<h3><strong>3. Human-in-the-Loop Steps</strong></h3>
+<p>We had use cases like onboarding workflows that paused until someone uploaded a document or approved a payment. In Bull, that meant chaining jobs and managing state externally (in a DB).</p>
+<h3><strong>4. Distributed and Scalable Workers</strong></h3>
+<p>Bull is tied to Redis and Node.js. You can scale horizontally, but everything has to live in the same ecosystem.</p>
+<h2><strong>Drawbacks and Trade-offs</strong></h2>
+<p>Temporal isn’t free. You have to run a Temporal server (or pay for Temporal Cloud). Your workflow code must be</p>
+<h2><strong>Final Thoughts</strong></h2>
+<p>Bull served us well. But it started to feel like duct tape holding together an increasingly complex state machine. Temporal gave us structure, visibility, and peace of mind.</p>
+<h2><strong>If You Want to Learn More</strong></h2>
+<ul>
+<li><p><a href="https://docs.temporal.io/">Temporal Documentation</a></p>
+</li>
+<li><p><a href="https://docs.temporal.io/typescript/introduction">Temporal TypeScript SDK</a></p>
+</li>
+<li><p><a href="https://www.youtube.com/c/temporalio">Temporal YouTube Channel</a></p>
+</li>
+</ul>
+]]></content:encoded>
+    </item>
+  </channel>
+</rss>

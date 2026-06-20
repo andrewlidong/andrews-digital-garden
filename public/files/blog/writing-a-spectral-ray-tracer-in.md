@@ -3,7 +3,6 @@ title: "Writing a Spectral Ray Tracer in Tomo"
 date: "2025-12-17"
 subtitle: "I recently wrote a spectral ray tracer in a programming language called Tomo. This was partly a rendering experiment, partly an excuse to bug Bruce, and partly a way to test whether Tomo could handle real systems-style work."
 slug: "writing-a-spectral-ray-tracer-in"
-source: "https://andrewdong.substack.com/p/writing-a-spectral-ray-tracer-in"
 ---
 
 I recently wrote a **[spectral ray tracer](https://github.com/andrewlidong/spectral-ray-tracer)** in a programming language called **[Tomo](https://tomo.bruce-hill.com/)**. This was partly a rendering experiment, partly an excuse to bug Bruce, and partly a way to test whether Tomo could handle real systems-style work.

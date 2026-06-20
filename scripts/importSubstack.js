@@ -195,7 +195,6 @@ function frontmatter(post) {
   ];
   if (post.subtitle) lines.push(`subtitle: "${yamlEscape(post.subtitle)}"`);
   lines.push(`slug: "${post.slug}"`);
-  lines.push(`source: "${post.link}"`);
   lines.push('---');
   return lines.join('\n');
 }
