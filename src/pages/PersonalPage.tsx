@@ -9,6 +9,7 @@ import { Header } from "@/components/personal/Header";
 import StartupScreen from "@/components/personal/StartupScreen";
 import PawStampMode from "@/components/personal/PawStampMode";
 import { MetadataBar } from "@/components/personal/MetadataBar";
+import { AmbientBackground } from "@/components/personal/AmbientBackground";
 import { loadFileContent } from "@/lib/loadFileContent";
 import { useTheme } from "@/hooks/useTheme";
 
@@ -312,7 +313,8 @@ function PersonalPage() {
         setIsStarting(false);
         setStartupComplete(true);
       }} />}
-      <div className="font-mono fixed top-0 left-0 w-full h-full bg-term-bg text-term-fg">
+      <div className="font-mono fixed top-0 left-0 w-full h-full text-term-fg">
+        <AmbientBackground />
         <Header onOpenTerminal={openTerminal} pawModeActive={pawModeActive} onTogglePawMode={() => setPawModeActive(prev => !prev)} themes={themes} themeId={themeId} onSetTheme={setTheme} />
 
         <div className="flex h-[calc(100vh-60px)] pt-4">
@@ -391,12 +393,13 @@ function PersonalPage() {
                       y: baseY + offsetY,
                     }}
                     zIndex={win.zIndex}
+                    isActive={win.zIndex === maxZIndex}
                     onFocus={() => bringToFront(win.id)}
                     onClose={() => closeWindow(win.id)}
                     sourceElementId={win.sourceElementId}
                   >
                     {win.windowType === "folder" && Array.isArray(win.content) ? (
-                      <div className="p-4 bg-term-bg">
+                      <div className="p-4">
                         <div className="mb-3 pb-2 border-b border-term-border">
                           <span className="text-term-accent font-mono">andrew@digital-garden</span>
                           <span className="text-term-dim">:</span>

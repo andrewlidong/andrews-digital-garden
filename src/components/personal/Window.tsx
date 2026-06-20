@@ -13,6 +13,8 @@ interface WindowProps {
   onClose: () => void;
   children: React.ReactNode;
   sourceElementId?: string;
+  // The frontmost window gets a brighter border + accent glow.
+  isActive?: boolean;
 }
 
 export const Window: React.FC<WindowProps> = ({
@@ -25,6 +27,7 @@ export const Window: React.FC<WindowProps> = ({
   onFocus,
   onClose,
   children,
+  isActive = false,
 }) => {
   const [size, setSize] = useState({ width, height });
   const [isCloseButtonPressed, setIsCloseButtonPressed] = useState(false);
@@ -107,31 +110,42 @@ export const Window: React.FC<WindowProps> = ({
       }}
     >
       <div
-        className={`flex flex-col h-full border border-term-border bg-term-elevated shadow-lg overflow-hidden`}
+        className={`group/window flex flex-col h-full rounded-lg border overflow-hidden backdrop-blur-xl transition-shadow duration-200 ${
+          isActive
+            ? "border-[color-mix(in_srgb,var(--term-accent)_55%,transparent)] shadow-[0_16px_50px_-12px_rgba(0,0,0,0.7),0_0_0_1px_color-mix(in_srgb,var(--term-accent)_25%,transparent),0_0_40px_-8px_color-mix(in_srgb,var(--term-accent)_45%,transparent)]"
+            : "border-[color-mix(in_srgb,var(--term-fg)_14%,transparent)] shadow-[0_16px_50px_-12px_rgba(0,0,0,0.6)]"
+        } bg-[color-mix(in_srgb,var(--term-bg-elevated)_72%,transparent)]`}
       >
         {/* Window header */}
         <div
-          className="window-drag-handle flex items-center justify-between px-3 py-2 bg-term-inset border-b border-term-border text-term-fg"
+          className="window-drag-handle flex items-center gap-3 px-3 py-2 border-b border-[color-mix(in_srgb,var(--term-fg)_10%,transparent)] bg-[color-mix(in_srgb,var(--term-bg-inset)_55%,transparent)] text-term-fg"
         >
-          <div className="flex items-center">
-            <span className="text-term-green mr-2">$</span>
-            <span className="font-mono text-sm">{title}</span>
+          {/* Traffic lights — only the red one closes. */}
+          <div className="flex items-center gap-2">
+            <button
+              aria-label="Close window"
+              className={`w-3 h-3 rounded-full flex items-center justify-center text-[8px] leading-none text-black/70 ${
+                isCloseButtonPressed ? "brightness-75" : ""
+              }`}
+              style={{ backgroundColor: "#ff5f57" }}
+              onMouseDown={() => setIsCloseButtonPressed(true)}
+              onMouseUp={() => setIsCloseButtonPressed(false)}
+              onMouseLeave={() => setIsCloseButtonPressed(false)}
+              onClick={handleClose}
+            >
+              <span className="opacity-0 group-hover/window:opacity-100 transition-opacity">×</span>
+            </button>
+            <span className="w-3 h-3 rounded-full" style={{ backgroundColor: "#febc2e" }} />
+            <span className="w-3 h-3 rounded-full" style={{ backgroundColor: "#28c840" }} />
           </div>
-          <button
-            className={`w-5 h-5 flex items-center justify-center rounded-full ${
-              isCloseButtonPressed ? "opacity-70" : ""
-            } bg-term-red text-term-inset text-xs`}
-            onMouseDown={() => setIsCloseButtonPressed(true)}
-            onMouseUp={() => setIsCloseButtonPressed(false)}
-            onMouseLeave={() => setIsCloseButtonPressed(false)}
-            onClick={handleClose}
-          >
-            ×
-          </button>
+          <div className="flex items-center min-w-0">
+            <span className="text-term-green mr-2">$</span>
+            <span className="font-mono text-sm truncate">{title}</span>
+          </div>
         </div>
 
         {/* File path breadcrumb */}
-        <div className="bg-term-elevated px-3 py-1 border-b border-term-border text-xs font-mono">
+        <div className="px-3 py-1 border-b border-[color-mix(in_srgb,var(--term-fg)_8%,transparent)] text-xs font-mono">
           <span className="text-term-accent">andrew@digital-garden</span>
           <span className="text-term-dim">:</span>
           <span className="text-term-green">~/documents/</span>
@@ -139,7 +153,7 @@ export const Window: React.FC<WindowProps> = ({
         </div>
 
         {/* Window content */}
-        <div className="flex-grow overflow-hidden bg-term-bg text-term-fg">
+        <div className="flex-grow overflow-hidden text-term-fg">
           {id === 'terminal' ? (
             <div className="h-full">{children}</div>
           ) : (

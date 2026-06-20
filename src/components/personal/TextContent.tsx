@@ -43,7 +43,7 @@ export const TextContent: React.FC<TextContentProps> = ({ content, filename = "f
   }, [content]);
 
   return (
-    <div className="w-full h-full markdown-body font-mono text-term-fg bg-term-bg">
+    <div className="w-full h-full markdown-body font-mono text-term-fg">
       <div className="flex items-start mb-4">
         <span className="text-term-green mr-2 whitespace-nowrap">andrew@digital-garden:~$</span>
         <span className="text-term-yellow whitespace-nowrap">cat {filename}</span>
