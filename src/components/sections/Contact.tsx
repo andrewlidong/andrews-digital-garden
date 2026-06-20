@@ -51,7 +51,7 @@ const Contact = forwardRef<HTMLElement>((_, ref) => {
             className="flex items-center text-gray-600 hover:text-blue-500 transition-all duration-300 hover-lift animate-on-scroll scale-up is-visible"
             style={{ transitionDelay: `${item.delay}ms` }}
           >
-            <img src={item.src} alt={item.alt} className="w-20 h-20" />
+            <img src={item.src} alt={item.alt} loading="lazy" decoding="async" className="w-20 h-20" />
           </a>
         ))}
       </div>

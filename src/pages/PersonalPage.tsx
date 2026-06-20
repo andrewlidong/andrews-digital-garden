@@ -1,12 +1,13 @@
 import { File } from "@/components/personal/File";
 import { Window } from "@/components/personal/Window";
 import { Folder } from "@/components/personal/Folder";
-import { useState, useEffect, useRef } from "react";
-import { TextContent } from "@/components/personal/TextContent";
+import { useState, useEffect, useRef, lazy, Suspense } from "react";
+const TextContent = lazy(() =>
+  import("@/components/personal/TextContent").then((m) => ({ default: m.TextContent }))
+);
 import { Terminal } from "@/components/personal/Terminal";
 import fileSystemData from "@/content/filesystem.json";
 import { Header } from "@/components/personal/Header";
-import StartupScreen from "@/components/personal/StartupScreen";
 import PawStampMode from "@/components/personal/PawStampMode";
 import { readerPath } from "@/lib/frontmatter";
 import { MetadataBar } from "@/components/personal/MetadataBar";
@@ -73,8 +74,7 @@ function PersonalPage() {
   const [pawModeActive, setPawModeActive] = useState(false);
   const [clickedItem, setClickedItem] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-  const [isStarting, setIsStarting] = useState(true);
-  const [startupComplete, setStartupComplete] = useState(false);
+  const [startupComplete] = useState(true);
   const [homeInput, setHomeInput] = useState("");
   const [terminalInitialCommand, setTerminalInitialCommand] = useState<string | undefined>(undefined);
   const [commandNonce, setCommandNonce] = useState(0);
@@ -325,10 +325,6 @@ function PersonalPage() {
 
   return (
     <>
-      {isStarting && <StartupScreen onComplete={() => {
-        setIsStarting(false);
-        setStartupComplete(true);
-      }} />}
       <div className="font-mono fixed top-0 left-0 w-full h-full bg-gray-900 text-white">
         <Header onOpenTerminal={openTerminal} pawModeActive={pawModeActive} onTogglePawMode={() => setPawModeActive(prev => !prev)} />
 
@@ -430,7 +426,9 @@ function PersonalPage() {
                         </div>
                       </div>
                     ) : win.windowType === "text" && typeof win.content === "string" ? (
-                      <TextContent content={win.content} filename={win.title} />
+                      <Suspense fallback={<div className="p-4 text-gray-400 text-sm">Loading…</div>}>
+                        <TextContent content={win.content} filename={win.title} />
+                      </Suspense>
                     ) : win.windowType === "terminal" ? (
                       <Terminal
                         onOpenFile={openFileById}
