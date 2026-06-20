@@ -1,21 +1,25 @@
-import PersonalPage from "./pages/PersonalPage";
-import MobilePage from "./pages/MobilePage";
+import { lazy, Suspense } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { useMobileDetect } from "./hooks/useMobileDetect";
+
+const PersonalPage = lazy(() => import("./pages/PersonalPage"));
+const MobilePage = lazy(() => import("./pages/MobilePage"));
 
 function App() {
   const isMobile = useMobileDetect();
 
   return (
     <Router>
-      <Routes>
-        <Route path="/" element={
-          isMobile ?
-            <Navigate to="/mobile" replace /> :
-            <PersonalPage />
-        } />
-        <Route path="/mobile" element={<MobilePage />} />
-      </Routes>
+      <Suspense fallback={null}>
+        <Routes>
+          <Route path="/" element={
+            isMobile ?
+              <Navigate to="/mobile" replace /> :
+              <PersonalPage />
+          } />
+          <Route path="/mobile" element={<MobilePage />} />
+        </Routes>
+      </Suspense>
     </Router>
   );
 }

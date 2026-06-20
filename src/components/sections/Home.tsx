@@ -146,28 +146,28 @@ const Home = forwardRef<HTMLElement, HomeProps>(({ isMobile = false }, ref) => {
               {[
                 {
                   href: "https://capitalone.com/",
-                  src: "/capitalone.png",
+                  src: "/capitalone.webp",
                   alt: "Capital One",
                 },
                 {
                   href: "https://rubrik.com/",
-                  src: "/rubrik.jpeg",
+                  src: "/rubrik.webp",
                   alt: "Rubrik",
                 },
-                { href: "https://superalert.nyc/", src: "/superalert.png", alt: "SuperAlert" },
+                { href: "https://superalert.nyc/", src: "/superalert.webp", alt: "SuperAlert" },
                 {
                   href: "https://www.limitless.ventures/",
-                  src: "/limitlessventures.jpeg",
+                  src: "/limitlessventures.webp",
                   alt: "Limitless Ventures",
                 },
                 {
                   href: "https://codecademy.com/",
-                  src: "/codecademy.jpg",
+                  src: "/codecademy.webp",
                   alt: "Codecademy",
                 },
                 {
                   href: "https://equinox.com/",
-                  src: "/equinox.png",
+                  src: "/equinox.webp",
                   alt: "Equinox",
                 },
               ].map((company, index) => (
@@ -181,6 +181,8 @@ const Home = forwardRef<HTMLElement, HomeProps>(({ isMobile = false }, ref) => {
                   <img
                     src={company.src}
                     alt={company.alt}
+                    loading="lazy"
+                    decoding="async"
                     className="h-10 md:h-14 relative z-10"
                   />
                 </a>

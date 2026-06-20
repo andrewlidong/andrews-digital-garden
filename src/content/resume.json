@@ -147,7 +147,7 @@
             ],
             "github_url": "https://github.com/andrewlidong/train-anagrams",
             "live_url": "https://andrewlidong.github.io/train-anagrams/",
-            "image_url": "/train_anagrams.png",
+            "image_url": "/train_anagrams.webp",
             "fallback_image_url": "/default_project.svg"
         },
         {
@@ -162,7 +162,7 @@
             ],
             "github_url": "https://github.com/andrewlidong/dateee",
             "live_url": "https://andrewlidong.github.io/dateee/",
-            "image_url": "/dateee.png",
+            "image_url": "/dateee.webp",
             "fallback_image_url": "/default_project.svg"
         },
         {
@@ -177,7 +177,7 @@
             ],
             "github_url": "https://github.com/andrewlidong/trace-and-pace",
             "live_url": "https://traceandpace.com",
-            "image_url": "/trace_and_pace.png",
+            "image_url": "/trace_and_pace.webp",
             "fallback_image_url": "/default_project.svg"
         },
         {
@@ -189,7 +189,7 @@
                 "Zig"
             ],
             "github_url": "https://github.com/andrewlidong/babyline",
-            "image_url": "/babyline.png",
+            "image_url": "/babyline.webp",
             "fallback_image_url": "/default_project.svg"
         },
         {
@@ -203,7 +203,7 @@
                 "PostgreSQL"
             ],
             "github_url": "https://github.com/andrewlidong/ThisIsWater",
-            "image_url": "/thisiswater.png",
+            "image_url": "/thisiswater.webp",
             "fallback_image_url": "/default_project.svg"
         },
         {
@@ -217,7 +217,7 @@
                 "GPT-3.5"
             ],
             "github_url": "https://github.com/andrewlidong/sorting-octopus",
-            "image_url": "/sortingOctopus.jpg",
+            "image_url": "/sortingOctopus.webp",
             "fallback_image_url": "/default_project.svg"
         },
         {
@@ -231,7 +231,7 @@
                 "D3"
             ],
             "github_url": "https://github.com/andrewlidong/ProfoundSound",
-            "image_url": "/profoundSound.gif",
+            "image_url": "/profoundSound.webp",
             "fallback_image_url": "/default_project.svg"
         },
         {
@@ -257,7 +257,7 @@
                 "SQL"
             ],
             "github_url": "https://github.com/andrewlidong/RayquazaORM",
-            "image_url": "/rayquaza.png",
+            "image_url": "/rayquaza.webp",
             "fallback_image_url": "/default_project.svg"
         },
         {
@@ -283,7 +283,7 @@
                 "OpenGL"
             ],
             "github_url": "https://github.com/andrewlidong/flight_simulator",
-            "image_url": "/flight_simulator.png",
+            "image_url": "/flight_simulator.webp",
             "fallback_image_url": "/default_project.svg"
         },
         {
@@ -297,7 +297,7 @@
 
             ],
             "github_url": "https://github.com/andrewlidong/big2s",
-            "image_url": "/big2s.png",
+            "image_url": "/big2s.webp",
             "fallback_image_url": "/default_project.svg"
         },
         {
@@ -312,7 +312,7 @@
                 "NumPy"
             ],
             "github_url": "https://github.com/andrewlidong/catch-that-qubit",
-            "image_url": "/catch_that_qubit.png",
+            "image_url": "/catch_that_qubit.webp",
             "fallback_image_url": "/default_project.svg"
         },
         {
@@ -327,7 +327,7 @@
                 "Vite"
             ],
             "github_url": "https://github.com/andrewlidong/monges-theorem",
-            "image_url": "/monges_theorem.png",
+            "image_url": "/monges_theorem.webp",
             "fallback_image_url": "/default_project.svg"
         }
     ]

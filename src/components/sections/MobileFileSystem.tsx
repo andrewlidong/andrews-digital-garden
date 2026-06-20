@@ -1,7 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import fileSystemData from '@/content/filesystem.json';
-import { FileContent } from '../personal/FileContent';
 import { loadFileContent } from '@/lib/loadFileContent';
+
+const FileContent = lazy(() =>
+  import('../personal/FileContent').then((m) => ({ default: m.FileContent }))
+);
 
 export type FileItem = {
   id: string;
@@ -108,10 +111,12 @@ export function MobileFileSystem({
             </svg>
             Back
           </button>
-          <FileContent
-            content={currentContent}
-            fileType={currentFile?.fileType || '.md'}
-          />
+          <Suspense fallback={<div className="p-4 text-gray-400 text-sm">Loading…</div>}>
+            <FileContent
+              content={currentContent}
+              fileType={currentFile?.fileType || '.md'}
+            />
+          </Suspense>
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-2">
