@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, lazy, Suspense } from "react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
@@ -12,6 +12,10 @@ import type { FileItem } from "../components/sections/MobileFileSystem";
 import PawStampMode from "@/components/personal/PawStampMode";
 import { MetadataBar } from "@/components/personal/MetadataBar";
 import "../styles/animations.css";
+
+const ShaderFlower = lazy(() =>
+  import("@/components/ui/ShaderFlower").then((m) => ({ default: m.ShaderFlower }))
+);
 
 function MobilePage() {
   const navigate = useNavigate();
@@ -126,6 +130,24 @@ function MobilePage() {
       <div className="relative min-h-screen overflow-hidden flex flex-col items-center bg-gray-900">
         {/* Subtle pattern overlay */}
         <div className="absolute inset-0 bg-gray-800 opacity-50 pattern-grid-dark"></div>
+
+        {/* Decorative enchanted-rose shader behind the hero. Anchored to the top
+            viewport so it sits behind the Home section and scrolls away; it
+            pauses rendering once it leaves the screen. */}
+        <Suspense fallback={null}>
+          <div
+            className="pointer-events-none absolute top-0 left-0 z-0 w-full h-screen opacity-50"
+            style={{
+              maskImage:
+                "radial-gradient(ellipse at 50% 42%, black 30%, transparent 72%)",
+              WebkitMaskImage:
+                "radial-gradient(ellipse at 50% 42%, black 30%, transparent 72%)",
+            }}
+            aria-hidden="true"
+          >
+            <ShaderFlower className="h-full w-full" />
+          </div>
+        </Suspense>
 
         {/* Simple progress bar - using ref for direct DOM manipulation */}
         <div className="fixed top-0 left-0 right-0 h-1 z-50 bg-gray-800">

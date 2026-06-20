@@ -333,6 +333,7 @@ export function ShaderFlower({ className }: ShaderFlowerProps) {
     ).matches;
 
     let raf = 0;
+    let running = false;
     const start = performance.now();
 
     // Throttle to ~30fps. The animation is slow and gentle, so half the frames
@@ -341,38 +342,71 @@ export function ShaderFlower({ className }: ShaderFlowerProps) {
     const frameInterval = 1000 / 30;
     let last = -Infinity;
 
+    const drawFrame = (timeSeconds: number) => {
+      gl.uniform1f(uTime, timeSeconds);
+      gl.drawArrays(gl.TRIANGLES, 0, 6);
+    };
+
     const render = (now: number) => {
       raf = requestAnimationFrame(render);
       if (now - last < frameInterval) return;
       last = now;
       // No resize() here: sizing is handled by the resize listener and the
       // ResizeObserver, so the render loop never forces a layout.
-      gl.uniform1f(uTime, (now - start) / 1000);
-      gl.drawArrays(gl.TRIANGLES, 0, 6);
+      drawFrame((now - start) / 1000);
+    };
+
+    // Animate only while the canvas is on-screen and the tab is visible. On the
+    // mobile page the flower scrolls out of view, so this keeps scrolling smooth
+    // and saves battery; with reduced motion we just paint one static frame.
+    let onScreen = true;
+    const shouldRun = () => onScreen && !document.hidden && !reduceMotion;
+
+    const startLoop = () => {
+      if (running || !shouldRun()) return;
+      running = true;
+      last = -Infinity;
+      raf = requestAnimationFrame(render);
+    };
+    const stopLoop = () => {
+      running = false;
+      cancelAnimationFrame(raf);
     };
 
     if (reduceMotion) {
-      // Single static frame.
       resize();
-      gl.uniform1f(uTime, 4.2);
-      gl.drawArrays(gl.TRIANGLES, 0, 6);
+      drawFrame(4.2); // single static frame
     } else {
-      raf = requestAnimationFrame(render);
+      startLoop();
     }
 
-    const onVisibility = () => {
-      if (document.hidden) {
-        cancelAnimationFrame(raf);
-      } else if (!reduceMotion) {
-        raf = requestAnimationFrame(render);
-      }
-    };
+    const onVisibility = () => (document.hidden ? stopLoop() : startLoop());
     document.addEventListener("visibilitychange", onVisibility);
 
+    let io: IntersectionObserver | null = null;
+    if (typeof IntersectionObserver !== "undefined") {
+      io = new IntersectionObserver(
+        ([entry]) => {
+          onScreen = entry.isIntersecting;
+          if (!onScreen) {
+            stopLoop();
+          } else if (reduceMotion) {
+            resize();
+            drawFrame(4.2); // repaint the static frame when scrolled back in
+          } else {
+            startLoop();
+          }
+        },
+        { rootMargin: "100px" }
+      );
+      io.observe(canvas);
+    }
+
     return () => {
-      cancelAnimationFrame(raf);
+      stopLoop();
       window.removeEventListener("resize", resize);
       if (ro) ro.disconnect();
+      if (io) io.disconnect();
       document.removeEventListener("visibilitychange", onVisibility);
       gl.deleteProgram(program);
       gl.deleteShader(vert);
