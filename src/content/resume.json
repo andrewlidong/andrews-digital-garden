@@ -135,6 +135,64 @@
     ],
     "projects": [
         {
+            "name": "Subway Spell",
+            "description": [
+                "Spell words by riding NYC subway lines"
+            ],
+            "technologies": [
+                "React",
+                "TypeScript",
+                "Leaflet",
+                "Vite"
+            ],
+            "github_url": "https://github.com/andrewlidong/train-anagrams",
+            "live_url": "https://andrewlidong.github.io/train-anagrams/",
+            "image_url": "/train_anagrams.png",
+            "fallback_image_url": "/default_project.svg"
+        },
+        {
+            "name": "dateee",
+            "description": [
+                "A little single-page site for asking someone on a date"
+            ],
+            "technologies": [
+                "HTML",
+                "Vanilla JS",
+                "Web Audio"
+            ],
+            "github_url": "https://github.com/andrewlidong/dateee",
+            "live_url": "https://andrewlidong.github.io/dateee/",
+            "image_url": "/dateee.png",
+            "fallback_image_url": "/default_project.svg"
+        },
+        {
+            "name": "Trace and Pace",
+            "description": [
+                "A Strava art run club based out of Georgie's Cafe on the Lower East Side"
+            ],
+            "technologies": [
+                "HTML",
+                "CSS",
+                "Cloudflare Pages"
+            ],
+            "github_url": "https://github.com/andrewlidong/trace-and-pace",
+            "live_url": "https://traceandpace.com",
+            "image_url": "/trace_and_pace.png",
+            "fallback_image_url": "/default_project.svg"
+        },
+        {
+            "name": "babyline",
+            "description": [
+                "A small Zig command-line app with a typed command/option parser, subcommands (hello, user:create, user:list, config:set, config:get), a test suite, and auto-generated CLI reference docs via 'zig build docs'."
+            ],
+            "technologies": [
+                "Zig"
+            ],
+            "github_url": "https://github.com/andrewlidong/babyline",
+            "image_url": "/babyline.png",
+            "fallback_image_url": "/default_project.svg"
+        },
+        {
             "name": "This Is Water",
             "description": [
                 "Developed ThisIsWater, a full-stack blogging platform, enabling seamless content creation and management with a scalable architecture. Designed an intuitive user experience, integrating modern web technologies for dynamic and responsive publishing."

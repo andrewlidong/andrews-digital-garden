@@ -24,6 +24,12 @@
         "type": "folder",
         "children": [
             {
+                "id": "babyline_md",
+                "name": "babyline.md",
+                "type": "file",
+                "path": "/files/projects/babyline.md"
+            },
+            {
                 "id": "big2s_md",
                 "name": "big2s.md",
                 "type": "file",
@@ -34,6 +40,12 @@
                 "name": "catch_that_qubit.md",
                 "type": "file",
                 "path": "/files/projects/catch_that_qubit.md"
+            },
+            {
+                "id": "dateee_md",
+                "name": "dateee.md",
+                "type": "file",
+                "path": "/files/projects/dateee.md"
             },
             {
                 "id": "flight_simulator_md",
@@ -78,10 +90,22 @@
                 "path": "/files/projects/sorting_octopus.md"
             },
             {
+                "id": "subway_spell_md",
+                "name": "subway_spell.md",
+                "type": "file",
+                "path": "/files/projects/subway_spell.md"
+            },
+            {
                 "id": "this_is_water_md",
                 "name": "this_is_water.md",
                 "type": "file",
                 "path": "/files/projects/this_is_water.md"
+            },
+            {
+                "id": "trace_and_pace_md",
+                "name": "trace_and_pace.md",
+                "type": "file",
+                "path": "/files/projects/trace_and_pace.md"
             }
         ]
     },
