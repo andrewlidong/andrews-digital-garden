@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
 import { cn } from '@/lib/utils';
-import fileSystemData from "@/content/filesystem.json";
 
 type FileItem = {
   id: string;

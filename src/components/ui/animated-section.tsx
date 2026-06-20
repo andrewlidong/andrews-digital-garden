@@ -18,8 +18,6 @@ const AnimatedSection = forwardRef<HTMLElement, AnimatedSectionProps>(
     const isInView = useInView(sectionRef, { threshold });
     const progress = useScrollProgress(sectionRef);
     
-    // Base animation classes
-    let animationClass = '';
     let style: React.CSSProperties = {};
     
     // Apply different animation styles based on variant

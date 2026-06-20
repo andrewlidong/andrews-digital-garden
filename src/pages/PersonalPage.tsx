@@ -1,13 +1,14 @@
 import { File } from "@/components/personal/File";
 import { Window } from "@/components/personal/Window";
 import { Folder } from "@/components/personal/Folder";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { TextContent } from "@/components/personal/TextContent";
 import { Terminal } from "@/components/personal/Terminal";
 import fileSystemData from "@/content/filesystem.json";
 import { Header } from "@/components/personal/Header";
 import StartupScreen from "@/components/personal/StartupScreen";
 import PawStampMode from "@/components/personal/PawStampMode";
+import { MetadataBar } from "@/components/personal/MetadataBar";
 
 type FileItem = {
   id: string;
@@ -53,7 +54,6 @@ function PersonalPage() {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [isStarting, setIsStarting] = useState(true);
   const [startupComplete, setStartupComplete] = useState(false);
-  const readmeOpenedRef = useRef(false);
 
   const isDisabled = (id: string) => disabledItems.has(id);
 
@@ -384,7 +384,7 @@ function PersonalPage() {
 
         {/* Terminal Welcome Message */}
         {startupComplete && !isMobile && (
-          <div className="fixed bottom-4 left-4 right-4 bg-black bg-opacity-70 p-3 rounded-md text-sm max-w-md">
+          <div className="fixed bottom-10 left-4 right-4 bg-black bg-opacity-70 p-3 rounded-md text-sm max-w-md">
             <p>
               Welcome to my digital garden! Explore my projects and interests by clicking on the folders above.
             </p>
@@ -398,6 +398,7 @@ function PersonalPage() {
             </p>
           </div>
         )}
+        {startupComplete && !isMobile && <MetadataBar />}
       </div>
     <PawStampMode isActive={pawModeActive} />
     </>
