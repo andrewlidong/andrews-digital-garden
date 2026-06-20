@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Rnd } from "react-rnd";
+import { useNavigate } from "react-router-dom";
 import ClassicScrollbar from "./Scrollbar";
 
 interface WindowProps {
@@ -13,6 +14,8 @@ interface WindowProps {
   onClose: () => void;
   children: React.ReactNode;
   sourceElementId?: string;
+  /** When set, the window shows an expand button that opens the full-screen reader. */
+  expandUrl?: string;
 }
 
 export const Window: React.FC<WindowProps> = ({
@@ -25,11 +28,13 @@ export const Window: React.FC<WindowProps> = ({
   onFocus,
   onClose,
   children,
+  expandUrl,
 }) => {
   const [size, setSize] = useState({ width, height });
   const [isCloseButtonPressed, setIsCloseButtonPressed] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const windowRef = useRef<Rnd>(null);
+  const navigate = useNavigate();
 
   // Calculate initial position if not provided
   const getInitialPosition = () => {
@@ -117,17 +122,29 @@ export const Window: React.FC<WindowProps> = ({
             <span className="text-term-green mr-2">$</span>
             <span className="font-mono text-sm">{title}</span>
           </div>
-          <button
-            className={`w-5 h-5 flex items-center justify-center rounded-full ${
-              isCloseButtonPressed ? "opacity-70" : ""
-            } bg-term-red text-term-inset text-xs`}
-            onMouseDown={() => setIsCloseButtonPressed(true)}
-            onMouseUp={() => setIsCloseButtonPressed(false)}
-            onMouseLeave={() => setIsCloseButtonPressed(false)}
-            onClick={handleClose}
-          >
-            ×
-          </button>
+          <div className="flex items-center gap-2">
+            {expandUrl && (
+              <button
+                className="w-5 h-5 flex items-center justify-center rounded-full bg-term-green hover:opacity-80 text-term-inset text-xs leading-none"
+                title="Open full screen (nvim)"
+                aria-label="Open full screen"
+                onClick={() => navigate(expandUrl)}
+              >
+                ⤢
+              </button>
+            )}
+            <button
+              className={`w-5 h-5 flex items-center justify-center rounded-full ${
+                isCloseButtonPressed ? "opacity-70" : ""
+              } bg-term-red text-term-inset text-xs`}
+              onMouseDown={() => setIsCloseButtonPressed(true)}
+              onMouseUp={() => setIsCloseButtonPressed(false)}
+              onMouseLeave={() => setIsCloseButtonPressed(false)}
+              onClick={handleClose}
+            >
+              ×
+            </button>
+          </div>
         </div>
 
         {/* File path breadcrumb */}

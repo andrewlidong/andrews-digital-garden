@@ -6,6 +6,67 @@
         "path": "/files/README.md"
     },
     {
+        "id": "blog",
+        "name": "blog",
+        "type": "folder",
+        "children": [
+            {
+                "id": "godbolt_and_modern_cpu_architecture_md",
+                "name": "godbolt-and-modern-cpu-architecture.md",
+                "type": "file",
+                "path": "/files/blog/godbolt-and-modern-cpu-architecture.md",
+                "title": "Godbolt and Modern CPU Architecture",
+                "date": "2025-12-26",
+                "subtitle": "When writing C++ code or even assembly, we often imagine the CPU executing instructions one by one but the reality inside the silicon is far more chaotic."
+            },
+            {
+                "id": "grace_interruptions_and_the_signals_md",
+                "name": "grace-interruptions-and-the-signals.md",
+                "type": "file",
+                "path": "/files/blog/grace-interruptions-and-the-signals.md",
+                "title": "Grace, Interruptions and the Signals Beneath",
+                "date": "2025-12-26",
+                "subtitle": "Why Tokyo Godfathers is the Greatest Christmas Movie of All Time"
+            },
+            {
+                "id": "off_the_bullmq_onto_temporal_md",
+                "name": "off-the-bullmq-onto-temporal.md",
+                "type": "file",
+                "path": "/files/blog/off-the-bullmq-onto-temporal.md",
+                "title": "Off the Bull(MQ), Onto Temporal",
+                "date": "2025-06-28",
+                "subtitle": "and what we learned along the way"
+            },
+            {
+                "id": "spelling_words_with_the_subway_md",
+                "name": "spelling-words-with-the-subway.md",
+                "type": "file",
+                "path": "/files/blog/spelling-words-with-the-subway.md",
+                "title": "Spelling words with the Subway",
+                "date": "2026-06-17",
+                "subtitle": "We love creative coding"
+            },
+            {
+                "id": "writing_a_cli_in_zig_md",
+                "name": "writing-a-cli-in-zig.md",
+                "type": "file",
+                "path": "/files/blog/writing-a-cli-in-zig.md",
+                "title": "writing a cli in zig",
+                "date": "2026-05-26",
+                "subtitle": "baby's first babyline"
+            },
+            {
+                "id": "writing_a_spectral_ray_tracer_in_md",
+                "name": "writing-a-spectral-ray-tracer-in.md",
+                "type": "file",
+                "path": "/files/blog/writing-a-spectral-ray-tracer-in.md",
+                "title": "Writing a Spectral Ray Tracer in Tomo",
+                "date": "2025-12-17",
+                "subtitle": "I recently wrote a spectral ray tracer in a programming language called Tomo. This was partly a rendering experiment, partly an excuse to bug Bruce, and partly a way to test whether Tomo could handle real systems-style work."
+            }
+        ]
+    },
+    {
         "id": "notes",
         "name": "notes",
         "type": "folder",

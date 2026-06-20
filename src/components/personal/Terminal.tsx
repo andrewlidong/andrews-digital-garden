@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
+import { readerPath } from '@/lib/frontmatter';
 import type { Theme } from '@/lib/themes';
 
 type FileItem = {
@@ -42,6 +44,7 @@ export function Terminal({ onOpenFile, fileSystem, initialCommand, commandNonce,
   const [currentDir, setCurrentDir] = useState<FileItem[]>(fileSystem);
   const inputRef = useRef<HTMLInputElement>(null);
   const terminalRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
   // Auto-scroll to bottom when history changes
   useEffect(() => {
@@ -117,7 +120,8 @@ export function Terminal({ onOpenFile, fileSystem, initialCommand, commandNonce,
         output = `Available commands:
   ls - List files and directories
   cd [path] - Change directory
-  cat [file] - Display file contents
+  cat [file] - Open file in a window
+  vim [file] - Open file full screen (alias: nvim)
   pwd - Show current directory
   theme - List or switch color themes (try 'theme list')
   clear - Clear terminal
@@ -246,6 +250,33 @@ export function Terminal({ onOpenFile, fileSystem, initialCommand, commandNonce,
             // Open the file in a window
             onOpenFile(file.id);
             output = `Opening ${file.name}...`;
+          } else {
+            output = `File not found: ${fileName}`;
+            isError = true;
+          }
+        }
+        break;
+
+      case 'vim':
+      case 'nvim':
+      case 'edit':
+        if (args.length < 2) {
+          output = `Usage: ${command} [filename]`;
+          isError = true;
+        } else {
+          const fileName = args[1];
+          const file = currentDir.find(
+            item => item.type === 'file' &&
+            (item.name.toLowerCase() === fileName.toLowerCase() ||
+             item.name.toLowerCase() === `${fileName.toLowerCase()}.md` ||
+             item.name.toLowerCase().replace(/\.md$/, '') === fileName.toLowerCase())
+          );
+
+          if (file && file.path) {
+            output = `Opening ${file.name} full screen...`;
+            setHistory(prev => [...prev, { command: cmd, output, isError }]);
+            setTimeout(() => navigate(readerPath(file.path)), 150);
+            return;
           } else {
             output = `File not found: ${fileName}`;
             isError = true;
