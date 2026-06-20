@@ -18,6 +18,19 @@ body {
   display: none;
 }
 
+/* Reader: code inside fenced blocks should not inherit the inline-code chip
+   styling (background/padding) applied via prose-code utilities. */
+.prose pre code {
+  background-color: transparent !important;
+  padding: 0 !important;
+  color: inherit !important;
+  font-size: 0.875em;
+}
+
+.prose {
+  font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+}
+
 /* Hide scrollbar for IE, Edge and Firefox */
 .no-scrollbar {
   -ms-overflow-style: none; /* IE and Edge */

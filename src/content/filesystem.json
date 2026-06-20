@@ -6,6 +6,49 @@
         "path": "/files/README.md"
     },
     {
+        "id": "blog",
+        "name": "blog",
+        "type": "folder",
+        "children": [
+            {
+                "id": "godbolt_and_modern_cpu_architecture_md",
+                "name": "godbolt-and-modern-cpu-architecture.md",
+                "type": "file",
+                "path": "/files/blog/godbolt-and-modern-cpu-architecture.md"
+            },
+            {
+                "id": "grace_interruptions_and_the_signals_md",
+                "name": "grace-interruptions-and-the-signals.md",
+                "type": "file",
+                "path": "/files/blog/grace-interruptions-and-the-signals.md"
+            },
+            {
+                "id": "off_the_bullmq_onto_temporal_md",
+                "name": "off-the-bullmq-onto-temporal.md",
+                "type": "file",
+                "path": "/files/blog/off-the-bullmq-onto-temporal.md"
+            },
+            {
+                "id": "spelling_words_with_the_subway_md",
+                "name": "spelling-words-with-the-subway.md",
+                "type": "file",
+                "path": "/files/blog/spelling-words-with-the-subway.md"
+            },
+            {
+                "id": "writing_a_cli_in_zig_md",
+                "name": "writing-a-cli-in-zig.md",
+                "type": "file",
+                "path": "/files/blog/writing-a-cli-in-zig.md"
+            },
+            {
+                "id": "writing_a_spectral_ray_tracer_in_md",
+                "name": "writing-a-spectral-ray-tracer-in.md",
+                "type": "file",
+                "path": "/files/blog/writing-a-spectral-ray-tracer-in.md"
+            }
+        ]
+    },
+    {
         "id": "notes",
         "name": "notes",
         "type": "folder",

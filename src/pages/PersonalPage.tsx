@@ -8,6 +8,7 @@ import fileSystemData from "@/content/filesystem.json";
 import { Header } from "@/components/personal/Header";
 import StartupScreen from "@/components/personal/StartupScreen";
 import PawStampMode from "@/components/personal/PawStampMode";
+import { readerPath, parseFrontmatter } from "@/lib/frontmatter";
 
 type FileItem = {
   id: string;
@@ -27,7 +28,25 @@ type WindowState = {
   windowType: "folder" | "text" | "terminal";
   parentId?: string;
   sourceElementId?: string;
+  filePath?: string;
 };
+
+// Sort a folder's children: dated files (blog posts) newest-first, folders and
+// undated files keep a stable alphabetical order after them.
+function sortFolderChildren(items: FileItem[]): FileItem[] {
+  const dateOf = (item: FileItem): string => {
+    if (item.type !== "file" || !item.content) return "";
+    return parseFrontmatter(item.content).meta.date || "";
+  };
+  return [...items].sort((a, b) => {
+    const da = dateOf(a);
+    const db = dateOf(b);
+    if (da && db) return db.localeCompare(da);
+    if (da) return -1;
+    if (db) return 1;
+    return a.name.localeCompare(b.name);
+  });
+}
 
 // Helper function to recursively process the file system
 function processFileSystem(items: FileItem[]): FileItem[] {
@@ -85,6 +104,7 @@ function PersonalPage() {
         windowType: "text",
         parentId,
         sourceElementId: item.id,
+        filePath: item.path,
       };
       setWindows([...windows, newWindow]);
     } else if (item.type === "folder") {
@@ -355,6 +375,11 @@ function PersonalPage() {
                     onFocus={() => bringToFront(win.id)}
                     onClose={() => closeWindow(win.id)}
                     sourceElementId={win.sourceElementId}
+                    expandUrl={
+                      win.windowType === "text" && win.filePath
+                        ? readerPath(win.filePath)
+                        : undefined
+                    }
                   >
                     {win.windowType === "folder" && Array.isArray(win.content) ? (
                       <div className="p-4 bg-gray-900">
@@ -365,7 +390,7 @@ function PersonalPage() {
                           <span className="text-yellow-300">{win.title}</span>
                         </div>
                         <div className="grid grid-cols-1 gap-4">
-                          {win.content.map((item) => renderFileOrFolder(item, win.id))}
+                          {sortFolderChildren(win.content).map((item) => renderFileOrFolder(item, win.id))}
                         </div>
                       </div>
                     ) : win.windowType === "text" && typeof win.content === "string" ? (
