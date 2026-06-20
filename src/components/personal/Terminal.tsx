@@ -228,6 +228,82 @@ export function Terminal({ onOpenFile, fileSystem, initialCommand, commandNonce 
     setInput('');
   };
 
+  const COMMANDS = ['help', 'ls', 'cd', 'cat', 'pwd', 'clear'];
+
+  // Find the longest common prefix shared by all candidate strings.
+  const longestCommonPrefix = (items: string[]): string => {
+    if (items.length === 0) return '';
+    let prefix = items[0];
+    for (const item of items.slice(1)) {
+      while (!item.toLowerCase().startsWith(prefix.toLowerCase())) {
+        prefix = prefix.slice(0, -1);
+        if (!prefix) return '';
+      }
+    }
+    return prefix;
+  };
+
+  // Tab completion: complete command names (first word) or file/folder names
+  // (arguments to cd/cat) based on the current directory.
+  const handleTabComplete = () => {
+    const trimmedStart = input.replace(/^\s+/, '');
+    const parts = trimmedStart.split(/\s+/);
+    const completingCommand = parts.length === 1 && !/\s$/.test(input);
+
+    let candidates: string[];
+    let fragment: string;
+    let prefixToKeep: string;
+
+    if (completingCommand) {
+      fragment = parts[0];
+      candidates = COMMANDS.filter(c => c.startsWith(fragment.toLowerCase()));
+      prefixToKeep = '';
+    } else {
+      // Completing an argument (file or folder name in the current directory).
+      const command = parts[0].toLowerCase();
+      if (command !== 'cd' && command !== 'cat') return;
+
+      fragment = /\s$/.test(input) ? '' : parts[parts.length - 1];
+      const matches = currentDir.filter(item =>
+        item.name.toLowerCase().startsWith(fragment.toLowerCase())
+      );
+      // cat only operates on files; cd only on folders.
+      const filtered =
+        command === 'cd'
+          ? matches.filter(item => item.type === 'folder')
+          : matches.filter(item => item.type === 'file');
+      candidates = filtered.map(item =>
+        item.type === 'folder' ? `${item.name}/` : item.name
+      );
+      prefixToKeep = command + ' ';
+    }
+
+    if (candidates.length === 0) return;
+
+    if (candidates.length === 1) {
+      setInput(prefixToKeep + candidates[0]);
+      return;
+    }
+
+    const common = longestCommonPrefix(candidates);
+    if (common.length > fragment.length) {
+      setInput(prefixToKeep + common);
+    } else {
+      // Multiple matches with no further common prefix: list them.
+      setHistory(prev => [
+        ...prev,
+        { command: input, output: candidates.join('    ') },
+      ]);
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      handleTabComplete();
+    }
+  };
+
   // Run a command handed in from outside (e.g. typed in the home-page prompt).
   // Fires whenever commandNonce changes. The ref guards against running the
   // same nonce twice (e.g. StrictMode's double-invoke of effects in dev).
@@ -274,6 +350,7 @@ export function Terminal({ onOpenFile, fileSystem, initialCommand, commandNonce 
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
+          onKeyDown={handleKeyDown}
           className="flex-1 bg-transparent outline-none"
           autoFocus
         />
