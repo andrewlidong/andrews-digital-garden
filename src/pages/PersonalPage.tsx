@@ -464,6 +464,7 @@ function PersonalPage() {
                         themes={themes}
                         themeId={themeId}
                         onSetTheme={setTheme}
+                        onClose={() => closeWindow(win.id)}
                       />
                     ) : null}
                   </Window>
