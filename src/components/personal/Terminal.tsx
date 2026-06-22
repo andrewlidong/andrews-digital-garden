@@ -24,6 +24,8 @@ type TerminalProps = {
   themes?: Theme[];
   themeId?: string;
   onSetTheme?: (id: string) => void;
+  // Close the terminal window (e.g. when the user presses Escape).
+  onClose?: () => void;
 };
 
 type TerminalHistory = {
@@ -32,7 +34,7 @@ type TerminalHistory = {
   isError?: boolean;
 };
 
-export function Terminal({ onOpenFile, fileSystem, initialCommand, commandNonce, themes, themeId, onSetTheme }: TerminalProps) {
+export function Terminal({ onOpenFile, fileSystem, initialCommand, commandNonce, themes, themeId, onSetTheme, onClose }: TerminalProps) {
   const [input, setInput] = useState('');
   const [history, setHistory] = useState<TerminalHistory[]>([
     { 
@@ -384,6 +386,9 @@ export function Terminal({ onOpenFile, fileSystem, initialCommand, commandNonce,
     if (e.key === 'Tab') {
       e.preventDefault();
       handleTabComplete();
+    } else if (e.key === 'Escape') {
+      e.preventDefault();
+      onClose?.();
     }
   };
 
