@@ -1,6 +1,7 @@
-import { useState, useEffect, lazy, Suspense } from 'react';
+import { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import fileSystemData from '@/content/filesystem.json';
 import { loadFileContent } from '@/lib/loadFileContent';
+import { useIntersectionObserver } from '@/hooks/useIntersectionObserver';
 
 const FileContent = lazy(() =>
   import('../personal/FileContent').then((m) => ({ default: m.FileContent }))
@@ -31,6 +32,8 @@ export function MobileFileSystem({
 }: MobileFileSystemProps) {
   const [fileSystem, setFileSystem] = useState<FileItem[]>([]);
   const [currentPath, setCurrentPath] = useState<string[]>([]);
+  const revealRef = useRef<HTMLDivElement>(null);
+  const rv = useIntersectionObserver(revealRef, { threshold: 0.1, once: true }) ? "is-visible" : "";
 
   useEffect(() => {
     // Set up the file tree structure. File contents are loaded lazily when a
@@ -70,12 +73,19 @@ export function MobileFileSystem({
   const currentItems = getCurrentItems();
 
   return (
-    <div className="w-full max-w-4xl mx-auto p-4">
+    <div ref={revealRef} className="w-full mx-auto">
+      <p className={`font-mono text-sm text-term-accent mb-2 animate-on-scroll fade-up ${rv}`}>
+        ~/notes
+      </p>
+      <h2 className={`text-3xl md:text-5xl font-bold tracking-tight text-term-fg mb-6 animate-on-scroll fade-up ${rv}`} style={{ transitionDelay: '100ms' }}>
+        Notes
+      </h2>
+
       {/* Breadcrumb navigation */}
-      <div className="flex items-center gap-2 mb-4 text-gray-400">
+      <div className="flex items-center gap-2 mb-4 font-mono text-sm text-term-faint">
         <button
           onClick={() => setCurrentPath([])}
-          className="hover:text-white"
+          className="transition-colors hover:text-term-accent"
         >
           root
         </button>
@@ -83,10 +93,10 @@ export function MobileFileSystem({
           const item = fileSystem.find(item => item.id === path);
           return (
             <div key={path} className="flex items-center gap-2">
-              <span>/</span>
+              <span className="text-term-border">/</span>
               <button
                 onClick={() => setCurrentPath(currentPath.slice(0, index + 1))}
-                className="hover:text-white"
+                className="transition-colors hover:text-term-accent"
               >
                 {item?.name}
               </button>
@@ -97,21 +107,21 @@ export function MobileFileSystem({
 
       {/* Content area */}
       {currentContent ? (
-        <div className="bg-white/5 backdrop-blur-sm rounded-lg p-6 border border-white/10 shadow-lg">
+        <div className="rounded-xl border border-term-border/70 bg-term-elevated/40 p-5 backdrop-blur-sm shadow-lg">
           <button
             onClick={() => {
               setCurrentContent(null);
               setCurrentFile(null);
               setCurrentPath([]);
             }}
-            className="mb-4 px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 flex items-center gap-2"
+            className="mb-4 flex items-center gap-2 rounded-lg border border-term-border/70 bg-term-bg/50 px-3 py-1.5 text-sm text-term-dim transition-colors hover:text-term-accent hover:border-term-accent/50"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
               <path fillRule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clipRule="evenodd" />
             </svg>
             Back
           </button>
-          <Suspense fallback={<div className="p-4 text-gray-400 text-sm">Loading…</div>}>
+          <Suspense fallback={<div className="p-4 text-term-dim text-sm">Loading…</div>}>
             <FileContent
               content={currentContent}
               fileType={currentFile?.fileType || '.md'}
@@ -119,17 +129,20 @@ export function MobileFileSystem({
           </Suspense>
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-2">
+        <div className="grid grid-cols-1 gap-1.5">
           {currentItems.map((item) => (
             <button
               key={item.id}
               onClick={() => handleItemClick(item)}
-              className="flex items-center gap-2 p-3 rounded-lg hover:bg-gray-800 text-left"
+              className="group flex items-center gap-3 rounded-lg border border-transparent px-3 py-2.5 text-left transition-all duration-200 hover:border-term-border/70 hover:bg-term-elevated/50 active:scale-[0.99]"
             >
-              <span className="text-xl">
+              <span className="text-lg opacity-80">
                 {item.type === "folder" ? "📁" : "📄"}
               </span>
-              <span className="text-white">{item.name}</span>
+              <span className="text-term-fg group-hover:text-term-accent transition-colors">{item.name}</span>
+              {item.type === "folder" && (
+                <span className="ml-auto text-term-faint transition-colors group-hover:text-term-accent">→</span>
+              )}
             </button>
           ))}
         </div>

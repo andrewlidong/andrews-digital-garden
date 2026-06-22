@@ -36,6 +36,13 @@ export default {
       },
       fontFamily: {
         macos: 'ChiKareGo2, ui-serif', // Adds a new `font-display` class
+        // Clean system sans for the mobile reading experience (maximeheckel-style).
+        // Resolves to San Francisco on iOS/macOS, Segoe UI on Windows, Inter/Roboto
+        // elsewhere — no web-font network request.
+        sans: [
+          '-apple-system', 'BlinkMacSystemFont', '"Inter"', '"Segoe UI"',
+          'Roboto', '"Helvetica Neue"', 'Arial', 'sans-serif',
+        ],
       },
       cursor: {
         'default': 'url(/macos_assets/cursor.png), auto',

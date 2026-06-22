@@ -1,9 +1,10 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeHighlight from "rehype-highlight";
 import fileSystemData from "@/content/filesystem.json";
+import { useTheme } from "@/hooks/useTheme";
 import {
   parseFrontmatter,
   formatDate,
@@ -49,10 +50,13 @@ export default function ReaderPage() {
   const params = useParams();
   const navigate = useNavigate();
   const splat = params["*"] || "";
+  // Honor the active theme on direct loads of a post URL.
+  useTheme();
 
   const [meta, setMeta] = useState<PostMeta>({});
   const [body, setBody] = useState("");
   const [state, setState] = useState<LoadState>("loading");
+  const progressBarRef = useRef<HTMLDivElement>(null);
 
   // The reader path is the file path under /files without its extension.
   const decoded = splat
@@ -110,6 +114,20 @@ export default function ReaderPage() {
     };
   }, [state, meta.title]);
 
+  // Reading-progress bar — a light maximeheckel-style touch that reads well on
+  // mobile. Updated directly on the DOM node to avoid re-rendering on scroll.
+  useEffect(() => {
+    const onScroll = () => {
+      if (!progressBarRef.current) return;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const pct = docHeight > 0 ? Math.min(window.scrollY / docHeight, 1) : 0;
+      progressBarRef.current.style.width = `${pct * 100}%`;
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [state]);
+
   // Esc returns to the desktop.
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -123,36 +141,41 @@ export default function ReaderPage() {
   const isBlog = section === "blog";
 
   return (
-    <div className="min-h-screen bg-gray-900 text-gray-100 font-mono">
+    <div className="min-h-screen bg-term-bg font-sans text-term-fg antialiased transition-colors duration-500">
+      {/* Reading-progress bar */}
+      <div className="fixed top-0 left-0 right-0 z-20 h-0.5 bg-term-border/40">
+        <div ref={progressBarRef} className="h-full bg-term-accent" style={{ width: "0%" }} />
+      </div>
+
       {/* Terminal-style top bar */}
-      <header className="sticky top-0 z-10 border-b border-gray-700 bg-gray-900/95 backdrop-blur">
-        <div className="mx-auto flex max-w-3xl items-center justify-between px-6 py-3 text-sm">
+      <header className="sticky top-0 z-10 border-b border-term-border bg-[color-mix(in_srgb,var(--term-bg)_85%,transparent)] backdrop-blur">
+        <div className="mx-auto flex max-w-2xl items-center justify-between px-5 py-3 font-mono text-sm sm:px-6">
           <Link
             to={isBlog ? "/blog" : "/"}
-            className="text-gray-400 transition-colors hover:text-green-400"
+            className="shrink-0 text-term-dim transition-colors hover:text-term-accent"
             aria-label={isBlog ? "All posts" : "Back to desktop"}
           >
             ← {isBlog ? "cd ~/blog" : "cd ~"}
           </Link>
-          <span className="truncate pl-4 text-gray-500">
-            <span className="text-green-500">nvim</span> ~/{section}/{filename}.md
+          <span className="truncate pl-4 text-term-faint">
+            <span className="text-term-green">nvim</span> ~/{section}/{filename}.md
           </span>
         </div>
       </header>
 
-      <main className="mx-auto max-w-3xl px-6 py-12">
+      <main className="mx-auto max-w-2xl px-5 py-8 sm:px-6 sm:py-12">
         {state === "loading" && (
-          <p className="text-green-400">
+          <p className="font-mono text-term-accent">
             <span className="animate-pulse">▌</span> loading {filename}…
           </p>
         )}
 
         {state === "notfound" && (
-          <div className="text-gray-300">
-            <p className="mb-4 text-red-400">
+          <div className="text-term-dim">
+            <p className="mb-4 font-mono text-term-red">
               :e {filename}.md — No such file or directory
             </p>
-            <Link to="/" className="text-blue-400 underline hover:text-blue-300">
+            <Link to="/" className="text-term-accent underline hover:opacity-80">
               Return to the desktop
             </Link>
           </div>
@@ -160,24 +183,24 @@ export default function ReaderPage() {
 
         {state === "ready" && (
           <article>
-            <div className="mb-10 border-b border-gray-800 pb-6">
-              <h1 className="mb-2 text-3xl font-bold leading-tight text-white sm:text-4xl">
+            <div className="mb-8 border-b border-term-border pb-6 sm:mb-10">
+              <h1 className="mb-2 text-2xl font-bold leading-tight tracking-tight text-term-fg sm:text-4xl">
                 {title}
               </h1>
               {meta.subtitle && (
-                <p className="mb-3 text-lg text-gray-400">{meta.subtitle}</p>
+                <p className="mb-3 text-base text-term-dim sm:text-lg">{meta.subtitle}</p>
               )}
-              <div className="flex flex-wrap items-center gap-3 text-sm text-gray-500">
+              <div className="flex flex-wrap items-center gap-3 font-mono text-sm text-term-faint">
                 {meta.date && <span>{formatDate(meta.date)}</span>}
                 <span aria-hidden>·</span>
                 <span>{readingTime(body)}</span>
               </div>
               {meta.tags && meta.tags.length > 0 && (
-                <div className="mt-3 flex flex-wrap gap-2">
+                <div className="mt-3 flex flex-wrap gap-1.5">
                   {meta.tags.map((tag) => (
                     <span
                       key={tag}
-                      className="rounded border border-gray-700 bg-gray-800 px-2 py-0.5 text-xs text-green-400"
+                      className="rounded-md border border-term-border/60 bg-term-elevated/50 px-2 py-0.5 font-mono text-xs text-term-dim"
                     >
                       #{tag}
                     </span>
@@ -186,7 +209,7 @@ export default function ReaderPage() {
               )}
             </div>
 
-            <div className="prose prose-invert prose-lg max-w-none prose-headings:font-semibold prose-headings:text-white prose-a:text-green-400 prose-a:no-underline hover:prose-a:underline prose-code:rounded prose-code:bg-gray-800 prose-code:px-1.5 prose-code:py-0.5 prose-code:text-green-300 prose-code:before:content-none prose-code:after:content-none prose-pre:border prose-pre:border-gray-800 prose-pre:bg-gray-950 prose-blockquote:border-l-green-700 prose-blockquote:text-gray-300 prose-img:rounded-lg">
+            <div className="prose prose-invert max-w-none sm:prose-lg prose-headings:font-semibold prose-headings:tracking-tight prose-headings:text-term-fg prose-p:text-term-fg prose-li:text-term-fg prose-strong:text-term-fg prose-a:text-term-accent prose-a:no-underline hover:prose-a:underline prose-code:rounded prose-code:bg-term-elevated prose-code:px-1.5 prose-code:py-0.5 prose-code:text-term-green prose-code:before:content-none prose-code:after:content-none prose-pre:border prose-pre:border-term-border prose-pre:bg-term-inset prose-blockquote:border-l-term-accent prose-blockquote:text-term-dim prose-img:rounded-lg">
               <ReactMarkdown
                 remarkPlugins={[remarkGfm]}
                 rehypePlugins={[[rehypeHighlight, { detect: true, ignoreMissing: true }]]}
@@ -197,41 +220,41 @@ export default function ReaderPage() {
 
             {/* Prev / next navigation */}
             {(prev || next) && (
-              <nav className="mt-16 grid grid-cols-1 gap-4 border-t border-gray-800 pt-6 sm:grid-cols-2">
+              <nav className="mt-14 grid grid-cols-1 gap-3 border-t border-term-border pt-6 sm:mt-16 sm:grid-cols-2 sm:gap-4">
                 {prev ? (
                   <Link
                     to={prev.to}
-                    className="group rounded-lg border border-gray-800 p-4 transition-colors hover:border-green-700"
+                    className="group rounded-lg border border-term-border/70 p-4 transition-colors hover:border-term-accent/60 hover:bg-term-elevated/50"
                   >
-                    <div className="text-xs text-gray-500">← Newer</div>
-                    <div className="mt-1 text-sm text-gray-200 group-hover:text-green-400">
+                    <div className="font-mono text-xs text-term-faint">← Newer</div>
+                    <div className="mt-1 text-sm text-term-dim group-hover:text-term-accent">
                       {prev.label}
                     </div>
                   </Link>
                 ) : (
-                  <span />
+                  <span className="hidden sm:block" />
                 )}
                 {next ? (
                   <Link
                     to={next.to}
-                    className="group rounded-lg border border-gray-800 p-4 text-right transition-colors hover:border-green-700"
+                    className="group rounded-lg border border-term-border/70 p-4 transition-colors hover:border-term-accent/60 hover:bg-term-elevated/50 sm:text-right"
                   >
-                    <div className="text-xs text-gray-500">Older →</div>
-                    <div className="mt-1 text-sm text-gray-200 group-hover:text-green-400">
+                    <div className="font-mono text-xs text-term-faint">Older →</div>
+                    <div className="mt-1 text-sm text-term-dim group-hover:text-term-accent">
                       {next.label}
                     </div>
                   </Link>
                 ) : (
-                  <span />
+                  <span className="hidden sm:block" />
                 )}
               </nav>
             )}
 
-            <footer className="mt-10 text-sm text-gray-500">
-              <Link to="/" className="text-gray-400 hover:text-green-400">
+            <footer className="mt-10 font-mono text-sm text-term-faint">
+              <Link to="/" className="text-term-dim hover:text-term-accent">
                 ← back to the digital garden
               </Link>
-              <span className="ml-3 text-gray-600">(press Esc)</span>
+              <span className="ml-3 text-term-faint/70">(press Esc)</span>
             </footer>
           </article>
         )}
