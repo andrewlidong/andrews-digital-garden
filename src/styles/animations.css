@@ -174,10 +174,11 @@
 .animate-sparkle span:nth-child(3) { animation-delay: 1s; }
 .animate-sparkle span:nth-child(4) { animation-delay: 1.5s; }
 
-/* Blues Clues paw stamp mode */
+/* Blues Clues paw stamp mode. The cursor is a theme-colored paw built at
+   runtime (see PawStampMode); --paw-cursor falls back to the static asset. */
 .paw-cursor-active,
 .paw-cursor-active * {
-  cursor: url(/macos_assets/paw_cursor.png) 16 16, pointer !important;
+  cursor: var(--paw-cursor, url(/macos_assets/paw_cursor.png) 16 16, pointer) !important;
 }
 
 @keyframes paw-stamp-appear {

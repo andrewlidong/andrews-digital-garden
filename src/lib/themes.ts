@@ -37,6 +37,8 @@ export type ThemeTokens = {
 export type Theme = {
   id: string;
   name: string;
+  /** Set for light-background palettes so the browser uses a light color-scheme. */
+  light?: boolean;
   tokens: ThemeTokens;
 };
 
@@ -118,22 +120,23 @@ export const THEMES: Theme[] = [
     },
   },
   {
-    id: "gruvbox",
-    name: "Gruvbox",
+    id: "catppuccin-latte",
+    name: "Catppuccin Latte",
+    light: true,
     tokens: {
-      bg: "#282828",
-      bgElevated: "#3c3836",
-      bgInset: "#1d2021",
-      border: "#504945",
-      fg: "#ebdbb2",
-      fgDim: "#bdae93",
-      fgFaint: "#928374",
-      accent: "#83a598",
-      green: "#b8bb26",
-      yellow: "#fabd2f",
-      red: "#fb4934",
-      cyan: "#8ec07c",
-      magenta: "#d3869b",
+      bg: "#eff1f5",
+      bgElevated: "#e6e9ef",
+      bgInset: "#dce0e8",
+      border: "#bcc0cc",
+      fg: "#4c4f69",
+      fgDim: "#5c5f77",
+      fgFaint: "#8c8fa1",
+      accent: "#1e66f5",
+      green: "#40a02b",
+      yellow: "#df8e1d",
+      red: "#d20f39",
+      cyan: "#04a5e5",
+      magenta: "#8839ef",
     },
   },
 ];
@@ -169,7 +172,7 @@ export function applyTheme(theme: Theme): void {
   (Object.keys(CSS_VAR) as Array<keyof ThemeTokens>).forEach((key) => {
     root.style.setProperty(CSS_VAR[key], theme.tokens[key]);
   });
-  root.style.colorScheme = "dark";
+  root.style.colorScheme = theme.light ? "light" : "dark";
 }
 
 export function loadThemeId(): string {
