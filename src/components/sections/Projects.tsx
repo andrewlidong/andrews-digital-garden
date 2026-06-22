@@ -6,10 +6,13 @@ import {
 } from "../ui/card";
 import { Badge } from "../ui/badge";
 import * as resume from "../../content/resume.json";
-import { forwardRef } from "react";
+import { forwardRef, useRef } from "react";
 import { GithubIcon, ExternalLinkIcon } from "lucide-react";
+import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
 
 const Projects = forwardRef<HTMLElement>((_, ref) => {
+  const revealRef = useRef<HTMLDivElement>(null);
+  const rv = useIntersectionObserver(revealRef, { threshold: 0.1, once: true }) ? "is-visible" : "";
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>, fallbackSrc: string) => {
     const img = e.currentTarget;
     if (img.src !== fallbackSrc) {
@@ -23,35 +26,34 @@ const Projects = forwardRef<HTMLElement>((_, ref) => {
       ref={ref}
       className="min-h-screen flex items-center justify-center pt-32 relative"
     >
-      {/* Simple background elements */}
-      <div className="absolute top-20 left-20 w-80 h-80 rounded-full bg-emerald-500/10 blur-3xl"></div>
-      <div className="absolute bottom-40 right-40 w-96 h-96 rounded-full bg-amber-500/10 blur-3xl"></div>
-      
-      <div className="max-w-6xl mx-auto px-4 z-10">
-        <h2 className="text-4xl md:text-6xl font-bold text-center text-white mb-8 animate-on-scroll fade-up is-visible">
+      <div ref={revealRef} className="w-full z-10">
+        <p className={`font-mono text-sm text-term-accent mb-2 animate-on-scroll fade-up ${rv}`}>
+          ~/projects
+        </p>
+        <h2 className={`text-3xl md:text-5xl font-bold tracking-tight text-term-fg mb-8 animate-on-scroll fade-up ${rv}`} style={{ transitionDelay: '100ms' }}>
           Selected Projects
         </h2>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
+
+        <div className="grid grid-cols-1 gap-4">
           {resume.projects.map((project, index) => {
             const liveUrl = (project as { live_url?: string }).live_url;
             return (
             <div
               key={index}
-              className="animate-on-scroll scale-up is-visible"
-              style={{ transitionDelay: `${index * 100}ms` }}
+              className={`animate-on-scroll fade-up ${rv}`}
+              style={{ transitionDelay: `${index * 80}ms` }}
             >
-              <Card className="flex flex-col relative border-gray-700 bg-gray-800 h-full hover-lift">
-                <div className="absolute top-2 right-2 md:top-4 md:right-4 z-10 flex gap-1 md:gap-2">
+              <Card className="group relative flex flex-col h-full overflow-hidden rounded-xl border border-term-border/70 bg-term-elevated/40 backdrop-blur-sm transition-all duration-300 hover:border-term-accent/50 hover:bg-term-elevated/70 hover:shadow-[0_8px_40px_-16px_color-mix(in_srgb,var(--term-accent)_60%,transparent)] active:scale-[0.99]">
+                <div className="absolute top-3 right-3 z-10 flex gap-1.5">
                   {liveUrl && (
                     <a
                       href={liveUrl}
                       target="_blank"
                       rel="noopener noreferrer"
                       title="Live demo"
-                      className="p-2 bg-gray-700 rounded hover:bg-gray-600 transition-colors"
+                      className="rounded-lg border border-term-border/70 bg-term-bg/60 p-2 text-term-dim backdrop-blur-sm transition-colors hover:text-term-accent hover:border-term-accent/50"
                     >
-                      <ExternalLinkIcon className="w-4 h-4 md:w-6 md:h-6 text-white" />
+                      <ExternalLinkIcon className="w-4 h-4" />
                     </a>
                   )}
                   {project.github_url && (
@@ -60,35 +62,35 @@ const Projects = forwardRef<HTMLElement>((_, ref) => {
                       target="_blank"
                       rel="noopener noreferrer"
                       title="Source on GitHub"
-                      className="p-2 bg-gray-700 rounded hover:bg-gray-600 transition-colors"
+                      className="rounded-lg border border-term-border/70 bg-term-bg/60 p-2 text-term-dim backdrop-blur-sm transition-colors hover:text-term-accent hover:border-term-accent/50"
                     >
-                      <GithubIcon className="w-4 h-4 md:w-6 md:h-6 text-white" />
+                      <GithubIcon className="w-4 h-4" />
                     </a>
                   )}
                 </div>
-                <CardHeader className="bg-gray-800 p-3 md:p-6">
+                <CardHeader className="p-4 md:p-5">
                   {project.image_url && (
-                    <div className="overflow-hidden rounded-t-lg">
+                    <div className="overflow-hidden rounded-lg border border-term-border/50 mb-3">
                       <img
                         src={project.image_url}
                         alt={project.name}
                         loading="lazy"
                         decoding="async"
                         onError={(e) => handleImageError(e, project.fallback_image_url)}
-                        className="w-full h-32 md:h-48 object-cover transition-transform duration-500 hover:scale-110"
+                        className="w-full h-40 object-cover transition-transform duration-500 group-hover:scale-105"
                       />
                     </div>
                   )}
-                  <CardTitle className="text-lg md:text-xl text-white mt-3">{project.name}</CardTitle>
-                  <CardDescription className="text-sm md:text-base text-gray-300">
+                  <CardTitle className="text-lg font-semibold tracking-tight text-term-fg">{project.name}</CardTitle>
+                  <CardDescription className="text-sm leading-relaxed text-term-dim">
                     {project.description[0]}
                   </CardDescription>
-                  <div className="flex flex-wrap gap-1 md:gap-2 mt-2">
+                  <div className="flex flex-wrap gap-1.5 mt-3">
                     {project.technologies.map((tech, techIndex) => (
                       <Badge
                         key={techIndex}
                         variant="secondary"
-                        className="text-xs md:text-sm bg-gray-700 text-gray-200"
+                        className="rounded-md border border-term-border/60 bg-term-bg/50 px-2 py-0.5 font-mono text-xs font-normal text-term-dim"
                       >
                         {tech}
                       </Badge>

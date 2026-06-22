@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import fileSystemData from "@/content/filesystem.json";
 import { formatDate, readerPath } from "@/lib/frontmatter";
+import { useTheme } from "@/hooks/useTheme";
 
 type FsNode = {
   name: string;
@@ -30,6 +31,9 @@ function getPosts(): FsNode[] {
 
 export default function BlogIndex() {
   const posts = getPosts();
+  // Honor the active "rice" theme on this route too (direct loads of /blog
+  // would otherwise fall back to the CSS default palette).
+  useTheme();
 
   useEffect(() => {
     document.title = "Blog — Andrew Dong";
@@ -39,60 +43,68 @@ export default function BlogIndex() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-900 text-gray-100 font-mono">
-      <header className="sticky top-0 z-10 border-b border-gray-700 bg-gray-900/95 backdrop-blur">
-        <div className="mx-auto flex max-w-3xl items-center justify-between px-6 py-3 text-sm">
+    <div className="min-h-screen bg-term-bg font-sans text-term-fg antialiased transition-colors duration-500">
+      <header className="sticky top-0 z-10 border-b border-term-border bg-[color-mix(in_srgb,var(--term-bg)_85%,transparent)] backdrop-blur">
+        <div className="mx-auto flex max-w-2xl items-center justify-between px-5 py-3 font-mono text-sm sm:px-6">
           <Link
             to="/"
-            className="text-gray-400 transition-colors hover:text-green-400"
+            className="text-term-dim transition-colors hover:text-term-accent"
           >
             ← cd ~
           </Link>
           <a
             href="/rss.xml"
-            className="text-gray-500 transition-colors hover:text-green-400"
+            className="text-term-faint transition-colors hover:text-term-accent"
           >
             rss
           </a>
         </div>
       </header>
 
-      <main className="mx-auto max-w-3xl px-6 py-12">
-        <div className="mb-10 border-b border-gray-800 pb-6">
-          <h1 className="text-3xl font-bold text-white sm:text-4xl">blog</h1>
-          <p className="mt-2 text-gray-400">
-            Writing on software, languages, and creative coding.
+      <main className="mx-auto max-w-2xl px-5 py-10 sm:px-6 sm:py-16">
+        <div className="mb-8 sm:mb-10">
+          <p className="mb-2 font-mono text-sm text-term-accent">~/blog</p>
+          <h1 className="text-3xl font-bold tracking-tight text-term-fg sm:text-4xl">
+            Writing
+          </h1>
+          <p className="mt-2 text-term-dim">
+            Notes on software, languages, and creative coding.
           </p>
         </div>
 
         {posts.length === 0 ? (
-          <p className="text-gray-400">No posts yet.</p>
+          <p className="text-term-dim">No posts yet.</p>
         ) : (
-          <ul className="space-y-8">
+          <ul className="-mx-3 flex flex-col">
             {posts.map((post) => {
               const to = post.path ? readerPath(post.path) : "/blog";
               return (
                 <li key={post.path}>
-                  <Link to={to} className="group block">
+                  <Link
+                    to={to}
+                    className="group block rounded-xl border border-transparent px-3 py-4 transition-all hover:border-term-border/70 hover:bg-term-elevated/50 active:scale-[0.99]"
+                  >
                     <div className="flex items-baseline justify-between gap-4">
-                      <h2 className="text-xl font-semibold text-white group-hover:text-green-400">
+                      <h2 className="text-lg font-semibold tracking-tight text-term-fg transition-colors group-hover:text-term-accent sm:text-xl">
                         {post.title || prettify(post.name)}
                       </h2>
                       {post.date && (
-                        <span className="shrink-0 text-sm text-gray-500">
+                        <span className="shrink-0 font-mono text-xs text-term-faint sm:text-sm">
                           {formatDate(post.date)}
                         </span>
                       )}
                     </div>
                     {post.subtitle && (
-                      <p className="mt-1 text-gray-400">{post.subtitle}</p>
+                      <p className="mt-1.5 text-sm leading-relaxed text-term-dim sm:text-base">
+                        {post.subtitle}
+                      </p>
                     )}
                     {post.tags && post.tags.length > 0 && (
-                      <div className="mt-2 flex flex-wrap gap-2">
+                      <div className="mt-2.5 flex flex-wrap gap-1.5">
                         {post.tags.map((tag) => (
                           <span
                             key={tag}
-                            className="rounded border border-gray-700 bg-gray-800 px-2 py-0.5 text-xs text-green-400"
+                            className="rounded-md border border-term-border/60 bg-term-bg/50 px-2 py-0.5 font-mono text-xs text-term-dim"
                           >
                             #{tag}
                           </span>

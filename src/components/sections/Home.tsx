@@ -1,5 +1,12 @@
-import { forwardRef, useRef, useState, useCallback, useEffect } from "react";
+import { forwardRef, useRef, useState, useCallback, useEffect, lazy, Suspense } from "react";
 import Autoplay from "embla-carousel-autoplay";
+import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
+
+// The WebGL "enchanted rose" shader, lazily loaded so it never blocks first
+// paint. On mobile it sits behind the hero as a soft, masked backdrop.
+const ShaderFlower = lazy(() =>
+  import("../ui/ShaderFlower").then((m) => ({ default: m.ShaderFlower }))
+);
 import {
   Carousel,
   CarouselContent,
@@ -23,6 +30,9 @@ interface HomeProps {
 
 const Home = forwardRef<HTMLElement, HomeProps>(({ isMobile = false }, ref) => {
   const [autoplay, setAutoplay] = useState<AutoplayType | null>(null);
+  // Reveal the hero on scroll-in (once, so it survives parent re-renders).
+  const revealRef = useRef<HTMLElement>(null);
+  const rv = useIntersectionObserver(revealRef, { threshold: 0.12, once: true }) ? "is-visible" : "";
   const [typedText, setTypedText] = useState("");
   const fullName = "Andrew Li Dong";
   const typingIntervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -88,25 +98,51 @@ const Home = forwardRef<HTMLElement, HomeProps>(({ isMobile = false }, ref) => {
     <section
       id="home"
       ref={ref}
-      className="min-h-screen flex flex-col items-center justify-around relative"
+      className="min-h-screen flex flex-col items-center justify-center relative overflow-hidden"
     >
-      {/* Simple background elements */}
-      <div className="absolute top-40 left-40 w-80 h-80 rounded-full bg-blue-500/10 blur-3xl"></div>
-      <div className="absolute bottom-40 right-40 w-96 h-96 rounded-full bg-purple-500/10 blur-3xl"></div>
-      
-      <main className="text-center flex flex-col gap-8 text-white mt-36 z-10 px-4">
-        <h1 className="text-4xl md:text-8xl font-bold animate-on-scroll fade-up is-visible">
-           <span className="font-bold text-slate-200 relative">
-            {typedText}<span className="animate-pulse inline-block ml-1">|</span>
-          </span>
+      {/* Enchanted-rose shader as a soft hero backdrop. Edge-faded with a radial
+          mask and dialed back so the hero copy stays legible on top. */}
+      <Suspense fallback={null}>
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 z-0 opacity-50"
+          style={{
+            maskImage:
+              "radial-gradient(60% 50% at 50% 45%, black 30%, transparent 75%)",
+            WebkitMaskImage:
+              "radial-gradient(60% 50% at 50% 45%, black 30%, transparent 75%)",
+          }}
+        >
+          <ShaderFlower className="h-full w-full" />
+        </div>
+      </Suspense>
+
+      {/* Soft scrim over the brightest part of the rose so the hero copy stays
+          legible, while the petals still read around the edges. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 z-0"
+        style={{
+          background:
+            "radial-gradient(55% 42% at 50% 44%, color-mix(in srgb, var(--term-bg) 78%, transparent), transparent 72%)",
+        }}
+      />
+
+      <main ref={revealRef} className="w-full flex flex-col gap-6 mt-28 z-10 text-left">
+        <p className={`font-mono text-sm text-term-accent animate-on-scroll fade-up ${rv}`}>
+          ~/andrew
+        </p>
+
+        <h1 className={`text-5xl md:text-7xl font-bold tracking-tight text-term-fg animate-on-scroll fade-up ${rv}`} style={{ transitionDelay: '100ms' }}>
+          {typedText}<span className="animate-pulse inline-block ml-1 text-term-accent">|</span>
         </h1>
-        
-        <h1 className="text-3xl md:text-6xl font-bold animate-on-scroll fade-up is-visible" style={{ transitionDelay: '200ms' }}>
+
+        <h2 className={`text-2xl md:text-4xl font-semibold tracking-tight text-term-dim animate-on-scroll fade-up ${rv}`} style={{ transitionDelay: '200ms' }}>
           Staff Software Engineer
-        </h1>
-        
-        <p className="text-lg md:text-2xl text-slate-200 animate-on-scroll fade-up is-visible" style={{ transitionDelay: '400ms' }}>
-        Okay, here we go. Exterior. Cemetery. Night. The shoot-out. Yeah! The Jack O' Diamonds is waiting there with Bonny, and he's arranged to give him back and have this whole thing end because all he really wants is peace. 
+        </h2>
+
+        <p className={`text-lg md:text-xl leading-relaxed text-term-dim animate-on-scroll fade-up ${rv}`} style={{ transitionDelay: '400ms' }}>
+          Okay, here we go. Exterior. Cemetery. Night. The shoot-out. Yeah! The Jack O' Diamonds is waiting there with Bonny, and he's arranged to give him back and have this whole thing end because all he really wants is peace.
         </p>
       </main>
 

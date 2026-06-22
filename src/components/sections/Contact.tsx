@@ -1,22 +1,27 @@
 import * as resume from "../../content/resume.json";
-import { forwardRef } from "react";
+import { forwardRef, useRef } from "react";
+import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
 
 const Contact = forwardRef<HTMLElement>((_, ref) => {
+  const revealRef = useRef<HTMLParagraphElement>(null);
+  const rv = useIntersectionObserver(revealRef, { threshold: 0.1, once: true }) ? "is-visible" : "";
   return (
     <section
       id="contact"
       ref={ref}
       className="min-h-screen flex flex-col items-center justify-center relative"
     >
-      {/* Simple background elements */}
-      <div className="absolute top-40 left-40 w-96 h-96 rounded-full bg-pink-500/10 blur-3xl"></div>
-      <div className="absolute bottom-20 right-20 w-80 h-80 rounded-full bg-purple-500/10 blur-3xl"></div>
-      
-      <h2 className="text-6xl font-bold text-center text-white mb-20 z-10 animate-on-scroll fade-up is-visible">
-        Contact
+      <p ref={revealRef} className={`font-mono text-sm text-term-accent mb-2 z-10 animate-on-scroll fade-up ${rv}`}>
+        ~/contact
+      </p>
+      <h2 className={`text-3xl md:text-5xl font-bold tracking-tight text-term-fg mb-4 z-10 animate-on-scroll fade-up ${rv}`} style={{ transitionDelay: '100ms' }}>
+        Get in touch
       </h2>
-      
-      <div className="flex gap-10 z-10">
+      <p className={`text-base text-term-dim text-center mb-10 z-10 animate-on-scroll fade-up ${rv}`} style={{ transitionDelay: '200ms' }}>
+        Find me around the web.
+      </p>
+
+      <div className="flex gap-4 z-10">
         {[
           {
             href: resume.contact.linkedin,
@@ -48,10 +53,11 @@ const Contact = forwardRef<HTMLElement>((_, ref) => {
             href={item.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center text-gray-600 hover:text-blue-500 transition-all duration-300 hover-lift animate-on-scroll scale-up is-visible"
+            title={item.alt}
+            className={`grid place-items-center rounded-2xl border border-term-border/70 bg-term-elevated/40 p-5 backdrop-blur-sm transition-all duration-300 hover:border-term-accent/50 hover:bg-term-elevated/70 hover:-translate-y-1 hover:shadow-[0_8px_30px_-12px_color-mix(in_srgb,var(--term-accent)_60%,transparent)] active:scale-95 animate-on-scroll fade-up ${rv}`}
             style={{ transitionDelay: `${item.delay}ms` }}
           >
-            <img src={item.src} alt={item.alt} loading="lazy" decoding="async" className="w-20 h-20" />
+            <img src={item.src} alt={item.alt} loading="lazy" decoding="async" className="w-10 h-10 opacity-70 transition-opacity duration-300 hover:opacity-100" />
           </a>
         ))}
       </div>
