@@ -1,7 +1,32 @@
 import { useState, useEffect, useRef } from "react";
 
 const STAMP_DURATION = 2000;
-const PAW_COLORS = ["#2196F3", "#E91E63", "#4CAF50", "#FF9800", "#9C27B0", "#00BCD4", "#F44336", "#FFEB3B"];
+
+// Vibrant theme tokens used to color the paw stamps. These map to CSS custom
+// properties written by the active theme (see lib/themes.ts), so stamps recolor
+// to match whatever theme is selected.
+const PAW_PALETTE_VARS = [
+  "--term-accent",
+  "--term-green",
+  "--term-yellow",
+  "--term-red",
+  "--term-cyan",
+  "--term-magenta",
+];
+
+/** Reads the current theme's vibrant colors from CSS variables. */
+function readPawPalette(): string[] {
+  const styles = getComputedStyle(document.documentElement);
+  const colors = PAW_PALETTE_VARS.map((v) => styles.getPropertyValue(v).trim()).filter(Boolean);
+  return colors.length ? colors : ["#7aa2f7"];
+}
+
+/** Builds a paw-shaped cursor (16,16 hotspot) colored with the given fill. */
+function buildPawCursor(color: string): string {
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 64 64" fill="${color}"><ellipse cx="32" cy="42" rx="14" ry="12"/><ellipse cx="16" cy="18" rx="7" ry="9"/><ellipse cx="28" cy="12" rx="7" ry="9"/><ellipse cx="40" cy="12" rx="7" ry="9" transform="rotate(-5 40 12)"/><ellipse cx="50" cy="18" rx="7" ry="9" transform="rotate(-10 50 18)"/></svg>`;
+  const uri = `data:image/svg+xml,${encodeURIComponent(svg)}`;
+  return `url("${uri}") 16 16, pointer`;
+}
 
 interface Stamp {
   x: number;
@@ -29,12 +54,31 @@ export default function PawStampMode({ isActive }: { isActive: boolean }) {
   isActiveRef.current = isActive;
 
   useEffect(() => {
-    if (isActive) {
-      document.body.classList.add("paw-cursor-active");
-    } else {
+    const root = document.documentElement;
+    if (!isActive) {
       document.body.classList.remove("paw-cursor-active");
+      root.style.removeProperty("--paw-cursor");
+      return;
     }
-    return () => document.body.classList.remove("paw-cursor-active");
+
+    document.body.classList.add("paw-cursor-active");
+
+    // Color the cursor from the theme's accent, and keep it in sync if the
+    // theme changes (applyTheme rewrites inline styles on the document root).
+    const syncCursor = () => {
+      const accent = getComputedStyle(root).getPropertyValue("--term-accent").trim();
+      root.style.setProperty("--paw-cursor", buildPawCursor(accent || "#7aa2f7"));
+    };
+    syncCursor();
+
+    const observer = new MutationObserver(syncCursor);
+    observer.observe(root, { attributes: true, attributeFilter: ["style"] });
+
+    return () => {
+      observer.disconnect();
+      document.body.classList.remove("paw-cursor-active");
+      root.style.removeProperty("--paw-cursor");
+    };
   }, [isActive]);
 
   useEffect(() => {
@@ -45,13 +89,14 @@ export default function PawStampMode({ isActive }: { isActive: boolean }) {
       const target = e.target as HTMLElement;
       if (target.closest('a, button, input, select, textarea, [role="button"]')) return;
 
+      const palette = readPawPalette();
       const id = Date.now() + Math.random();
       const stamp: Stamp = {
         x: e.clientX,
         y: e.clientY,
         id,
         rotation: Math.random() * 40 - 20,
-        color: PAW_COLORS[Math.floor(Math.random() * PAW_COLORS.length)],
+        color: palette[Math.floor(Math.random() * palette.length)],
         fading: false,
       };
 
