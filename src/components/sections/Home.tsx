@@ -2,10 +2,11 @@ import { forwardRef, useRef, useState, useCallback, useEffect, lazy, Suspense } 
 import Autoplay from "embla-carousel-autoplay";
 import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
 
-// The WebGL "enchanted rose" shader, lazily loaded so it never blocks first
-// paint. On mobile it sits behind the hero as a soft, masked backdrop.
-const ShaderFlower = lazy(() =>
-  import("../ui/ShaderFlower").then((m) => ({ default: m.ShaderFlower }))
+// The WebGL morphing-line background, lazily loaded so it never blocks first
+// paint. It sits behind the hero as a soft, masked backdrop and slowly morphs a
+// single continuous line through a cycle of subjects.
+const LineMorphCanvas = lazy(() =>
+  import("../ui/LineMorphCanvas").then((m) => ({ default: m.LineMorphCanvas }))
 );
 import {
   Carousel,
@@ -100,35 +101,56 @@ const Home = forwardRef<HTMLElement, HomeProps>(({ isMobile = false }, ref) => {
       ref={ref}
       className="min-h-screen flex flex-col items-center justify-center relative overflow-hidden"
     >
-      {/* Enchanted-rose shader as a soft hero backdrop. Edge-faded with a radial
-          mask and dialed back so the hero copy stays legible on top. */}
-      <Suspense fallback={null}>
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 z-0 opacity-50"
-          style={{
-            maskImage:
-              "radial-gradient(60% 50% at 50% 45%, black 30%, transparent 75%)",
-            WebkitMaskImage:
-              "radial-gradient(60% 50% at 50% 45%, black 30%, transparent 75%)",
-          }}
-        >
-          <ShaderFlower className="h-full w-full" />
-        </div>
-      </Suspense>
+      {/* Desktop: the morphing-line drawing sits as a soft backdrop behind the
+          hero copy, edge-faded with a radial mask and dialed back so the text
+          stays legible, with a scrim over the brightest part. */}
+      {!isMobile && (
+        <>
+          <Suspense fallback={null}>
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-0 z-0 opacity-50"
+              style={{
+                maskImage:
+                  "radial-gradient(60% 50% at 50% 45%, black 30%, transparent 75%)",
+                WebkitMaskImage:
+                  "radial-gradient(60% 50% at 50% 45%, black 30%, transparent 75%)",
+              }}
+            >
+              <LineMorphCanvas className="h-full w-full" />
+            </div>
+          </Suspense>
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 z-0"
+            style={{
+              background:
+                "radial-gradient(55% 42% at 50% 44%, color-mix(in srgb, var(--term-bg) 78%, transparent), transparent 72%)",
+            }}
+          />
+        </>
+      )}
 
-      {/* Soft scrim over the brightest part of the rose so the hero copy stays
-          legible, while the petals still read around the edges. */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 z-0"
-        style={{
-          background:
-            "radial-gradient(55% 42% at 50% 44%, color-mix(in srgb, var(--term-bg) 78%, transparent), transparent 72%)",
-        }}
-      />
+      {/* Mobile: give the drawing its own space above the copy (not behind it),
+          so it's fully visible. Edge-faded so it blends into the page. */}
+      {isMobile && (
+        <Suspense fallback={null}>
+          <div
+            aria-hidden
+            className="pointer-events-none relative z-0 w-full h-[38vh] max-h-[360px] mt-10 mb-1"
+            style={{
+              maskImage:
+                "radial-gradient(72% 72% at 50% 50%, black 62%, transparent 100%)",
+              WebkitMaskImage:
+                "radial-gradient(72% 72% at 50% 50%, black 62%, transparent 100%)",
+            }}
+          >
+            <LineMorphCanvas className="h-full w-full" />
+          </div>
+        </Suspense>
+      )}
 
-      <main ref={revealRef} className="w-full flex flex-col gap-6 mt-28 z-10 text-left">
+      <main ref={revealRef} className={`w-full flex flex-col gap-6 z-10 text-left ${isMobile ? "mt-4" : "mt-28"}`}>
         <p className={`font-mono text-sm text-term-accent animate-on-scroll fade-up ${rv}`}>
           ~/andrew
         </p>

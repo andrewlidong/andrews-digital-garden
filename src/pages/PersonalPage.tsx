@@ -5,8 +5,8 @@ import { useState, useEffect, useRef, lazy, Suspense } from "react";
 const TextContent = lazy(() =>
   import("@/components/personal/TextContent").then((m) => ({ default: m.TextContent }))
 );
-const ShaderFlower = lazy(() =>
-  import("@/components/ui/ShaderFlower").then((m) => ({ default: m.ShaderFlower }))
+const LineMorphCanvas = lazy(() =>
+  import("@/components/ui/LineMorphCanvas").then((m) => ({ default: m.LineMorphCanvas }))
 );
 import { Terminal } from "@/components/personal/Terminal";
 import fileSystemData from "@/content/filesystem.json";
@@ -360,7 +360,7 @@ function PersonalPage() {
                   }}
                   aria-hidden="true"
                 >
-                  <ShaderFlower className="h-full w-full" tokens={getTheme(themeId).tokens} />
+                  <LineMorphCanvas className="h-full w-full" tokens={getTheme(themeId).tokens} />
                 </div>
               </Suspense>
             )}
