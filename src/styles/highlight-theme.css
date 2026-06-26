@@ -1,0 +1,99 @@
+/* Theme-aware syntax highlighting.
+ *
+ * highlight.js ships static color schemes (we used to import github-dark.css),
+ * which never followed the active "rice" palette and read as dark-on-dark even on
+ * the light Catppuccin Latte theme. Instead we map highlight.js token classes to
+ * the same --term-* variables the rest of the site uses (see src/lib/themes.ts),
+ * so fenced code blocks recolor with every theme — light and dark alike.
+ *
+ * The block background/padding come from the prose-pre utilities on the wrapper;
+ * .hljs itself stays transparent so it inherits them (see the `.prose pre code`
+ * reset in index.css).
+ */
+
+.hljs {
+  color: var(--term-fg);
+  background: transparent;
+}
+
+/* Comments & punctuation-ish noise — quiet. */
+.hljs-comment,
+.hljs-quote {
+  color: var(--term-fg-faint);
+  font-style: italic;
+}
+
+/* Keywords, language constructs, operators. */
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-subst,
+.hljs-doctag,
+.hljs-operator,
+.hljs-meta-keyword {
+  color: var(--term-magenta);
+}
+
+/* Strings, regexes, inserted/added content. */
+.hljs-string,
+.hljs-regexp,
+.hljs-addition,
+.hljs-meta-string {
+  color: var(--term-green);
+}
+
+/* Attribute names, template/markup attrs. */
+.hljs-attr,
+.hljs-attribute,
+.hljs-name,
+.hljs-selector-attr,
+.hljs-selector-pseudo {
+  color: var(--term-yellow);
+}
+
+/* Function & section titles. */
+.hljs-title,
+.hljs-title.function_,
+.hljs-section,
+.hljs-selector-id,
+.hljs-selector-class {
+  color: var(--term-accent);
+}
+
+/* Types, classes, built-ins. */
+.hljs-type,
+.hljs-title.class_,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-class .hljs-title,
+.hljs-tag {
+  color: var(--term-cyan);
+}
+
+/* Numbers, literals, constants. */
+.hljs-number,
+.hljs-literal,
+.hljs-bullet,
+.hljs-link,
+.hljs-symbol {
+  color: var(--term-yellow);
+}
+
+/* Variables, params, properties, deletions. */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-params,
+.hljs-property,
+.hljs-deletion {
+  color: var(--term-red);
+}
+
+/* Meta (preprocessor, shebang) & emphasis. */
+.hljs-meta {
+  color: var(--term-fg-dim);
+}
+.hljs-emphasis {
+  font-style: italic;
+}
+.hljs-strong {
+  font-weight: 700;
+}

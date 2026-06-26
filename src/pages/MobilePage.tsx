@@ -134,14 +134,16 @@ function MobilePage() {
   // the IntersectionObservers, reloaded the shader, and made the page jitter.
   return (
     <div className="relative min-h-screen overflow-hidden flex flex-col items-center bg-term-bg text-term-fg font-sans antialiased transition-colors duration-500">
-      {/* Signature radial glow — a single soft halo of the active accent at the
-          top of the page, the way maximeheckel.com lights its hero. */}
+      {/* Signature radial glow — a layered aurora of the active theme's hues at
+          the top of the page, the way maximeheckel.com lights its hero. */}
       <div
         aria-hidden
         className="pointer-events-none fixed inset-0 z-0 transition-[background] duration-500"
         style={{
           background:
-            "radial-gradient(70% 45% at 50% -5%, color-mix(in srgb, var(--term-accent) 22%, transparent), transparent 70%)",
+            "radial-gradient(70% 45% at 50% -5%, color-mix(in srgb, var(--term-accent) 26%, transparent), transparent 70%)," +
+            "radial-gradient(55% 38% at 22% 2%, color-mix(in srgb, var(--term-cyan) 16%, transparent), transparent 68%)," +
+            "radial-gradient(55% 38% at 80% 4%, color-mix(in srgb, var(--term-magenta) 16%, transparent), transparent 68%)",
         }}
       />
 

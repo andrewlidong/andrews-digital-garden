@@ -1,5 +1,5 @@
 @import './styles/animations.css';
-@import 'highlight.js/styles/github-dark.css';
+@import './styles/highlight-theme.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -11,19 +11,19 @@
     /* Default terminal "rice" palette (Tokyo Night). These are overwritten at
        runtime by the active theme — see src/lib/themes.ts. Declaring them here
        prevents an unstyled flash before JS hydrates. */
-    --term-bg: #24283b;
-    --term-bg-elevated: #292e42;
-    --term-bg-inset: #1f2335;
-    --term-border: #3b4261;
-    --term-fg: #c0caf5;
+    --term-bg: #1a1b26;
+    --term-bg-elevated: #24283b;
+    --term-bg-inset: #16161e;
+    --term-border: #414868;
+    --term-fg: #c8d3f5;
     --term-fg-dim: #9aa5ce;
     --term-fg-faint: #565f89;
-    --term-accent: #7aa2f7;
-    --term-green: #9ece6a;
-    --term-yellow: #e0af68;
-    --term-red: #f7768e;
-    --term-cyan: #7dcfff;
-    --term-magenta: #bb9af7;
+    --term-accent: #82aaff;
+    --term-green: #c3e88d;
+    --term-yellow: #ffc777;
+    --term-red: #ff757f;
+    --term-cyan: #86e1fc;
+    --term-magenta: #c099ff;
   }
 }
 
@@ -101,24 +101,4 @@ html {
 .no-scrollbar {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
-}
-
-.text-white h1,
-.text-white h2,
-.text-white h3,
-.text-white h4,
-.text-white h5,
-.text-white h6 {
-  color: white;
-}
-
-.text-white .text-black,
-.text-white .text-gray-900,
-.text-white .text-gray-800,
-.text-white .text-gray-700 {
-  color: white;
-}
-
-.text-white .bg-opacity-50 {
-  background-color: rgba(0, 0, 0, 0.5);
 }

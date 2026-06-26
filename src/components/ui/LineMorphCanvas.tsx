@@ -45,15 +45,16 @@ const MORPH_CYCLE = buildMorphCycle(ORDER);
 
 // Timing for each subject's gentle cycle (draw on -> hold -> fade out). Slow and
 // unhurried — the pace of watching an artist sketch, not a slideshow.
-const DRAW_SECONDS = 6.0; // the line unhurriedly draws itself on
-const HOLD_SECONDS = 6.0; // fully drawn, just breathing
-const FADE_SECONDS = 3.5; // dissolves away before the next is drawn
+const DRAW_SECONDS = 8.0; // the line unhurriedly draws itself on
+const HOLD_SECONDS = 7.0; // fully drawn, just breathing
+const FADE_SECONDS = 4.5; // dissolves away before the next is drawn
 const SUBJECT_SECONDS = DRAW_SECONDS + HOLD_SECONDS + FADE_SECONDS;
 
 // Half-width of the ribbon in normalized shape units (includes the glow falloff;
 // the bright core occupies the inner fraction set by `coreHalf` in the shader).
-// Kept thin so the subjects' features stay legible.
-const HALF_WIDTH = 0.044;
+// A touch bolder than a hairline so the stroke reads as a confident, luminous
+// ink while the subjects' features stay legible.
+const HALF_WIDTH = 0.052;
 
 const VERT_SRC = `
 attribute vec2 a_position;
@@ -68,8 +69,8 @@ void main() {
   v_along = a_along;
   // A barely-there sway and breath so the drawing feels alive on the page, like
   // paper drifting on a desk — not a static decal.
-  float ang = 0.022 * sin(u_time * 0.16);
-  float breath = 1.0 + 0.012 * sin(u_time * 0.11);
+  float ang = 0.018 * sin(u_time * 0.11);
+  float breath = 1.0 + 0.014 * sin(u_time * 0.08);
   mat2 rot = mat2(cos(ang), -sin(ang), sin(ang), cos(ang));
   vec2 p = rot * (a_position * breath);
   // u_scale compresses the longer axis so the line keeps its proportions on any
@@ -111,25 +112,34 @@ void main() {
   // Hide the portion of the stroke not yet drawn (tip-leading reveal).
   float reveal = 1.0 - smoothstep(u_progress - 0.012, u_progress + 0.012, v_along);
 
-  // Three concentric bands: white-hot filament, saturated body, soft glow halo.
+  // Four concentric bands: white-hot filament, saturated body, soft glow halo,
+  // and a broad outer aura that radiates well beyond the stroke for a luminous,
+  // majestic light (kept low-amplitude so it reads as radiance, not fog).
   float hot  = 1.0 - smoothstep(0.10, 0.17 + aa, d);
   float body = 1.0 - smoothstep(0.34 - aa, 0.40 + aa, d);
   float glow = exp(-3.4 * d * d);
-  glow *= 0.92 + 0.08 * sin(u_time * 0.5 + v_along * 7.0); // very gentle shimmer
+  float aura = exp(-1.05 * d * d);
+  // Two shimmers: a slow breath over the whole stroke, plus a finer ember
+  // sparkle that travels along it like glints catching in flowing ink.
+  float shimmer = 0.90 + 0.10 * sin(u_time * 0.45 + v_along * 7.0);
+  float ember   = 0.84 + 0.16 * sin(u_time * 0.9 + v_along * 38.0);
+  glow *= shimmer;
+  aura *= shimmer;
 
   // Colour flows along the stroke and drifts slowly for an elegant, iridescent ink.
   vec3 grad = gradient(v_along * 1.25 - u_time * 0.018);
 
-  // A bright spark rides the drawing tip — only while the line is being drawn on,
-  // so it reads as a pen, not a constant distraction.
-  float pen = exp(-pow((v_along - u_progress) * 10.0, 2.0));
+  // A bright comet head rides the drawing tip — only while the line is being
+  // drawn on, so it reads as a pen, not a constant distraction.
+  float pen = exp(-pow((v_along - u_progress) * 9.0, 2.0));
   pen *= 1.0 - smoothstep(0.92, 1.0, u_progress);
 
-  vec3 col = grad * glow;                          // coloured halo
-  col = mix(col, mix(grad, vec3(1.0), 0.4), body); // bright body
-  col = mix(col, vec3(1.0), hot * 0.9);            // white-hot filament
-  col += grad * pen * 0.7;                          // drawing-tip spark
-  float a = clamp(max(body, glow * 0.55) + pen * 0.25, 0.0, 1.0);
+  vec3 col = grad * aura * 0.45;                     // broad outer aura
+  col += grad * glow * ember;                        // coloured halo + ember sparkle
+  col = mix(col, mix(grad, vec3(1.0), 0.45), body);  // bright body
+  col = mix(col, vec3(1.0), hot * 0.95);             // white-hot filament
+  col += mix(grad, vec3(1.0), 0.5) * pen * 0.9;      // drawing-tip comet
+  float a = clamp(max(body, max(glow * 0.6, aura * 0.32)) + pen * 0.3, 0.0, 1.0);
   a *= reveal * u_fade;
 
   // Filmic tone-map + gamma for richer colour, then straight alpha (the context
@@ -312,7 +322,7 @@ export function LineMorphCanvas({ className, tokens }: LineMorphCanvasProps) {
     // detail stays legible at hand size.
     const small = window.matchMedia("(max-width: 767px)").matches;
     const renderScale = small ? 0.9 : 0.6;
-    const halfWidth = small ? 0.06 : HALF_WIDTH;
+    const halfWidth = small ? 0.068 : HALF_WIDTH;
 
     const resize = () => {
       const w = canvas.clientWidth;
