@@ -111,15 +111,15 @@ export const THEMES: Theme[] = [
     name: "Rosé Pine Dawn",
     light: true,
     tokens: {
-      // The official light "Dawn" variant — airy rosé surfaces with pine, foam,
-      // rose and iris accents for a soft sunrise feel.
-      bg: "#faf4ed",
-      bgElevated: "#fffaf3",
-      bgInset: "#f2e9e1",
-      border: "#cecacd",
+      // A blush-pink take on the light "Dawn" variant — soft rosé-pink surfaces
+      // with the muted-purple Dawn text and pine/rose/iris accents.
+      bg: "#fdeaf1",
+      bgElevated: "#fff3f8",
+      bgInset: "#f8dce8",
+      border: "#ecc5d6",
       fg: "#575279",
-      fgDim: "#797593",
-      fgFaint: "#9893a5",
+      fgDim: "#7c5e72",
+      fgFaint: "#a98a9c",
       accent: "#286983",
       green: "#56949f",
       yellow: "#ea9d34",
