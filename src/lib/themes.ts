@@ -107,12 +107,12 @@ export const THEMES: Theme[] = [
     },
   },
   {
-    id: "rose-pine-dawn",
-    name: "Rosé Pine Dawn",
+    id: "strawberry-milk",
+    name: "Strawberry Milk",
     light: true,
     tokens: {
-      // A blush-pink take on the light "Dawn" variant — soft rosé-pink surfaces
-      // with the muted-purple Dawn text and pine/rose/iris accents.
+      // A cute blush-pink light theme — soft strawberry-milk surfaces with
+      // muted-rosé text and pine/rose/iris accents.
       bg: "#fdeaf1",
       bgElevated: "#fff3f8",
       bgInset: "#f8dce8",
