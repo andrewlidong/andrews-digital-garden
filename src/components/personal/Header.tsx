@@ -122,7 +122,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenTerminal, pawModeActive, o
             <div className="relative">
               <button
                 onClick={() => navigate("/blog")}
-                className="px-2 py-1 rounded text-gray-300 hover:text-white hover:bg-gray-700"
+                className="px-2 py-1 rounded text-term-dim hover:text-term-fg hover:bg-term-elevated"
               >
                 blog
               </button>

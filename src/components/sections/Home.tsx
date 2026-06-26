@@ -106,15 +106,27 @@ const Home = forwardRef<HTMLElement, HomeProps>(({ isMobile = false }, ref) => {
           stays legible, with a scrim over the brightest part. */}
       {!isMobile && (
         <>
+          {/* A layered aurora of the theme's accent hues radiates behind the
+              drawing, giving the hero a grand, luminous backdrop. */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 z-0"
+            style={{
+              background:
+                "radial-gradient(40% 36% at 38% 42%, color-mix(in srgb, var(--term-accent) 24%, transparent), transparent 70%)," +
+                "radial-gradient(38% 34% at 64% 50%, color-mix(in srgb, var(--term-magenta) 20%, transparent), transparent 70%)," +
+                "radial-gradient(46% 40% at 50% 46%, color-mix(in srgb, var(--term-cyan) 14%, transparent), transparent 72%)",
+            }}
+          />
           <Suspense fallback={null}>
             <div
               aria-hidden
-              className="pointer-events-none absolute inset-0 z-0 opacity-50"
+              className="pointer-events-none absolute inset-0 z-0 opacity-[0.68]"
               style={{
                 maskImage:
-                  "radial-gradient(60% 50% at 50% 45%, black 30%, transparent 75%)",
+                  "radial-gradient(70% 58% at 50% 45%, black 32%, transparent 82%)",
                 WebkitMaskImage:
-                  "radial-gradient(60% 50% at 50% 45%, black 30%, transparent 75%)",
+                  "radial-gradient(70% 58% at 50% 45%, black 32%, transparent 82%)",
               }}
             >
               <LineMorphCanvas className="h-full w-full" />
@@ -125,7 +137,7 @@ const Home = forwardRef<HTMLElement, HomeProps>(({ isMobile = false }, ref) => {
             className="pointer-events-none absolute inset-0 z-0"
             style={{
               background:
-                "radial-gradient(55% 42% at 50% 44%, color-mix(in srgb, var(--term-bg) 78%, transparent), transparent 72%)",
+                "radial-gradient(55% 42% at 50% 44%, color-mix(in srgb, var(--term-bg) 74%, transparent), transparent 72%)",
             }}
           />
         </>
@@ -137,15 +149,28 @@ const Home = forwardRef<HTMLElement, HomeProps>(({ isMobile = false }, ref) => {
         <Suspense fallback={null}>
           <div
             aria-hidden
-            className="pointer-events-none relative z-0 w-full h-[38vh] max-h-[360px] mt-10 mb-1"
-            style={{
-              maskImage:
-                "radial-gradient(72% 72% at 50% 50%, black 62%, transparent 100%)",
-              WebkitMaskImage:
-                "radial-gradient(72% 72% at 50% 50%, black 62%, transparent 100%)",
-            }}
+            className="pointer-events-none relative z-0 w-full h-[42vh] max-h-[400px] mt-10 mb-1"
           >
-            <LineMorphCanvas className="h-full w-full" />
+            {/* Aurora glow behind the drawing for a grander presence. */}
+            <div
+              className="absolute inset-0"
+              style={{
+                background:
+                  "radial-gradient(58% 52% at 50% 48%, color-mix(in srgb, var(--term-accent) 22%, transparent), transparent 72%)," +
+                  "radial-gradient(52% 46% at 62% 54%, color-mix(in srgb, var(--term-magenta) 16%, transparent), transparent 72%)",
+              }}
+            />
+            <div
+              className="absolute inset-0"
+              style={{
+                maskImage:
+                  "radial-gradient(72% 72% at 50% 50%, black 62%, transparent 100%)",
+                WebkitMaskImage:
+                  "radial-gradient(72% 72% at 50% 50%, black 62%, transparent 100%)",
+              }}
+            >
+              <LineMorphCanvas className="h-full w-full" />
+            </div>
           </div>
         </Suspense>
       )}

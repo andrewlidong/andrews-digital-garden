@@ -21,9 +21,11 @@ function readPawPalette(): string[] {
   return colors.length ? colors : ["#7aa2f7"];
 }
 
-/** Builds a paw-shaped cursor (16,16 hotspot) colored with the given fill. */
+/** Builds a paw-shaped cursor (16,16 hotspot) colored with the given fill.
+ *  Includes little claw marks above the toes and a soft highlight on the main
+ *  pad so the cursor reads as a crafted paw, not a flat blob. */
 function buildPawCursor(color: string): string {
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 64 64" fill="${color}"><ellipse cx="32" cy="42" rx="14" ry="12"/><ellipse cx="16" cy="18" rx="7" ry="9"/><ellipse cx="28" cy="12" rx="7" ry="9"/><ellipse cx="40" cy="12" rx="7" ry="9" transform="rotate(-5 40 12)"/><ellipse cx="50" cy="18" rx="7" ry="9" transform="rotate(-10 50 18)"/></svg>`;
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 64 64"><g fill="${color}"><ellipse cx="14" cy="6" rx="1.6" ry="3.6" transform="rotate(-18 14 6)"/><ellipse cx="27" cy="2.5" rx="1.6" ry="3.6" transform="rotate(-4 27 2.5)"/><ellipse cx="41" cy="2.5" rx="1.6" ry="3.6" transform="rotate(4 41 2.5)"/><ellipse cx="53" cy="7" rx="1.6" ry="3.6" transform="rotate(16 53 7)"/><ellipse cx="32" cy="42" rx="15" ry="13"/><ellipse cx="15" cy="18" rx="7" ry="9"/><ellipse cx="28" cy="12" rx="7" ry="9"/><ellipse cx="40" cy="12" rx="7" ry="9" transform="rotate(-5 40 12)"/><ellipse cx="50" cy="18" rx="7" ry="9" transform="rotate(-10 50 18)"/></g><ellipse cx="27" cy="37" rx="5" ry="4" fill="#fff" opacity="0.3"/></svg>`;
   const uri = `data:image/svg+xml,${encodeURIComponent(svg)}`;
   return `url("${uri}") 16 16, pointer`;
 }
@@ -38,12 +40,24 @@ interface Stamp {
 }
 
 const PawSvg = ({ size = 24, color = "#2196F3" }: { size?: number; color?: string }) => (
-  <svg width={size} height={size} viewBox="0 0 64 64" fill={color} xmlns="http://www.w3.org/2000/svg">
-    <ellipse cx="32" cy="42" rx="14" ry="12" />
-    <ellipse cx="16" cy="18" rx="7" ry="9" />
-    <ellipse cx="28" cy="12" rx="7" ry="9" />
-    <ellipse cx="40" cy="12" rx="7" ry="9" transform="rotate(-5 40 12)" />
-    <ellipse cx="50" cy="18" rx="7" ry="9" transform="rotate(-10 50 18)" />
+  <svg width={size} height={size} viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+    {/* claw marks */}
+    <g fill={color} opacity="0.85">
+      <ellipse cx="13" cy="6" rx="1.7" ry="3.8" transform="rotate(-18 13 6)" />
+      <ellipse cx="27" cy="2" rx="1.7" ry="3.8" transform="rotate(-4 27 2)" />
+      <ellipse cx="41" cy="2" rx="1.7" ry="3.8" transform="rotate(4 41 2)" />
+      <ellipse cx="54" cy="7" rx="1.7" ry="3.8" transform="rotate(16 54 7)" />
+    </g>
+    {/* pads */}
+    <g fill={color}>
+      <ellipse cx="32" cy="42" rx="15" ry="13" />
+      <ellipse cx="15" cy="18" rx="7" ry="9" />
+      <ellipse cx="28" cy="12" rx="7" ry="9" />
+      <ellipse cx="40" cy="12" rx="7" ry="9" transform="rotate(-5 40 12)" />
+      <ellipse cx="50" cy="18" rx="7" ry="9" transform="rotate(-10 50 18)" />
+    </g>
+    {/* soft highlight on the main pad */}
+    <ellipse cx="27" cy="37" rx="5.5" ry="4.5" fill="#fff" opacity="0.32" />
   </svg>
 );
 
@@ -124,12 +138,13 @@ export default function PawStampMode({ isActive }: { isActive: boolean }) {
           key={stamp.id}
           className={`absolute ${stamp.fading ? "paw-stamp-fade" : "paw-stamp"}`}
           style={{
-            left: stamp.x - 25,
-            top: stamp.y - 25,
+            left: stamp.x - 30,
+            top: stamp.y - 30,
             transform: `rotate(${stamp.rotation}deg)`,
+            filter: `drop-shadow(0 0 10px ${stamp.color}) drop-shadow(0 0 3px ${stamp.color})`,
           }}
         >
-          <PawSvg size={50} color={stamp.color} />
+          <PawSvg size={60} color={stamp.color} />
         </div>
       ))}
     </div>

@@ -18,19 +18,19 @@ export const FileContent: React.FC<FileContentProps> = ({ content, fileType }) =
         return (
           <div>
             {(meta.title || meta.date) && (
-              <div className="mb-5 border-l-2 border-green-700 pl-4">
+              <div className="mb-5 border-l-2 border-term-green pl-4">
                 {meta.title && (
-                  <h1 className="text-2xl font-bold text-white">{meta.title}</h1>
+                  <h1 className="text-2xl font-bold text-term-fg">{meta.title}</h1>
                 )}
                 {meta.subtitle && (
-                  <p className="mt-1 text-sm text-gray-400">{meta.subtitle}</p>
+                  <p className="mt-1 text-sm text-term-dim">{meta.subtitle}</p>
                 )}
                 {meta.date && (
-                  <p className="mt-1 text-xs text-gray-500">{formatDate(meta.date)}</p>
+                  <p className="mt-1 text-xs text-term-faint">{formatDate(meta.date)}</p>
                 )}
               </div>
             )}
-            <div className="prose prose-invert max-w-none prose-headings:text-white prose-a:text-green-400 prose-a:no-underline hover:prose-a:underline prose-code:rounded prose-code:bg-gray-800 prose-code:px-1.5 prose-code:py-0.5 prose-code:text-green-300 prose-code:before:content-none prose-code:after:content-none prose-pre:border prose-pre:border-gray-800 prose-pre:bg-gray-950 prose-blockquote:border-l-green-700 prose-blockquote:text-gray-300 prose-img:rounded-lg">
+            <div className="prose prose-invert max-w-none prose-headings:text-term-fg prose-p:text-term-fg prose-li:text-term-fg prose-strong:text-term-fg prose-a:text-term-accent prose-a:no-underline hover:prose-a:underline prose-code:rounded prose-code:bg-term-elevated prose-code:px-1.5 prose-code:py-0.5 prose-code:text-term-green prose-code:before:content-none prose-code:after:content-none prose-pre:border prose-pre:border-term-border prose-pre:bg-term-inset prose-blockquote:border-l-term-accent prose-blockquote:text-term-dim prose-img:rounded-lg">
               <ReactMarkdown
                 remarkPlugins={[remarkGfm]}
                 rehypePlugins={[[rehypeHighlight, { detect: true, ignoreMissing: true }]]}
@@ -44,13 +44,13 @@ export const FileContent: React.FC<FileContentProps> = ({ content, fileType }) =
       case '.txt':
       case '.log':
         return (
-          <pre className="whitespace-pre-wrap font-mono text-gray-100 bg-gray-900 p-4 rounded-lg">
+          <pre className="whitespace-pre-wrap font-mono text-term-fg bg-term-inset p-4 rounded-lg">
             {content}
           </pre>
         );
       case '.json':
         return (
-          <pre className="whitespace-pre-wrap font-mono text-gray-100 bg-gray-900 p-4 rounded-lg">
+          <pre className="whitespace-pre-wrap font-mono text-term-fg bg-term-inset p-4 rounded-lg">
             {JSON.stringify(JSON.parse(content), null, 2)}
           </pre>
         );
@@ -65,13 +65,13 @@ export const FileContent: React.FC<FileContentProps> = ({ content, fileType }) =
       case '.h':
       case '.hpp':
         return (
-          <pre className="whitespace-pre-wrap font-mono text-gray-100 bg-gray-900 p-4 rounded-lg">
+          <pre className="whitespace-pre-wrap font-mono text-term-fg bg-term-inset p-4 rounded-lg">
             {content}
           </pre>
         );
       default:
         return (
-          <div className="text-gray-300 italic">
+          <div className="text-term-dim italic">
             Preview not available for {fileType} files
           </div>
         );
@@ -79,7 +79,7 @@ export const FileContent: React.FC<FileContentProps> = ({ content, fileType }) =
   };
 
   return (
-    <div className="bg-gray-900 rounded-lg p-6 border border-gray-800 shadow-lg">
+    <div className="bg-term-bg rounded-lg p-6 border border-term-border shadow-lg">
       {renderContent()}
     </div>
   );

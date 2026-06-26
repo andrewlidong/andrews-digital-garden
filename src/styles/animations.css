@@ -182,16 +182,18 @@
 }
 
 @keyframes paw-stamp-appear {
-  0% { transform: scale(0) rotate(-20deg); opacity: 0; }
-  60% { transform: scale(1.2) rotate(5deg); opacity: 1; }
-  100% { transform: scale(1) rotate(0deg); opacity: 0.85; }
+  0%   { transform: scale(0) rotate(-24deg); opacity: 0; }
+  55%  { transform: scale(1.18) rotate(6deg); opacity: 1; }
+  78%  { transform: scale(0.94) rotate(-2deg); opacity: 0.96; }
+  100% { transform: scale(1) rotate(0deg); opacity: 0.92; }
 }
 
-.paw-stamp { animation: paw-stamp-appear 0.3s ease-out forwards; }
+/* A slower, gracefully-settling bloom with a soft easing. */
+.paw-stamp { animation: paw-stamp-appear 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
 
 @keyframes paw-stamp-fadeout {
-  0% { opacity: 0.85; }
-  100% { opacity: 0; }
+  0%   { opacity: 0.92; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.14); }
 }
 
-.paw-stamp-fade { animation: paw-stamp-fadeout 0.6s ease-in forwards; } 
+.paw-stamp-fade { animation: paw-stamp-fadeout 0.7s ease-in forwards; }

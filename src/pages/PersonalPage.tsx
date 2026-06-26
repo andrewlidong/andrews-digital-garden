@@ -452,7 +452,7 @@ function PersonalPage() {
                         </div>
                       </div>
                     ) : win.windowType === "text" && typeof win.content === "string" ? (
-                      <Suspense fallback={<div className="p-4 text-gray-400 text-sm">Loading…</div>}>
+                      <Suspense fallback={<div className="p-4 text-term-dim text-sm">Loading…</div>}>
                         <TextContent content={win.content} filename={win.title} />
                       </Suspense>
                     ) : win.windowType === "terminal" ? (
