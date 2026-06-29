@@ -141,7 +141,7 @@ export default function PawStampMode({ isActive }: { isActive: boolean }) {
             left: stamp.x - 30,
             top: stamp.y - 30,
             transform: `rotate(${stamp.rotation}deg)`,
-            filter: `drop-shadow(0 0 10px ${stamp.color}) drop-shadow(0 0 3px ${stamp.color})`,
+            filter: "drop-shadow(0 1px 1px rgba(0, 0, 0, 0.25))",
           }}
         >
           <PawSvg size={60} color={stamp.color} />
