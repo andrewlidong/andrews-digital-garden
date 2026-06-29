@@ -25,7 +25,19 @@ export type SubjectId =
   | "dragon"
   | "horse"
   | "tiger"
-  | "monkey";
+  | "monkey"
+  // more flowers
+  | "tulip"
+  | "daisy"
+  | "sunflower"
+  | "blossom"
+  | "lotus"
+  // Snoopy's beagle siblings
+  | "spike"
+  | "belle"
+  | "marbles"
+  | "olaf"
+  | "andy";
 
 export type ShapeDef = {
   name: string;
@@ -107,6 +119,27 @@ function spiralPts(
     const a = a0 + t * turns * 2 * Math.PI;
     const r = r0 + (r1 - r0) * t;
     pts.push([cx + Math.cos(a) * r, cy + Math.sin(a) * r]);
+  }
+  return pts;
+}
+
+// A scalloped ring of rounded petals — the head of a daisy, sunflower or blossom.
+// Alternates from the valley between petals out to each petal tip and back, tracing
+// one continuous flower-head loop the pen can draw without lifting.
+function petalRing(
+  cx: number,
+  cy: number,
+  rValley: number,
+  rTip: number,
+  count: number,
+  a0 = 0
+): Vec2[] {
+  const pts: Vec2[] = [];
+  for (let i = 0; i < count; i++) {
+    const aValley = a0 + (i / count) * 2 * Math.PI;
+    const aTip = a0 + ((i + 0.5) / count) * 2 * Math.PI;
+    pts.push([cx + Math.cos(aValley) * rValley, cy + Math.sin(aValley) * rValley]);
+    pts.push([cx + Math.cos(aTip) * rTip, cy + Math.sin(aTip) * rTip]);
   }
   return pts;
 }
@@ -632,6 +665,404 @@ const MONKEY: Vec2[] = [
   [0.04, 0.34],
 ];
 
+// --- More flowers --------------------------------------------------------
+
+// Tulip: a cupped three-petal bloom on a straight stem with one blade leaf —
+// the outer cup, the stem down to its tip, the leaf, then interior petal seams.
+const TULIP: Vec2[] = [
+  [0.0, 0.6], // centre petal tip
+  [0.1, 0.5],
+  [0.18, 0.56], // right petal tip
+  [0.24, 0.42],
+  [0.22, 0.18], // cup, right side
+  [0.12, 0.08], // cup base, right
+  // stem down to its tip
+  [0.06, -0.1],
+  [0.05, -0.3],
+  [0.04, -0.52], // stem tip
+  // blade leaf off the left of the stem
+  [-0.04, -0.34],
+  [-0.22, -0.28],
+  [-0.3, -0.12],
+  [-0.16, -0.16],
+  [-0.05, -0.24],
+  // back to the cup, left side
+  [-0.05, -0.1],
+  [-0.12, 0.08], // cup base, left
+  [-0.22, 0.18],
+  [-0.24, 0.42],
+  [-0.18, 0.56], // left petal tip
+  [-0.1, 0.5],
+  // --- interior: petal seams folding into the cup ---
+  [-0.06, 0.44],
+  [0.0, 0.1], // centre seam down into the cup
+  [0.0, 0.5],
+  [0.06, 0.44],
+  [0.12, 0.14], // right seam
+  [0.14, 0.46],
+  [-0.12, 0.14], // left seam
+  [-0.14, 0.46],
+  // leaf midrib, then climb back to the crown
+  [-0.2, -0.2],
+  [-0.28, -0.16],
+  [-0.04, 0.06],
+  [0.0, 0.5],
+];
+
+// Daisy: a flat flower head of rounded petals around a button centre, on a
+// slim stem with a single leaf.
+const DAISY: Vec2[] = [
+  [0.0, -0.6], // stem base
+  [0.0, -0.34], // up to the bloom
+  ...petalRing(0.0, 0.16, 0.16, 0.46, 12, -Math.PI / 2),
+  // button centre
+  ...loop(0.0, 0.16, 0.12, 10),
+  ...loop(0.0, 0.16, 0.06, 6),
+  // a blade leaf off the stem
+  [0.03, -0.26],
+  [0.18, -0.32],
+  [0.28, -0.2],
+  [0.14, -0.18],
+  [0.02, -0.28],
+  [0.0, -0.5], // back down the stem
+];
+
+// Sunflower: a bigger bloom — a double ring of petals around a spiralling seed
+// head, on a thick stem with a broad leaf.
+const SUNFLOWER: Vec2[] = [
+  [0.0, -0.62], // stem base
+  [0.02, -0.34],
+  [0.0, -0.16], // up to the bloom
+  ...petalRing(0.0, 0.14, 0.22, 0.54, 14, -Math.PI / 2), // outer petals
+  ...petalRing(0.0, 0.14, 0.18, 0.36, 14, -Math.PI / 2 + Math.PI / 14), // inner ring, offset
+  // seed head spiral
+  ...spiralPts(0.0, 0.14, 0.21, 0.02, 3.0, 40, 0),
+  // a broad leaf off the stem
+  [0.04, -0.28],
+  [0.24, -0.32],
+  [0.34, -0.16],
+  [0.18, -0.14],
+  [0.03, -0.26],
+  [0.0, -0.5], // back down the stem
+];
+
+// Cherry blossom: five rounded petals around a stamen cluster, perched on a thin
+// twig with a small bud further along.
+const BLOSSOM: Vec2[] = [
+  [0.5, -0.5], // twig end
+  [0.34, -0.34],
+  [0.2, -0.18], // twig up to the flower
+  ...petalRing(0.0, 0.08, 0.26, 0.44, 5, Math.PI / 2), // broad rounded petals
+  // centre
+  ...loop(0.0, 0.06, 0.07, 7),
+  // stamen dots radiating from the centre
+  [0.0, 0.06],
+  ...loop(0.0, 0.2, 0.022, 5),
+  [0.05, 0.06],
+  ...loop(0.14, 0.1, 0.022, 5),
+  [-0.05, 0.06],
+  ...loop(-0.14, 0.1, 0.022, 5),
+  [0.06, 0.0],
+  ...loop(0.08, -0.08, 0.022, 5),
+  [-0.06, 0.0],
+  ...loop(-0.08, -0.08, 0.022, 5),
+  // back down to the twig, with a little bud
+  [0.16, -0.14],
+  ...loop(0.27, -0.22, 0.05, 7),
+  [0.34, -0.3],
+  [0.46, -0.46],
+];
+
+// Lotus: a tiered water-lily — an outer fan of pointed petals, an inner row, and
+// a seed pod at the heart, all rising from the waterline.
+const LOTUS: Vec2[] = [
+  // waterline base
+  [-0.5, -0.3],
+  [-0.3, -0.34],
+  [0.0, -0.36],
+  [0.3, -0.34],
+  [0.5, -0.3],
+  // outer-right petal
+  [0.46, -0.08],
+  [0.5, 0.2], // tip
+  [0.3, -0.04],
+  // mid-right petal
+  [0.32, 0.12],
+  [0.34, 0.42], // tip
+  [0.16, 0.06],
+  // centre petal
+  [0.12, 0.3],
+  [0.0, 0.58], // tip
+  [-0.12, 0.3],
+  // mid-left petal
+  [-0.16, 0.06],
+  [-0.34, 0.42], // tip
+  [-0.32, 0.12],
+  // outer-left petal
+  [-0.3, -0.04],
+  [-0.5, 0.2], // tip
+  [-0.46, -0.08],
+  // --- interior: inner row of petals between the outer ones ---
+  [-0.2, -0.18],
+  [0.0, -0.2],
+  [0.2, -0.18],
+  [0.22, 0.2], // inner-right tip
+  [0.08, -0.08],
+  [0.0, 0.36], // inner-centre tip
+  [-0.08, -0.08],
+  [-0.22, 0.2], // inner-left tip
+  // seed pod at the heart
+  ...loop(0.0, -0.04, 0.06, 8),
+  [-0.3, -0.22], // back toward the base
+];
+
+// --- Snoopy's beagle siblings --------------------------------------------
+// All share the Snoopy head-in-profile read (long snout, round cranium, floppy
+// ear), each tweaked with a signature so they're distinguishable as the cast.
+
+// Spike: the gaunt desert beagle — a narrow snout, a drooping mustache, and a
+// battered fedora pulled over the head.
+const SPIKE: Vec2[] = [
+  [-0.64, 0.02], // nose tip
+  [-0.62, 0.12], // nose top
+  [-0.46, 0.14], // long thin snout
+  [-0.32, 0.15],
+  [-0.27, 0.28], // forehead
+  // fedora: brim and crown over the head
+  [-0.34, 0.34], // brim, front
+  [-0.2, 0.42], // crown, front
+  [-0.12, 0.54], // crown top
+  [0.12, 0.52], // crown, back
+  [0.18, 0.4],
+  [0.3, 0.34], // brim, back tip
+  [0.2, 0.3], // under the brim
+  [0.28, 0.18], // back of head
+  [0.34, 0.08], // ear root
+  [0.48, 0.0],
+  [0.5, -0.22],
+  [0.38, -0.37], // ear tip
+  [0.24, -0.28],
+  [0.24, -0.06], // neck
+  [0.06, -0.14],
+  [-0.12, -0.18],
+  [-0.3, -0.17], // mouth corner
+  // --- interior ---
+  [-0.42, -0.13],
+  [-0.5, -0.05],
+  ...loop(-0.6, 0.05, 0.045, 8), // nose
+  // droopy mustache sweeping off the muzzle, both sides
+  [-0.54, 0.0],
+  ...arc(-0.46, 0.04, 0.12, Math.PI * 0.95, Math.PI * 1.45, 6),
+  [-0.4, -0.06],
+  ...arc(-0.42, 0.04, 0.13, Math.PI * 1.5, Math.PI * 1.95, 6),
+  [-0.5, 0.1], // up the snout
+  [-0.34, 0.16],
+  ...loop(-0.27, 0.2, 0.045, 8), // eye
+  ...loop(-0.255, 0.205, 0.018, 5), // pupil
+  // hat band across the crown
+  [-0.3, 0.32],
+  [0.16, 0.34],
+  [0.2, 0.3],
+  // ear texture
+  [0.3, -0.1],
+  [0.42, -0.28],
+  [0.3, -0.2],
+  // close near the nose
+  [-0.2, 0.04],
+  [-0.5, 0.04],
+];
+
+// Belle: Snoopy's sister — the same profile softened with long eyelashes and a
+// bow perched by the ear.
+const BELLE: Vec2[] = [
+  [-0.64, 0.0], // nose tip
+  [-0.62, 0.12],
+  [-0.46, 0.16],
+  [-0.32, 0.18],
+  [-0.27, 0.34],
+  [-0.12, 0.44], // cranium
+  [0.12, 0.43],
+  [0.27, 0.32],
+  [0.34, 0.16],
+  [0.33, 0.06], // ear root
+  [0.48, 0.0],
+  [0.5, -0.22],
+  [0.38, -0.37], // ear tip
+  [0.24, -0.28],
+  [0.24, -0.06], // neck
+  [0.06, -0.14],
+  [-0.12, -0.18],
+  [-0.3, -0.17], // mouth corner
+  // --- interior ---
+  [-0.42, -0.13],
+  [-0.5, -0.05],
+  ...loop(-0.6, 0.04, 0.05, 8), // nose
+  [-0.52, 0.12],
+  [-0.36, 0.2],
+  ...loop(-0.27, 0.25, 0.05, 8), // eye
+  ...loop(-0.255, 0.255, 0.02, 5), // pupil
+  // long eyelashes off the eye
+  [-0.27, 0.3],
+  [-0.28, 0.39], // lash
+  [-0.25, 0.3],
+  [-0.32, 0.36], // lash
+  [-0.22, 0.29],
+  [-0.37, 0.31], // outer lash
+  [-0.24, 0.27],
+  // a bow up by the ear root
+  [0.3, 0.12],
+  [0.4, 0.22], // left loop
+  [0.46, 0.12],
+  [0.36, 0.06], // knot
+  [0.48, -0.02], // right loop
+  [0.4, 0.04],
+  [0.34, 0.1],
+  // collar with a tag
+  [0.12, 0.16],
+  [0.04, -0.14],
+  [0.16, -0.1],
+  ...loop(0.14, -0.2, 0.04, 7),
+  [0.06, -0.12],
+  // close near the nose
+  [-0.3, 0.0],
+  [-0.5, 0.02],
+];
+
+// Marbles: the brainy sibling, marked by a dappled, spotted coat scattered across
+// the head and ear.
+const MARBLES: Vec2[] = [
+  [-0.64, 0.0], // nose tip
+  [-0.62, 0.12],
+  [-0.46, 0.16],
+  [-0.32, 0.18],
+  [-0.27, 0.34],
+  [-0.12, 0.44], // cranium
+  [0.12, 0.43],
+  [0.27, 0.32],
+  [0.34, 0.16],
+  [0.33, 0.06], // ear root
+  [0.48, 0.0],
+  [0.5, -0.22],
+  [0.38, -0.37], // ear tip
+  [0.24, -0.28],
+  [0.24, -0.06], // neck
+  [0.06, -0.14],
+  [-0.12, -0.18],
+  [-0.3, -0.17], // mouth corner
+  // --- interior ---
+  [-0.42, -0.13],
+  [-0.5, -0.05],
+  ...loop(-0.6, 0.04, 0.05, 8), // nose
+  [-0.52, 0.12],
+  [-0.36, 0.2],
+  ...loop(-0.27, 0.25, 0.05, 8), // eye
+  ...loop(-0.255, 0.255, 0.02, 5), // pupil
+  // scattered coat spots
+  [-0.12, 0.34],
+  ...loop(-0.05, 0.3, 0.06, 8), // forehead spot
+  [0.1, 0.3],
+  ...loop(0.14, 0.24, 0.07, 8), // crown spot
+  [0.3, 0.0],
+  ...loop(0.4, -0.18, 0.06, 8), // ear spot
+  [0.0, -0.08],
+  ...loop(-0.06, -0.1, 0.05, 7), // cheek spot
+  // collar
+  [0.04, -0.14],
+  [0.16, -0.1],
+  [0.22, -0.12],
+  // close near the nose
+  [-0.2, 0.04],
+  [-0.5, 0.02],
+];
+
+// Olaf: the round, well-fed brother — a shorter snout, a tall domed head, and
+// heavy jowls.
+const OLAF: Vec2[] = [
+  [-0.56, 0.04], // nose tip (short snout)
+  [-0.55, 0.14],
+  [-0.42, 0.2],
+  [-0.3, 0.24],
+  [-0.24, 0.38], // tall round forehead
+  [-0.06, 0.48], // domed cranium
+  [0.2, 0.46],
+  [0.34, 0.34],
+  [0.4, 0.16],
+  [0.36, 0.04], // ear root
+  [0.52, -0.02],
+  [0.54, -0.24],
+  [0.42, -0.4], // ear tip
+  [0.28, -0.3],
+  [0.3, -0.04], // full neck
+  [0.16, -0.18],
+  [-0.04, -0.26], // heavy round jowl
+  [-0.24, -0.22],
+  [-0.4, -0.12], // jowl, front
+  [-0.5, -0.04], // chin up to the nose
+  // --- interior ---
+  [-0.46, 0.0],
+  ...loop(-0.52, 0.06, 0.05, 8), // nose
+  [-0.44, 0.14],
+  [-0.32, 0.2],
+  ...loop(-0.24, 0.24, 0.05, 8), // eye
+  ...loop(-0.225, 0.245, 0.02, 5), // pupil
+  // jowl crease
+  [-0.3, -0.1],
+  ...arc(-0.18, -0.06, 0.16, Math.PI * 1.05, Math.PI * 1.6, 6),
+  // extra belly/chin curve
+  [0.0, -0.2],
+  [0.12, -0.22],
+  // collar with a tag
+  [0.06, -0.16],
+  [0.2, -0.12],
+  ...loop(0.14, -0.22, 0.04, 7),
+  [0.06, -0.14],
+  // close near the nose
+  [-0.34, 0.04],
+  [-0.5, 0.04],
+];
+
+// Andy: the woolly sibling — the Snoopy profile rendered with a fluffy, scalloped
+// outline of little fur bumps.
+const ANDY: Vec2[] = [
+  [-0.62, 0.02], // nose tip
+  [-0.6, 0.12],
+  [-0.44, 0.16], // snout
+  [-0.34, 0.2],
+  // woolly forehead and cranium: a run of little outward bumps
+  ...arc(-0.28, 0.3, 0.08, Math.PI * 1.2, Math.PI * 0.1, 4),
+  ...arc(-0.14, 0.4, 0.09, Math.PI * 1.1, -Math.PI * 0.1, 4),
+  ...arc(0.04, 0.42, 0.09, Math.PI * 1.0, -Math.PI * 0.2, 4),
+  ...arc(0.22, 0.36, 0.09, Math.PI * 0.9, -Math.PI * 0.4, 4),
+  [0.34, 0.16],
+  [0.33, 0.06], // ear root
+  // fluffy ear: bumps down its length
+  ...arc(0.46, -0.02, 0.07, Math.PI * 0.4, -Math.PI * 0.9, 4),
+  ...arc(0.4, -0.24, 0.08, 0.0, -Math.PI * 1.1, 4),
+  [0.24, -0.28],
+  [0.24, -0.06], // neck
+  [0.06, -0.14],
+  [-0.12, -0.18],
+  [-0.3, -0.17], // mouth corner
+  // --- interior ---
+  [-0.42, -0.13],
+  [-0.5, -0.05],
+  ...loop(-0.58, 0.05, 0.05, 8), // nose
+  [-0.5, 0.12],
+  [-0.36, 0.18],
+  ...loop(-0.28, 0.22, 0.05, 8), // eye
+  ...loop(-0.265, 0.225, 0.02, 5), // pupil
+  // tufts of wool on the cheek/chest
+  [-0.1, -0.08],
+  ...arc(-0.04, -0.1, 0.06, Math.PI, 0, 3),
+  ...arc(0.1, -0.12, 0.06, Math.PI, 0, 3),
+  // a curl on the crown
+  [0.0, 0.32],
+  ...arc(-0.04, 0.34, 0.05, Math.PI, -Math.PI, 5),
+  // close near the nose
+  [-0.4, 0.04],
+  [-0.54, 0.02],
+];
+
 export const RAW_SHAPES: Record<SubjectId, ShapeDef> = {
   rose: shape("rose", ROSE),
   snoopy: shape("snoopy", SNOOPY),
@@ -640,15 +1071,37 @@ export const RAW_SHAPES: Record<SubjectId, ShapeDef> = {
   horse: shape("horse", HORSE),
   tiger: shape("tiger", TIGER),
   monkey: shape("monkey", MONKEY),
+  tulip: shape("tulip", TULIP),
+  daisy: shape("daisy", DAISY),
+  sunflower: shape("sunflower", SUNFLOWER),
+  blossom: shape("blossom", BLOSSOM),
+  lotus: shape("lotus", LOTUS),
+  spike: shape("spike", SPIKE),
+  belle: shape("belle", BELLE),
+  marbles: shape("marbles", MARBLES),
+  olaf: shape("olaf", OLAF),
+  andy: shape("andy", ANDY),
 };
 
 // The order the background morphs through, looping back to the rose at the end.
+// Flowers and characters are interleaved so the rotation alternates rather than
+// clustering all the blooms or all the beagles together.
 export const CYCLE: SubjectId[] = [
   "rose",
   "snoopy",
+  "tulip",
+  "spike",
   "pochacco",
+  "daisy",
+  "belle",
   "dragon",
+  "sunflower",
+  "marbles",
   "horse",
+  "blossom",
+  "olaf",
   "tiger",
+  "lotus",
+  "andy",
   "monkey",
 ];
