@@ -67,9 +67,6 @@ export default function BlogIndex() {
           <h1 className="text-3xl font-bold tracking-tight text-term-fg sm:text-4xl">
             Writing
           </h1>
-          <p className="mt-2 text-term-dim">
-            Notes on software, languages, and creative coding.
-          </p>
         </div>
 
         {posts.length === 0 ? (
