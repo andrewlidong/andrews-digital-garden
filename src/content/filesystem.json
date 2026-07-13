@@ -11,6 +11,15 @@
         "type": "folder",
         "children": [
             {
+                "id": "building_massively_multiplayer_tetris_md",
+                "name": "building-massively-multiplayer-tetris.md",
+                "type": "file",
+                "path": "/files/blog/building-massively-multiplayer-tetris.md",
+                "title": "Building Massively Multiplayer Tetris",
+                "date": "2026-07-13",
+                "subtitle": "I recently build a cooperative multiplayer Tetris where every player shares a single board."
+            },
+            {
                 "id": "godbolt_and_modern_cpu_architecture_md",
                 "name": "godbolt-and-modern-cpu-architecture.md",
                 "type": "file",
