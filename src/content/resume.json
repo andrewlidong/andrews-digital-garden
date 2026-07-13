@@ -135,6 +135,22 @@
     ],
     "projects": [
         {
+            "name": "Tetris One Thousand",
+            "description": [
+                "Massively multiplayer cooperative Tetris where everyone shares one board"
+            ],
+            "technologies": [
+                "Python",
+                "FastAPI",
+                "asyncio",
+                "WebSockets"
+            ],
+            "github_url": "https://github.com/andrewlidong/tetris-one-thousand",
+            "live_url": "https://tetris-one-thousand.onrender.com/",
+            "image_url": "/blog-images/building-massively-multiplayer-tetris-1.png",
+            "fallback_image_url": "/default_project.svg"
+        },
+        {
             "name": "Subway Spell",
             "description": [
                 "Spell words by riding NYC subway lines"

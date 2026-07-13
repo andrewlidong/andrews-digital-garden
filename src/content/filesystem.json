@@ -166,6 +166,12 @@
                 "path": "/files/projects/subway_spell.md"
             },
             {
+                "id": "tetris_one_thousand_md",
+                "name": "tetris_one_thousand.md",
+                "type": "file",
+                "path": "/files/projects/tetris_one_thousand.md"
+            },
+            {
                 "id": "this_is_water_md",
                 "name": "this_is_water.md",
                 "type": "file",
