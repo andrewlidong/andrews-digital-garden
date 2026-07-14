@@ -1,0 +1,63 @@
+name: Import Substack posts
+
+# Pulls the Substack feed daily and commits any new/updated posts (plus their
+# images and the regenerated filesystem index). Re-running the importer is
+# safe: unchanged posts reproduce byte-identically, and locally-edited `stage:`
+# frontmatter is preserved. Pushes from this workflow use GITHUB_TOKEN, which
+# doesn't fire `on: push` workflows, so the deploy is dispatched explicitly.
+
+on:
+  schedule:
+    - cron: '23 11 * * *' # daily, 11:23 UTC (~7am ET)
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: 'import-substack'
+  cancel-in-progress: false
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Import posts from Substack
+        run: node scripts/importSubstack.js
+
+      - name: Regenerate filesystem index
+        run: node scripts/updateFilesystem.js --pre-commit
+
+      - name: Commit and push if anything changed
+        id: commit
+        run: |
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "No changes — feed matches the repo."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add -A
+            git commit -m "Import latest Substack posts (automated)"
+            git push
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Trigger deploy
+        if: steps.commit.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run deploy.yml --ref main

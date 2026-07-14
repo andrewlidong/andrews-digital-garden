@@ -128,9 +128,46 @@ export function Terminal({ onOpenFile, onOpenApp, fileSystem, initialCommand, co
   vim [file] - Open file full screen (alias: nvim)
   pwd - Show current directory
   theme - List or switch color themes (try 'theme list')
+  neofetch - Show garden system info
   clear - Clear terminal
-  help - Show this help message`;
+  help - Show this help message
+
+psst: this terminal keeps a few secrets. old cheat codes still work.`;
         break;
+
+      case 'neofetch': {
+        const countIn = (folder: string) => {
+          const node = fileSystem.find((f) => f.type === 'folder' && f.name === folder);
+          return node?.children?.filter((c) => c.type === 'file').length ?? 0;
+        };
+        const activeTheme = themes?.find((t) => t.id === themeId);
+        const art = [
+          '   <span class="text-term-magenta"> @..@ </span>',
+          '   <span class="text-term-magenta">(----)</span>',
+          '   <span class="text-term-green">( >__< )</span>',
+          '   <span class="text-term-green">^^ ~~ ^^</span>',
+        ];
+        const info = [
+          `<span class="text-term-accent">andrew</span>@<span class="text-term-accent">digital-garden</span>`,
+          '----------------------',
+          `<span class="text-term-yellow">OS</span>: AndrewOS (garden edition)`,
+          `<span class="text-term-yellow">Host</span>: andrewlidong.xyz`,
+          `<span class="text-term-yellow">Shell</span>: garden-sh`,
+          `<span class="text-term-yellow">Theme</span>: ${activeTheme?.name ?? 'unknown'}`,
+          `<span class="text-term-yellow">Posts</span>: ${countIn('blog')}`,
+          `<span class="text-term-yellow">Projects</span>: ${countIn('projects')}`,
+          `<span class="text-term-yellow">Notes</span>: ${countIn('notes')}`,
+          `<span class="text-term-yellow">Webring</span>: recurse ring, member #46`,
+          `<span class="text-term-yellow">Last updated</span>: ${__LAST_UPDATED__} (${__COMMIT_HASH__})`,
+        ];
+        const rows = Math.max(art.length, info.length);
+        const lines = [];
+        for (let i = 0; i < rows; i++) {
+          lines.push(`${(art[i] || '        ').padEnd(8)}   ${info[i] || ''}`);
+        }
+        output = lines.join('\n');
+        break;
+      }
 
       case 'tetris':
       case 'radio':

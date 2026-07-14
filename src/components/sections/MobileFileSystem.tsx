@@ -125,6 +125,7 @@ export function MobileFileSystem({
             <FileContent
               content={currentContent}
               fileType={currentFile?.fileType || '.md'}
+              filePath={currentFile?.path}
             />
           </Suspense>
         </div>

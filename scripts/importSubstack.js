@@ -12,12 +12,29 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { execFileSync } from 'child_process';
 import TurndownService from 'turndown';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const FEED_URL = 'https://andrewdong.substack.com/feed';
+
+// Substack sits behind Cloudflare bot detection that rejects Node's fetch —
+// it fingerprints the TLS handshake, so no header spoofing helps. Plain curl
+// with its own default User-Agent gets through (a mismatched browser UA on a
+// curl handshake gets blocked too). Try fetch first, fall back to curl.
+async function fetchUrl(url) {
+  try {
+    const res = await fetch(url);
+    if (res.ok) return Buffer.from(await res.arrayBuffer());
+  } catch {
+    /* fall through to curl */
+  }
+  return execFileSync('curl', ['-sL', '--fail', url], {
+    maxBuffer: 64 * 1024 * 1024,
+  });
+}
 const BLOG_DIR = path.join(__dirname, '../public/files/blog');
 // Images live outside public/files so they don't show up as entries in the
 // desktop filesystem UI. They're referenced from posts as /blog-images/...
@@ -165,9 +182,7 @@ async function downloadImages(markdown, slug) {
   for (const { url, filename } of tasks) {
     const dest = path.join(IMAGES_DIR, filename);
     try {
-      const res = await fetch(url);
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const buf = Buffer.from(await res.arrayBuffer());
+      const buf = await fetchUrl(url);
       fs.mkdirSync(IMAGES_DIR, { recursive: true });
       fs.writeFileSync(dest, buf);
       console.log(`   ↓ ${filename}`);
@@ -222,9 +237,7 @@ async function main() {
     console.log(`Reading feed from ${localPath}`);
   } else {
     console.log(`Fetching ${FEED_URL}`);
-    const res = await fetch(FEED_URL);
-    if (!res.ok) throw new Error(`Failed to fetch feed: HTTP ${res.status}`);
-    xml = await res.text();
+    xml = (await fetchUrl(FEED_URL)).toString('utf8');
   }
 
   const posts = parseFeed(xml);

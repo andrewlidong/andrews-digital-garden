@@ -1,11 +1,12 @@
 import { File } from "@/components/personal/File";
 import { Window } from "@/components/personal/Window";
 import { Folder } from "@/components/personal/Folder";
-import { useState, useEffect, useRef, lazy, Suspense } from "react";
-const TextContent = lazy(() =>
+import { useState, useEffect, useRef, Suspense } from "react";
+import { lazyRetry } from "@/lib/lazyRetry";
+const TextContent = lazyRetry(() =>
   import("@/components/personal/TextContent").then((m) => ({ default: m.TextContent }))
 );
-const LineMorphCanvas = lazy(() =>
+const LineMorphCanvas = lazyRetry(() =>
   import("@/components/ui/LineMorphCanvas").then((m) => ({ default: m.LineMorphCanvas }))
 );
 import { Terminal } from "@/components/personal/Terminal";
@@ -18,13 +19,13 @@ import { loadFileContent } from "@/lib/loadFileContent";
 import { useTheme } from "@/hooks/useTheme";
 import { getTheme } from "@/lib/themes";
 import { useKonami } from "@/hooks/useKonami";
-const TetrisFrame = lazy(() =>
+const TetrisFrame = lazyRetry(() =>
   import("@/components/personal/TetrisFrame").then((m) => ({ default: m.TetrisFrame }))
 );
-const RadioApp = lazy(() =>
+const RadioApp = lazyRetry(() =>
   import("@/components/personal/RadioApp").then((m) => ({ default: m.RadioApp }))
 );
-const PaintApp = lazy(() =>
+const PaintApp = lazyRetry(() =>
   import("@/components/personal/PaintApp").then((m) => ({ default: m.PaintApp }))
 );
 
@@ -618,7 +619,7 @@ function PersonalPage() {
                       </div>
                     ) : win.windowType === "text" && typeof win.content === "string" ? (
                       <Suspense fallback={<div className="p-4 text-term-dim text-sm">Loading…</div>}>
-                        <TextContent content={win.content} filename={win.title} />
+                        <TextContent content={win.content} filename={win.title} filePath={win.filePath} />
                       </Suspense>
                     ) : win.windowType === "terminal" ? (
                       <Terminal

@@ -33,6 +33,81 @@ function prettify(name: string): string {
   return name.replace(/\.(md|markdown)$/i, "").replace(/[-_]/g, " ");
 }
 
+// ---------------------------------------------------------------------------
+// Heading anchors + table of contents. Headings get stable ids derived from
+// their text; the ToC is extracted from the raw markdown with the same
+// slugging so the fragments always line up.
+// ---------------------------------------------------------------------------
+
+function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .trim()
+    .replace(/\s+/g, "-");
+}
+
+// Strip inline markdown (code, emphasis, links) so heading text matches what
+// the renderer produces.
+function cleanInline(text: string): string {
+  return text
+    .replace(/`([^`]*)`/g, "$1")
+    .replace(/\*\*([^*]*)\*\*/g, "$1")
+    .replace(/\*([^*]*)\*/g, "$1")
+    .replace(/\[([^\]]*)\]\([^)]*\)/g, "$1")
+    .trim();
+}
+
+type Heading = { depth: number; text: string; id: string };
+
+function extractHeadings(body: string): Heading[] {
+  const out: Heading[] = [];
+  let inFence = false;
+  for (const line of body.split("\n")) {
+    if (/^\s*```/.test(line)) {
+      inFence = !inFence;
+      continue;
+    }
+    if (inFence) continue;
+    const m = /^(#{2,3})\s+(.+?)\s*$/.exec(line);
+    if (m) {
+      const text = cleanInline(m[2]);
+      out.push({ depth: m[1].length, text, id: slugify(text) });
+    }
+  }
+  return out;
+}
+
+function flattenText(node: React.ReactNode): string {
+  if (node == null || typeof node === "boolean") return "";
+  if (typeof node === "string" || typeof node === "number") return String(node);
+  if (Array.isArray(node)) return node.map(flattenText).join("");
+  if (typeof node === "object" && "props" in node) {
+    return flattenText((node as React.ReactElement<{ children?: React.ReactNode }>).props.children);
+  }
+  return "";
+}
+
+// h2/h3 renderer with an id and a hover # link.
+function makeHeading(Tag: "h2" | "h3") {
+  return function AnchoredHeading({ children }: { children?: React.ReactNode }) {
+    const id = slugify(flattenText(children));
+    return (
+      <Tag id={id} className="group scroll-mt-20">
+        {children}
+        <a
+          href={`#${id}`}
+          aria-label="Link to this section"
+          className="ml-2 align-middle font-mono text-sm text-term-accent no-underline opacity-0 transition-opacity group-hover:opacity-70"
+        >
+          #
+        </a>
+      </Tag>
+    );
+  };
+}
+const headingComponents = { h2: makeHeading("h2"), h3: makeHeading("h3") };
+
 // Find the previous (newer) and next (older) posts in the same folder, by date.
 function findNeighbors(section: string, filePath: string) {
   const folder = (fileSystemData as FsNode[]).find(
@@ -78,6 +153,7 @@ export default function ReaderPage() {
     [section, filePath]
   );
   const backlinks = useMemo(() => getBacklinks(filePath), [filePath]);
+  const headings = useMemo(() => extractHeadings(body), [body]);
   const onProseClick = useInternalLinkNav();
 
   useEffect(() => {
@@ -223,10 +299,33 @@ export default function ReaderPage() {
               )}
             </div>
 
+            {/* Table of contents for longer pieces */}
+            {headings.length >= 3 && (
+              <nav
+                aria-label="Table of contents"
+                className="mb-8 rounded-lg border border-term-border/60 bg-term-elevated/30 p-4 font-mono text-sm sm:mb-10"
+              >
+                <div className="mb-2 text-xs text-term-faint">on this page</div>
+                <ul className="space-y-1.5">
+                  {headings.map((h, i) => (
+                    <li key={`${h.id}-${i}`} className={h.depth === 3 ? "pl-4" : ""}>
+                      <a
+                        href={`#${h.id}`}
+                        className="text-term-dim transition-colors hover:text-term-accent"
+                      >
+                        {h.text}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+            )}
+
             <div onClick={onProseClick} className="prose prose-invert max-w-none sm:prose-lg prose-headings:font-semibold prose-headings:tracking-tight prose-headings:text-term-fg prose-p:text-term-fg prose-li:text-term-fg prose-strong:text-term-fg prose-a:text-term-accent prose-a:no-underline hover:prose-a:underline prose-code:rounded prose-code:bg-term-elevated prose-code:px-1.5 prose-code:py-0.5 prose-code:text-term-green prose-code:before:content-none prose-code:after:content-none prose-pre:border prose-pre:border-term-border prose-pre:bg-term-inset prose-blockquote:border-l-term-accent prose-blockquote:text-term-dim prose-img:rounded-lg">
               <ReactMarkdown
                 remarkPlugins={[remarkGfm, remarkWikilinks]}
                 rehypePlugins={[[rehypeHighlight, { detect: true, ignoreMissing: true }]]}
+                components={headingComponents}
               >
                 {body}
               </ReactMarkdown>

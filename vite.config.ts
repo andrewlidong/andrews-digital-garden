@@ -2,7 +2,6 @@ import path from "path";
 import { execSync } from "child_process";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import { plugin as markdownPlugin, Mode } from "vite-plugin-markdown";
 
 // Build-time git metadata, surfaced in the footer metadata bar.
 function gitInfo() {
@@ -40,12 +39,7 @@ export default defineConfig({
     __LAST_UPDATED__: JSON.stringify(lastUpdated),
     __REPO_URL__: JSON.stringify(repoUrl),
   },
-  plugins: [
-    react(),
-    markdownPlugin({
-      mode: [Mode.MARKDOWN],
-    }),
-  ],
+  plugins: [react()],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),

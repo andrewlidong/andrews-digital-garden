@@ -1,19 +1,23 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeHighlight from "rehype-highlight";
 import { parseFrontmatter, formatDate } from "@/lib/frontmatter";
-import { remarkWikilinks } from "@/lib/wikilinks";
+import { remarkWikilinks, getBacklinks } from "@/lib/wikilinks";
 import { StageBadge } from "@/components/ui/StageBadge";
 import { useInternalLinkNav } from "@/lib/useInternalLinkNav";
 
 interface TextContentProps {
   content: string;
   filename?: string;
+  /** /files/... path of this file — enables the "linked from" footer. */
+  filePath?: string;
 }
 
-export const TextContent: React.FC<TextContentProps> = ({ content, filename = "file.md" }) => {
+export const TextContent: React.FC<TextContentProps> = ({ content, filename = "file.md", filePath }) => {
   const { meta, body } = parseFrontmatter(content);
+  const backlinks = filePath ? getBacklinks(filePath) : [];
   const onProseClick = useInternalLinkNav();
   const [displayedContent, setDisplayedContent] = useState("");
   const [typingComplete, setTypingComplete] = useState(false);
@@ -84,6 +88,20 @@ export const TextContent: React.FC<TextContentProps> = ({ content, filename = "f
           >
             {body}
           </ReactMarkdown>
+          {backlinks.length > 0 && (
+            <div className="mt-6 flex flex-wrap items-baseline gap-x-3 gap-y-1 border-t border-term-border pt-3 font-mono text-xs not-prose">
+              <span className="text-term-faint">linked from:</span>
+              {backlinks.map((bl) => (
+                <Link
+                  key={bl.path}
+                  to={bl.to}
+                  className="text-term-dim no-underline hover:text-term-accent"
+                >
+                  ~/{bl.section}/{bl.title}
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
       ) : (
         <div className="font-mono text-sm text-term-green">
