@@ -13,6 +13,7 @@ A few well-trodden paths through the garden:
 - [[Building Massively Multiplayer Tetris]] — how [[Tetris One Thousand]], a cooperative Tetris on one shared board, works under the hood
 - [[Spelling words with the Subway]] — the story behind [[Subway Spell]], which turns the NYC subway map into an alphabet
 - [[Recurse Center Return Statement]] — what a batch at the Recurse Center meant to me
+- [[Communities]] — the meetups and reading groups I frequent
 - Or browse [[blog|everything I've written]]
 
 ## My Journey
