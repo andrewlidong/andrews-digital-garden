@@ -18,7 +18,6 @@ import { loadFileContent } from "@/lib/loadFileContent";
 import { useTheme } from "@/hooks/useTheme";
 import { getTheme } from "@/lib/themes";
 import { useKonami } from "@/hooks/useKonami";
-import { BootSequence, BOOT_FLAG } from "@/components/personal/BootSequence";
 const TetrisFrame = lazy(() =>
   import("@/components/personal/TetrisFrame").then((m) => ({ default: m.TetrisFrame }))
 );
@@ -30,6 +29,10 @@ const PaintApp = lazy(() =>
 );
 
 // Desktop apps — live things, not documents. Each opens in its own window.
+// The sidebar section is hidden for now (flip SHOW_APPS to bring it back);
+// the apps themselves still launch from the terminal (tetris / radio / paint)
+// as undocumented easter eggs.
+const SHOW_APPS = false;
 const APPS = [
   {
     id: "tetris",
@@ -121,22 +124,6 @@ function PersonalPage() {
   const [maxZIndex, setMaxZIndex] = useState(0);
   const [disabledItems, setDisabledItems] = useState<Set<string>>(new Set());
   const [pawModeActive, setPawModeActive] = useState(false);
-  // Fake boot screen, once per browser session.
-  const [booting, setBooting] = useState(() => {
-    try {
-      return !sessionStorage.getItem(BOOT_FLAG);
-    } catch {
-      return false;
-    }
-  });
-  const finishBoot = () => {
-    try {
-      sessionStorage.setItem(BOOT_FLAG, "1");
-    } catch {
-      /* private mode — boot will just replay next visit */
-    }
-    setBooting(false);
-  };
   // ↑↑↓↓←→←→BA — unleash the paw stamps.
   useKonami(() => setPawModeActive((prev) => !prev));
   const [clickedItem, setClickedItem] = useState<string | null>(null);
@@ -417,7 +404,6 @@ function PersonalPage() {
 
   return (
     <>
-      {booting && <BootSequence onDone={finishBoot} />}
       <div className="font-mono fixed top-0 left-0 w-full h-full bg-term-bg text-term-fg">
         <Header onOpenTerminal={openTerminal} pawModeActive={pawModeActive} onTogglePawMode={() => setPawModeActive(prev => !prev)} themes={themes} themeId={themeId} onSetTheme={setTheme} />
 
@@ -427,27 +413,32 @@ function PersonalPage() {
             <div className="grid grid-flow-row gap-2 pb-20">
               {fileSystem.map((item) => renderFileOrFolder(item))}
 
-              {/* Apps — live things, not documents */}
-              <div className="mt-4 mb-1 border-t border-term-border pt-3 pl-2 font-mono text-xs text-term-faint">
-                apps
-              </div>
-              {APPS.map((app) => (
-                <div
-                  key={app.id}
-                  id={`${app.id}-app`}
-                  className={`file-container flex items-center p-2 w-full cursor-pointer ${
-                    clickedItem === `${app.id}-app` ? "bg-term-elevated bg-opacity-60 rounded" : ""
-                  }`}
-                  onClick={() => setClickedItem(`${app.id}-app`)}
-                  onDoubleClick={() => openApp(app.id)}
-                  title={app.hint}
-                >
-                  <div className="mr-2 flex items-center justify-center w-6 h-6 flex-shrink-0">
-                    <span className="text-xl">{app.icon}</span>
+              {/* Apps — live things, not documents. Hidden for now; still
+                  launchable from the terminal. */}
+              {SHOW_APPS && (
+                <>
+                  <div className="mt-4 mb-1 border-t border-term-border pt-3 pl-2 font-mono text-xs text-term-faint">
+                    apps
                   </div>
-                  <p className="font-mono text-term-fg text-lg break-all">{app.label}</p>
-                </div>
-              ))}
+                  {APPS.map((app) => (
+                    <div
+                      key={app.id}
+                      id={`${app.id}-app`}
+                      className={`file-container flex items-center p-2 w-full cursor-pointer ${
+                        clickedItem === `${app.id}-app` ? "bg-term-elevated bg-opacity-60 rounded" : ""
+                      }`}
+                      onClick={() => setClickedItem(`${app.id}-app`)}
+                      onDoubleClick={() => openApp(app.id)}
+                      title={app.hint}
+                    >
+                      <div className="mr-2 flex items-center justify-center w-6 h-6 flex-shrink-0">
+                        <span className="text-xl">{app.icon}</span>
+                      </div>
+                      <p className="font-mono text-term-fg text-lg break-all">{app.label}</p>
+                    </div>
+                  ))}
+                </>
+              )}
             </div>
           </div>
           

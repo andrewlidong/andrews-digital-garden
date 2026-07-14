@@ -128,9 +128,6 @@ export function Terminal({ onOpenFile, onOpenApp, fileSystem, initialCommand, co
   vim [file] - Open file full screen (alias: nvim)
   pwd - Show current directory
   theme - List or switch color themes (try 'theme list')
-  tetris - Play massively multiplayer Tetris (one shared board!)
-  radio - Tune into SomaFM internet radio
-  paint - Doodle in theme colors
   clear - Clear terminal
   help - Show this help message`;
         break;
