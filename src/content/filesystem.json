@@ -116,6 +116,18 @@
                 ]
             },
             {
+                "id": "swe_tea_blackbox_optimization_md",
+                "name": "swe-tea-blackbox-optimization.md",
+                "type": "file",
+                "path": "/files/notes/swe-tea-blackbox-optimization.md",
+                "title": "SWE Tea: Black-box Optimization",
+                "date": "2026-07-14",
+                "subtitle": "Meetups 109–112 · Vizier to Ax",
+                "links": [
+                    "/files/notes/swe-tea-paper-notes.md"
+                ]
+            },
+            {
                 "id": "swe_tea_paper_notes_md",
                 "name": "swe-tea-paper-notes.md",
                 "type": "file",
@@ -124,7 +136,47 @@
                 "date": "2026-07-14",
                 "subtitle": "Quick summaries of what the reading group has been reading",
                 "links": [
-                    "/files/notes/communities.md"
+                    "/files/notes/communities.md",
+                    "/files/notes/swe-tea-blackbox-optimization.md",
+                    "/files/notes/swe-tea-recommender-systems.md",
+                    "/files/notes/swe-tea-tpus.md",
+                    "/files/notes/swe-tea-virtualization.md"
+                ]
+            },
+            {
+                "id": "swe_tea_recommender_systems_md",
+                "name": "swe-tea-recommender-systems.md",
+                "type": "file",
+                "path": "/files/notes/swe-tea-recommender-systems.md",
+                "title": "SWE Tea: Recommender Systems",
+                "date": "2026-07-14",
+                "subtitle": "Meetups 103–108 · industrial recsys from YouTube DNN to HSTU",
+                "links": [
+                    "/files/notes/swe-tea-paper-notes.md"
+                ]
+            },
+            {
+                "id": "swe_tea_tpus_md",
+                "name": "swe-tea-tpus.md",
+                "type": "file",
+                "path": "/files/notes/swe-tea-tpus.md",
+                "title": "SWE Tea: TPUs",
+                "date": "2026-07-14",
+                "subtitle": "Meetups 118–122 · five generations of Google's ML chips",
+                "links": [
+                    "/files/notes/swe-tea-paper-notes.md"
+                ]
+            },
+            {
+                "id": "swe_tea_virtualization_md",
+                "name": "swe-tea-virtualization.md",
+                "type": "file",
+                "path": "/files/notes/swe-tea-virtualization.md",
+                "title": "SWE Tea: Virtualization",
+                "date": "2026-07-14",
+                "subtitle": "Meetups 113–117 · from kvm to Firecracker",
+                "links": [
+                    "/files/notes/swe-tea-paper-notes.md"
                 ]
             }
         ]
