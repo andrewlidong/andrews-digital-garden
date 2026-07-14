@@ -6,7 +6,6 @@ export interface PostMeta {
   date?: string;
   subtitle?: string;
   slug?: string;
-  stage?: string;
   tags?: string[];
 }
 

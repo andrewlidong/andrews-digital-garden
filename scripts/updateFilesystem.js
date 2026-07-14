@@ -28,7 +28,7 @@ function readFrontmatter(filePath) {
         ) {
             value = value.slice(1, -1);
         }
-        if ((key === 'title' || key === 'date' || key === 'subtitle' || key === 'stage') && value) {
+        if ((key === 'title' || key === 'date' || key === 'subtitle') && value) {
             meta[key] = value;
         }
         if (key === 'tags' && value) {

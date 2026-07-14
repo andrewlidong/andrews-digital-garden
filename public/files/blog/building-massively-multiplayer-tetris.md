@@ -3,7 +3,6 @@ title: "Building Massively Multiplayer Tetris"
 date: "2026-07-13"
 subtitle: "I recently build a cooperative multiplayer Tetris where every player shares a single board."
 slug: "building-massively-multiplayer-tetris"
-stage: "evergreen"
 ---
 
 I recently build a cooperative multiplayer Tetris where every player shares a single board. It runs on a single Python process, streams state over WebSockets, and holds up under 100+ players at ~500 messages per second.
