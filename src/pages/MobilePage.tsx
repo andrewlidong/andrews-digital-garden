@@ -37,8 +37,7 @@ function MobilePage() {
   const navItems = [
     { id: "home", label: "Home" },
     { id: "projects", label: "Projects" },
-    { id: "notes", label: "Notes" },
-    { id: "blog", label: "Blog" },
+    { id: "notes", label: "Garden" },
     { id: "contact", label: "Contact" },
   ];
 
@@ -117,11 +116,6 @@ function MobilePage() {
   }, [isMobile]);
 
   const handleNavClick = (id: string) => {
-    // Blog is a route, not a section on this page.
-    if (id === "blog") {
-      navigate("/blog");
-      return;
-    }
     setIsScrolling(true);
     setActiveTab(id);
     const element = document.getElementById(id);

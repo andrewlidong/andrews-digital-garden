@@ -15,7 +15,35 @@ export type FileItem = {
   fileType?: string;
   content?: string;
   children?: FileItem[];
+  // From frontmatter, via scripts/updateFilesystem.js.
+  title?: string;
+  date?: string;
+  subtitle?: string;
 };
+
+function prettyName(item: FileItem): string {
+  return item.title || item.name.replace(/\.(md|markdown)$/i, "").replace(/[-_]+/g, " ");
+}
+
+function shortDate(date?: string): string {
+  if (!date) return "";
+  const d = new Date(`${date}T00:00:00`);
+  if (Number.isNaN(d.getTime())) return date;
+  return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+}
+
+// The three most recent dated files anywhere in the garden.
+function recentWriting(items: FileItem[]): FileItem[] {
+  const out: FileItem[] = [];
+  const walk = (ns: FileItem[]) => {
+    for (const n of ns) {
+      if (n.type === "folder" && n.children) walk(n.children);
+      else if (n.type === "file" && n.date) out.push(n);
+    }
+  };
+  walk(items);
+  return out.sort((a, b) => (b.date || "").localeCompare(a.date || "")).slice(0, 3);
+}
 
 interface MobileFileSystemProps {
   currentContent: string | null;
@@ -75,11 +103,36 @@ export function MobileFileSystem({
   return (
     <div ref={revealRef} className="w-full mx-auto">
       <p className={`font-mono text-sm text-term-accent mb-2 animate-on-scroll fade-up ${rv}`}>
-        ~/notes
+        ~/garden
       </p>
       <h2 className={`text-3xl md:text-5xl font-bold tracking-tight text-term-fg mb-6 animate-on-scroll fade-up ${rv}`} style={{ transitionDelay: '100ms' }}>
-        Notes
+        Digital Garden
       </h2>
+
+      {/* Recent writing — surfaced above the browser so fresh growth is one
+          tap away. Hidden while reading or browsing inside a folder. */}
+      {!currentContent && currentPath.length === 0 && (
+        <div className={`mb-6 animate-on-scroll fade-up ${rv}`} style={{ transitionDelay: '150ms' }}>
+          <p className="mb-2 font-mono text-xs text-term-faint">recently planted</p>
+          <div className="grid grid-cols-1 gap-2">
+            {recentWriting(fileSystem).map((item) => (
+              <button
+                key={item.id}
+                onClick={() => handleItemClick(item)}
+                className="rounded-xl border border-term-border/60 bg-term-elevated/40 px-4 py-3 text-left backdrop-blur-sm transition-all active:scale-[0.98]"
+              >
+                <div className="flex items-baseline justify-between gap-3">
+                  <span className="truncate font-medium text-term-fg">{prettyName(item)}</span>
+                  <span className="shrink-0 font-mono text-xs text-term-faint">{shortDate(item.date)}</span>
+                </div>
+                {item.subtitle && (
+                  <p className="mt-0.5 truncate text-sm text-term-dim">{item.subtitle}</p>
+                )}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Breadcrumb navigation */}
       <div className="flex items-center gap-2 mb-4 font-mono text-sm text-term-faint">
@@ -130,22 +183,35 @@ export function MobileFileSystem({
           </Suspense>
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-1.5">
-          {currentItems.map((item) => (
-            <button
-              key={item.id}
-              onClick={() => handleItemClick(item)}
-              className="group flex items-center gap-3 rounded-lg border border-transparent px-3 py-2.5 text-left transition-all duration-200 hover:border-term-border/70 hover:bg-term-elevated/50 active:scale-[0.99]"
-            >
-              <span className="text-lg opacity-80">
-                {item.type === "folder" ? "📁" : "📄"}
-              </span>
-              <span className="text-term-fg group-hover:text-term-accent transition-colors">{item.name}</span>
-              {item.type === "folder" && (
-                <span className="ml-auto text-term-faint transition-colors group-hover:text-term-accent">→</span>
-              )}
-            </button>
-          ))}
+        <div className="grid grid-cols-1 gap-2">
+          {currentItems.map((item) => {
+            const count = item.type === "folder" ? item.children?.length ?? 0 : 0;
+            return (
+              <button
+                key={item.id}
+                onClick={() => handleItemClick(item)}
+                className="group flex items-center gap-3 rounded-xl border border-term-border/50 bg-term-elevated/30 px-4 py-3 text-left backdrop-blur-sm transition-all duration-200 hover:border-term-accent/50 hover:bg-term-elevated/60 active:scale-[0.98]"
+              >
+                <span className="text-lg opacity-80">
+                  {item.type === "folder" ? "📁" : "📄"}
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block truncate text-term-fg transition-colors group-hover:text-term-accent">
+                    {item.type === "file" ? prettyName(item) : item.name}
+                  </span>
+                  {item.type === "file" && item.date && (
+                    <span className="block font-mono text-xs text-term-faint">{shortDate(item.date)}</span>
+                  )}
+                </span>
+                {item.type === "folder" ? (
+                  <span className="flex shrink-0 items-center gap-2">
+                    <span className="font-mono text-xs text-term-faint">{count}</span>
+                    <span className="text-term-faint transition-colors group-hover:text-term-accent">→</span>
+                  </span>
+                ) : null}
+              </button>
+            );
+          })}
         </div>
       )}
     </div>

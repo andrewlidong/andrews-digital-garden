@@ -41,6 +41,12 @@ const Contact = forwardRef<HTMLElement>((_, ref) => {
             alt: "X",
             delay: 300
           },
+          {
+            href: `mailto:${resume.contact.email}`,
+            src: "/email.svg",
+            alt: "Email",
+            delay: 400
+          },
           // {
           //   href: "/resume.pdf",
           //   src: "/resume.svg",
