@@ -108,6 +108,22 @@
         ]
     },
     {
+        "id": "now_md",
+        "name": "now.md",
+        "type": "file",
+        "path": "/files/now.md",
+        "title": "Now",
+        "date": "2026-07-14",
+        "subtitle": "What I'm up to these days",
+        "stage": "budding",
+        "links": [
+            "/files/blog/building-massively-multiplayer-tetris.md",
+            "/files/blog/writing-a-cli-in-zig.md",
+            "/files/notes/Recurse Center Return Statement.md",
+            "/files/projects/tetris_one_thousand.md"
+        ]
+    },
+    {
         "id": "projects",
         "name": "projects",
         "type": "folder",

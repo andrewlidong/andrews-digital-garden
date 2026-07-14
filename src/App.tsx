@@ -6,6 +6,9 @@ const PersonalPage = lazy(() => import("./pages/PersonalPage"));
 const MobilePage = lazy(() => import("./pages/MobilePage"));
 const ReaderPage = lazy(() => import("./pages/ReaderPage"));
 const BlogIndex = lazy(() => import("./pages/BlogIndex"));
+const CommandPalette = lazy(() =>
+  import("./components/ui/CommandPalette").then((m) => ({ default: m.CommandPalette }))
+);
 
 function App() {
   const isMobile = useMobileDetect();
@@ -13,6 +16,7 @@ function App() {
   return (
     <Router>
       <Suspense fallback={null}>
+        <CommandPalette />
         <Routes>
           <Route path="/" element={
             isMobile ?
@@ -21,6 +25,7 @@ function App() {
           } />
           <Route path="/mobile" element={<MobilePage />} />
           <Route path="/blog" element={<BlogIndex />} />
+          <Route path="/now" element={<Navigate to="/read/now" replace />} />
           <Route path="/read/*" element={<ReaderPage />} />
         </Routes>
       </Suspense>

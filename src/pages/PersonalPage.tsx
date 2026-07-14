@@ -17,6 +17,50 @@ import { MetadataBar } from "@/components/personal/MetadataBar";
 import { loadFileContent } from "@/lib/loadFileContent";
 import { useTheme } from "@/hooks/useTheme";
 import { getTheme } from "@/lib/themes";
+import { useKonami } from "@/hooks/useKonami";
+import { BootSequence, BOOT_FLAG } from "@/components/personal/BootSequence";
+const TetrisFrame = lazy(() =>
+  import("@/components/personal/TetrisFrame").then((m) => ({ default: m.TetrisFrame }))
+);
+const RadioApp = lazy(() =>
+  import("@/components/personal/RadioApp").then((m) => ({ default: m.RadioApp }))
+);
+const PaintApp = lazy(() =>
+  import("@/components/personal/PaintApp").then((m) => ({ default: m.PaintApp }))
+);
+
+// Desktop apps — live things, not documents. Each opens in its own window.
+const APPS = [
+  {
+    id: "tetris",
+    icon: "🕹️",
+    label: "tetris",
+    title: "tetris-one-thousand",
+    hint: "Massively multiplayer Tetris — everyone shares one board",
+    width: 900,
+    height: 620,
+  },
+  {
+    id: "radio",
+    icon: "📻",
+    label: "radio",
+    title: "radio",
+    hint: "SomaFM internet radio",
+    width: 400,
+    height: 480,
+  },
+  {
+    id: "paint",
+    icon: "🎨",
+    label: "paint",
+    title: "paint",
+    hint: "Doodle in theme colors",
+    width: 680,
+    height: 520,
+  },
+] as const;
+
+type AppId = (typeof APPS)[number]["id"];
 
 type FileItem = {
   id: string;
@@ -36,7 +80,7 @@ type WindowState = {
   content: FileItem[] | string;
   zIndex: number;
   isOpen: boolean;
-  windowType: "folder" | "text" | "terminal" | "tetris";
+  windowType: "folder" | "text" | "terminal" | AppId;
   parentId?: string;
   sourceElementId?: string;
   filePath?: string;
@@ -77,6 +121,24 @@ function PersonalPage() {
   const [maxZIndex, setMaxZIndex] = useState(0);
   const [disabledItems, setDisabledItems] = useState<Set<string>>(new Set());
   const [pawModeActive, setPawModeActive] = useState(false);
+  // Fake boot screen, once per browser session.
+  const [booting, setBooting] = useState(() => {
+    try {
+      return !sessionStorage.getItem(BOOT_FLAG);
+    } catch {
+      return false;
+    }
+  });
+  const finishBoot = () => {
+    try {
+      sessionStorage.setItem(BOOT_FLAG, "1");
+    } catch {
+      /* private mode — boot will just replay next visit */
+    }
+    setBooting(false);
+  };
+  // ↑↑↓↓←→←→BA — unleash the paw stamps.
+  useKonami(() => setPawModeActive((prev) => !prev));
   const [clickedItem, setClickedItem] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [startupComplete] = useState(true);
@@ -249,23 +311,24 @@ function PersonalPage() {
     setMaxZIndex(maxZIndex + 1);
   };
 
-  // Open the live multiplayer Tetris (tetris-one-thousand) as a desktop app.
-  // It's a real deployment embedded in a window — every visitor playing here
-  // shares one board with everyone else on the site.
-  const openTetris = () => {
+  // Open a desktop app (tetris, radio, paint) in its own window. Apps are
+  // singletons — reopening one focuses the existing window.
+  const openApp = (appId: AppId) => {
     setClickedItem(null);
-    const existing = windows.find((w) => w.windowType === "tetris");
+    const app = APPS.find((a) => a.id === appId);
+    if (!app) return;
+    const existing = windows.find((w) => w.windowType === appId);
     if (existing) {
       bringToFront(existing.id);
       return;
     }
     const newWindow: WindowState = {
-      id: "tetris",
-      title: "tetris-one-thousand",
+      id: app.id,
+      title: app.title,
       content: "",
       zIndex: maxZIndex + 1,
       isOpen: true,
-      windowType: "tetris",
+      windowType: app.id,
     };
     setWindows([...windows, newWindow]);
     setMaxZIndex(maxZIndex + 1);
@@ -354,6 +417,7 @@ function PersonalPage() {
 
   return (
     <>
+      {booting && <BootSequence onDone={finishBoot} />}
       <div className="font-mono fixed top-0 left-0 w-full h-full bg-term-bg text-term-fg">
         <Header onOpenTerminal={openTerminal} pawModeActive={pawModeActive} onTogglePawMode={() => setPawModeActive(prev => !prev)} themes={themes} themeId={themeId} onSetTheme={setTheme} />
 
@@ -367,20 +431,23 @@ function PersonalPage() {
               <div className="mt-4 mb-1 border-t border-term-border pt-3 pl-2 font-mono text-xs text-term-faint">
                 apps
               </div>
-              <div
-                id="tetris-app"
-                className={`file-container flex items-center p-2 w-full cursor-pointer ${
-                  clickedItem === "tetris-app" ? "bg-term-elevated bg-opacity-60 rounded" : ""
-                }`}
-                onClick={() => setClickedItem("tetris-app")}
-                onDoubleClick={openTetris}
-                title="Massively multiplayer Tetris — everyone shares one board"
-              >
-                <div className="mr-2 flex items-center justify-center w-6 h-6 flex-shrink-0">
-                  <span className="text-xl">🕹️</span>
+              {APPS.map((app) => (
+                <div
+                  key={app.id}
+                  id={`${app.id}-app`}
+                  className={`file-container flex items-center p-2 w-full cursor-pointer ${
+                    clickedItem === `${app.id}-app` ? "bg-term-elevated bg-opacity-60 rounded" : ""
+                  }`}
+                  onClick={() => setClickedItem(`${app.id}-app`)}
+                  onDoubleClick={() => openApp(app.id)}
+                  title={app.hint}
+                >
+                  <div className="mr-2 flex items-center justify-center w-6 h-6 flex-shrink-0">
+                    <span className="text-xl">{app.icon}</span>
+                  </div>
+                  <p className="font-mono text-term-fg text-lg break-all">{app.label}</p>
                 </div>
-                <p className="font-mono text-term-fg text-lg break-all">tetris</p>
-              </div>
+              ))}
             </div>
           </div>
           
@@ -455,11 +522,11 @@ function PersonalPage() {
                 
                 // Limit window width to fit in the content area
                 const contentAreaWidth = window.innerWidth - 350; // Account for sidebar
-                const isTetris = win.windowType === "tetris";
+                const app = APPS.find((a) => a.id === win.windowType);
                 const windowWidth = isMobile
                   ? 350
-                  : Math.min(isTetris ? 900 : 600, contentAreaWidth - 100);
-                const windowHeight = isMobile ? 300 : isTetris ? 560 : 400;
+                  : Math.min(app?.width ?? 600, contentAreaWidth - 100);
+                const windowHeight = isMobile ? 300 : app?.height ?? 400;
                 
                 return (
                   <Window
@@ -501,7 +568,7 @@ function PersonalPage() {
                     ) : win.windowType === "terminal" ? (
                       <Terminal
                         onOpenFile={openFileById}
-                        onOpenTetris={openTetris}
+                        onOpenApp={(id) => openApp(id as AppId)}
                         fileSystem={fileSystem}
                         initialCommand={terminalInitialCommand}
                         commandNonce={commandNonce}
@@ -511,12 +578,17 @@ function PersonalPage() {
                         onClose={() => closeWindow(win.id)}
                       />
                     ) : win.windowType === "tetris" ? (
-                      <iframe
-                        src="https://tetris-one-thousand.onrender.com/"
-                        title="Tetris One Thousand — massively multiplayer Tetris"
-                        className="h-full w-full border-0"
-                        allow="fullscreen"
-                      />
+                      <Suspense fallback={<div className="p-4 font-mono text-sm text-term-dim">loading tetris…</div>}>
+                        <TetrisFrame />
+                      </Suspense>
+                    ) : win.windowType === "radio" ? (
+                      <Suspense fallback={<div className="p-4 font-mono text-sm text-term-dim">tuning…</div>}>
+                        <RadioApp />
+                      </Suspense>
+                    ) : win.windowType === "paint" ? (
+                      <Suspense fallback={<div className="p-4 font-mono text-sm text-term-dim">mixing paint…</div>}>
+                        <PaintApp />
+                      </Suspense>
                     ) : null}
                   </Window>
                 );

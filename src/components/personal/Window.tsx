@@ -157,7 +157,7 @@ export const Window: React.FC<WindowProps> = ({
 
         {/* Window content */}
         <div className="flex-grow overflow-hidden bg-term-bg text-term-fg">
-          {id === 'terminal' || id === 'tetris' ? (
+          {['terminal', 'tetris', 'radio', 'paint'].includes(id) ? (
             <div className="h-full">{children}</div>
           ) : (
             <ClassicScrollbar alwaysShow={true}>

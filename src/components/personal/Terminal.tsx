@@ -15,8 +15,8 @@ type FileItem = {
 
 type TerminalProps = {
   onOpenFile: (fileId: string) => void;
-  // Launch the embedded multiplayer Tetris app window.
-  onOpenTetris?: () => void;
+  // Launch a desktop app window (tetris, radio, paint).
+  onOpenApp?: (appId: string) => void;
   fileSystem: FileItem[];
   // A command to run automatically (e.g. one typed in the home-page prompt).
   initialCommand?: string;
@@ -36,7 +36,7 @@ type TerminalHistory = {
   isError?: boolean;
 };
 
-export function Terminal({ onOpenFile, onOpenTetris, fileSystem, initialCommand, commandNonce, themes, themeId, onSetTheme, onClose }: TerminalProps) {
+export function Terminal({ onOpenFile, onOpenApp, fileSystem, initialCommand, commandNonce, themes, themeId, onSetTheme, onClose }: TerminalProps) {
   const [input, setInput] = useState('');
   const [history, setHistory] = useState<TerminalHistory[]>([
     { 
@@ -129,16 +129,25 @@ export function Terminal({ onOpenFile, onOpenTetris, fileSystem, initialCommand,
   pwd - Show current directory
   theme - List or switch color themes (try 'theme list')
   tetris - Play massively multiplayer Tetris (one shared board!)
+  radio - Tune into SomaFM internet radio
+  paint - Doodle in theme colors
   clear - Clear terminal
   help - Show this help message`;
         break;
 
       case 'tetris':
-        if (onOpenTetris) {
-          onOpenTetris();
-          output = 'Launching tetris-one-thousand… everyone on this site shares one board. Play nice.';
+      case 'radio':
+      case 'paint':
+        if (onOpenApp) {
+          onOpenApp(command);
+          output =
+            command === 'tetris'
+              ? 'Launching tetris-one-thousand… everyone on this site shares one board. Play nice.'
+              : command === 'radio'
+                ? 'Turning the dial…'
+                : 'Fetching brushes…';
         } else {
-          output = 'Tetris is not available here.';
+          output = `${command} is not available here.`;
           isError = true;
         }
         break;
