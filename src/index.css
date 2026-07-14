@@ -113,3 +113,37 @@ a.wikilink {
 a.wikilink:hover {
   text-decoration-style: solid !important;
 }
+
+/* Growth-stage badge tooltip — instant on hover/focus, works without JS.
+   Native title tooltips have a ~1s delay and never show on touch. */
+.stage-badge {
+  position: relative;
+  cursor: help;
+}
+
+.stage-badge::after {
+  content: attr(data-blurb);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  right: 0;
+  width: max-content;
+  max-width: 240px;
+  padding: 6px 10px;
+  border: 1px solid var(--term-border);
+  border-radius: 8px;
+  background: var(--term-elevated);
+  color: var(--term-fg);
+  font-size: 11px;
+  font-family: ui-monospace, monospace;
+  line-height: 1.45;
+  white-space: normal;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 120ms ease;
+  z-index: 50;
+}
+
+.stage-badge:hover::after,
+.stage-badge:focus-visible::after {
+  opacity: 1;
+}
