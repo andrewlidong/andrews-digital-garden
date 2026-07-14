@@ -5,6 +5,7 @@ import remarkGfm from "remark-gfm";
 import rehypeHighlight from "rehype-highlight";
 import { parseFrontmatter, formatDate } from "@/lib/frontmatter";
 import { remarkWikilinks, getBacklinks } from "@/lib/wikilinks";
+import { remarkCallouts } from "@/lib/callouts";
 import { useInternalLinkNav } from "@/lib/useInternalLinkNav";
 
 interface TextContentProps {
@@ -97,7 +98,7 @@ export const TextContent: React.FC<TextContentProps> = ({ content, filename = "f
       {typingComplete ? (
         <div onClick={onProseClick} className="prose prose-invert prose-sm max-w-none prose-headings:text-term-fg prose-p:text-term-fg prose-li:text-term-fg prose-strong:text-term-fg prose-a:text-term-accent prose-a:no-underline hover:prose-a:underline prose-code:rounded prose-code:bg-term-elevated prose-code:px-1.5 prose-code:py-0.5 prose-code:text-term-green prose-code:before:content-none prose-code:after:content-none prose-pre:border prose-pre:border-term-border prose-pre:bg-term-inset prose-blockquote:border-l-term-accent prose-blockquote:text-term-dim prose-img:rounded-lg">
           <ReactMarkdown
-            remarkPlugins={[remarkGfm, remarkWikilinks]}
+            remarkPlugins={[remarkGfm, remarkWikilinks, remarkCallouts]}
             rehypePlugins={[[rehypeHighlight, { detect: true, ignoreMissing: true }]]}
           >
             {body}

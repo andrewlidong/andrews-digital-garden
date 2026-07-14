@@ -13,6 +13,7 @@ import {
   type PostMeta,
 } from "@/lib/frontmatter";
 import { remarkWikilinks, getBacklinks } from "@/lib/wikilinks";
+import { remarkCallouts } from "@/lib/callouts";
 import { useInternalLinkNav } from "@/lib/useInternalLinkNav";
 
 type LoadState = "loading" | "ready" | "notfound";
@@ -105,7 +106,72 @@ function makeHeading(Tag: "h2" | "h3") {
     );
   };
 }
-const headingComponents = { h2: makeHeading("h2"), h3: makeHeading("h3") };
+// <pre> renderer with a language chip and a copy button.
+function PreBlock({ children, ...props }: React.HTMLAttributes<HTMLPreElement>) {
+  const preRef = useRef<HTMLPreElement>(null);
+  const [copied, setCopied] = useState(false);
+
+  let lang = "";
+  const child = Array.isArray(children) ? children[0] : children;
+  if (child && typeof child === "object" && "props" in child) {
+    const cls =
+      (child as React.ReactElement<{ className?: string }>).props.className || "";
+    const m = /language-([\w+-]+)/.exec(cls);
+    if (m && !/^(plaintext|text)$/i.test(m[1])) lang = m[1];
+  }
+
+  const copy = async () => {
+    const text =
+      preRef.current?.querySelector("code")?.textContent ??
+      preRef.current?.textContent ??
+      "";
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch {
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      ta.remove();
+    }
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1600);
+  };
+
+  return (
+    <div className="group relative">
+      <div className="absolute right-2 top-2 flex items-center gap-2">
+        {lang && (
+          <span className="rounded border border-term-border/60 bg-term-bg/70 px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-wider text-term-faint">
+            {lang}
+          </span>
+        )}
+        <button
+          type="button"
+          onClick={copy}
+          aria-label="Copy code"
+          className={`rounded border px-1.5 py-0.5 font-mono text-[10px] transition-all ${
+            copied
+              ? "border-term-green/60 bg-term-bg/70 text-term-green opacity-100"
+              : "border-term-border/60 bg-term-bg/70 text-term-faint opacity-0 hover:text-term-accent group-hover:opacity-100"
+          }`}
+        >
+          {copied ? "copied ✓" : "copy"}
+        </button>
+      </div>
+      <pre ref={preRef} {...props}>
+        {children}
+      </pre>
+    </div>
+  );
+}
+
+const markdownComponents = {
+  h2: makeHeading("h2"),
+  h3: makeHeading("h3"),
+  pre: PreBlock,
+};
 
 // Find the previous (newer) and next (older) posts in the same folder, by date.
 function findNeighbors(section: string, filePath: string) {
@@ -154,6 +220,24 @@ export default function ReaderPage() {
   const backlinks = useMemo(() => getBacklinks(filePath), [filePath]);
   const headings = useMemo(() => extractHeadings(body), [body]);
   const onProseClick = useInternalLinkNav();
+
+  // Scroll-spy: the ToC highlights the section currently being read.
+  const [activeHeading, setActiveHeading] = useState("");
+  useEffect(() => {
+    if (state !== "ready" || headings.length < 3) return;
+    const onScroll = () => {
+      const els = document.querySelectorAll<HTMLElement>("article h2[id], article h3[id]");
+      let current = "";
+      for (const el of els) {
+        if (el.getBoundingClientRect().top <= 130) current = el.id;
+        else break;
+      }
+      setActiveHeading(current);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [state, headings]);
 
   useEffect(() => {
     let cancelled = false;
@@ -300,25 +384,32 @@ export default function ReaderPage() {
               >
                 <div className="mb-2 text-xs text-term-faint">on this page</div>
                 <ul className="space-y-1.5">
-                  {headings.map((h, i) => (
-                    <li key={`${h.id}-${i}`} className={h.depth === 3 ? "pl-4" : ""}>
-                      <a
-                        href={`#${h.id}`}
-                        className="text-term-dim transition-colors hover:text-term-accent"
-                      >
-                        {h.text}
-                      </a>
-                    </li>
-                  ))}
+                  {headings.map((h, i) => {
+                    const active = h.id === activeHeading;
+                    return (
+                      <li key={`${h.id}-${i}`} className={h.depth === 3 ? "pl-4" : ""}>
+                        <a
+                          href={`#${h.id}`}
+                          className={`border-l-2 pl-2 transition-colors ${
+                            active
+                              ? "border-term-accent text-term-accent"
+                              : "border-transparent text-term-dim hover:text-term-accent"
+                          }`}
+                        >
+                          {h.text}
+                        </a>
+                      </li>
+                    );
+                  })}
                 </ul>
               </nav>
             )}
 
             <div onClick={onProseClick} className="prose prose-invert max-w-none sm:prose-lg prose-headings:font-semibold prose-headings:tracking-tight prose-headings:text-term-fg prose-p:text-term-fg prose-li:text-term-fg prose-strong:text-term-fg prose-a:text-term-accent prose-a:no-underline hover:prose-a:underline prose-code:rounded prose-code:bg-term-elevated prose-code:px-1.5 prose-code:py-0.5 prose-code:text-term-green prose-code:before:content-none prose-code:after:content-none prose-pre:border prose-pre:border-term-border prose-pre:bg-term-inset prose-blockquote:border-l-term-accent prose-blockquote:text-term-dim prose-img:rounded-lg">
               <ReactMarkdown
-                remarkPlugins={[remarkGfm, remarkWikilinks]}
+                remarkPlugins={[remarkGfm, remarkWikilinks, remarkCallouts]}
                 rehypePlugins={[[rehypeHighlight, { detect: true, ignoreMissing: true }]]}
-                components={headingComponents}
+                components={markdownComponents}
               >
                 {body}
               </ReactMarkdown>

@@ -114,3 +114,48 @@ a.wikilink:hover {
   text-decoration-style: solid !important;
 }
 
+
+/* Callouts — blockquotes opening with [!NOTE] / [!TIP] / [!IMPORTANT] /
+   [!WARNING] / [!CAUTION] render as styled asides (see src/lib/callouts.ts).
+   The type label comes from the data-callout attribute. */
+blockquote.callout {
+  font-style: normal;
+  border-left-width: 3px;
+  border-radius: 0 0.5rem 0.5rem 0;
+  background: color-mix(in srgb, var(--term-bg-elevated) 55%, transparent);
+  padding: 0.75rem 1rem;
+}
+blockquote.callout p {
+  font-style: normal;
+}
+blockquote.callout p:first-of-type {
+  margin-top: 0;
+}
+blockquote.callout p:last-of-type {
+  margin-bottom: 0;
+}
+blockquote.callout::before {
+  content: attr(data-callout);
+  display: block;
+  margin-bottom: 0.35rem;
+  font-family: ui-monospace, monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+blockquote.callout-note { border-left-color: var(--term-accent); }
+blockquote.callout-note::before { color: var(--term-accent); }
+blockquote.callout-tip { border-left-color: var(--term-green); }
+blockquote.callout-tip::before { color: var(--term-green); }
+blockquote.callout-important { border-left-color: var(--term-magenta); }
+blockquote.callout-important::before { color: var(--term-magenta); }
+blockquote.callout-warning { border-left-color: var(--term-yellow); }
+blockquote.callout-warning::before { color: var(--term-yellow); }
+blockquote.callout-caution { border-left-color: var(--term-red); }
+blockquote.callout-caution::before { color: var(--term-red); }
+/* Callouts are asides, not quotations — suppress the prose plugin's
+   decorative quote marks. */
+blockquote.callout p:first-of-type::before,
+blockquote.callout p:last-of-type::after {
+  content: none;
+}
