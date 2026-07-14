@@ -25,7 +25,6 @@ function App() {
           } />
           <Route path="/mobile" element={<MobilePage />} />
           <Route path="/blog" element={<BlogIndex />} />
-          <Route path="/now" element={<Navigate to="/read/now" replace />} />
           <Route path="/read/*" element={<ReaderPage />} />
         </Routes>
       </Suspense>
