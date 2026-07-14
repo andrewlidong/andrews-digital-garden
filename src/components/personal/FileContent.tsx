@@ -5,6 +5,7 @@ import rehypeHighlight from 'rehype-highlight';
 import { parseFrontmatter, formatDate } from '@/lib/frontmatter';
 import { remarkWikilinks } from '@/lib/wikilinks';
 import { StageBadge } from '@/components/ui/StageBadge';
+import { useInternalLinkNav } from '@/lib/useInternalLinkNav';
 
 interface FileContentProps {
   content: string;
@@ -12,6 +13,7 @@ interface FileContentProps {
 }
 
 export const FileContent: React.FC<FileContentProps> = ({ content, fileType }) => {
+  const onProseClick = useInternalLinkNav();
   const renderContent = () => {
     switch (fileType.toLowerCase()) {
       case '.md':
@@ -37,7 +39,7 @@ export const FileContent: React.FC<FileContentProps> = ({ content, fileType }) =
                 )}
               </div>
             )}
-            <div className="prose prose-invert max-w-none prose-headings:text-term-fg prose-p:text-term-fg prose-li:text-term-fg prose-strong:text-term-fg prose-a:text-term-accent prose-a:no-underline hover:prose-a:underline prose-code:rounded prose-code:bg-term-elevated prose-code:px-1.5 prose-code:py-0.5 prose-code:text-term-green prose-code:before:content-none prose-code:after:content-none prose-pre:border prose-pre:border-term-border prose-pre:bg-term-inset prose-blockquote:border-l-term-accent prose-blockquote:text-term-dim prose-img:rounded-lg">
+            <div onClick={onProseClick} className="prose prose-invert max-w-none prose-headings:text-term-fg prose-p:text-term-fg prose-li:text-term-fg prose-strong:text-term-fg prose-a:text-term-accent prose-a:no-underline hover:prose-a:underline prose-code:rounded prose-code:bg-term-elevated prose-code:px-1.5 prose-code:py-0.5 prose-code:text-term-green prose-code:before:content-none prose-code:after:content-none prose-pre:border prose-pre:border-term-border prose-pre:bg-term-inset prose-blockquote:border-l-term-accent prose-blockquote:text-term-dim prose-img:rounded-lg">
               <ReactMarkdown
                 remarkPlugins={[remarkGfm, remarkWikilinks]}
                 rehypePlugins={[[rehypeHighlight, { detect: true, ignoreMissing: true }]]}

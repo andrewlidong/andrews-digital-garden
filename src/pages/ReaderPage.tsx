@@ -14,6 +14,7 @@ import {
 } from "@/lib/frontmatter";
 import { remarkWikilinks, getBacklinks } from "@/lib/wikilinks";
 import { StageBadge } from "@/components/ui/StageBadge";
+import { useInternalLinkNav } from "@/lib/useInternalLinkNav";
 
 type LoadState = "loading" | "ready" | "notfound";
 
@@ -51,7 +52,10 @@ function findNeighbors(section: string, filePath: string) {
 export default function ReaderPage() {
   const params = useParams();
   const navigate = useNavigate();
-  const splat = params["*"] || "";
+  // GitHub Pages serves the pre-rendered share pages from <slug>/index.html
+  // and 301s bare URLs to the trailing-slash form — strip it, or the file
+  // fetch below becomes "/files/blog/<slug>/.md" and 404s.
+  const splat = (params["*"] || "").replace(/\/+$/, "");
   // Honor the active theme on direct loads of a post URL.
   useTheme();
 
@@ -74,6 +78,7 @@ export default function ReaderPage() {
     [section, filePath]
   );
   const backlinks = useMemo(() => getBacklinks(filePath), [filePath]);
+  const onProseClick = useInternalLinkNav();
 
   useEffect(() => {
     let cancelled = false;
@@ -218,7 +223,7 @@ export default function ReaderPage() {
               )}
             </div>
 
-            <div className="prose prose-invert max-w-none sm:prose-lg prose-headings:font-semibold prose-headings:tracking-tight prose-headings:text-term-fg prose-p:text-term-fg prose-li:text-term-fg prose-strong:text-term-fg prose-a:text-term-accent prose-a:no-underline hover:prose-a:underline prose-code:rounded prose-code:bg-term-elevated prose-code:px-1.5 prose-code:py-0.5 prose-code:text-term-green prose-code:before:content-none prose-code:after:content-none prose-pre:border prose-pre:border-term-border prose-pre:bg-term-inset prose-blockquote:border-l-term-accent prose-blockquote:text-term-dim prose-img:rounded-lg">
+            <div onClick={onProseClick} className="prose prose-invert max-w-none sm:prose-lg prose-headings:font-semibold prose-headings:tracking-tight prose-headings:text-term-fg prose-p:text-term-fg prose-li:text-term-fg prose-strong:text-term-fg prose-a:text-term-accent prose-a:no-underline hover:prose-a:underline prose-code:rounded prose-code:bg-term-elevated prose-code:px-1.5 prose-code:py-0.5 prose-code:text-term-green prose-code:before:content-none prose-code:after:content-none prose-pre:border prose-pre:border-term-border prose-pre:bg-term-inset prose-blockquote:border-l-term-accent prose-blockquote:text-term-dim prose-img:rounded-lg">
               <ReactMarkdown
                 remarkPlugins={[remarkGfm, remarkWikilinks]}
                 rehypePlugins={[[rehypeHighlight, { detect: true, ignoreMissing: true }]]}
