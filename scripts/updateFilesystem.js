@@ -75,10 +75,63 @@ function generateFilesystemStructure(dir) {
     };
 }
 
+// ---------------------------------------------------------------------------
+// Wikilinks: [[Some Page]] / [[Some Page|label]] in markdown bodies resolve to
+// other files by frontmatter title or filename. Each file node gets a `links`
+// array of resolved /files/... paths so the UI can render backlinks without
+// fetching every file. Mirrors the resolution in src/lib/wikilinks.ts.
+// ---------------------------------------------------------------------------
+
+const WIKILINK_RE = /\[\[([^[\]|]+)(?:\|([^[\]]+))?\]\]/g;
+
+function walkFiles(nodes, visit) {
+    for (const node of nodes) {
+        if (node.type === 'file') visit(node);
+        else if (node.children) walkFiles(node.children, visit);
+    }
+}
+
+function annotateWikilinks(structure) {
+    // Pass 1: index every markdown file by title and filename.
+    const index = new Map();
+    const add = (key, filePath) => {
+        const k = (key || '').trim().toLowerCase();
+        if (k && !index.has(k)) index.set(k, filePath);
+    };
+    walkFiles(structure, (node) => {
+        if (!/\.(md|markdown)$/i.test(node.name)) return;
+        const base = node.name.replace(/\.(md|markdown)$/i, '');
+        add(node.title, node.path);
+        add(base, node.path);
+        add(base.replace(/[-_]+/g, ' '), node.path);
+    });
+
+    // Pass 2: scan each file's body (code blocks excluded) for wikilinks.
+    walkFiles(structure, (node) => {
+        if (!/\.(md|markdown)$/i.test(node.name)) return;
+        const abs = path.join(PUBLIC_FILES_DIR, node.path.replace(/^\/files\//, ''));
+        const body = fs.readFileSync(abs, 'utf8')
+            .replace(/^﻿?---\s*\n[\s\S]*?\n---\s*\n?/, '')
+            .replace(/```[\s\S]*?```/g, '')
+            .replace(/`[^`\n]*`/g, '');
+        const links = new Set();
+        let m;
+        WIKILINK_RE.lastIndex = 0;
+        while ((m = WIKILINK_RE.exec(body))) {
+            const key = m[1].trim().toLowerCase();
+            const resolved = index.get(key) || index.get(key.replace(/[-_]+/g, ' '));
+            if (resolved && resolved !== node.path) links.add(resolved);
+            else if (!resolved) console.warn(`   ⚠ unresolved wikilink [[${m[1].trim()}]] in ${node.path}`);
+        }
+        if (links.size) node.links = [...links].sort();
+    });
+}
+
 // Function to update filesystem.json
 function updateFilesystem() {
     try {
         const structure = generateFilesystemStructure(PUBLIC_FILES_DIR);
+        annotateWikilinks(structure);
         fs.writeFileSync(
             FILESYSTEM_JSON_PATH,
             JSON.stringify(structure, null, 4)

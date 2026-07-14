@@ -22,7 +22,7 @@ Tetris One Thousand is a cooperative multiplayer Tetris where every player share
 ### How It Works
 The server is authoritative for everything: clients send intents like `{"action": "hard_drop"}` and render whatever state comes back. A background asyncio task ticks gravity while each WebSocket connection applies player actions to a shared `GameEngine`; after any mutation the server broadcasts only the cells that changed. Movement validates against locked cells only — active pieces pass through each other like ghosts, which keeps a crowded board fair. Tested in three layers: unit tests on the pure engine, in-process WebSocket integration tests via FastAPI's `TestClient`, and a load-test harness of N asyncio clients firing random actions.
 
-Read the full write-up: [Building Massively Multiplayer Tetris](https://andrewlidong.xyz/read/blog/building-massively-multiplayer-tetris).
+Read the full write-up: [[Building Massively Multiplayer Tetris]].
 
 ### Live Demo
 Play it at [tetris-one-thousand.onrender.com](https://tetris-one-thousand.onrender.com/).

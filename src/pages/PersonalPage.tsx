@@ -83,7 +83,6 @@ function PersonalPage() {
   const [homeInput, setHomeInput] = useState("");
   const [terminalInitialCommand, setTerminalInitialCommand] = useState<string | undefined>(undefined);
   const [commandNonce, setCommandNonce] = useState(0);
-  const readmeOpenedRef = useRef(false);
   // Active terminal "rice" theme. Applied as CSS variables; shared with the
   // Header (palette dropdown) and Terminal (`theme` command) so users can switch.
   const { themeId, setTheme, themes } = useTheme();

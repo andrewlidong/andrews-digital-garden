@@ -12,6 +12,7 @@ import {
   readerPath,
   type PostMeta,
 } from "@/lib/frontmatter";
+import { remarkWikilinks, getBacklinks } from "@/lib/wikilinks";
 
 type LoadState = "loading" | "ready" | "notfound";
 
@@ -71,6 +72,7 @@ export default function ReaderPage() {
     () => findNeighbors(section, filePath),
     [section, filePath]
   );
+  const backlinks = useMemo(() => getBacklinks(filePath), [filePath]);
 
   useEffect(() => {
     let cancelled = false;
@@ -211,12 +213,38 @@ export default function ReaderPage() {
 
             <div className="prose prose-invert max-w-none sm:prose-lg prose-headings:font-semibold prose-headings:tracking-tight prose-headings:text-term-fg prose-p:text-term-fg prose-li:text-term-fg prose-strong:text-term-fg prose-a:text-term-accent prose-a:no-underline hover:prose-a:underline prose-code:rounded prose-code:bg-term-elevated prose-code:px-1.5 prose-code:py-0.5 prose-code:text-term-green prose-code:before:content-none prose-code:after:content-none prose-pre:border prose-pre:border-term-border prose-pre:bg-term-inset prose-blockquote:border-l-term-accent prose-blockquote:text-term-dim prose-img:rounded-lg">
               <ReactMarkdown
-                remarkPlugins={[remarkGfm]}
+                remarkPlugins={[remarkGfm, remarkWikilinks]}
                 rehypePlugins={[[rehypeHighlight, { detect: true, ignoreMissing: true }]]}
               >
                 {body}
               </ReactMarkdown>
             </div>
+
+            {/* Backlinks — pages elsewhere in the garden that link here */}
+            {backlinks.length > 0 && (
+              <aside className="mt-14 rounded-lg border border-term-border/70 bg-term-elevated/30 p-4 sm:mt-16">
+                <div className="mb-3 font-mono text-xs text-term-faint">
+                  Linked from
+                </div>
+                <ul className="space-y-2">
+                  {backlinks.map((bl) => (
+                    <li key={bl.path}>
+                      <Link
+                        to={bl.to}
+                        className="group inline-flex items-baseline gap-2 text-sm"
+                      >
+                        <span className="font-mono text-xs text-term-faint">
+                          ~/{bl.section}
+                        </span>
+                        <span className="text-term-dim group-hover:text-term-accent">
+                          {bl.title}
+                        </span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </aside>
+            )}
 
             {/* Prev / next navigation */}
             {(prev || next) && (

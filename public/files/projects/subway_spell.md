@@ -26,6 +26,8 @@ Subway Spell (a.k.a. train-anagrams) turns the NYC subway map into an alphabet. 
 ### How It Works
 Live MTA data (stations, routes, transfers, and line geometry) is fetched once from NY State open data and cached in localStorage. Stations are grouped into complexes to build a transfer graph, and because each lettered train is a single line, a word fixes the exact line sequence — so finding a trip becomes a small layered shortest-path that picks the best transfer station between each pair of lines. The route is traced along real track geometry in official MTA colors. No backend — everything runs in the browser against public open-data APIs.
 
+Read the full write-up: [[Spelling words with the Subway]].
+
 ### Live Demo
 Try it at [andrewlidong.github.io/train-anagrams](https://andrewlidong.github.io/train-anagrams/).
 

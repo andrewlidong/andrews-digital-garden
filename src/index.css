@@ -102,3 +102,14 @@ html {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
+/* Wikilinks — internal garden links get a soft dashed underline so they read
+   as "another page in the garden" rather than an external link. */
+a.wikilink {
+  text-decoration: underline dashed
+    color-mix(in srgb, var(--term-accent) 55%, transparent) !important;
+  text-underline-offset: 3px;
+}
+
+a.wikilink:hover {
+  text-decoration-style: solid !important;
+}
