@@ -15,6 +15,8 @@ type FileItem = {
 
 type TerminalProps = {
   onOpenFile: (fileId: string) => void;
+  // Launch the embedded multiplayer Tetris app window.
+  onOpenTetris?: () => void;
   fileSystem: FileItem[];
   // A command to run automatically (e.g. one typed in the home-page prompt).
   initialCommand?: string;
@@ -34,7 +36,7 @@ type TerminalHistory = {
   isError?: boolean;
 };
 
-export function Terminal({ onOpenFile, fileSystem, initialCommand, commandNonce, themes, themeId, onSetTheme, onClose }: TerminalProps) {
+export function Terminal({ onOpenFile, onOpenTetris, fileSystem, initialCommand, commandNonce, themes, themeId, onSetTheme, onClose }: TerminalProps) {
   const [input, setInput] = useState('');
   const [history, setHistory] = useState<TerminalHistory[]>([
     { 
@@ -126,8 +128,19 @@ export function Terminal({ onOpenFile, fileSystem, initialCommand, commandNonce,
   vim [file] - Open file full screen (alias: nvim)
   pwd - Show current directory
   theme - List or switch color themes (try 'theme list')
+  tetris - Play massively multiplayer Tetris (one shared board!)
   clear - Clear terminal
   help - Show this help message`;
+        break;
+
+      case 'tetris':
+        if (onOpenTetris) {
+          onOpenTetris();
+          output = 'Launching tetris-one-thousand… everyone on this site shares one board. Play nice.';
+        } else {
+          output = 'Tetris is not available here.';
+          isError = true;
+        }
         break;
 
       case 'theme': {

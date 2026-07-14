@@ -36,7 +36,7 @@ type WindowState = {
   content: FileItem[] | string;
   zIndex: number;
   isOpen: boolean;
-  windowType: "folder" | "text" | "terminal";
+  windowType: "folder" | "text" | "terminal" | "tetris";
   parentId?: string;
   sourceElementId?: string;
   filePath?: string;
@@ -249,6 +249,28 @@ function PersonalPage() {
     setMaxZIndex(maxZIndex + 1);
   };
 
+  // Open the live multiplayer Tetris (tetris-one-thousand) as a desktop app.
+  // It's a real deployment embedded in a window — every visitor playing here
+  // shares one board with everyone else on the site.
+  const openTetris = () => {
+    setClickedItem(null);
+    const existing = windows.find((w) => w.windowType === "tetris");
+    if (existing) {
+      bringToFront(existing.id);
+      return;
+    }
+    const newWindow: WindowState = {
+      id: "tetris",
+      title: "tetris-one-thousand",
+      content: "",
+      zIndex: maxZIndex + 1,
+      isOpen: true,
+      windowType: "tetris",
+    };
+    setWindows([...windows, newWindow]);
+    setMaxZIndex(maxZIndex + 1);
+  };
+
   // Open the terminal and run a command typed in the home-page prompt.
   const openTerminalWithCommand = (cmd: string) => {
     setTerminalInitialCommand(cmd);
@@ -340,6 +362,25 @@ function PersonalPage() {
           <div className="w-[320px] min-w-[320px] border-r border-term-border pl-6 pr-4 overflow-y-auto">
             <div className="grid grid-flow-row gap-2 pb-20">
               {fileSystem.map((item) => renderFileOrFolder(item))}
+
+              {/* Apps — live things, not documents */}
+              <div className="mt-4 mb-1 border-t border-term-border pt-3 pl-2 font-mono text-xs text-term-faint">
+                apps
+              </div>
+              <div
+                id="tetris-app"
+                className={`file-container flex items-center p-2 w-full cursor-pointer ${
+                  clickedItem === "tetris-app" ? "bg-term-elevated bg-opacity-60 rounded" : ""
+                }`}
+                onClick={() => setClickedItem("tetris-app")}
+                onDoubleClick={openTetris}
+                title="Massively multiplayer Tetris — everyone shares one board"
+              >
+                <div className="mr-2 flex items-center justify-center w-6 h-6 flex-shrink-0">
+                  <span className="text-xl">🕹️</span>
+                </div>
+                <p className="font-mono text-term-fg text-lg break-all">tetris</p>
+              </div>
             </div>
           </div>
           
@@ -414,8 +455,11 @@ function PersonalPage() {
                 
                 // Limit window width to fit in the content area
                 const contentAreaWidth = window.innerWidth - 350; // Account for sidebar
-                const windowWidth = isMobile ? 350 : Math.min(600, contentAreaWidth - 100);
-                const windowHeight = isMobile ? 300 : 400;
+                const isTetris = win.windowType === "tetris";
+                const windowWidth = isMobile
+                  ? 350
+                  : Math.min(isTetris ? 900 : 600, contentAreaWidth - 100);
+                const windowHeight = isMobile ? 300 : isTetris ? 560 : 400;
                 
                 return (
                   <Window
@@ -457,6 +501,7 @@ function PersonalPage() {
                     ) : win.windowType === "terminal" ? (
                       <Terminal
                         onOpenFile={openFileById}
+                        onOpenTetris={openTetris}
                         fileSystem={fileSystem}
                         initialCommand={terminalInitialCommand}
                         commandNonce={commandNonce}
@@ -464,6 +509,13 @@ function PersonalPage() {
                         themeId={themeId}
                         onSetTheme={setTheme}
                         onClose={() => closeWindow(win.id)}
+                      />
+                    ) : win.windowType === "tetris" ? (
+                      <iframe
+                        src="https://tetris-one-thousand.onrender.com/"
+                        title="Tetris One Thousand — massively multiplayer Tetris"
+                        className="h-full w-full border-0"
+                        allow="fullscreen"
                       />
                     ) : null}
                   </Window>
