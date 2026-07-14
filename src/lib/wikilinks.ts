@@ -39,6 +39,16 @@ export interface Backlink {
 
 export const WIKILINK_RE = /\[\[([^[\]|]+)(?:\|([^[\]]+))?\]\]/g;
 
+// Wikilinks can also target site pages, not just garden files:
+// [[blog]] -> the blog index, [[home]] -> the desktop.
+// Mirrored in scripts/updateFilesystem.js so they aren't flagged unresolved.
+export const PAGE_ALIASES: Record<string, string> = {
+  blog: '/blog',
+  writing: '/blog',
+  home: '/',
+  desktop: '/',
+};
+
 function isMarkdown(name: string): boolean {
   return /\.(md|markdown)$/i.test(name);
 }
@@ -114,13 +124,14 @@ function splitTextNode(value: string): MdNode[] | null {
   while ((m = WIKILINK_RE.exec(value))) {
     const target = m[1].trim();
     const label = (m[2] || m[1]).trim();
-    const path = resolveWikilink(target);
+    const alias = PAGE_ALIASES[target.toLowerCase()];
+    const path = alias ? null : resolveWikilink(target);
     if (m.index > last) out.push({ type: 'text', value: value.slice(last, m.index) });
-    if (path) {
+    if (alias || path) {
       resolvedAny = true;
       out.push({
         type: 'link',
-        url: readerPath(path),
+        url: alias || readerPath(path as string),
         data: { hProperties: { className: 'wikilink' } },
         children: [{ type: 'text', value: label }],
       });

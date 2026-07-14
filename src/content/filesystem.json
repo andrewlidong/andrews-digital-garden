@@ -3,7 +3,14 @@
         "id": "readme_md",
         "name": "README.md",
         "type": "file",
-        "path": "/files/README.md"
+        "path": "/files/README.md",
+        "links": [
+            "/files/blog/building-massively-multiplayer-tetris.md",
+            "/files/blog/spelling-words-with-the-subway.md",
+            "/files/notes/Recurse Center Return Statement.md",
+            "/files/projects/subway_spell.md",
+            "/files/projects/tetris_one_thousand.md"
+        ]
     },
     {
         "id": "blog",
@@ -84,7 +91,15 @@
                 "id": "recurse_center_return_statement_md",
                 "name": "Recurse Center Return Statement.md",
                 "type": "file",
-                "path": "/files/notes/Recurse Center Return Statement.md"
+                "path": "/files/notes/Recurse Center Return Statement.md",
+                "links": [
+                    "/files/blog/writing-a-cli-in-zig.md",
+                    "/files/blog/writing-a-spectral-ray-tracer-in.md",
+                    "/files/projects/catch_that_qubit.md",
+                    "/files/projects/flight_simulator.md",
+                    "/files/projects/keystone_light.md",
+                    "/files/projects/sorting_octopus.md"
+                ]
             }
         ]
     },
@@ -97,7 +112,10 @@
                 "id": "babyline_md",
                 "name": "babyline.md",
                 "type": "file",
-                "path": "/files/projects/babyline.md"
+                "path": "/files/projects/babyline.md",
+                "links": [
+                    "/files/blog/writing-a-cli-in-zig.md"
+                ]
             },
             {
                 "id": "big2s_md",
@@ -200,7 +218,10 @@
                 "id": "rc_webring_md",
                 "name": "rc_webring.md",
                 "type": "file",
-                "path": "/files/webrings/rc_webring.md"
+                "path": "/files/webrings/rc_webring.md",
+                "links": [
+                    "/files/notes/Recurse Center Return Statement.md"
+                ]
             },
             {
                 "id": "rc_webring_v2_md",

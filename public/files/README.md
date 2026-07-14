@@ -6,6 +6,15 @@ Hello! I'm Andrew, a software engineer with a background in pure mathematics and
 
 Unlike traditional blogs or portfolios, a digital garden is an evolving collection of ideas, projects, and interests that grow and develop over time. It's less about polished final products and more about the journey of exploration and learning.
 
+## Where to Start
+
+A few well-trodden paths through the garden:
+
+- [[Building Massively Multiplayer Tetris]] — how [[Tetris One Thousand]], a cooperative Tetris on one shared board, works under the hood
+- [[Spelling words with the Subway]] — the story behind [[Subway Spell]], which turns the NYC subway map into an alphabet
+- [[Recurse Center Return Statement]] — what a batch at the Recurse Center meant to me
+- Or browse [[blog|everything I've written]]
+
 ## My Journey
 
 ### From Mathematics to Kitchens to Code

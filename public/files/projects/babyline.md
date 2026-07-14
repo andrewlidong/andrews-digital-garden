@@ -4,6 +4,8 @@
 
 babyline is a small Zig CLI demo, originally built by following a terminal/CLI guide and extended from there into a typed command and option parser with a test suite and auto-generated docs.
 
+Read the full write-up: [[writing a cli in zig]].
+
 ### Technologies Used
 - Zig
 

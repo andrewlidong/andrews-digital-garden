@@ -84,6 +84,11 @@ function generateFilesystemStructure(dir) {
 
 const WIKILINK_RE = /\[\[([^[\]|]+)(?:\|([^[\]]+))?\]\]/g;
 
+// Site-page targets like [[blog]] resolve to routes, not files; they carry no
+// backlinks, so the scan just needs to know they're valid. Mirrors
+// PAGE_ALIASES in src/lib/wikilinks.ts.
+const PAGE_ALIASES = new Set(['blog', 'writing', 'home', 'desktop']);
+
 function walkFiles(nodes, visit) {
     for (const node of nodes) {
         if (node.type === 'file') visit(node);
@@ -119,6 +124,7 @@ function annotateWikilinks(structure) {
         WIKILINK_RE.lastIndex = 0;
         while ((m = WIKILINK_RE.exec(body))) {
             const key = m[1].trim().toLowerCase();
+            if (PAGE_ALIASES.has(key)) continue;
             const resolved = index.get(key) || index.get(key.replace(/[-_]+/g, ' '));
             if (resolved && resolved !== node.path) links.add(resolved);
             else if (!resolved) console.warn(`   ⚠ unresolved wikilink [[${m[1].trim()}]] in ${node.path}`);
