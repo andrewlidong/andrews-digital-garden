@@ -11,6 +11,9 @@ const NotFound = lazyRetry(() => import("./pages/NotFound"));
 const CommandPalette = lazyRetry(() =>
   import("./components/ui/CommandPalette").then((m) => ({ default: m.CommandPalette }))
 );
+const WikilinkPreviews = lazyRetry(() =>
+  import("./components/ui/WikilinkPreviews").then((m) => ({ default: m.WikilinkPreviews }))
+);
 
 function App() {
   const isMobile = useMobileDetect();
@@ -19,6 +22,7 @@ function App() {
     <Router>
       <Suspense fallback={null}>
         <CommandPalette />
+        <WikilinkPreviews />
         <Routes>
           <Route path="/" element={
             isMobile ?

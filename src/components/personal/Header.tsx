@@ -9,6 +9,7 @@ interface MenuItem {
 
 interface HeaderProps {
   onOpenTerminal?: () => void;
+  onOpenGraph?: () => void;
   pawModeActive?: boolean;
   onTogglePawMode?: () => void;
   themes?: Theme[];
@@ -16,7 +17,7 @@ interface HeaderProps {
   onSetTheme?: (id: string) => void;
 }
 
-export const Header: React.FC<HeaderProps> = ({ onOpenTerminal, pawModeActive, onTogglePawMode, themes, themeId, onSetTheme }) => {
+export const Header: React.FC<HeaderProps> = ({ onOpenTerminal, onOpenGraph, pawModeActive, onTogglePawMode, themes, themeId, onSetTheme }) => {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const navigate = useNavigate();
 
@@ -167,6 +168,16 @@ export const Header: React.FC<HeaderProps> = ({ onOpenTerminal, pawModeActive, o
                 <MenuDropdown items={webringMenuItems} />
               )}
             </div>
+            {onOpenGraph && (
+              <div className="relative">
+                <button
+                  onClick={onOpenGraph}
+                  className="px-2 py-1 rounded text-term-dim hover:text-term-fg hover:bg-term-elevated"
+                >
+                  graph
+                </button>
+              </div>
+            )}
             {onOpenTerminal && (
               <div className="relative">
                 <button

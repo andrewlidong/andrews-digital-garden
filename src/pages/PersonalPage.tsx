@@ -28,6 +28,9 @@ const RadioApp = lazyRetry(() =>
 const PaintApp = lazyRetry(() =>
   import("@/components/personal/PaintApp").then((m) => ({ default: m.PaintApp }))
 );
+const GraphApp = lazyRetry(() =>
+  import("@/components/personal/GraphApp").then((m) => ({ default: m.GraphApp }))
+);
 
 // Desktop apps — live things, not documents. Each opens in its own window.
 // The sidebar section is hidden for now (flip SHOW_APPS to bring it back);
@@ -61,6 +64,15 @@ const APPS = [
     hint: "Doodle in theme colors",
     width: 680,
     height: 520,
+  },
+  {
+    id: "graph",
+    icon: "🕸️",
+    label: "graph",
+    title: "garden graph",
+    hint: "Every page and the wikilinks between them",
+    width: 760,
+    height: 560,
   },
 ] as const;
 
@@ -425,6 +437,29 @@ function PersonalPage() {
     }
   };
 
+  // Open a file by its /files/... path — used by wikilinks inside desktop
+  // windows so they open the target in a NEW window beside the current one
+  // (parallel browsing, malloc.dog/Matuschak style) instead of leaving the
+  // desktop for the reader.
+  const openFileByPath = (filePath: string): boolean => {
+    const findByPath = (items: FileItem[]): FileItem | null => {
+      for (const item of items) {
+        if (item.type === "file" && item.path === filePath) return item;
+        if (item.type === "folder" && item.children) {
+          const found = findByPath(item.children);
+          if (found) return found;
+        }
+      }
+      return null;
+    };
+    const file = findByPath(fileSystem);
+    if (file) {
+      openWindow(file);
+      return true;
+    }
+    return false;
+  };
+
   const renderFileOrFolder = (item: FileItem, parentId?: string) => {
     const isItemDisabled = isDisabled(item.id);
 
@@ -457,7 +492,7 @@ function PersonalPage() {
   return (
     <>
       <div className="font-mono fixed top-0 left-0 w-full h-full bg-term-bg text-term-fg">
-        <Header onOpenTerminal={openTerminal} pawModeActive={pawModeActive} onTogglePawMode={() => setPawModeActive(prev => !prev)} themes={themes} themeId={themeId} onSetTheme={setTheme} />
+        <Header onOpenTerminal={openTerminal} onOpenGraph={() => openApp("graph")} pawModeActive={pawModeActive} onTogglePawMode={() => setPawModeActive(prev => !prev)} themes={themes} themeId={themeId} onSetTheme={setTheme} />
 
         <div className="flex h-[calc(100vh-60px)] pt-4">
           {/* Left sidebar with filesystem */}
@@ -619,7 +654,12 @@ function PersonalPage() {
                       </div>
                     ) : win.windowType === "text" && typeof win.content === "string" ? (
                       <Suspense fallback={<div className="p-4 text-term-dim text-sm">Loading…</div>}>
-                        <TextContent content={win.content} filename={win.title} filePath={win.filePath} />
+                        <TextContent
+                          content={win.content}
+                          filename={win.title}
+                          filePath={win.filePath}
+                          onOpenWikilink={openFileByPath}
+                        />
                       </Suspense>
                     ) : win.windowType === "terminal" ? (
                       <Terminal
@@ -644,6 +684,10 @@ function PersonalPage() {
                     ) : win.windowType === "paint" ? (
                       <Suspense fallback={<div className="p-4 font-mono text-sm text-term-dim">mixing paint…</div>}>
                         <PaintApp />
+                      </Suspense>
+                    ) : win.windowType === "graph" ? (
+                      <Suspense fallback={<div className="p-4 font-mono text-sm text-term-dim">growing graph…</div>}>
+                        <GraphApp onOpenNode={openFileById} />
                       </Suspense>
                     ) : null}
                   </Window>

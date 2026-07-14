@@ -12,12 +12,32 @@ interface TextContentProps {
   filename?: string;
   /** /files/... path of this file — enables the "linked from" footer. */
   filePath?: string;
+  /**
+   * When set, wikilinks to garden pages open via this callback (the desktop
+   * opens them in a new window — parallel browsing) instead of navigating
+   * to the reader. Return false to fall back to navigation.
+   */
+  onOpenWikilink?: (filePath: string) => boolean;
 }
 
-export const TextContent: React.FC<TextContentProps> = ({ content, filename = "file.md", filePath }) => {
+export const TextContent: React.FC<TextContentProps> = ({ content, filename = "file.md", filePath, onOpenWikilink }) => {
   const { meta, body } = parseFrontmatter(content);
   const backlinks = filePath ? getBacklinks(filePath) : [];
-  const onProseClick = useInternalLinkNav();
+  const navFallback = useInternalLinkNav();
+  const onProseClick = (e: React.MouseEvent) => {
+    if (onOpenWikilink && e.button === 0 && !e.metaKey && !e.ctrlKey && !e.shiftKey && !e.altKey) {
+      const a = (e.target as HTMLElement).closest("a");
+      const href = a?.getAttribute("href") || "";
+      if (a && href.startsWith("/read/")) {
+        const rel = href.replace(/^\/read\//, "").split("/").map(decodeURIComponent).join("/");
+        if (onOpenWikilink(`/files/${rel}.md`)) {
+          e.preventDefault();
+          return;
+        }
+      }
+    }
+    navFallback(e);
+  };
   const [displayedContent, setDisplayedContent] = useState("");
   const [typingComplete, setTypingComplete] = useState(false);
 

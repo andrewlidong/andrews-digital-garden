@@ -128,6 +128,7 @@ export function Terminal({ onOpenFile, onOpenApp, fileSystem, initialCommand, co
   vim [file] - Open file full screen (alias: nvim)
   pwd - Show current directory
   theme - List or switch color themes (try 'theme list')
+  graph - Visualize the garden and its wikilinks
   neofetch - Show garden system info
   clear - Clear terminal
   help - Show this help message
@@ -172,6 +173,7 @@ psst: this terminal keeps a few secrets. old cheat codes still work.`;
       case 'tetris':
       case 'radio':
       case 'paint':
+      case 'graph':
         if (onOpenApp) {
           onOpenApp(command);
           output =
@@ -179,7 +181,9 @@ psst: this terminal keeps a few secrets. old cheat codes still work.`;
               ? 'Launching tetris-one-thousand… everyone on this site shares one board. Play nice.'
               : command === 'radio'
                 ? 'Turning the dial…'
-                : 'Fetching brushes…';
+                : command === 'graph'
+                  ? 'Mapping the garden…'
+                  : 'Fetching brushes…';
         } else {
           output = `${command} is not available here.`;
           isError = true;
