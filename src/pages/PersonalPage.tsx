@@ -126,6 +126,58 @@ function PersonalPage() {
   const [pawModeActive, setPawModeActive] = useState(false);
   // ↑↑↓↓←→←→BA — unleash the paw stamps.
   useKonami(() => setPawModeActive((prev) => !prev));
+
+  // Resizable sidebar: drag the divider, double-click it to reset. Width is
+  // remembered across visits.
+  const SIDEBAR_DEFAULT = 320;
+  const SIDEBAR_MIN = 220;
+  const SIDEBAR_MAX = 560;
+  const [sidebarWidth, setSidebarWidth] = useState(() => {
+    try {
+      const stored = Number(localStorage.getItem("garden-sidebar-width"));
+      return stored >= SIDEBAR_MIN && stored <= SIDEBAR_MAX ? stored : SIDEBAR_DEFAULT;
+    } catch {
+      return SIDEBAR_DEFAULT;
+    }
+  });
+  const sidebarDragging = useRef(false);
+
+  const startSidebarDrag = (e: React.MouseEvent) => {
+    e.preventDefault();
+    sidebarDragging.current = true;
+    document.body.style.cursor = "col-resize";
+    document.body.style.userSelect = "none";
+    const onMove = (ev: MouseEvent) => {
+      if (!sidebarDragging.current) return;
+      setSidebarWidth(Math.min(SIDEBAR_MAX, Math.max(SIDEBAR_MIN, ev.clientX)));
+    };
+    const onUp = () => {
+      sidebarDragging.current = false;
+      document.body.style.cursor = "";
+      document.body.style.userSelect = "";
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("mouseup", onUp);
+      setSidebarWidth((w) => {
+        try {
+          localStorage.setItem("garden-sidebar-width", String(w));
+        } catch {
+          /* private mode */
+        }
+        return w;
+      });
+    };
+    window.addEventListener("mousemove", onMove);
+    window.addEventListener("mouseup", onUp);
+  };
+
+  const resetSidebar = () => {
+    setSidebarWidth(SIDEBAR_DEFAULT);
+    try {
+      localStorage.setItem("garden-sidebar-width", String(SIDEBAR_DEFAULT));
+    } catch {
+      /* private mode */
+    }
+  };
   const [clickedItem, setClickedItem] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [startupComplete] = useState(true);
@@ -409,7 +461,20 @@ function PersonalPage() {
 
         <div className="flex h-[calc(100vh-60px)] pt-4">
           {/* Left sidebar with filesystem */}
-          <div className="w-[320px] min-w-[320px] border-r border-term-border pl-6 pr-4 overflow-y-auto">
+          <div
+            style={{ width: sidebarWidth, minWidth: sidebarWidth }}
+            className="relative border-r border-term-border pl-6 pr-4 overflow-y-auto"
+          >
+            {/* Drag handle — sits on the divider; double-click resets */}
+            <div
+              role="separator"
+              aria-orientation="vertical"
+              aria-label="Resize sidebar (double-click to reset)"
+              title="Drag to resize · double-click to reset"
+              onMouseDown={startSidebarDrag}
+              onDoubleClick={resetSidebar}
+              className="absolute top-0 right-0 h-full w-1.5 cursor-col-resize hover:bg-term-accent/40 active:bg-term-accent/60 transition-colors"
+            />
             <div className="grid grid-flow-row gap-2 pb-20">
               {fileSystem.map((item) => renderFileOrFolder(item))}
 
@@ -512,7 +577,7 @@ function PersonalPage() {
                 const offsetY = index * 25;
                 
                 // Limit window width to fit in the content area
-                const contentAreaWidth = window.innerWidth - 350; // Account for sidebar
+                const contentAreaWidth = window.innerWidth - sidebarWidth - 30;
                 const app = APPS.find((a) => a.id === win.windowType);
                 const windowWidth = isMobile
                   ? 350
