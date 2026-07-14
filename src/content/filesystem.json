@@ -230,9 +230,8 @@
                 "path": "/files/notes/swe-tea-paper-notes.md",
                 "title": "SWE Tea Paper Notes",
                 "date": "2026-07-14",
-                "subtitle": "Everything the reading group has read, by theme",
+                "subtitle": "Everything the reading group has read, by topic",
                 "links": [
-                    "/files/notes/communities.md",
                     "/files/notes/swe-tea-blackbox-optimization-platforms.md",
                     "/files/notes/swe-tea-debuggers-sanitizers.md",
                     "/files/notes/swe-tea-far-memory.md",
