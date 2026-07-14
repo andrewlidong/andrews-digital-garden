@@ -180,7 +180,6 @@ function PersonalPage() {
   };
   const [clickedItem, setClickedItem] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-  const [startupComplete] = useState(true);
   const [homeInput, setHomeInput] = useState("");
   const [terminalInitialCommand, setTerminalInitialCommand] = useState<string | undefined>(undefined);
   const [commandNonce, setCommandNonce] = useState(0);
@@ -652,23 +651,7 @@ function PersonalPage() {
           </div>
         </div>
 
-        {/* Terminal Welcome Message */}
-        {startupComplete && !isMobile && (
-          <div className="fixed bottom-10 left-4 right-4 bg-term-inset bg-opacity-80 border border-term-border p-3 rounded-md text-sm max-w-md">
-            <p>
-              Welcome to my digital garden! Explore my projects and interests by clicking on the folders above.
-            </p>
-            <p className="mt-2">
-              <button
-                onClick={openTerminal}
-                className="text-term-accent hover:underline focus:outline-none"
-              >
-                Click here
-              </button> to open the terminal for a more interactive experience.
-            </p>
-          </div>
-        )}
-        {startupComplete && !isMobile && <MetadataBar />}
+        {!isMobile && <MetadataBar />}
       </div>
     <PawStampMode isActive={pawModeActive} />
     </>
