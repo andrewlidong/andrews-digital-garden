@@ -135,7 +135,7 @@ function MobilePage() {
   return (
     <div className="relative min-h-screen overflow-hidden flex flex-col items-center bg-term-bg text-term-fg font-sans antialiased transition-colors duration-500">
       {/* Signature radial glow — a layered aurora of the active theme's hues at
-          the top of the page, the way maximeheckel.com lights its hero. */}
+          the top of the page. */}
       <div
         aria-hidden
         className="pointer-events-none fixed inset-0 z-0 transition-[background] duration-500"
@@ -147,7 +147,7 @@ function MobilePage() {
         }}
       />
 
-      {/* Faint film grain for depth — a signature maximeheckel touch. */}
+      {/* Faint film grain for depth. */}
       <div
         aria-hidden
         className="pointer-events-none fixed inset-0 z-0 opacity-[0.035] mix-blend-overlay"

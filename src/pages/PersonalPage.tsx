@@ -439,7 +439,7 @@ function PersonalPage() {
 
   // Open a file by its /files/... path — used by wikilinks inside desktop
   // windows so they open the target in a NEW window beside the current one
-  // (parallel browsing, malloc.dog/Matuschak style) instead of leaving the
+  // (parallel browsing) instead of leaving the
   // desktop for the reader.
   const openFileByPath = (filePath: string): boolean => {
     const findByPath = (items: FileItem[]): FileItem | null => {

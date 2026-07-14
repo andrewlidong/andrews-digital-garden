@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 // A thin terminal-style metadata strip pinned to the bottom of the page,
-// inspired by maximeheckel.com. Shows build + runtime context: the git
+// Shows build + runtime context: the git
 // commit it was built from (links to GitHub), the browser, a live clock,
 // the live viewport dimensions, and when the site was last updated.
 //

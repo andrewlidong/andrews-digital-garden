@@ -197,7 +197,7 @@ export default function ReaderPage() {
     };
   }, [state, meta.title]);
 
-  // Reading-progress bar — a light maximeheckel-style touch that reads well on
+  // Reading-progress bar — a light touch that reads well on
   // mobile. Updated directly on the DOM node to avoid re-rendering on scroll.
   useEffect(() => {
     const onScroll = () => {
