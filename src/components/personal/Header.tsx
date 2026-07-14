@@ -57,6 +57,35 @@ export const Header: React.FC<HeaderProps> = ({ onOpenTerminal, pawModeActive, o
     },
   ];
 
+  // RC Webring (ring.recurse.com) — this site is member id 46. Hops navigate
+  // in the same tab, as webring tradition demands.
+  const webringMenuItems: MenuItem[] = [
+    {
+      name: "← prev site",
+      onClick: () => {
+        window.location.href = "https://ring.recurse.com/prev?id=46";
+      },
+    },
+    {
+      name: "random site",
+      onClick: () => {
+        window.location.href = "https://ring.recurse.com/rand";
+      },
+    },
+    {
+      name: "next site →",
+      onClick: () => {
+        window.location.href = "https://ring.recurse.com/next?id=46";
+      },
+    },
+    {
+      name: "about the ring",
+      onClick: () => {
+        window.open("https://ring.recurse.com");
+      },
+    },
+  ];
+
   const mobileMenuItems: MenuItem[] = [
     {
       name: "Off",
@@ -126,6 +155,17 @@ export const Header: React.FC<HeaderProps> = ({ onOpenTerminal, pawModeActive, o
               >
                 blog
               </button>
+            </div>
+            <div className="relative">
+              <button
+                onClick={() => handleMenuClick("webring")}
+                className={`px-2 py-1 rounded ${activeDropdown === "webring" ? "bg-term-elevated text-term-green" : "text-term-dim hover:text-term-fg"}`}
+              >
+                webring
+              </button>
+              {activeDropdown === "webring" && (
+                <MenuDropdown items={webringMenuItems} />
+              )}
             </div>
             {onOpenTerminal && (
               <div className="relative">

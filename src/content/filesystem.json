@@ -212,27 +212,5 @@
                 "path": "/files/projects/trace_and_pace.md"
             }
         ]
-    },
-    {
-        "id": "webrings",
-        "name": "webrings",
-        "type": "folder",
-        "children": [
-            {
-                "id": "rc_webring_md",
-                "name": "rc_webring.md",
-                "type": "file",
-                "path": "/files/webrings/rc_webring.md",
-                "links": [
-                    "/files/notes/Recurse Center Return Statement.md"
-                ]
-            },
-            {
-                "id": "rc_webring_v2_md",
-                "name": "rc_webring_v2.md",
-                "type": "file",
-                "path": "/files/webrings/rc_webring_v2.md"
-            }
-        ]
     }
 ]
