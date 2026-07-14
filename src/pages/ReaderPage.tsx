@@ -118,7 +118,7 @@ export default function ReaderPage() {
       window.scrollTo(0, 0);
     }
     return () => {
-      document.title = "AD Digital Garden";
+      document.title = "Andrew Dong";
     };
   }, [state, meta.title]);
 

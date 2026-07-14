@@ -40,7 +40,7 @@ export default function BlogIndex() {
   useEffect(() => {
     document.title = "Blog — Andrew Dong";
     return () => {
-      document.title = "AD Digital Garden";
+      document.title = "Andrew Dong";
     };
   }, []);
 
