@@ -195,8 +195,23 @@ function frontmatter(post) {
   ];
   if (post.subtitle) lines.push(`subtitle: "${yamlEscape(post.subtitle)}"`);
   lines.push(`slug: "${post.slug}"`);
+  if (post.stage) lines.push(`stage: "${yamlEscape(post.stage)}"`);
   lines.push('---');
   return lines.join('\n');
+}
+
+// Garden metadata like `stage:` is edited locally, not on Substack — carry it
+// over when re-importing so overwrites don't lose it.
+function existingStage(file) {
+  try {
+    const raw = fs.readFileSync(file, 'utf8');
+    const fm = raw.match(/^﻿?---\s*\n([\s\S]*?)\n---/);
+    const line = fm && fm[1].split('\n').find((l) => l.trim().startsWith('stage:'));
+    if (!line) return '';
+    return line.slice(line.indexOf(':') + 1).trim().replace(/^["']|["']$/g, '');
+  } catch {
+    return '';
+  }
 }
 
 async function main() {
@@ -225,8 +240,8 @@ async function main() {
     body = await downloadImages(body, slug);
     body = body.replace(/\n{3,}/g, '\n\n').trim();
 
-    const post = { ...raw, slug, date };
     const file = path.join(BLOG_DIR, `${slug}.md`);
+    const post = { ...raw, slug, date, stage: existingStage(file) };
     fs.writeFileSync(file, `${frontmatter(post)}\n\n${body}\n`);
     console.log(`✓ ${slug}.md  (${date})`);
   }

@@ -1,3 +1,7 @@
+---
+stage: "evergreen"
+---
+
 # Recurse Center Return Statement
 
 I've been carrying around imposter syndrome like a chef's knife I never learned to properly hold - always there, a little dangerous, never quite fitting into my hand. Going from restaurants to engineering wasn't some romantic pivot story about following my passion. The truth is I needed a job after leaving Daniel, something that would make me employable and help me stop being this black sheep living in Manhattan amongst its successful high-achieving professionals. And I also wasn't one of these Recursers who grew up loving computers; I just wanted work that made sense.

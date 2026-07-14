@@ -4,6 +4,7 @@ import remarkGfm from 'remark-gfm';
 import rehypeHighlight from 'rehype-highlight';
 import { parseFrontmatter, formatDate } from '@/lib/frontmatter';
 import { remarkWikilinks } from '@/lib/wikilinks';
+import { StageBadge } from '@/components/ui/StageBadge';
 
 interface FileContentProps {
   content: string;
@@ -28,6 +29,11 @@ export const FileContent: React.FC<FileContentProps> = ({ content, fileType }) =
                 )}
                 {meta.date && (
                   <p className="mt-1 text-xs text-term-faint">{formatDate(meta.date)}</p>
+                )}
+                {meta.stage && (
+                  <p className="mt-2">
+                    <StageBadge stage={meta.stage} />
+                  </p>
                 )}
               </div>
             )}

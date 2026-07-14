@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import fileSystemData from "@/content/filesystem.json";
 import { formatDate, readerPath } from "@/lib/frontmatter";
 import { useTheme } from "@/hooks/useTheme";
+import { StageBadge } from "@/components/ui/StageBadge";
 
 type FsNode = {
   name: string;
@@ -11,6 +12,7 @@ type FsNode = {
   date?: string;
   title?: string;
   subtitle?: string;
+  stage?: string;
   tags?: string[];
   children?: FsNode[];
 };
@@ -85,11 +87,14 @@ export default function BlogIndex() {
                       <h2 className="text-lg font-semibold tracking-tight text-term-fg transition-colors group-hover:text-term-accent sm:text-xl">
                         {post.title || prettify(post.name)}
                       </h2>
-                      {post.date && (
-                        <span className="shrink-0 font-mono text-xs text-term-faint sm:text-sm">
-                          {formatDate(post.date)}
-                        </span>
-                      )}
+                      <span className="flex shrink-0 items-center gap-2">
+                        <StageBadge stage={post.stage} />
+                        {post.date && (
+                          <span className="font-mono text-xs text-term-faint sm:text-sm">
+                            {formatDate(post.date)}
+                          </span>
+                        )}
+                      </span>
                     </div>
                     {post.subtitle && (
                       <p className="mt-1.5 text-sm leading-relaxed text-term-dim sm:text-base">

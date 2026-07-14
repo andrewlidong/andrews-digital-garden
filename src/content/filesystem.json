@@ -24,7 +24,8 @@
                 "path": "/files/blog/building-massively-multiplayer-tetris.md",
                 "title": "Building Massively Multiplayer Tetris",
                 "date": "2026-07-13",
-                "subtitle": "I recently build a cooperative multiplayer Tetris where every player shares a single board."
+                "subtitle": "I recently build a cooperative multiplayer Tetris where every player shares a single board.",
+                "stage": "evergreen"
             },
             {
                 "id": "godbolt_and_modern_cpu_architecture_md",
@@ -60,7 +61,8 @@
                 "path": "/files/blog/spelling-words-with-the-subway.md",
                 "title": "Spelling words with the Subway",
                 "date": "2026-06-17",
-                "subtitle": "We love creative coding"
+                "subtitle": "We love creative coding",
+                "stage": "budding"
             },
             {
                 "id": "writing_a_cli_in_zig_md",
@@ -69,7 +71,8 @@
                 "path": "/files/blog/writing-a-cli-in-zig.md",
                 "title": "writing a cli in zig",
                 "date": "2026-05-26",
-                "subtitle": "baby's first babyline"
+                "subtitle": "baby's first babyline",
+                "stage": "budding"
             },
             {
                 "id": "writing_a_spectral_ray_tracer_in_md",
@@ -92,6 +95,7 @@
                 "name": "Recurse Center Return Statement.md",
                 "type": "file",
                 "path": "/files/notes/Recurse Center Return Statement.md",
+                "stage": "evergreen",
                 "links": [
                     "/files/blog/writing-a-cli-in-zig.md",
                     "/files/blog/writing-a-spectral-ray-tracer-in.md",

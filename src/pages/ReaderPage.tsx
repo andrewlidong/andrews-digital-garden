@@ -13,6 +13,7 @@ import {
   type PostMeta,
 } from "@/lib/frontmatter";
 import { remarkWikilinks, getBacklinks } from "@/lib/wikilinks";
+import { StageBadge } from "@/components/ui/StageBadge";
 
 type LoadState = "loading" | "ready" | "notfound";
 
@@ -196,6 +197,12 @@ export default function ReaderPage() {
                 {meta.date && <span>{formatDate(meta.date)}</span>}
                 <span aria-hidden>·</span>
                 <span>{readingTime(body)}</span>
+                {meta.stage && (
+                  <>
+                    <span aria-hidden>·</span>
+                    <StageBadge stage={meta.stage} />
+                  </>
+                )}
               </div>
               {meta.tags && meta.tags.length > 0 && (
                 <div className="mt-3 flex flex-wrap gap-1.5">
