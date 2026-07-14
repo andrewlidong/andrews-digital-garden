@@ -107,28 +107,6 @@ export const THEMES: Theme[] = [
     },
   },
   {
-    id: "rose-pine-moon",
-    name: "Rosé Pine Moon",
-    tokens: {
-      // Rosé Pine's Moon variant — dusky violet surfaces with soho-vibes
-      // accents, mapped from the official terminal palette (green = pine,
-      // blue = iris, cyan = foam, magenta = rose).
-      bg: "#232136",
-      bgElevated: "#2a273f",
-      bgInset: "#1c1a2e",
-      border: "#44415a",
-      fg: "#e0def4",
-      fgDim: "#908caa",
-      fgFaint: "#6e6a86",
-      accent: "#c4a7e7",
-      green: "#3e8fb0",
-      yellow: "#f6c177",
-      red: "#eb6f92",
-      cyan: "#9ccfd8",
-      magenta: "#ea9a97",
-    },
-  },
-  {
     id: "gruvbox",
     name: "Gruvbox",
     tokens: {
@@ -169,28 +147,6 @@ export const THEMES: Theme[] = [
       red: "#b4637a",
       cyan: "#d7827e",
       magenta: "#907aa9",
-    },
-  },
-  {
-    id: "catppuccin-latte",
-    name: "Catppuccin Latte",
-    light: true,
-    tokens: {
-      // Already-vivid accents on a clean light base; a stronger border gives
-      // surfaces more definition so they pop instead of washing out.
-      bg: "#eff1f5",
-      bgElevated: "#e6e9ef",
-      bgInset: "#dce0e8",
-      border: "#acb0be",
-      fg: "#4c4f69",
-      fgDim: "#5c5f77",
-      fgFaint: "#8c8fa1",
-      accent: "#1e66f5",
-      green: "#40a02b",
-      yellow: "#df8e1d",
-      red: "#d20f39",
-      cyan: "#04a5e5",
-      magenta: "#8839ef",
     },
   },
 ];

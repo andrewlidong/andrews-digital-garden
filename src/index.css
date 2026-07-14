@@ -146,4 +146,8 @@ a.wikilink:hover {
 .stage-badge:hover::after,
 .stage-badge:focus-visible::after {
   opacity: 1;
+  /* Only after a deliberate pause — an instant popup on every passing hover
+     is noisy. Leaving hides it immediately (the delay above applies only on
+     the way in). */
+  transition-delay: 400ms;
 }

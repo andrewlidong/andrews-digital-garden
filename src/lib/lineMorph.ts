@@ -144,14 +144,43 @@ function alignRotation(target: Float32Array, ref: Float32Array): Float32Array {
   return out;
 }
 
+// One Laplacian step: move every point toward the midpoint of its neighbours
+// by `lambda` (negative values push away). Operates in place on a closed loop.
+function laplacianStep(pts: Float32Array, lambda: number, scratch: Float32Array): void {
+  const count = pts.length / 2;
+  for (let i = 0; i < count; i++) {
+    const p = (i - 1 + count) % count;
+    const n = (i + 1) % count;
+    scratch[i * 2] = pts[i * 2] + lambda * ((pts[p * 2] + pts[n * 2]) / 2 - pts[i * 2]);
+    scratch[i * 2 + 1] =
+      pts[i * 2 + 1] + lambda * ((pts[p * 2 + 1] + pts[n * 2 + 1]) / 2 - pts[i * 2 + 1]);
+  }
+  pts.set(scratch);
+}
+
+// Taubin λ|μ smoothing: a smoothing step followed by a slightly stronger
+// inflation step, which irons out hand-authored kinks and sampling jitter
+// WITHOUT the shrinkage plain Laplacian smoothing causes — important because
+// the subjects carry tiny features (pupils, nostrils) that must keep their size.
+function taubinSmooth(pts: Float32Array, iterations = 2): Float32Array {
+  const scratch = new Float32Array(pts.length);
+  for (let k = 0; k < iterations; k++) {
+    laplacianStep(pts, 0.5, scratch);
+    laplacianStep(pts, -0.53, scratch);
+  }
+  return pts;
+}
+
 // Build the full set of resampled, winding-normalized, mutually-aligned shapes
 // in the given order (defaults to CYCLE). Each shape is aligned to the previous
 // one so consecutive morphs (including the wrap from the last back to the first)
 // stay smooth — pass a shuffled order to randomise the sequence per load.
 export function buildMorphCycle(order: readonly string[] = CYCLE, count = N): Float32Array[] {
   const shapes = order.map((id) =>
-    normalizeWinding(
-      resampleClosed(flattenBeziers(RAW_SHAPES[id as keyof typeof RAW_SHAPES]), count)
+    taubinSmooth(
+      normalizeWinding(
+        resampleClosed(flattenBeziers(RAW_SHAPES[id as keyof typeof RAW_SHAPES]), count)
+      )
     )
   );
   for (let i = 1; i < shapes.length; i++) {
