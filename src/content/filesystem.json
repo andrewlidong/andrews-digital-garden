@@ -111,7 +111,20 @@
                 "date": "2026-07-14",
                 "subtitle": "Meetups and reading groups I frequent around NYC",
                 "links": [
-                    "/files/notes/Recurse Center Return Statement.md"
+                    "/files/notes/Recurse Center Return Statement.md",
+                    "/files/notes/swe-tea-paper-notes.md"
+                ]
+            },
+            {
+                "id": "swe_tea_paper_notes_md",
+                "name": "swe-tea-paper-notes.md",
+                "type": "file",
+                "path": "/files/notes/swe-tea-paper-notes.md",
+                "title": "SWE Tea Paper Notes",
+                "date": "2026-07-14",
+                "subtitle": "Quick summaries of what the reading group has been reading",
+                "links": [
+                    "/files/notes/communities.md"
                 ]
             }
         ]
