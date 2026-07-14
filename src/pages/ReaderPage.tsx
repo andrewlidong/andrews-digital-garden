@@ -203,6 +203,9 @@ export default function ReaderPage() {
   const [body, setBody] = useState("");
   const [state, setState] = useState<LoadState>("loading");
   const progressBarRef = useRef<HTMLDivElement>(null);
+  const pillPctRef = useRef<HTMLSpanElement>(null);
+  // Floating back-to-top pill, shown once the reader has scrolled in deep.
+  const [showPill, setShowPill] = useState(false);
 
   // The reader path is the file path under /files without its extension.
   const decoded = splat
@@ -291,6 +294,8 @@ export default function ReaderPage() {
       const docHeight = document.documentElement.scrollHeight - window.innerHeight;
       const pct = docHeight > 0 ? Math.min(window.scrollY / docHeight, 1) : 0;
       progressBarRef.current.style.width = `${pct * 100}%`;
+      if (pillPctRef.current) pillPctRef.current.textContent = `${Math.round(pct * 100)}%`;
+      setShowPill(window.scrollY > 600);
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
@@ -315,6 +320,19 @@ export default function ReaderPage() {
       <div className="fixed top-0 left-0 right-0 z-20 h-0.5 bg-term-border/40">
         <div ref={progressBarRef} className="h-full bg-term-accent" style={{ width: "0%" }} />
       </div>
+
+      {/* Floating progress / back-to-top pill */}
+      <button
+        type="button"
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        aria-label="Back to top"
+        className={`fixed bottom-5 right-5 z-30 flex items-center gap-1.5 rounded-full border border-term-border bg-[color-mix(in_srgb,var(--term-bg)_75%,transparent)] px-3.5 py-2 font-mono text-xs text-term-dim shadow-lg backdrop-blur transition-all duration-300 hover:border-term-accent/60 hover:text-term-accent active:scale-95 ${
+          showPill ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-3 opacity-0"
+        }`}
+      >
+        <span aria-hidden>↑</span>
+        <span ref={pillPctRef}>0%</span>
+      </button>
 
       {/* Terminal-style top bar */}
       <header className="sticky top-0 z-10 border-b border-term-border bg-[color-mix(in_srgb,var(--term-bg)_85%,transparent)] backdrop-blur">
