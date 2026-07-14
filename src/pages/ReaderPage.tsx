@@ -151,7 +151,7 @@ function PreBlock({ children, ...props }: React.HTMLAttributes<HTMLPreElement>) 
           type="button"
           onClick={copy}
           aria-label="Copy code"
-          className={`rounded border px-1.5 py-0.5 font-mono text-[10px] transition-all ${
+          className={`code-copy-btn rounded border px-1.5 py-0.5 font-mono text-[10px] transition-all ${
             copied
               ? "border-term-green/60 bg-term-bg/70 text-term-green opacity-100"
               : "border-term-border/60 bg-term-bg/70 text-term-faint opacity-0 hover:text-term-accent group-hover:opacity-100"
@@ -223,6 +223,8 @@ export default function ReaderPage() {
 
   // Scroll-spy: the ToC highlights the section currently being read.
   const [activeHeading, setActiveHeading] = useState("");
+  // ToC starts open on desktop, collapsed on phones.
+  const [tocOpen, setTocOpen] = useState(() => window.innerWidth >= 640);
   useEffect(() => {
     if (state !== "ready" || headings.length < 3) return;
     const onScroll = () => {
@@ -376,14 +378,23 @@ export default function ReaderPage() {
               )}
             </div>
 
-            {/* Table of contents for longer pieces */}
+            {/* Table of contents for longer pieces. Collapsed by default on
+                phones (it would otherwise eat the whole first screen), open
+                on larger viewports. */}
             {headings.length >= 3 && (
               <nav
                 aria-label="Table of contents"
-                className="mb-8 rounded-lg border border-term-border/60 bg-term-elevated/30 p-4 font-mono text-sm sm:mb-10"
+                className="mb-8 rounded-lg border border-term-border/60 bg-term-elevated/30 font-mono text-sm sm:mb-10"
               >
-                <div className="mb-2 text-xs text-term-faint">on this page</div>
-                <ul className="space-y-1.5">
+                <details open={tocOpen} onToggle={(e) => setTocOpen((e.target as HTMLDetailsElement).open)}>
+                  <summary className="cursor-pointer select-none list-none px-4 py-3 text-xs text-term-faint transition-colors hover:text-term-dim [&::-webkit-details-marker]:hidden">
+                    <span className={`mr-2 inline-block transition-transform ${tocOpen ? "rotate-90" : ""}`} aria-hidden>
+                      ▸
+                    </span>
+                    on this page
+                    <span className="ml-2 text-term-faint/70">({headings.length})</span>
+                  </summary>
+                  <ul className="space-y-1.5 px-4 pb-4">
                   {headings.map((h, i) => {
                     const active = h.id === activeHeading;
                     return (
@@ -401,7 +412,8 @@ export default function ReaderPage() {
                       </li>
                     );
                   })}
-                </ul>
+                  </ul>
+                </details>
               </nav>
             )}
 

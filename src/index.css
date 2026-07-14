@@ -94,7 +94,8 @@ html {
 }
 
 .prose {
-  font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
 }
 
 /* Hide scrollbar for IE, Edge and Firefox */
@@ -158,4 +159,16 @@ blockquote.callout-caution::before { color: var(--term-red); }
 blockquote.callout p:first-of-type::before,
 blockquote.callout p:last-of-type::after {
   content: none;
+}
+
+/* Touch devices have no hover: keep the code-copy button visible. */
+@media (hover: none) {
+  .code-copy-btn {
+    opacity: 0.85;
+  }
+}
+
+/* Cleaner taps on mobile — no grey flash on every link/button press. */
+body {
+  -webkit-tap-highlight-color: transparent;
 }
