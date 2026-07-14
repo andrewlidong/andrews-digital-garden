@@ -4,7 +4,7 @@ date: "2026-07-14"
 subtitle: "Meetups and reading groups I frequent around NYC"
 ---
 
-The rooms I keep coming back to. Come say hi at any of them.
+Come say hi!
 
 - **[Recurse Center](https://www.recurse.com/)** — the self-directed programming retreat I did a batch at. More in my [[Recurse Center Return Statement|return statement]].
 - **[NYSRG](https://notes.ekzhang.com/events/nysrg)** — each month we pick a systems topic, read about it, and build things in that area.
