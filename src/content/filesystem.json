@@ -116,13 +116,109 @@
                 ]
             },
             {
-                "id": "swe_tea_blackbox_optimization_md",
-                "name": "swe-tea-blackbox-optimization.md",
+                "id": "swe_tea_blackbox_optimization_platforms_md",
+                "name": "swe-tea-blackbox-optimization-platforms.md",
                 "type": "file",
-                "path": "/files/notes/swe-tea-blackbox-optimization.md",
-                "title": "SWE Tea: Black-box Optimization",
+                "path": "/files/notes/swe-tea-blackbox-optimization-platforms.md",
+                "title": "SWE Tea: Blackbox Optimization Platforms",
                 "date": "2026-07-14",
-                "subtitle": "Meetups 109–112 · Vizier to Ax",
+                "subtitle": "Meetups 109–112",
+                "links": [
+                    "/files/notes/swe-tea-paper-notes.md"
+                ]
+            },
+            {
+                "id": "swe_tea_debuggers_sanitizers_md",
+                "name": "swe-tea-debuggers-sanitizers.md",
+                "type": "file",
+                "path": "/files/notes/swe-tea-debuggers-sanitizers.md",
+                "title": "SWE Tea: Debuggers/Sanitizers",
+                "date": "2026-07-14",
+                "subtitle": "Meetups 090–095",
+                "links": [
+                    "/files/notes/swe-tea-paper-notes.md"
+                ]
+            },
+            {
+                "id": "swe_tea_far_memory_md",
+                "name": "swe-tea-far-memory.md",
+                "type": "file",
+                "path": "/files/notes/swe-tea-far-memory.md",
+                "title": "SWE Tea: Far Memory",
+                "date": "2026-07-14",
+                "subtitle": "Meetups 066–072",
+                "links": [
+                    "/files/notes/swe-tea-paper-notes.md"
+                ]
+            },
+            {
+                "id": "swe_tea_fast_text_models_md",
+                "name": "swe-tea-fast-text-models.md",
+                "type": "file",
+                "path": "/files/notes/swe-tea-fast-text-models.md",
+                "title": "SWE Tea: Fast Text Models",
+                "date": "2026-07-14",
+                "subtitle": "Meetups 056–058",
+                "links": [
+                    "/files/notes/swe-tea-paper-notes.md"
+                ]
+            },
+            {
+                "id": "swe_tea_huge_pages_md",
+                "name": "swe-tea-huge-pages.md",
+                "type": "file",
+                "path": "/files/notes/swe-tea-huge-pages.md",
+                "title": "SWE Tea: Huge Pages",
+                "date": "2026-07-14",
+                "subtitle": "Meetups 073–075",
+                "links": [
+                    "/files/notes/swe-tea-paper-notes.md"
+                ]
+            },
+            {
+                "id": "swe_tea_industrial_recommender_systems_md",
+                "name": "swe-tea-industrial-recommender-systems.md",
+                "type": "file",
+                "path": "/files/notes/swe-tea-industrial-recommender-systems.md",
+                "title": "SWE Tea: Industrial Recommender Systems",
+                "date": "2026-07-14",
+                "subtitle": "Meetups 103–108",
+                "links": [
+                    "/files/notes/swe-tea-paper-notes.md"
+                ]
+            },
+            {
+                "id": "swe_tea_llm_post_training_md",
+                "name": "swe-tea-llm-post-training.md",
+                "type": "file",
+                "path": "/files/notes/swe-tea-llm-post-training.md",
+                "title": "SWE Tea: LLM Post training",
+                "date": "2026-07-14",
+                "subtitle": "Meetups 076–083",
+                "links": [
+                    "/files/notes/swe-tea-paper-notes.md"
+                ]
+            },
+            {
+                "id": "swe_tea_network_november_md",
+                "name": "swe-tea-network-november.md",
+                "type": "file",
+                "path": "/files/notes/swe-tea-network-november.md",
+                "title": "SWE Tea: Network November",
+                "date": "2026-07-14",
+                "subtitle": "Meetups 037–043",
+                "links": [
+                    "/files/notes/swe-tea-paper-notes.md"
+                ]
+            },
+            {
+                "id": "swe_tea_observability_md",
+                "name": "swe-tea-observability.md",
+                "type": "file",
+                "path": "/files/notes/swe-tea-observability.md",
+                "title": "SWE Tea: Observability",
+                "date": "2026-07-14",
+                "subtitle": "Meetups 044–049",
                 "links": [
                     "/files/notes/swe-tea-paper-notes.md"
                 ]
@@ -134,23 +230,109 @@
                 "path": "/files/notes/swe-tea-paper-notes.md",
                 "title": "SWE Tea Paper Notes",
                 "date": "2026-07-14",
-                "subtitle": "Quick summaries of what the reading group has been reading",
+                "subtitle": "Everything the reading group has read, by theme",
                 "links": [
                     "/files/notes/communities.md",
-                    "/files/notes/swe-tea-blackbox-optimization.md",
-                    "/files/notes/swe-tea-recommender-systems.md",
+                    "/files/notes/swe-tea-blackbox-optimization-platforms.md",
+                    "/files/notes/swe-tea-debuggers-sanitizers.md",
+                    "/files/notes/swe-tea-far-memory.md",
+                    "/files/notes/swe-tea-fast-text-models.md",
+                    "/files/notes/swe-tea-huge-pages.md",
+                    "/files/notes/swe-tea-industrial-recommender-systems.md",
+                    "/files/notes/swe-tea-llm-post-training.md",
+                    "/files/notes/swe-tea-network-november.md",
+                    "/files/notes/swe-tea-observability.md",
+                    "/files/notes/swe-tea-power-oversubscription.md",
+                    "/files/notes/swe-tea-reinforcement-learning.md",
+                    "/files/notes/swe-tea-schedulers-cluster-management.md",
+                    "/files/notes/swe-tea-spanner.md",
+                    "/files/notes/swe-tea-specialized-databases.md",
+                    "/files/notes/swe-tea-static-pgo.md",
+                    "/files/notes/swe-tea-the-time-before-themes.md",
                     "/files/notes/swe-tea-tpus.md",
                     "/files/notes/swe-tea-virtualization.md"
                 ]
             },
             {
-                "id": "swe_tea_recommender_systems_md",
-                "name": "swe-tea-recommender-systems.md",
+                "id": "swe_tea_power_oversubscription_md",
+                "name": "swe-tea-power-oversubscription.md",
                 "type": "file",
-                "path": "/files/notes/swe-tea-recommender-systems.md",
-                "title": "SWE Tea: Recommender Systems",
+                "path": "/files/notes/swe-tea-power-oversubscription.md",
+                "title": "SWE Tea: Power Oversubscription",
                 "date": "2026-07-14",
-                "subtitle": "Meetups 103–108 · industrial recsys from YouTube DNN to HSTU",
+                "subtitle": "Meetups 084–089",
+                "links": [
+                    "/files/notes/swe-tea-paper-notes.md"
+                ]
+            },
+            {
+                "id": "swe_tea_reinforcement_learning_md",
+                "name": "swe-tea-reinforcement-learning.md",
+                "type": "file",
+                "path": "/files/notes/swe-tea-reinforcement-learning.md",
+                "title": "SWE Tea: Reinforcement Learning",
+                "date": "2026-07-14",
+                "subtitle": "Meetups 059–065",
+                "links": [
+                    "/files/notes/swe-tea-paper-notes.md"
+                ]
+            },
+            {
+                "id": "swe_tea_schedulers_cluster_management_md",
+                "name": "swe-tea-schedulers-cluster-management.md",
+                "type": "file",
+                "path": "/files/notes/swe-tea-schedulers-cluster-management.md",
+                "title": "SWE Tea: Schedulers/Cluster management",
+                "date": "2026-07-14",
+                "subtitle": "Meetups 027–031",
+                "links": [
+                    "/files/notes/swe-tea-paper-notes.md"
+                ]
+            },
+            {
+                "id": "swe_tea_spanner_md",
+                "name": "swe-tea-spanner.md",
+                "type": "file",
+                "path": "/files/notes/swe-tea-spanner.md",
+                "title": "SWE Tea: Spanner",
+                "date": "2026-07-14",
+                "subtitle": "Meetups 050–055",
+                "links": [
+                    "/files/notes/swe-tea-paper-notes.md"
+                ]
+            },
+            {
+                "id": "swe_tea_specialized_databases_md",
+                "name": "swe-tea-specialized-databases.md",
+                "type": "file",
+                "path": "/files/notes/swe-tea-specialized-databases.md",
+                "title": "SWE Tea: Specialized Databases",
+                "date": "2026-07-14",
+                "subtitle": "Meetups 032–036",
+                "links": [
+                    "/files/notes/swe-tea-paper-notes.md"
+                ]
+            },
+            {
+                "id": "swe_tea_static_pgo_md",
+                "name": "swe-tea-static-pgo.md",
+                "type": "file",
+                "path": "/files/notes/swe-tea-static-pgo.md",
+                "title": "SWE Tea: Static PGO",
+                "date": "2026-07-14",
+                "subtitle": "Meetups 096–102",
+                "links": [
+                    "/files/notes/swe-tea-paper-notes.md"
+                ]
+            },
+            {
+                "id": "swe_tea_the_time_before_themes_md",
+                "name": "swe-tea-the-time-before-themes.md",
+                "type": "file",
+                "path": "/files/notes/swe-tea-the-time-before-themes.md",
+                "title": "SWE Tea: The time before themes",
+                "date": "2026-07-14",
+                "subtitle": "Meetups 000–026",
                 "links": [
                     "/files/notes/swe-tea-paper-notes.md"
                 ]
@@ -162,7 +344,7 @@
                 "path": "/files/notes/swe-tea-tpus.md",
                 "title": "SWE Tea: TPUs",
                 "date": "2026-07-14",
-                "subtitle": "Meetups 118–122 · five generations of Google's ML chips",
+                "subtitle": "Meetups 118–122",
                 "links": [
                     "/files/notes/swe-tea-paper-notes.md"
                 ]
@@ -174,7 +356,7 @@
                 "path": "/files/notes/swe-tea-virtualization.md",
                 "title": "SWE Tea: Virtualization",
                 "date": "2026-07-14",
-                "subtitle": "Meetups 113–117 · from kvm to Firecracker",
+                "subtitle": "Meetups 113–117",
                 "links": [
                     "/files/notes/swe-tea-paper-notes.md"
                 ]
