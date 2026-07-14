@@ -546,7 +546,7 @@ function PersonalPage() {
 `}
               </pre>
               <div className="mt-1 text-term-dim text-sm">
-                <p>Welcome to Andrew's Digital Garden v1.0.0</p>
+                <p>Welcome to Andrew's Digital Garden</p>
                 <p className="text-xs text-term-faint mt-1 mb-2">A personal space for projects, interests, and creative explorations.</p>
                 <form onSubmit={handleHomeCommandSubmit} className="flex items-center">
                   <span className="text-term-green mr-2">andrew@digital-garden:~$</span>
