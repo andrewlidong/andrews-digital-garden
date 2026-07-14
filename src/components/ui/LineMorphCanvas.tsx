@@ -112,11 +112,18 @@ void main() {
   // Hide the portion of the stroke not yet drawn (tip-leading reveal).
   float reveal = 1.0 - smoothstep(u_progress - 0.012, u_progress + 0.012, v_along);
 
+  // Brush pressure: the core stroke swells and thins along its length like a
+  // hand-pulled ink brush, so the line reads calligraphic rather than plotted.
+  // Two incommensurate frequencies avoid a visible repeat.
+  float press = 1.0 + 0.20 * sin(v_along * 12.0 + 1.3) * sin(v_along * 5.0 - 0.7);
+  float dp = d / press;
+
   // Four concentric bands: white-hot filament, saturated body, soft glow halo,
   // and a broad outer aura that radiates well beyond the stroke for a luminous,
-  // majestic light (kept low-amplitude so it reads as radiance, not fog).
-  float hot  = 1.0 - smoothstep(0.10, 0.17 + aa, d);
-  float body = 1.0 - smoothstep(0.34 - aa, 0.40 + aa, d);
+  // majestic light (kept low-amplitude so it reads as radiance, not fog). The
+  // inner bands follow the pressure-modulated width; the halo stays steady.
+  float hot  = 1.0 - smoothstep(0.10, 0.17 + aa, dp);
+  float body = 1.0 - smoothstep(0.34 - aa, 0.40 + aa, dp);
   float glow = exp(-3.4 * d * d);
   float aura = exp(-1.05 * d * d);
   // Two shimmers: a slow breath over the whole stroke, plus a finer ember
@@ -141,6 +148,12 @@ void main() {
   col += mix(grad, vec3(1.0), 0.5) * pen * 0.9;      // drawing-tip comet
   float a = clamp(max(body, max(glow * 0.6, aura * 0.32)) + pen * 0.3, 0.0, 1.0);
   a *= reveal * u_fade;
+
+  // Paper tooth: a whisper of static per-pixel grain so the glow sits on the
+  // page like ink on paper instead of light on glass. Time-independent, so it
+  // reads as texture rather than noise.
+  float grain = fract(sin(dot(gl_FragCoord.xy, vec2(12.9898, 78.233))) * 43758.5453);
+  a *= 0.95 + 0.05 * grain;
 
   // Filmic tone-map + gamma for richer colour, then straight alpha (the context
   // uses premultipliedAlpha:false).

@@ -107,6 +107,49 @@ export const THEMES: Theme[] = [
     },
   },
   {
+    id: "rose-pine-moon",
+    name: "Rosé Pine Moon",
+    tokens: {
+      // Rosé Pine's Moon variant — dusky violet surfaces with soho-vibes
+      // accents, mapped from the official terminal palette (green = pine,
+      // blue = iris, cyan = foam, magenta = rose).
+      bg: "#232136",
+      bgElevated: "#2a273f",
+      bgInset: "#1c1a2e",
+      border: "#44415a",
+      fg: "#e0def4",
+      fgDim: "#908caa",
+      fgFaint: "#6e6a86",
+      accent: "#c4a7e7",
+      green: "#3e8fb0",
+      yellow: "#f6c177",
+      red: "#eb6f92",
+      cyan: "#9ccfd8",
+      magenta: "#ea9a97",
+    },
+  },
+  {
+    id: "gruvbox",
+    name: "Gruvbox",
+    tokens: {
+      // Gruvbox dark (medium contrast) — warm retro paper-and-fire palette,
+      // straight from the canonical ANSI mapping.
+      bg: "#282828",
+      bgElevated: "#3c3836",
+      bgInset: "#1d2021",
+      border: "#504945",
+      fg: "#ebdbb2",
+      fgDim: "#bdae93",
+      fgFaint: "#928374",
+      accent: "#83a598",
+      green: "#b8bb26",
+      yellow: "#fabd2f",
+      red: "#fb4934",
+      cyan: "#8ec07c",
+      magenta: "#d3869b",
+    },
+  },
+  {
     id: "strawberry-milk",
     name: "Strawberry Milk",
     light: true,
@@ -184,6 +227,10 @@ export function applyTheme(theme: Theme): void {
     root.style.setProperty(CSS_VAR[key], theme.tokens[key]);
   });
   root.style.colorScheme = theme.light ? "light" : "dark";
+  // Keep the browser chrome (mobile address bar, PWA title bar) in the same
+  // palette as the page.
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.setAttribute("content", theme.tokens.bg);
 }
 
 export function loadThemeId(): string {

@@ -15,6 +15,8 @@ import {
 import { remarkWikilinks, getBacklinks } from "@/lib/wikilinks";
 import { StageBadge } from "@/components/ui/StageBadge";
 import { useInternalLinkNav } from "@/lib/useInternalLinkNav";
+import { SeedPlanter } from "@/components/ui/SeedPlanter";
+import { effectiveStage } from "@/lib/seeds";
 
 type LoadState = "loading" | "ready" | "notfound";
 
@@ -62,6 +64,7 @@ export default function ReaderPage() {
   const [meta, setMeta] = useState<PostMeta>({});
   const [body, setBody] = useState("");
   const [state, setState] = useState<LoadState>("loading");
+  const [seeds, setSeeds] = useState<number | null>(null);
   const progressBarRef = useRef<HTMLDivElement>(null);
 
   // The reader path is the file path under /files without its extension.
@@ -83,6 +86,7 @@ export default function ReaderPage() {
   useEffect(() => {
     let cancelled = false;
     setState("loading");
+    setSeeds(null);
     fetch(filePath)
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -147,6 +151,8 @@ export default function ReaderPage() {
 
   const title = meta.title || filename;
   const isBlog = section === "blog";
+  // Community seeds can raise a page's growth stage above the author's floor.
+  const displayStage = effectiveStage(meta.stage, seeds);
 
   return (
     <div className="min-h-screen bg-term-bg font-sans text-term-fg antialiased transition-colors duration-500">
@@ -202,12 +208,13 @@ export default function ReaderPage() {
                 {meta.date && <span>{formatDate(meta.date)}</span>}
                 <span aria-hidden>·</span>
                 <span>{readingTime(body)}</span>
-                {meta.stage && (
+                {displayStage && (
                   <>
                     <span aria-hidden>·</span>
-                    <StageBadge stage={meta.stage} />
+                    <StageBadge stage={displayStage} />
                   </>
                 )}
+                <SeedPlanter filePath={filePath} onSeeds={setSeeds} />
               </div>
               {meta.tags && meta.tags.length > 0 && (
                 <div className="mt-3 flex flex-wrap gap-1.5">
