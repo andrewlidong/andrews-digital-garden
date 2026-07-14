@@ -184,10 +184,6 @@ const Home = forwardRef<HTMLElement, HomeProps>(({ isMobile = false }, ref) => {
           {typedText}<span className="animate-pulse inline-block ml-1 text-term-accent">|</span>
         </h1>
 
-        <h2 className={`text-2xl md:text-4xl font-semibold tracking-tight text-term-dim animate-on-scroll fade-up ${rv}`} style={{ transitionDelay: '200ms' }}>
-          Staff Software Engineer
-        </h2>
-
         <p className={`text-lg md:text-xl leading-relaxed text-term-dim animate-on-scroll fade-up ${rv}`} style={{ transitionDelay: '400ms' }}>
           Okay, here we go. Exterior. Cemetery. Night. The shoot-out. Yeah! The Jack O' Diamonds is waiting there with Bonny, and he's arranged to give him back and have this whole thing end because all he really wants is peace.
         </p>
