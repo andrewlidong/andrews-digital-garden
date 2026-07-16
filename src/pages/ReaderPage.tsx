@@ -445,6 +445,13 @@ export default function ReaderPage() {
               </ReactMarkdown>
             </div>
 
+            {/* Signature — blog posts and notes are signed work. */}
+            {(section === "blog" || section === "notes") && (
+              <p className="mt-10 select-none text-right font-mono text-sm text-term-faint">
+                — andrew dong
+              </p>
+            )}
+
             {/* Backlinks — pages elsewhere in the garden that link here */}
             {backlinks.length > 0 && (
               <aside className="mt-14 rounded-lg border border-term-border/70 bg-term-elevated/30 p-4 sm:mt-16">

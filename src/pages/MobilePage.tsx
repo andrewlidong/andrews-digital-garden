@@ -302,6 +302,10 @@ function MobilePage() {
             />
           </div>
           <Contact ref={(el) => (sectionRefs.current.contact = el)} />
+          {/* Sign-off — the last thing on the page. */}
+          <p className="select-none pb-16 pt-2 text-center font-mono text-sm text-term-faint">
+            andrew dong
+          </p>
         </div>
         <MetadataBar compact />
       </div>

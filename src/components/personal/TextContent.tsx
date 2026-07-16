@@ -103,6 +103,11 @@ export const TextContent: React.FC<TextContentProps> = ({ content, filename = "f
           >
             {body}
           </ReactMarkdown>
+          {filePath && /^\/files\/(blog|notes)\//.test(filePath) && (
+            <p className="not-prose mt-8 select-none text-right font-mono text-sm text-term-faint">
+              — andrew dong
+            </p>
+          )}
           {backlinks.length > 0 && (
             <div className="mt-6 flex flex-wrap items-baseline gap-x-3 gap-y-1 border-t border-term-border pt-3 font-mono text-xs not-prose">
               <span className="text-term-faint">linked from:</span>
