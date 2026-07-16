@@ -19,7 +19,7 @@ import { loadFileContent } from "@/lib/loadFileContent";
 import { useTheme } from "@/hooks/useTheme";
 import { getTheme } from "@/lib/themes";
 import { useKonami } from "@/hooks/useKonami";
-import { PetalDrift } from "@/components/ui/PetalDrift";
+import { SproutGrowth } from "@/components/ui/SproutGrowth";
 const TetrisFrame = lazyRetry(() =>
   import("@/components/personal/TetrisFrame").then((m) => ({ default: m.TetrisFrame }))
 );
@@ -565,11 +565,11 @@ function PersonalPage() {
             )}
             {/* Terminal Welcome Message */}
             <div className="relative px-6 pt-4 pb-2 text-term-green">
-              {/* Petals drifting over the banner — the garden sheds a little. */}
-              <div className="pointer-events-none absolute inset-0" aria-hidden>
-                <PetalDrift />
-              </div>
-              <pre className="bloom-text text-xs">
+              {/* The banner grows: vines sprout from the top edge of the
+                  letters, rooted a few pixels into the glyphs. Sized to fit the
+                  headroom above the art (the content area clips overflow). */}
+              <div className="relative inline-block">
+                <pre className="bloom-text text-xs">
 {`
   █████╗ ███╗   ██╗██████╗ ██████╗ ███████╗██╗    ██╗███████╗
  ██╔══██╗████╗  ██║██╔══██╗██╔══██╗██╔════╝██║    ██║██╔════╝
@@ -583,9 +583,17 @@ function PersonalPage() {
  ██║  ███╗███████║██████╔╝██║  ██║█████╗  ██╔██╗ ██║         
  ██║   ██║██╔══██║██╔══██╗██║  ██║██╔══╝  ██║╚██╗██║         
  ╚██████╔╝██║  ██║██║  ██║██████╔╝███████╗██║ ╚████║         
-  ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝ ╚══════╝╚═╝  ╚═══╝         
+  ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝ ╚══════╝╚═╝  ╚═══╝
 `}
-              </pre>
+                </pre>
+                <div
+                  className="pointer-events-none absolute left-0 right-0"
+                  style={{ top: -16, height: 42 }}
+                  aria-hidden
+                >
+                  <SproutGrowth seed={7} />
+                </div>
+              </div>
               <div className="mt-1 text-term-dim text-sm">
                 <p>Welcome to Andrew's Digital Garden</p>
                 <p className="text-xs text-term-faint mt-1 mb-2">A personal space for projects, interests, and creative explorations.</p>

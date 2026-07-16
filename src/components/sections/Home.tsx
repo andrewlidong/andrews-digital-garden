@@ -1,7 +1,7 @@
 import { forwardRef, useRef, useState, useCallback, useEffect, lazy, Suspense } from "react";
 import Autoplay from "embla-carousel-autoplay";
 import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
-import { PetalDrift } from "@/components/ui/PetalDrift";
+import { SproutGrowth } from "@/components/ui/SproutGrowth";
 
 // The WebGL morphing-line background, lazily loaded so it never blocks first
 // paint. It sits behind the hero as a soft, masked backdrop and slowly morphs a
@@ -38,6 +38,21 @@ const Home = forwardRef<HTMLElement, HomeProps>(({ isMobile = false }, ref) => {
   const [typedText, setTypedText] = useState("");
   const fullName = "Andrew Li Dong";
   const typingIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  // The sprout row should only span the first rendered line of the name (it
+  // wraps on narrow screens). Measured from an invisible clone of the fully
+  // typed name so the width is known before the growth animation starts.
+  const measureRef = useRef<HTMLSpanElement>(null);
+  const [nameLineWidth, setNameLineWidth] = useState<number | null>(null);
+
+  useEffect(() => {
+    const measure = () => {
+      const rects = measureRef.current?.getClientRects();
+      if (rects && rects.length > 0) setNameLineWidth(rects[0].width);
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, []);
   
   // Simple typing effect
   useEffect(() => {
@@ -102,10 +117,6 @@ const Home = forwardRef<HTMLElement, HomeProps>(({ isMobile = false }, ref) => {
       ref={ref}
       className="min-h-screen flex flex-col items-center justify-center relative overflow-hidden"
     >
-      {/* Petals drifting over the hero — the mobile garden sheds a little. */}
-      <div className="pointer-events-none absolute inset-0 z-0" aria-hidden>
-        <PetalDrift count={10} />
-      </div>
       {/* Desktop: the morphing-line drawing sits as a soft backdrop behind the
           hero copy, edge-faded with a radial mask and dialed back so the text
           stays legible, with a scrim over the brightest part. */}
@@ -188,10 +199,31 @@ const Home = forwardRef<HTMLElement, HomeProps>(({ isMobile = false }, ref) => {
         {/* The bloom clip wraps ONLY the name: Safari paints animated
             inline-block children of a background-clip:text element at the
             container origin, which pinned the cursor to the left edge. */}
-        <h1 className={`text-5xl md:text-7xl font-bold tracking-tight animate-on-scroll fade-up ${rv}`} style={{ transitionDelay: '100ms' }}>
-          <span className="bloom-text">{typedText}</span>
-          <span className="animate-pulse inline-block ml-1 text-term-accent">|</span>
-        </h1>
+        <div className="relative">
+          <h1 className={`text-5xl md:text-7xl font-bold tracking-tight animate-on-scroll fade-up ${rv}`} style={{ transitionDelay: '100ms' }}>
+            <span className="bloom-text">{typedText}</span>
+            <span className="animate-pulse inline-block ml-1 text-term-accent">|</span>
+          </h1>
+          {/* Invisible clone of the finished name, used only to measure how
+              wide its first line will be once typing completes. */}
+          <h1
+            className="invisible absolute inset-x-0 top-0 text-5xl md:text-7xl font-bold tracking-tight"
+            aria-hidden
+          >
+            <span ref={measureRef}>{fullName}</span>
+          </h1>
+          {/* Vines grow off the top of the name once it finishes typing;
+              rooted a few pixels into the cap height of the first line. */}
+          {nameLineWidth !== null && (
+            <div
+              className="pointer-events-none absolute left-0"
+              style={{ top: -24, height: 38, width: nameLineWidth }}
+              aria-hidden
+            >
+              <SproutGrowth seed={3} maxCount={6} delay={fullName.length * 150 + 250} />
+            </div>
+          )}
+        </div>
 
         <p className={`text-lg md:text-xl leading-relaxed text-term-dim animate-on-scroll fade-up ${rv}`} style={{ transitionDelay: '400ms' }}>
           Okay, here we go. Exterior. Cemetery. Night. The shoot-out. Yeah! The Jack O' Diamonds is waiting there with Bonny, and he's arranged to give him back and have this whole thing end because all he really wants is peace.
