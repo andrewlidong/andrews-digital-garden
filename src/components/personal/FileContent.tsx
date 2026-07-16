@@ -7,6 +7,7 @@ import { parseFrontmatter, formatDate } from '@/lib/frontmatter';
 import { remarkWikilinks, getBacklinks } from '@/lib/wikilinks';
 import { remarkCallouts } from '@/lib/callouts';
 import { Signature } from '@/components/ui/Signature';
+import { DitheredImage } from '@/components/ui/DitheredImage';
 import { useInternalLinkNav } from '@/lib/useInternalLinkNav';
 
 interface FileContentProps {
@@ -43,6 +44,7 @@ export const FileContent: React.FC<FileContentProps> = ({ content, fileType, fil
               <ReactMarkdown
                 remarkPlugins={[remarkGfm, remarkWikilinks, remarkCallouts]}
                 rehypePlugins={[[rehypeHighlight, { detect: true, ignoreMissing: true }]]}
+                components={{ img: DitheredImage }}
               >
                 {body}
               </ReactMarkdown>

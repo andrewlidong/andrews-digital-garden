@@ -16,6 +16,7 @@ import { remarkWikilinks, getBacklinks } from "@/lib/wikilinks";
 import { remarkCallouts } from "@/lib/callouts";
 import { useInternalLinkNav } from "@/lib/useInternalLinkNav";
 import { Signature } from "@/components/ui/Signature";
+import { DitheredImage } from "@/components/ui/DitheredImage";
 
 type LoadState = "loading" | "ready" | "notfound";
 
@@ -172,6 +173,7 @@ const markdownComponents = {
   h2: makeHeading("h2"),
   h3: makeHeading("h3"),
   pre: PreBlock,
+  img: DitheredImage,
 };
 
 // Find the previous (newer) and next (older) posts in the same folder, by date.

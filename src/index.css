@@ -166,6 +166,11 @@ blockquote.callout p:last-of-type::after {
   .code-copy-btn {
     opacity: 0.85;
   }
+  /* ...and the dithered-image chip, since tap is the only way to discover
+     the original underneath. */
+  .dither-chip {
+    opacity: 0.85;
+  }
 }
 
 /* Cleaner taps on mobile — no grey flash on every link/button press. */
