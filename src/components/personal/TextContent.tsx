@@ -6,6 +6,7 @@ import rehypeHighlight from "rehype-highlight";
 import { parseFrontmatter, formatDate } from "@/lib/frontmatter";
 import { remarkWikilinks, getBacklinks } from "@/lib/wikilinks";
 import { remarkCallouts } from "@/lib/callouts";
+import { Signature } from "@/components/ui/Signature";
 import { useInternalLinkNav } from "@/lib/useInternalLinkNav";
 
 interface TextContentProps {
@@ -104,9 +105,9 @@ export const TextContent: React.FC<TextContentProps> = ({ content, filename = "f
             {body}
           </ReactMarkdown>
           {filePath && /^\/files\/(blog|notes)\//.test(filePath) && (
-            <p className="not-prose mt-8 select-none text-right font-mono text-sm text-term-faint">
-              — andrew dong
-            </p>
+            <div className="not-prose mt-8 flex justify-end">
+              <Signature className="h-10 text-term-dim" />
+            </div>
           )}
           {backlinks.length > 0 && (
             <div className="mt-6 flex flex-wrap items-baseline gap-x-3 gap-y-1 border-t border-term-border pt-3 font-mono text-xs not-prose">

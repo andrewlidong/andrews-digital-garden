@@ -5,6 +5,7 @@ import Home from "../components/sections/Home";
 import Contact from "../components/sections/Contact";
 import Projects from "../components/sections/Projects";
 import { useNavigate } from "react-router-dom";
+import { Signature } from "@/components/ui/Signature";
 import { useMobileDetect } from "@/hooks/useMobileDetect";
 import { useTheme } from "@/hooks/useTheme";
 import { MobileFileSystem } from "../components/sections/MobileFileSystem";
@@ -303,9 +304,9 @@ function MobilePage() {
           </div>
           <Contact ref={(el) => (sectionRefs.current.contact = el)} />
           {/* Sign-off — the last thing on the page. */}
-          <p className="select-none pb-16 pt-2 text-center font-mono text-sm text-term-faint">
-            andrew dong
-          </p>
+          <div className="flex justify-center pb-16 pt-2">
+            <Signature className="h-12 text-term-dim" />
+          </div>
         </div>
         <MetadataBar compact />
       </div>

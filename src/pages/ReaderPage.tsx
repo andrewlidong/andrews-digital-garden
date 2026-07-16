@@ -15,6 +15,7 @@ import {
 import { remarkWikilinks, getBacklinks } from "@/lib/wikilinks";
 import { remarkCallouts } from "@/lib/callouts";
 import { useInternalLinkNav } from "@/lib/useInternalLinkNav";
+import { Signature } from "@/components/ui/Signature";
 
 type LoadState = "loading" | "ready" | "notfound";
 
@@ -447,9 +448,9 @@ export default function ReaderPage() {
 
             {/* Signature — blog posts and notes are signed work. */}
             {(section === "blog" || section === "notes") && (
-              <p className="mt-10 select-none text-right font-mono text-sm text-term-faint">
-                — andrew dong
-              </p>
+              <div className="mt-10 flex justify-end">
+                <Signature className="h-12 text-term-dim" />
+              </div>
             )}
 
             {/* Backlinks — pages elsewhere in the garden that link here */}
