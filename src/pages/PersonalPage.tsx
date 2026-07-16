@@ -566,7 +566,7 @@ function PersonalPage() {
             {/* Terminal Welcome Message */}
             <div className="relative px-6 pt-4 pb-2 text-term-green">
               {/* Petals drifting over the banner — the garden sheds a little. */}
-              <div className="absolute inset-0" aria-hidden>
+              <div className="pointer-events-none absolute inset-0" aria-hidden>
                 <PetalDrift />
               </div>
               <pre className="bloom-text text-xs">

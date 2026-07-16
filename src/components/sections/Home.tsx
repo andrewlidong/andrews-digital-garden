@@ -185,8 +185,12 @@ const Home = forwardRef<HTMLElement, HomeProps>(({ isMobile = false }, ref) => {
           ~/andrew
         </p>
 
-        <h1 className={`bloom-text text-5xl md:text-7xl font-bold tracking-tight animate-on-scroll fade-up ${rv}`} style={{ transitionDelay: '100ms' }}>
-          {typedText}<span className="animate-pulse inline-block ml-1">|</span>
+        {/* The bloom clip wraps ONLY the name: Safari paints animated
+            inline-block children of a background-clip:text element at the
+            container origin, which pinned the cursor to the left edge. */}
+        <h1 className={`text-5xl md:text-7xl font-bold tracking-tight animate-on-scroll fade-up ${rv}`} style={{ transitionDelay: '100ms' }}>
+          <span className="bloom-text">{typedText}</span>
+          <span className="animate-pulse inline-block ml-1 text-term-accent">|</span>
         </h1>
 
         <p className={`text-lg md:text-xl leading-relaxed text-term-dim animate-on-scroll fade-up ${rv}`} style={{ transitionDelay: '400ms' }}>
