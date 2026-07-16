@@ -19,6 +19,7 @@ import { loadFileContent } from "@/lib/loadFileContent";
 import { useTheme } from "@/hooks/useTheme";
 import { getTheme } from "@/lib/themes";
 import { useKonami } from "@/hooks/useKonami";
+import { PetalDrift } from "@/components/ui/PetalDrift";
 const TetrisFrame = lazyRetry(() =>
   import("@/components/personal/TetrisFrame").then((m) => ({ default: m.TetrisFrame }))
 );
@@ -564,7 +565,11 @@ function PersonalPage() {
             )}
             {/* Terminal Welcome Message */}
             <div className="relative px-6 pt-4 pb-2 text-term-green">
-              <pre className="text-xs">
+              {/* Petals drifting over the banner — the garden sheds a little. */}
+              <div className="absolute inset-0" aria-hidden>
+                <PetalDrift />
+              </div>
+              <pre className="bloom-text text-xs">
 {`
   █████╗ ███╗   ██╗██████╗ ██████╗ ███████╗██╗    ██╗███████╗
  ██╔══██╗████╗  ██║██╔══██╗██╔══██╗██╔════╝██║    ██║██╔════╝

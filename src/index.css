@@ -172,3 +172,39 @@ blockquote.callout p:last-of-type::after {
 body {
   -webkit-tap-highlight-color: transparent;
 }
+
+/* Bloom text — the garden growing through the glyphs. A slow gradient of the
+   theme's spring hues drifts through text (used on the ASCII banner and the
+   mobile hero name via background-clip: text). */
+.bloom-text {
+  background-image: linear-gradient(
+    115deg,
+    var(--term-green) 0%,
+    color-mix(in srgb, var(--term-green) 55%, var(--term-yellow)) 16%,
+    var(--term-cyan) 34%,
+    var(--term-green) 52%,
+    color-mix(in srgb, var(--term-magenta) 45%, var(--term-green)) 72%,
+    var(--term-green) 90%
+  );
+  background-size: 280% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: bloom-drift 16s ease-in-out infinite alternate;
+}
+
+@keyframes bloom-drift {
+  from {
+    background-position: 0% 50%;
+  }
+  to {
+    background-position: 100% 50%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bloom-text {
+    animation: none;
+  }
+}

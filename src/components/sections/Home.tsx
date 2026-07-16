@@ -1,6 +1,7 @@
 import { forwardRef, useRef, useState, useCallback, useEffect, lazy, Suspense } from "react";
 import Autoplay from "embla-carousel-autoplay";
 import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
+import { PetalDrift } from "@/components/ui/PetalDrift";
 
 // The WebGL morphing-line background, lazily loaded so it never blocks first
 // paint. It sits behind the hero as a soft, masked backdrop and slowly morphs a
@@ -101,6 +102,10 @@ const Home = forwardRef<HTMLElement, HomeProps>(({ isMobile = false }, ref) => {
       ref={ref}
       className="min-h-screen flex flex-col items-center justify-center relative overflow-hidden"
     >
+      {/* Petals drifting over the hero — the mobile garden sheds a little. */}
+      <div className="pointer-events-none absolute inset-0 z-0" aria-hidden>
+        <PetalDrift count={10} />
+      </div>
       {/* Desktop: the morphing-line drawing sits as a soft backdrop behind the
           hero copy, edge-faded with a radial mask and dialed back so the text
           stays legible, with a scrim over the brightest part. */}
@@ -180,8 +185,8 @@ const Home = forwardRef<HTMLElement, HomeProps>(({ isMobile = false }, ref) => {
           ~/andrew
         </p>
 
-        <h1 className={`text-5xl md:text-7xl font-bold tracking-tight text-term-fg animate-on-scroll fade-up ${rv}`} style={{ transitionDelay: '100ms' }}>
-          {typedText}<span className="animate-pulse inline-block ml-1 text-term-accent">|</span>
+        <h1 className={`bloom-text text-5xl md:text-7xl font-bold tracking-tight animate-on-scroll fade-up ${rv}`} style={{ transitionDelay: '100ms' }}>
+          {typedText}<span className="animate-pulse inline-block ml-1">|</span>
         </h1>
 
         <p className={`text-lg md:text-xl leading-relaxed text-term-dim animate-on-scroll fade-up ${rv}`} style={{ transitionDelay: '400ms' }}>
