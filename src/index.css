@@ -208,3 +208,19 @@ body {
     animation: none;
   }
 }
+
+/* Sprouts swaying in a light breeze — a slow bob up and down with a slight
+   lean, pivoting around the root (transform-origin is set per-sprout in
+   SproutGrowth). Starts and ends at rest so the delayed loop joins smoothly. */
+@keyframes sprout-sway {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  30% {
+    transform: translateY(-2.2px) rotate(1.6deg);
+  }
+  70% {
+    transform: translateY(0.8px) rotate(-1.4deg);
+  }
+}

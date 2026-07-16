@@ -43,6 +43,7 @@ type Sprout = {
   leaves: Leaf[];
   tip: Tip;
   order: number;
+  swayDur: number;
 };
 
 const LEAF_COLORS = [
@@ -91,7 +92,7 @@ function buildSprouts(w: number, h: number, seed: number, count: number): Sprout
       colorIdx: Math.floor(rnd() * PETAL_COLORS.length),
     };
 
-    sprouts.push({ d, leaves, tip, order: i });
+    sprouts.push({ d, leaves, tip, order: i, swayDur: 4.5 + rnd() * 3 });
   }
   return sprouts;
 }
@@ -109,6 +110,7 @@ export function SproutGrowth({
 }) {
   const ref = useRef<SVGSVGElement>(null);
   const [size, setSize] = useState<{ w: number; h: number } | null>(null);
+  const [inView, setInView] = useState(false);
   const [grown, setGrown] = useState(false);
   const reduced =
     typeof window !== 'undefined' &&
@@ -137,7 +139,7 @@ export function SproutGrowth({
     const io = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setGrown(true);
+          setInView(true);
           io.disconnect();
         }
       },
@@ -147,13 +149,29 @@ export function SproutGrowth({
     return () => io.disconnect();
   }, [reduced]);
 
+  // Flip to grown only after the un-grown sprouts have actually painted:
+  // if this lands in the same frame the paths mount, the transitions never
+  // engage and everything appears fully formed. Two rAFs guarantee a paint
+  // of the hidden state in between.
+  useEffect(() => {
+    if (!inView || !size || grown) return;
+    let r2 = 0;
+    const r1 = requestAnimationFrame(() => {
+      r2 = requestAnimationFrame(() => setGrown(true));
+    });
+    return () => {
+      cancelAnimationFrame(r1);
+      cancelAnimationFrame(r2);
+    };
+  }, [inView, size, grown]);
+
   const sprouts = useMemo(() => {
     if (!size) return [];
     const count = Math.max(4, Math.min(maxCount, Math.round(size.w / 64)));
     return buildSprouts(size.w, size.h, seed, count);
   }, [size, seed, maxCount]);
 
-  const STEM_MS = 900;
+  const STEM_MS = 2000;
 
   return (
     <svg
@@ -164,7 +182,7 @@ export function SproutGrowth({
       style={{ width: '100%', height: '100%', overflow: 'visible' }}
     >
       {sprouts.map((s) => {
-        const base = delay + s.order * 110;
+        const base = delay + s.order * 260;
         const pop = (at: number) =>
           reduced
             ? undefined
@@ -172,12 +190,28 @@ export function SproutGrowth({
                 transform: grown ? 'scale(1)' : 'scale(0)',
                 transformBox: 'fill-box' as const,
                 transformOrigin: 'center',
-                transition: `transform 480ms cubic-bezier(0.34, 1.56, 0.64, 1) ${
+                transition: `transform 950ms cubic-bezier(0.34, 1.3, 0.64, 1) ${
                   base + at * STEM_MS
                 }ms`,
               };
+        // Once fully grown, the sprout sways gently — a slow bob up and down
+        // with a slight lean, pivoting around its root at the bottom.
+        const swayDelay = base + STEM_MS + 900;
         return (
-          <g key={s.order}>
+          <g
+            key={s.order}
+            style={
+              reduced
+                ? undefined
+                : {
+                    transformBox: 'fill-box' as const,
+                    transformOrigin: '50% 100%',
+                    animation: grown
+                      ? `sprout-sway ${s.swayDur.toFixed(2)}s ease-in-out ${swayDelay}ms infinite`
+                      : 'none',
+                  }
+            }
+          >
             <path
               d={s.d}
               fill="none"
@@ -192,7 +226,7 @@ export function SproutGrowth({
                 reduced
                   ? undefined
                   : {
-                      transition: `stroke-dashoffset ${STEM_MS}ms cubic-bezier(0.4, 0, 0.2, 1) ${base}ms`,
+                      transition: `stroke-dashoffset ${STEM_MS}ms cubic-bezier(0.3, 0, 0.4, 1) ${base}ms`,
                     }
               }
             />
