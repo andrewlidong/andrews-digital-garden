@@ -140,6 +140,45 @@ function PersonalPage() {
   const [pawModeActive, setPawModeActive] = useState(false);
   // ↑↑↓↓←→←→BA — unleash the paw stamps.
   useKonami(() => setPawModeActive((prev) => !prev));
+  // `grow` in the terminal: the banner blooms.
+  const [bloomed, setBloomed] = useState(false);
+  // `rm -rf /` in the terminal: the garden really is deleted (until refresh).
+  const [nuked, setNuked] = useState(false);
+
+  // Files vanish from the sidebar one by one, then every window closes and
+  // the desktop goes dark. Nothing persists — a refresh restores the garden.
+  const nukeGarden = () => {
+    const doomed: string[] = [];
+    const walk = (items: FileItem[]) => {
+      for (const it of items) {
+        if (it.type === "folder" && it.children) walk(it.children);
+        else doomed.push(it.id);
+      }
+    };
+    walk(fileSystem);
+    let i = 0;
+    const timer = setInterval(() => {
+      if (i >= doomed.length) {
+        clearInterval(timer);
+        setFileSystem([]);
+        setWindows([]);
+        setNuked(true);
+        return;
+      }
+      const id = doomed[i++];
+      setFileSystem((prev) => {
+        const strip = (items: FileItem[]): FileItem[] =>
+          items
+            .filter((it) => it.id !== id)
+            .map((it) =>
+              it.type === "folder" && it.children
+                ? { ...it, children: strip(it.children) }
+                : it
+            );
+        return strip(prev);
+      });
+    }, 110);
+  };
 
   // Resizable sidebar: drag the divider, double-click it to reset. Width is
   // remembered across visits.
@@ -586,8 +625,8 @@ function PersonalPage() {
   ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝ ╚══════╝╚═╝  ╚═══╝
 `}
                 </pre>
-                {/* Sprouts disabled for now — flip to true to bring them back. */}
-                {false && (
+                {/* Sprouts grow when someone finds the `grow` cheat code. */}
+                {bloomed && (
                   <div
                     className="pointer-events-none absolute left-0 right-0"
                     style={{ top: -16, height: 42 }}
@@ -688,6 +727,8 @@ function PersonalPage() {
                         themeId={themeId}
                         onSetTheme={setTheme}
                         onClose={() => closeWindow(win.id)}
+                        onGrow={() => setBloomed(true)}
+                        onNuke={nukeGarden}
                       />
                     ) : win.windowType === "tetris" ? (
                       <Suspense fallback={<div className="p-4 font-mono text-sm text-term-dim">loading tetris…</div>}>
@@ -709,6 +750,17 @@ function PersonalPage() {
                   </Window>
                 );
               })}
+
+            {/* The aftermath of `rm -rf /` — an empty lot where a garden was. */}
+            {nuked && (
+              <div className="absolute inset-0 z-[9999] flex flex-col items-center justify-center gap-3 bg-term-bg font-mono">
+                <pre className="text-term-red text-sm">{`rm: removed everything`}</pre>
+                <p className="text-term-dim text-sm">the garden is gone. hope it was worth it.</p>
+                <p className="text-term-faint text-xs">
+                  (gardens keep roots — refresh the page to restore from backup)
+                </p>
+              </div>
+            )}
           </div>
         </div>
 

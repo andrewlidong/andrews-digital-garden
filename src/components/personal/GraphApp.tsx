@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import fileSystemData from '@/content/filesystem.json';
 
 // The garden graph: every markdown page is a node, every wikilink an edge
@@ -57,6 +58,20 @@ function buildGraph(): { nodes: GNode[]; edges: GEdge[] } {
   };
   walk(fileSystemData as FsNode[], '~');
 
+  // One node is linked from nowhere and listed nowhere: a nameless dim dot
+  // drifting with the rest. Clicking it opens the secret garden.
+  nodes.push({
+    id: SECRET_ID,
+    path: '',
+    label: '?',
+    section: 'secret',
+    x: Math.cos(nodes.length * 2.4) * (60 + nodes.length * 4),
+    y: Math.sin(nodes.length * 2.4) * (60 + nodes.length * 4),
+    vx: 0,
+    vy: 0,
+    deg: 0,
+  });
+
   const edges: GEdge[] = [];
   const walkLinks = (ns: FsNode[]) => {
     for (const n of ns) {
@@ -78,6 +93,8 @@ function buildGraph(): { nodes: GNode[]; edges: GEdge[] } {
   return { nodes, edges };
 }
 
+const SECRET_ID = '__secret__';
+
 const SECTION_VAR: Record<string, string> = {
   blog: '--term-accent',
   notes: '--term-green',
@@ -91,6 +108,7 @@ function cssVar(name: string): string {
 export function GraphApp({ onOpenNode }: { onOpenNode?: (fileId: string) => void }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -201,17 +219,20 @@ export function GraphApp({ onOpenNode }: { onOpenNode?: (fileId: string) => void
 
       ctx.globalAlpha = 1;
       for (const n of nodes) {
+        const secret = n.id === SECRET_ID;
         const dim = hoodSet ? !hoodSet.has(n) : false;
-        ctx.globalAlpha = dim ? 0.25 : 1;
-        ctx.fillStyle = cssVar(SECTION_VAR[n.section] || '--term-magenta');
+        ctx.globalAlpha = dim ? 0.25 : secret && n !== hovered ? 0.45 : 1;
+        ctx.fillStyle = secret ? faint : cssVar(SECTION_VAR[n.section] || '--term-magenta');
         ctx.beginPath();
-        ctx.arc(n.x, n.y, radius(n), 0, Math.PI * 2);
+        ctx.arc(n.x, n.y, secret ? 3 : radius(n), 0, Math.PI * 2);
         ctx.fill();
         if (n === hovered) {
           ctx.strokeStyle = fg;
           ctx.lineWidth = 1.5;
           ctx.stroke();
         }
+        // The secret node earns its label only on hover.
+        if (secret && n !== hovered) continue;
         ctx.fillStyle = n === hovered ? fg : faint;
         ctx.font = `${n === hovered ? '600 ' : ''}10px ui-monospace, monospace`;
         ctx.textAlign = 'center';
@@ -264,7 +285,10 @@ export function GraphApp({ onOpenNode }: { onOpenNode?: (fileId: string) => void
       if (dragging) canvas.setPointerCapture(e.pointerId);
     };
     const onUp = () => {
-      if (dragging && !dragMoved && onOpenNode) onOpenNode(dragging.id);
+      if (dragging && !dragMoved) {
+        if (dragging.id === SECRET_ID) navigate('/read/secret-garden');
+        else if (onOpenNode) onOpenNode(dragging.id);
+      }
       dragging = null;
     };
     canvas.addEventListener('pointermove', onMove);
@@ -281,7 +305,7 @@ export function GraphApp({ onOpenNode }: { onOpenNode?: (fileId: string) => void
       canvas.removeEventListener('pointerdown', onDown);
       canvas.removeEventListener('pointerup', onUp);
     };
-  }, [onOpenNode]);
+  }, [onOpenNode, navigate]);
 
   return (
     <div ref={wrapRef} className="relative h-full w-full bg-term-bg">

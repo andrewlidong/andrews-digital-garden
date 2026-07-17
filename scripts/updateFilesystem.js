@@ -60,6 +60,9 @@ function generateFilesystemStructure(dir) {
 
     const children = fs.readdirSync(dir)
         .filter(item => !item.startsWith('.')) // Ignore hidden files
+        // The secret garden is reachable only through the hidden graph node —
+        // keep it out of the sidebar, terminal, graph, and sitemap.
+        .filter(item => item !== 'secret-garden.md')
         .map(item => generateFilesystemStructure(path.join(dir, item)));
 
     // If this is the root files directory, return just the children

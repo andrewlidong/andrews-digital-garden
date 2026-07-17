@@ -23,6 +23,8 @@ function walk(dir, rel = '') {
   const urls = [];
   for (const name of fs.readdirSync(dir)) {
     if (name.startsWith('.')) continue;
+    // Secrets don't go in sitemaps.
+    if (name === 'secret-garden.md') continue;
     const abs = path.join(dir, name);
     const relPath = rel ? `${rel}/${name}` : name;
     if (fs.statSync(abs).isDirectory()) {

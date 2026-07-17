@@ -28,6 +28,9 @@ type TerminalProps = {
   onSetTheme?: (id: string) => void;
   // Close the terminal window (e.g. when the user presses Escape).
   onClose?: () => void;
+  // Cheat codes: `grow` blooms the banner; `rm -rf` deletes the garden.
+  onGrow?: () => void;
+  onNuke?: () => void;
 };
 
 type TerminalHistory = {
@@ -36,16 +39,20 @@ type TerminalHistory = {
   isError?: boolean;
 };
 
-export function Terminal({ onOpenFile, onOpenApp, fileSystem, initialCommand, commandNonce, themes, themeId, onSetTheme, onClose }: TerminalProps) {
+export function Terminal({ onOpenFile, onOpenApp, fileSystem, initialCommand, commandNonce, themes, themeId, onSetTheme, onClose, onGrow, onNuke }: TerminalProps) {
   const [input, setInput] = useState('');
   const [history, setHistory] = useState<TerminalHistory[]>([
-    { 
-      command: '', 
-      output: "Welcome to Andrew's Digital Garden Terminal!\nType 'help' to see available commands." 
+    {
+      command: '',
+      output: "Welcome to Andrew's Digital Garden Terminal!\nType 'help' to see available commands."
     }
   ]);
   const [currentPath, setCurrentPath] = useState('/');
   const [currentDir, setCurrentDir] = useState<FileItem[]>(fileSystem);
+  // The vim trap: entered with a bare `vim`, escaped only with :q. Tracks
+  // every keystroke spent inside so the exit line can report the toll.
+  const [vimTrap, setVimTrap] = useState<{ keys: number; log: string[] } | null>(null);
+  const trainRunning = useRef(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const terminalRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
@@ -112,10 +119,105 @@ export function Terminal({ onOpenFile, onOpenApp, fileSystem, initialCommand, co
     return parts[parts.length - 1];
   };
 
+  // `sl` — the classic typo punishment: a little steam train crosses the
+  // terminal. Animates by rewriting the last history entry frame by frame.
+  const runTrain = (cmd: string) => {
+    if (trainRunning.current) return;
+    trainRunning.current = true;
+    const TRAIN = [
+      '         (  ) (  )',
+      '       ____    ____ _________ _________ ',
+      '   ___|_||_|__|    |  o   o  |  o   o  |',
+      '  | _   ___   |[]  |         |         |',
+      '  |(_)-(_)-(_)|____|_(_)—(_)_|_(_)—(_)_|',
+    ];
+    const width = Math.max(...TRAIN.map((l) => l.length));
+    const startCol = 64;
+    setHistory((prev) => [...prev, { command: cmd, output: '' }]);
+    let col = startCol;
+    const timer = setInterval(() => {
+      col -= 3;
+      const frame = TRAIN.map((line) =>
+        col >= 0 ? ' '.repeat(col) + line : line.slice(-col)
+      ).join('\n');
+      setHistory((prev) => {
+        const next = [...prev];
+        next[next.length - 1] = { command: cmd, output: frame };
+        return next;
+      });
+      if (col <= -width) {
+        clearInterval(timer);
+        trainRunning.current = false;
+        setHistory((prev) => {
+          const next = [...prev];
+          next[next.length - 1] = {
+            command: cmd,
+            output: '<span class="text-term-faint">the train has left the garden. (you meant `ls`.)</span>',
+          };
+          return next;
+        });
+      }
+    }, 90);
+  };
+
+  // `fortune` — the garden quotes itself: a random sentence from a random
+  // blog post or note.
+  const runFortune = (cmd: string) => {
+    const files: FileItem[] = [];
+    const collect = (ns: FileItem[]) => {
+      for (const n of ns) {
+        if (n.type === 'folder') collect(n.children || []);
+        else if (/\.(md|markdown)$/i.test(n.name) && n.path) files.push(n);
+      }
+    };
+    collect(fileSystem);
+    if (files.length === 0) {
+      setHistory((prev) => [...prev, { command: cmd, output: 'The oracle is silent.', isError: true }]);
+      return;
+    }
+    const pick = files[Math.floor(Math.random() * files.length)];
+    setHistory((prev) => [...prev, { command: cmd, output: 'consulting the garden…' }]);
+    fetch(pick.path)
+      .then((r) => r.text())
+      .then((text) => {
+        const body = text
+          .replace(/^﻿?---\s*\n[\s\S]*?\n---\s*\n?/, '')
+          .replace(/```[\s\S]*?```/g, ' ')
+          .replace(/!\[[^\]]*\]\([^)]*\)/g, ' ')
+          .replace(/\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g, (_m, a, b) => b || a)
+          .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
+          .replace(/[#*_`~>|]/g, '')
+          .replace(/<[^>]*>/g, ' ')
+          .replace(/\s+/g, ' ');
+        const sentences = body.match(/[A-Z“"'][^.!?]{30,170}[.!?]/g) || [];
+        const label = pick.path.replace(/^\/files\//, '~/').replace(/\.(md|markdown)$/i, '');
+        const line = sentences.length
+          ? sentences[Math.floor(Math.random() * sentences.length)].trim()
+          : null;
+        setHistory((prev) => {
+          const next = [...prev];
+          next[next.length - 1] = {
+            command: cmd,
+            output: line
+              ? `“${line.replace(/</g, '&lt;')}”\n<span class="text-term-faint">— ${label}</span>`
+              : 'The oracle mumbled something illegible. Try again.',
+          };
+          return next;
+        });
+      })
+      .catch(() => {
+        setHistory((prev) => {
+          const next = [...prev];
+          next[next.length - 1] = { command: cmd, output: 'The oracle is offline.', isError: true };
+          return next;
+        });
+      });
+  };
+
   const handleCommand = (cmd: string) => {
     const args = cmd.trim().split(' ');
     const command = args[0].toLowerCase();
-    
+
     let output = '';
     let isError = false;
 
@@ -319,10 +421,60 @@ psst: this terminal keeps a few secrets. old cheat codes still work.`;
         }
         break;
 
+      case 'grow':
+      case 'bloom':
+        if (onGrow) {
+          onGrow();
+          output = `<span class="text-term-green">the garden hears you. look up. ❀</span>`;
+        } else {
+          output = 'nothing grows here.';
+          isError = true;
+        }
+        break;
+
+      case 'xyzzy':
+        output = 'Nothing happens.';
+        break;
+
+      case 'sl':
+        runTrain(cmd);
+        return;
+
+      case 'fortune':
+        runFortune(cmd);
+        return;
+
+      case 'rm': {
+        const flags = args.slice(1).filter((a) => a.startsWith('-')).join('');
+        if (flags.includes('r') && flags.includes('f')) {
+          if (onNuke) {
+            output = 'rm: removing everything…';
+            setHistory((prev) => [...prev, { command: cmd, output }]);
+            setTimeout(() => onNuke(), 500);
+            return;
+          }
+          output = 'rm: the garden is read-only here.';
+          isError = true;
+        } else if (args.length < 2) {
+          output = 'rm: missing operand';
+          isError = true;
+        } else {
+          output = `rm: cannot remove '${args[1]}': Permission denied (try harder)`;
+          isError = true;
+        }
+        break;
+      }
+
       case 'vim':
       case 'nvim':
       case 'edit':
         if (args.length < 2) {
+          if (command === 'vim' || command === 'nvim') {
+            // No file: welcome to the trap. Escape is :q — everything else
+            // just runs up the keystroke counter.
+            setVimTrap({ keys: 0, log: [] });
+            return;
+          }
           output = `Usage: ${command} [filename]`;
           isError = true;
         } else {
@@ -364,6 +516,32 @@ psst: this terminal keeps a few secrets. old cheat codes still work.`;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (vimTrap) {
+      const entry = input.trim();
+      setInput('');
+      if (/^:(q!?|quit|wq!?|x|exit)$/i.test(entry)) {
+        const toll = vimTrap.keys;
+        setVimTrap(null);
+        setHistory((prev) => [
+          ...prev,
+          {
+            command: 'vim',
+            output: `you escaped vim after <span class="text-term-yellow">${toll}</span> keystrokes. most never do.`,
+          },
+        ]);
+        return;
+      }
+      const hints = [
+        "this isn't insert mode. this isn't even vim.",
+        'E492: Not an editor command. (the way out rhymes with "colon q")',
+        ':q',
+      ];
+      const line = entry.startsWith(':')
+        ? `E492: Not an editor command: ${entry.slice(1).replace(/</g, '&lt;')}`
+        : hints[Math.min(vimTrap.log.length, hints.length - 1)];
+      setVimTrap({ ...vimTrap, log: [...vimTrap.log.slice(-3), line] });
+      return;
+    }
     if (!input.trim()) return;
 
     handleCommand(input);
@@ -443,6 +621,13 @@ psst: this terminal keeps a few secrets. old cheat codes still work.`;
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (vimTrap) {
+      // Every keystroke inside the trap counts toward the toll — and Escape
+      // closes nothing here. This is vim.
+      setVimTrap((t) => (t ? { ...t, keys: t.keys + 1 } : t));
+      if (e.key === 'Escape' || e.key === 'Tab') e.preventDefault();
+      return;
+    }
     if (e.key === 'Tab') {
       e.preventDefault();
       handleTabComplete();
@@ -467,6 +652,39 @@ psst: this terminal keeps a few secrets. old cheat codes still work.`;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [commandNonce]);
+
+  if (vimTrap) {
+    return (
+      <div
+        ref={terminalRef}
+        className="bg-term-bg p-4 font-mono text-sm h-full overflow-y-auto flex flex-col"
+        onClick={() => inputRef.current?.focus()}
+      >
+        <div className="flex-1 text-term-accent whitespace-pre-wrap">
+          {Array.from({ length: 9 }, () => '~').join('\n')}
+        </div>
+        {vimTrap.log.map((line, i) => (
+          <div key={i} className="text-term-red" dangerouslySetInnerHTML={{ __html: line }} />
+        ))}
+        <div className="flex justify-between bg-term-elevated px-2 py-0.5 text-term-fg">
+          <span>"[No Name]" 0 lines — this is vim now. good luck.</span>
+          <span className="text-term-faint">keystrokes: {vimTrap.keys}</span>
+        </div>
+        <form onSubmit={handleSubmit} className="flex">
+          <input
+            ref={inputRef}
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={handleKeyDown}
+            aria-label="vim command"
+            className="flex-1 bg-transparent outline-none text-term-fg"
+            autoFocus
+          />
+        </form>
+      </div>
+    );
+  }
 
   return (
     <div
