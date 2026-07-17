@@ -303,10 +303,13 @@ function MobilePage() {
             />
           </div>
           <Contact ref={(el) => (sectionRefs.current.contact = el)} />
-          {/* Sign-off — the last thing on the page. */}
-          <div className="flex justify-center pb-16 pt-2">
-            <Signature className="h-12 text-term-dim" />
-          </div>
+          {/* Sign-off — the last thing on the page.
+              Disabled for now — flip to true to bring it back. */}
+          {false && (
+            <div className="flex justify-center pb-16 pt-2">
+              <Signature className="h-12 text-term-dim" />
+            </div>
+          )}
         </div>
         <MetadataBar compact />
       </div>

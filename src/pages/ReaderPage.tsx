@@ -448,8 +448,9 @@ export default function ReaderPage() {
               </ReactMarkdown>
             </div>
 
-            {/* Signature — blog posts and notes are signed work. */}
-            {(section === "blog" || section === "notes") && (
+            {/* Signature — blog posts and notes are signed work.
+                Disabled for now — remove the `false &&` to bring it back. */}
+            {false && (section === "blog" || section === "notes") && (
               <div className="mt-10 flex justify-end">
                 <Signature className="h-12 text-term-dim" />
               </div>

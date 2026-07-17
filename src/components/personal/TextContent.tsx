@@ -106,7 +106,8 @@ export const TextContent: React.FC<TextContentProps> = ({ content, filename = "f
           >
             {body}
           </ReactMarkdown>
-          {filePath && /^\/files\/(blog|notes)\//.test(filePath) && (
+          {/* Signature disabled for now — remove the `false &&` to bring it back. */}
+          {false && filePath && /^\/files\/(blog|notes)\//.test(filePath) && (
             <div className="not-prose mt-8 flex justify-end">
               <Signature className="h-10 text-term-dim" />
             </div>

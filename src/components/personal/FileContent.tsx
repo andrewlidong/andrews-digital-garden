@@ -49,7 +49,8 @@ export const FileContent: React.FC<FileContentProps> = ({ content, fileType, fil
                 {body}
               </ReactMarkdown>
             </div>
-            {filePath && /^\/files\/(blog|notes)\//.test(filePath) && (
+            {/* Signature disabled for now — remove the `false &&` to bring it back. */}
+            {false && filePath && /^\/files\/(blog|notes)\//.test(filePath) && (
               <div className="mt-8 flex justify-end">
                 <Signature className="h-10 text-term-dim" />
               </div>

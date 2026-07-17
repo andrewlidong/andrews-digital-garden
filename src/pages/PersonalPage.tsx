@@ -586,13 +586,16 @@ function PersonalPage() {
   ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝ ╚══════╝╚═╝  ╚═══╝
 `}
                 </pre>
-                <div
-                  className="pointer-events-none absolute left-0 right-0"
-                  style={{ top: -16, height: 42 }}
-                  aria-hidden
-                >
-                  <SproutGrowth seed={7} />
-                </div>
+                {/* Sprouts disabled for now — flip to true to bring them back. */}
+                {false && (
+                  <div
+                    className="pointer-events-none absolute left-0 right-0"
+                    style={{ top: -16, height: 42 }}
+                    aria-hidden
+                  >
+                    <SproutGrowth seed={7} />
+                  </div>
+                )}
               </div>
               <div className="mt-1 text-term-dim text-sm">
                 <p>Welcome to Andrew's Digital Garden</p>

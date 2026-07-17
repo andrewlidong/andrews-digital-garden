@@ -213,8 +213,9 @@ const Home = forwardRef<HTMLElement, HomeProps>(({ isMobile = false }, ref) => {
             <span ref={measureRef}>{fullName}</span>
           </h1>
           {/* Vines grow off the top of the name once it finishes typing;
-              rooted a few pixels into the cap height of the first line. */}
-          {nameLineWidth !== null && (
+              rooted a few pixels into the cap height of the first line.
+              Disabled for now — remove the `false &&` to bring them back. */}
+          {false && nameLineWidth !== null && (
             <div
               className="pointer-events-none absolute left-0"
               style={{ top: -24, height: 38, width: nameLineWidth }}
