@@ -132,14 +132,18 @@ export function Terminal({ onOpenFile, onOpenApp, fileSystem, initialCommand, co
       '  |(_)-(_)-(_)|____|_(_)—(_)_|_(_)—(_)_|',
     ];
     const width = Math.max(...TRAIN.map((l) => l.length));
-    const startCol = 64;
+    // The visible track: frames are clipped to this many columns, so the
+    // train steams in from the right edge instead of materializing whole
+    // (and long lines never soft-wrap into soup).
+    const VIEW = 58;
     setHistory((prev) => [...prev, { command: cmd, output: '' }]);
-    let col = startCol;
+    let col = VIEW;
     const timer = setInterval(() => {
       col -= 3;
-      const frame = TRAIN.map((line) =>
-        col >= 0 ? ' '.repeat(col) + line : line.slice(-col)
-      ).join('\n');
+      const frame = TRAIN.map((line) => {
+        const laid = col >= 0 ? ' '.repeat(col) + line : line.slice(-col);
+        return laid.slice(0, VIEW);
+      }).join('\n');
       setHistory((prev) => {
         const next = [...prev];
         next[next.length - 1] = { command: cmd, output: frame };
@@ -667,7 +671,7 @@ psst: this terminal keeps a few secrets. old cheat codes still work.`;
           <div key={i} className="text-term-red" dangerouslySetInnerHTML={{ __html: line }} />
         ))}
         <div className="flex justify-between bg-term-elevated px-2 py-0.5 text-term-fg">
-          <span>"[No Name]" 0 lines — this is vim now. good luck.</span>
+          <span>"[No Name]" 0 lines — i still haven't learned it bruce</span>
           <span className="text-term-faint">keystrokes: {vimTrap.keys}</span>
         </div>
         <form onSubmit={handleSubmit} className="flex">

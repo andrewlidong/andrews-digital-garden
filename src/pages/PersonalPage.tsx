@@ -144,32 +144,44 @@ function PersonalPage() {
   const [bloomed, setBloomed] = useState(false);
   // `rm -rf /` in the terminal: the garden really is deleted (until refresh).
   const [nuked, setNuked] = useState(false);
+  const [nuking, setNuking] = useState(false);
 
-  // Files vanish from the sidebar one by one, then every window closes and
-  // the desktop goes dark. Nothing persists — a refresh restores the garden.
+  // Chaos, not a tidy sweep: every sidebar entry — folders included, so whole
+  // subtrees vanish at once — is shredded in random order and random bursts,
+  // windows slam shut along the way, and the desktop shakes until nothing is
+  // left. Nothing persists — a refresh restores the garden.
   const nukeGarden = () => {
+    setNuking(true);
     const doomed: string[] = [];
     const walk = (items: FileItem[]) => {
       for (const it of items) {
+        doomed.push(it.id);
         if (it.type === "folder" && it.children) walk(it.children);
-        else doomed.push(it.id);
       }
     };
     walk(fileSystem);
+    for (let i = doomed.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [doomed[i], doomed[j]] = [doomed[j], doomed[i]];
+    }
     let i = 0;
     const timer = setInterval(() => {
       if (i >= doomed.length) {
         clearInterval(timer);
         setFileSystem([]);
         setWindows([]);
+        setNuking(false);
         setNuked(true);
         return;
       }
-      const id = doomed[i++];
+      // 1–3 entries per tick, so the pace lurches instead of marching.
+      const burst = 1 + Math.floor(Math.random() * 3);
+      const ids = new Set(doomed.slice(i, i + burst));
+      i += burst;
       setFileSystem((prev) => {
         const strip = (items: FileItem[]): FileItem[] =>
           items
-            .filter((it) => it.id !== id)
+            .filter((it) => !ids.has(it.id))
             .map((it) =>
               it.type === "folder" && it.children
                 ? { ...it, children: strip(it.children) }
@@ -177,7 +189,11 @@ function PersonalPage() {
             );
         return strip(prev);
       });
-    }, 110);
+      // Windows get taken out too, at random.
+      if (Math.random() < 0.3) {
+        setWindows((prev) => (prev.length > 0 ? prev.slice(0, -1) : prev));
+      }
+    }, 90);
   };
 
   // Resizable sidebar: drag the divider, double-click it to reset. Width is
@@ -583,7 +599,7 @@ function PersonalPage() {
           </div>
           
           {/* Main content area */}
-          <div className="flex-1 relative overflow-hidden">
+          <div className={`flex-1 relative overflow-hidden ${nuking ? "nuke-shake" : ""}`}>
             {/* Decorative enchanted-rose shader in the background, anchored right */}
             {!isMobile && (
               <Suspense fallback={null}>

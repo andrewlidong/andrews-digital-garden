@@ -214,6 +214,23 @@ body {
   }
 }
 
+/* rm -rf /: the whole desktop judders while the garden is being shredded. */
+@keyframes nuke-shake {
+  0%, 100% { transform: translate(0, 0); }
+  20% { transform: translate(-3px, 2px); }
+  40% { transform: translate(3px, -2px); }
+  60% { transform: translate(-2px, -3px); }
+  80% { transform: translate(2px, 3px); }
+}
+.nuke-shake {
+  animation: nuke-shake 0.24s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .nuke-shake {
+    animation: none;
+  }
+}
+
 /* Sprouts swaying in a light breeze — a slow bob up and down with a slight
    lean, pivoting around the root (transform-origin is set per-sprout in
    SproutGrowth). Starts and ends at rest so the delayed loop joins smoothly. */
