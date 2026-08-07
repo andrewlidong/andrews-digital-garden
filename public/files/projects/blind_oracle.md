@@ -22,7 +22,7 @@ A spec is a short YAML file: a description, an exported TypeScript signature, an
 
 In a case study on a run-length-encoding spec, this setup surfaced a genuine spec-level ambiguity: the format `"<count><character>"` makes `encode("0")` produce `"10"`, indistinguishable from "ten of something." Four implementation attempts failed four different ways — a crash, then two variations of a silent wrong answer, then a structural fix that broke a different input class entirely — while four of five other specs converged on the implementer's first attempt, showing the pipeline correctly recognizes correct code rather than looping needlessly.
 
-Read the full write-up: [[Blind Oracle]].
+Read the full write-up: [[Spec-Driven, Property-Based Agentic Coding]].
 
 ### GitHub Repository
 For more details and to view the source code, visit the [GitHub repository](https://github.com/andrewlidong/spec-driven-property-ai).
