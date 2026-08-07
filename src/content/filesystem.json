@@ -19,15 +19,6 @@
         "type": "folder",
         "children": [
             {
-                "id": "blind_oracle_md",
-                "name": "blind-oracle.md",
-                "type": "file",
-                "path": "/files/blog/blind-oracle.md",
-                "title": "Blind Oracle",
-                "date": "2026-08-07",
-                "subtitle": "How a small closed-loop pipeline caught a real encoding-format ambiguity — and what failed attempts at fixing it taught me about property-based testing versus example-based testing."
-            },
-            {
                 "id": "building_massively_multiplayer_tetris_md",
                 "name": "building-massively-multiplayer-tetris.md",
                 "type": "file",
@@ -71,6 +62,15 @@
                 "title": "Off the Bull(MQ), Onto Temporal",
                 "date": "2025-06-28",
                 "subtitle": "and what we learned along the way"
+            },
+            {
+                "id": "spec_driven_property_based_agentic_md",
+                "name": "spec-driven-property-based-agentic.md",
+                "type": "file",
+                "path": "/files/blog/spec-driven-property-based-agentic.md",
+                "title": "Spec-Driven, Property-Based Agentic Coding",
+                "date": "2026-08-07",
+                "subtitle": "How a small closed-loop pipeline caught a real encoding-format ambiguity — and what failed attempts at fixing it taught me about property-based testing versus example-based testing."
             },
             {
                 "id": "spelling_words_with_the_subway_md",
@@ -406,7 +406,7 @@
                 "type": "file",
                 "path": "/files/projects/blind_oracle.md",
                 "links": [
-                    "/files/blog/blind-oracle.md"
+                    "/files/blog/spec-driven-property-based-agentic.md"
                 ]
             },
             {

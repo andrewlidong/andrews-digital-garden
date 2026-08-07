@@ -7,35 +7,6 @@
     <description>Writing on software, languages, and creative coding.</description>
     <language>en-us</language>
     <item>
-      <title>Blind Oracle</title>
-      <link>https://andrewlidong.xyz/read/blog/blind-oracle</link>
-      <guid isPermaLink="true">https://andrewlidong.xyz/read/blog/blind-oracle</guid>
-      <pubDate>Fri, 07 Aug 2026 12:00:00 GMT</pubDate>
-      <description>How a small closed-loop pipeline caught a real encoding-format ambiguity — and what failed attempts at fixing it taught me about property-based testing versus example-based testing.</description>
-      <content:encoded><![CDATA[<p>I built a small pipeline for spec-driven, property-based AI coding: you write a short spec, one LLM implements it, and a <em>second, independent</em> LLM — which never sees the implementation, only the spec — derives properties and writes a <a href="https://github.com/dubzzz/fast-check">fast-check</a> property-based test file. The two are run against each other, and if a property fails, the exact counterexample fast-check found gets fed back into the implementer for another attempt.</p>
-<p>Code and write-up at <a href="https://github.com/andrewlidong/spec-driven-property-ai">github.com/andrewlidong/spec-driven-property-ai</a>.</p>
-<h2>The mirror problem</h2>
-<p>If the same generation pass produces both the code and its tests, the tests tend to encode whatever the implementation already does — including its bugs. Code and tests agree with each other because they share the same blindspots, not because either one is actually correct.</p>
-<p>The fix here is structural, not procedural: the test-writing call is genuinely blind to the implementation. It only ever sees the spec — a description, an exported TypeScript signature, and optional plain-language invariants — and it&#39;s generated once, before any implementation exists. Properties are derived from the spec&#39;s contract (<code>decode(encode(s)) === s</code>, &quot;the output is sorted,&quot; &quot;the result is a permutation of the inputs&quot;) rather than from watching what one implementation happens to return. That frozen test file then acts as a genuine, adversarial oracle across every retry.</p>
-<h2>Case study: run-length encoding</h2>
-<p>One of the shipped example specs asks for run-length encoding and decoding: <code>&quot;&lt;count&gt;&lt;character&gt;&quot;</code>. It looks straightforward. It isn&#39;t.</p>
-<p><code>encode(&quot;0&quot;)</code> produces <code>&quot;10&quot;</code> — which is indistinguishable from &quot;ten of some missing character.&quot; The spec itself has a latent ambiguity, and the four implementation attempts that followed revealed it four different ways:</p>
-<ul>
-<li><strong>Attempt 1</strong> crashed outright — <code>decode</code> greedily consumed both digits of <code>&quot;10&quot;</code> as the count, then tried to repeat a character that didn&#39;t exist.</li>
-<li><strong>Attempt 2</strong> patched the crash with a bounds check, which quietly turned it into a wrong-answer bug instead: <code>decode(&quot;10&quot;)</code> now silently returned <code>&quot;&quot;</code>.</li>
-<li><strong>Attempt 3</strong> was functionally the same fix, same underlying bug.</li>
-<li><strong>Attempt 4</strong> tried a structural fix — reserve the last character before reading digits — which happened to fix <code>&quot;0&quot;</code> but broke decoding for longer strings instead. fast-check shrunk the failure to <code>&quot;0 &quot;</code> (zero, then a space), where encoding and decoding produced a garbage string of over a hundred spaces.</li>
-</ul>
-<p>That last attempt is the real payoff. A fix that satisfies the counterexample fast-check found in one run can still fail fast-check&#39;s <em>next</em> run, because property-based testing re-samples broadly every attempt rather than re-checking only the input that failed last time. An example-based regression suite built around <code>&quot;0&quot;</code> would have gone green on attempt 4 and shipped a decoder that mangles any string with more than one run in it.</p>
-<h2>What converged, and what that means</h2>
-<p>Four of the five shipped example specs — merging sorted arrays, balanced parentheses, array rotation, binary-search lower-bound — converged on the implementer&#39;s very first attempt. Only the ambiguous run-length-encoding spec exhausted its retry budget. That split matters: it&#39;s evidence the pipeline correctly recognizes <em>correct</em> code and doesn&#39;t loop needlessly, and that the one spec it failed on failed for the right reason — a genuine design flaw in the spec, not an implementation slip.</p>
-<h2>A few implementation details that mattered</h2>
-<p>The harness runs each attempt&#39;s implementation and the frozen test file together with <code>tsx</code> in a separate process, inside the project tree so module resolution works, with a 15-second timeout as a minimal safety margin (this is untrusted, LLM-generated code, not sandboxed in any stronger sense). fast-check&#39;s errors are passed back to the implementer verbatim rather than parsed and summarized — some of the most useful fixes came from the model noticing details in the full stack trace that a paraphrased error message would have thrown away.</p>
-<p>To avoid requiring a separate API key, the implementer and test-writer calls will shell out to the <code>claude</code> CLI in headless mode if <code>ANTHROPIC_API_KEY</code> isn&#39;t set, reusing an existing Claude Code subscription login instead of a pay-per-token key. On the balanced-parentheses spec, the test-writer LLM independently invented a recursive generator using fast-check&#39;s <code>fc.letrec</code> — without being told to — deriving the need for it from a property hint about nested bracket pairs.</p>
-<p>Try it with <code>pnpm start run --all</code>.</p>
-]]></content:encoded>
-    </item>
-    <item>
       <title>Deterministic simulation testing from scratch</title>
       <link>https://andrewlidong.xyz/read/blog/deterministic-simulation-testing</link>
       <guid isPermaLink="true">https://andrewlidong.xyz/read/blog/deterministic-simulation-testing</guid>
@@ -65,6 +36,35 @@
 <p><img src="/blog-images/deterministic-simulation-testing-1.png" alt=""></p>
 <h2>Where this approach stops working</h2>
 <p>This only works for single-process, cooperatively-scheduled systems. Anything requiring genuine cross-process determinism — real multi-process distributed systems — needs an actual hypervisor-based simulation platform, which is a much bigger undertaking. But the conceptual architecture — controlled nondeterminism as the single lever behind replay, fault injection, search, and shrinking — is transferable, and buildable by one person, for the systems small enough to fit inside it.</p>
+]]></content:encoded>
+    </item>
+    <item>
+      <title>Spec-Driven, Property-Based Agentic Coding</title>
+      <link>https://andrewlidong.xyz/read/blog/spec-driven-property-based-agentic</link>
+      <guid isPermaLink="true">https://andrewlidong.xyz/read/blog/spec-driven-property-based-agentic</guid>
+      <pubDate>Fri, 07 Aug 2026 12:00:00 GMT</pubDate>
+      <description>How a small closed-loop pipeline caught a real encoding-format ambiguity — and what failed attempts at fixing it taught me about property-based testing versus example-based testing.</description>
+      <content:encoded><![CDATA[<p>I built a small pipeline for spec-driven, property-based AI coding: you write a short spec, one LLM implements it, and a <em>second, independent</em> LLM — which never sees the implementation, only the spec — derives properties and writes a <a href="https://github.com/dubzzz/fast-check">fast-check</a> property-based test file. The two are run against each other, and if a property fails, the exact counterexample fast-check found gets fed back into the implementer for another attempt.</p>
+<p>Code and write-up at <a href="https://github.com/andrewlidong/spec-driven-property-ai">github.com/andrewlidong/spec-driven-property-ai</a>.</p>
+<h2>The mirror problem</h2>
+<p>If the same generation pass produces both the code and its tests, the tests tend to encode whatever the implementation already does — including its bugs. Code and tests agree with each other because they share the same blindspots, not because either one is actually correct.</p>
+<p>The fix here is structural, not procedural: the test-writing call is genuinely blind to the implementation. It only ever sees the spec — a description, an exported TypeScript signature, and optional plain-language invariants — and it&#39;s generated once, before any implementation exists. Properties are derived from the spec&#39;s contract (<code>decode(encode(s)) === s</code>, &quot;the output is sorted,&quot; &quot;the result is a permutation of the inputs&quot;) rather than from watching what one implementation happens to return. That frozen test file then acts as a genuine, adversarial oracle across every retry.</p>
+<h2>Case study: run-length encoding</h2>
+<p>One of the shipped example specs asks for run-length encoding and decoding: <code>&quot;&lt;count&gt;&lt;character&gt;&quot;</code>. It looks straightforward. It isn&#39;t.</p>
+<p><code>encode(&quot;0&quot;)</code> produces <code>&quot;10&quot;</code> — which is indistinguishable from &quot;ten of some missing character.&quot; The spec itself has a latent ambiguity, and the four implementation attempts that followed revealed it four different ways:</p>
+<ul>
+<li><strong>Attempt 1</strong> crashed outright — <code>decode</code> greedily consumed both digits of <code>&quot;10&quot;</code> as the count, then tried to repeat a character that didn&#39;t exist.</li>
+<li><strong>Attempt 2</strong> patched the crash with a bounds check, which quietly turned it into a wrong-answer bug instead: <code>decode(&quot;10&quot;)</code> now silently returned <code>&quot;&quot;</code>.</li>
+<li><strong>Attempt 3</strong> was functionally the same fix, same underlying bug.</li>
+<li><strong>Attempt 4</strong> tried a structural fix — reserve the last character before reading digits — which happened to fix <code>&quot;0&quot;</code> but broke decoding for longer strings instead. fast-check shrunk the failure to <code>&quot;0 &quot;</code> (zero, then a space), where encoding and decoding produced a garbage string of over a hundred spaces.</li>
+</ul>
+<p>That last attempt is the real payoff. A fix that satisfies the counterexample fast-check found in one run can still fail fast-check&#39;s <em>next</em> run, because property-based testing re-samples broadly every attempt rather than re-checking only the input that failed last time. An example-based regression suite built around <code>&quot;0&quot;</code> would have gone green on attempt 4 and shipped a decoder that mangles any string with more than one run in it.</p>
+<h2>What converged, and what that means</h2>
+<p>Four of the five shipped example specs — merging sorted arrays, balanced parentheses, array rotation, binary-search lower-bound — converged on the implementer&#39;s very first attempt. Only the ambiguous run-length-encoding spec exhausted its retry budget. That split matters: it&#39;s evidence the pipeline correctly recognizes <em>correct</em> code and doesn&#39;t loop needlessly, and that the one spec it failed on failed for the right reason — a genuine design flaw in the spec, not an implementation slip.</p>
+<h2>A few implementation details that mattered</h2>
+<p>The harness runs each attempt&#39;s implementation and the frozen test file together with <code>tsx</code> in a separate process, inside the project tree so module resolution works, with a 15-second timeout as a minimal safety margin (this is untrusted, LLM-generated code, not sandboxed in any stronger sense). fast-check&#39;s errors are passed back to the implementer verbatim rather than parsed and summarized — some of the most useful fixes came from the model noticing details in the full stack trace that a paraphrased error message would have thrown away.</p>
+<p>To avoid requiring a separate API key, the implementer and test-writer calls will shell out to the <code>claude</code> CLI in headless mode if <code>ANTHROPIC_API_KEY</code> isn&#39;t set, reusing an existing Claude Code subscription login instead of a pay-per-token key. On the balanced-parentheses spec, the test-writer LLM independently invented a recursive generator using fast-check&#39;s <code>fc.letrec</code> — without being told to — deriving the need for it from a property hint about nested bracket pairs.</p>
+<p>Try it with <code>pnpm start run --all</code>.</p>
 ]]></content:encoded>
     </item>
     <item>

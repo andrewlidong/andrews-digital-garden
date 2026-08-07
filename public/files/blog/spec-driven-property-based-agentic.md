@@ -1,8 +1,8 @@
 ---
-title: "Blind Oracle"
+title: "Spec-Driven, Property-Based Agentic Coding"
 date: "2026-08-07"
 subtitle: "How a small closed-loop pipeline caught a real encoding-format ambiguity — and what failed attempts at fixing it taught me about property-based testing versus example-based testing."
-slug: "blind-oracle"
+slug: "spec-driven-property-based-agentic"
 ---
 
 I built a small pipeline for spec-driven, property-based AI coding: you write a short spec, one LLM implements it, and a *second, independent* LLM — which never sees the implementation, only the spec — derives properties and writes a [fast-check](https://github.com/dubzzz/fast-check) property-based test file. The two are run against each other, and if a property fails, the exact counterexample fast-check found gets fed back into the implementer for another attempt.
