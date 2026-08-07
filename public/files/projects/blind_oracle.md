@@ -1,4 +1,4 @@
-# Spec-Driven Property AI
+# Blind Oracle
 
 ## Spec-driven, property-based AI coding
 
