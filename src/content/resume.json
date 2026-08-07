@@ -157,6 +157,7 @@
                 "Node.js"
             ],
             "github_url": "https://github.com/andrewlidong/tinychaos",
+            "image_url": "/blog-images/deterministic-simulation-testing-1.png",
             "fallback_image_url": "/default_project.svg"
         },
         {
