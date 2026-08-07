@@ -40,6 +40,8 @@ The first run of a benchmark comparing coverage-guided search against pure rando
 
 Rather than reading verbose ASCII traces, a fuzz or replay run can emit a self-contained HTML swimlane diagram: one lane per node and client, a dot per message or probe event positioned by time, and a red line marking the exact moment a property violation fires across all three replicas. Hovering any dot shows the details. No server, no external dependencies — just open the file in a browser.
 
+![](/blog-images/deterministic-simulation-testing-1.png)
+
 ## Where this approach stops working
 
 This only works for single-process, cooperatively-scheduled systems. Anything requiring genuine cross-process determinism — real multi-process distributed systems — needs an actual hypervisor-based simulation platform, which is a much bigger undertaking. But the conceptual architecture — controlled nondeterminism as the single lever behind replay, fault injection, search, and shrinking — is transferable, and buildable by one person, for the systems small enough to fit inside it.

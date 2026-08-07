@@ -1,14 +1,18 @@
 name: Import Substack posts
 
-# Pulls the Substack feed daily and commits any new/updated posts (plus their
+# Pulls the Substack feed and commits any new/updated posts (plus their
 # images and the regenerated filesystem index). Re-running the importer is
 # safe: unchanged posts reproduce byte-identically, and locally-edited `stage:`
 # frontmatter is preserved. Pushes from this workflow use GITHUB_TOKEN, which
 # doesn't fire `on: push` workflows, so the deploy is dispatched explicitly.
+#
+# Manual trigger only (workflow_dispatch): the daily cron was disabled
+# because it failed on every run — Substack's Cloudflare bot protection
+# blocks GitHub Actions' shared runner IPs, which is an IP-reputation
+# block that curl UA/header tweaks can't work around. Run this by hand
+# (Actions tab -> Run workflow) after publishing a new post.
 
 on:
-  schedule:
-    - cron: '23 11 * * *' # daily, 11:23 UTC (~7am ET)
   workflow_dispatch:
 
 permissions:
