@@ -28,6 +28,15 @@
                 "subtitle": "I recently build a cooperative multiplayer Tetris where every player shares a single board."
             },
             {
+                "id": "deterministic_simulation_testing_md",
+                "name": "deterministic-simulation-testing.md",
+                "type": "file",
+                "path": "/files/blog/deterministic-simulation-testing.md",
+                "title": "Deterministic simulation testing from scratch",
+                "date": "2026-08-07",
+                "subtitle": "Deterministic simulation testing is a testing philosophy where you run your system inside an environment you fully control, replay byte-identical executions on demand, inject faults into the network and the clock, and use coverage-guided search to steer an autonomous fuzzer toward states nobody wrote a test for."
+            },
+            {
                 "id": "godbolt_and_modern_cpu_architecture_md",
                 "name": "godbolt-and-modern-cpu-architecture.md",
                 "type": "file",
@@ -53,6 +62,15 @@
                 "title": "Off the Bull(MQ), Onto Temporal",
                 "date": "2025-06-28",
                 "subtitle": "and what we learned along the way"
+            },
+            {
+                "id": "spec_driven_property_based_agentic_md",
+                "name": "spec-driven-property-based-agentic.md",
+                "type": "file",
+                "path": "/files/blog/spec-driven-property-based-agentic.md",
+                "title": "Spec-Driven, Property-Based Agentic Coding",
+                "date": "2026-08-07",
+                "subtitle": "How a small closed-loop pipeline caught a real encoding-format ambiguity — and what failed attempts at fixing it taught me about property-based testing versus example-based testing."
             },
             {
                 "id": "spelling_words_with_the_subway_md",
@@ -437,6 +455,15 @@
                 "path": "/files/projects/sorting_octopus.md"
             },
             {
+                "id": "spec_driven_property_ai_md",
+                "name": "spec_driven_property_ai.md",
+                "type": "file",
+                "path": "/files/projects/spec_driven_property_ai.md",
+                "links": [
+                    "/files/blog/spec-driven-property-based-agentic.md"
+                ]
+            },
+            {
                 "id": "subway_spell_md",
                 "name": "subway_spell.md",
                 "type": "file",
@@ -459,6 +486,15 @@
                 "name": "this_is_water.md",
                 "type": "file",
                 "path": "/files/projects/this_is_water.md"
+            },
+            {
+                "id": "tinychaos_md",
+                "name": "tinychaos.md",
+                "type": "file",
+                "path": "/files/projects/tinychaos.md",
+                "links": [
+                    "/files/blog/deterministic-simulation-testing.md"
+                ]
             },
             {
                 "id": "trace_and_pace_md",

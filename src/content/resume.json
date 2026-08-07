@@ -135,6 +135,31 @@
     ],
     "projects": [
         {
+            "name": "Spec-Driven Property AI",
+            "description": [
+                "A closed-loop pipeline where an implementer LLM never sees the property-based tests a second, independent LLM wrote from the spec alone"
+            ],
+            "technologies": [
+                "TypeScript",
+                "fast-check",
+                "Claude API"
+            ],
+            "github_url": "https://github.com/andrewlidong/spec-driven-property-ai",
+            "fallback_image_url": "/default_project.svg"
+        },
+        {
+            "name": "tinychaos",
+            "description": [
+                "A from-scratch deterministic simulation testing framework that autonomously finds, shrinks, and visualizes concurrency bugs"
+            ],
+            "technologies": [
+                "TypeScript",
+                "Node.js"
+            ],
+            "github_url": "https://github.com/andrewlidong/tinychaos",
+            "fallback_image_url": "/default_project.svg"
+        },
+        {
             "name": "Tetris One Thousand",
             "description": [
                 "Massively multiplayer cooperative Tetris where everyone shares one board"
