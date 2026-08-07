@@ -135,7 +135,7 @@
     ],
     "projects": [
         {
-            "name": "Spec-Driven Property AI",
+            "name": "Blind Oracle",
             "description": [
                 "A closed-loop pipeline where an implementer LLM never sees the property-based tests a second, independent LLM wrote from the spec alone"
             ],

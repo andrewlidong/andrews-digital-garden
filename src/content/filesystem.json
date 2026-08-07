@@ -401,6 +401,15 @@
                 "path": "/files/projects/big2s.md"
             },
             {
+                "id": "blind_oracle_md",
+                "name": "blind_oracle.md",
+                "type": "file",
+                "path": "/files/projects/blind_oracle.md",
+                "links": [
+                    "/files/blog/spec-driven-property-based-agentic.md"
+                ]
+            },
+            {
                 "id": "catch_that_qubit_md",
                 "name": "catch_that_qubit.md",
                 "type": "file",
@@ -453,15 +462,6 @@
                 "name": "sorting_octopus.md",
                 "type": "file",
                 "path": "/files/projects/sorting_octopus.md"
-            },
-            {
-                "id": "spec_driven_property_ai_md",
-                "name": "spec_driven_property_ai.md",
-                "type": "file",
-                "path": "/files/projects/spec_driven_property_ai.md",
-                "links": [
-                    "/files/blog/spec-driven-property-based-agentic.md"
-                ]
             },
             {
                 "id": "subway_spell_md",
