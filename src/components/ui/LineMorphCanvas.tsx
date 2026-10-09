@@ -417,7 +417,9 @@ export function LineMorphCanvas({ className, tokens }: LineMorphCanvasProps) {
       raf = requestAnimationFrame(render);
       if (now - last < frameInterval) return;
       last = now;
-      drawFrame((now - start) / 1000);
+      // rAF timestamps can predate `start` on the first frame; a negative t
+      // would index MORPH_CYCLE at -1.
+      drawFrame(Math.max(0, (now - start) / 1000));
     };
 
     let onScreen = true;
