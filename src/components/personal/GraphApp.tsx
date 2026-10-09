@@ -109,6 +109,11 @@ export function GraphApp({ onOpenNode }: { onOpenNode?: (fileId: string) => void
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+  // The parent passes a fresh callback every render (and pressing on the graph
+  // focuses its window, which re-renders the parent). Read it through a ref so
+  // that doesn't tear down and restart the simulation mid-drag.
+  const onOpenNodeRef = useRef(onOpenNode);
+  onOpenNodeRef.current = onOpenNode;
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -287,16 +292,17 @@ export function GraphApp({ onOpenNode }: { onOpenNode?: (fileId: string) => void
     const onUp = () => {
       if (dragging && !dragMoved) {
         if (dragging.id === SECRET_ID) navigate('/read/secret-garden');
-        else if (onOpenNode) onOpenNode(dragging.id);
+        else onOpenNodeRef.current?.(dragging.id);
       }
       dragging = null;
     };
     canvas.addEventListener('pointermove', onMove);
     canvas.addEventListener('pointerdown', onDown);
     canvas.addEventListener('pointerup', onUp);
-    canvas.addEventListener('pointerleave', () => {
+    const onLeave = () => {
       if (!dragging) hovered = null;
-    });
+    };
+    canvas.addEventListener('pointerleave', onLeave);
 
     return () => {
       cancelAnimationFrame(raf);
@@ -304,12 +310,13 @@ export function GraphApp({ onOpenNode }: { onOpenNode?: (fileId: string) => void
       canvas.removeEventListener('pointermove', onMove);
       canvas.removeEventListener('pointerdown', onDown);
       canvas.removeEventListener('pointerup', onUp);
+      canvas.removeEventListener('pointerleave', onLeave);
     };
-  }, [onOpenNode, navigate]);
+  }, [navigate]);
 
   return (
     <div ref={wrapRef} className="relative h-full w-full bg-term-bg">
-      <canvas ref={canvasRef} className="block" />
+      <canvas ref={canvasRef} className="block touch-none" />
       <div className="pointer-events-none absolute bottom-2 left-3 flex gap-3 font-mono text-[10px] text-term-faint">
         <span><span style={{ color: 'var(--term-accent)' }}>●</span> blog</span>
         <span><span style={{ color: 'var(--term-green)' }}>●</span> notes</span>
