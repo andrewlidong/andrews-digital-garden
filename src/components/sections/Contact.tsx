@@ -21,7 +21,7 @@ const Contact = forwardRef<HTMLElement>((_, ref) => {
         Find me around the web.
       </p>
 
-      <div className="flex gap-4 z-10">
+      <div className="flex flex-wrap justify-center gap-4 px-4 z-10">
         {[
           {
             href: resume.contact.linkedin,
@@ -46,6 +46,12 @@ const Contact = forwardRef<HTMLElement>((_, ref) => {
             src: "/email.svg",
             alt: "Email",
             delay: 400
+          },
+          {
+            href: "/rss.xml",
+            src: "/rss.svg",
+            alt: "RSS",
+            delay: 500
           },
           // {
           //   href: "/resume.pdf",
