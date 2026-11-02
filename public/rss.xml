@@ -33,7 +33,7 @@
 <p>The first run of a benchmark comparing coverage-guided search against pure random search produced a surprising result: pure random <em>won</em>. That turned out to be a real bug in the fuzzer, not a finding about coverage guidance — the corpus loop only ever mutated existing entries and never generated a fresh one, so once the small probe space saturated, it kept re-mutating the same handful of seed programs with no exploration budget left. Mixing in a 30% chance of a brand-new random program per iteration (standard practice in real coverage-guided fuzzers) fixed it: both strategies reached 100% success afterward, with pure random still modestly faster on this particular shallow, small-key-pool bug — expected, since coverage guidance earns its keep on deep bugs behind rare, compound preconditions, not shallow ones. The useful result wasn&#39;t &quot;coverage-guided wins&quot; — it was that the ablation surfaced a real search-strategy bug that a single successful demo run would never have shown.</p>
 <h2>Visualizing a failure</h2>
 <p>Rather than reading verbose ASCII traces, a fuzz or replay run can emit a self-contained HTML swimlane diagram: one lane per node and client, a dot per message or probe event positioned by time, and a red line marking the exact moment a property violation fires across all three replicas. Hovering any dot shows the details. No server, no external dependencies — just open the file in a browser.</p>
-<p><img src="/blog-images/deterministic-simulation-testing-1.png" alt=""></p>
+<p><img src="https://andrewlidong.xyz/blog-images/deterministic-simulation-testing-1.png" alt=""></p>
 <h2>Where this approach stops working</h2>
 <p>This only works for single-process, cooperatively-scheduled systems. Anything requiring genuine cross-process determinism — real multi-process distributed systems — needs an actual hypervisor-based simulation platform, which is a much bigger undertaking. But the conceptual architecture — controlled nondeterminism as the single lever behind replay, fault injection, search, and shrinking — is transferable, and buildable by one person, for the systems small enough to fit inside it.</p>
 ]]></content:encoded>
@@ -76,10 +76,10 @@
       <content:encoded><![CDATA[<p>I recently build a cooperative multiplayer Tetris where every player shares a single board. It runs on a single Python process, streams state over WebSockets, and holds up under 100+ players at ~500 messages per second.</p>
 <p>This post is a technical walkthrough of how it works: the concurrency model, the wire protocol, the delta-broadcast scheme, and a few design decisions I made.</p>
 <p>Play it at <a href="https://tetris-one-thousand.onrender.com/">https://tetris-one-thousand.onrender.com</a>/ and see the code at <a href="https://github.com/andrewlidong/tetris-one-thousand">https://github.com/andrewlidong/tetris-one-thousand.</a></p>
-<p><img src="/blog-images/building-massively-multiplayer-tetris-1.png" alt=""></p>
+<p><img src="https://andrewlidong.xyz/blog-images/building-massively-multiplayer-tetris-1.png" alt=""></p>
 <h2>Architecture</h2>
 <p>The server is authoritative for everything. Cleints never compute game logic; they send intents <code>{“action”: “hard_drop”}</code> and render whatever state the server broadcasts. A single <code>GameEngine</code> instance owns the grid and every player’s falling piece. A backgroud asyncio task ticks gravity twice a second. Each WebSocket connection is its own asyncio task that applies player actions to the engine when they arrive. After any mutation - a tick or a player action - the server broadcasts a delta (only what changed) to every connection.</p>
-<p><img src="/blog-images/building-massively-multiplayer-tetris-2.png" alt=""></p>
+<p><img src="https://andrewlidong.xyz/blog-images/building-massively-multiplayer-tetris-2.png" alt=""></p>
 <h2>Concurrency without locks</h2>
 <p>A common question with this design is how to handle locks with a thousand connections mutating one shared grid.</p>
 <p>There aren’t any ~ and it’s a core reason why Python’s asyncio is a great fit for this. Asyncio is <em>cooperative</em> single-threaded multitasking. A task only yields control at an <code>await</code>. The engine’s mutation paths - <code>process_action()</code>, <code>tick()</code>, <code>_lock_piece()</code> - are entirely synchronous functions: between the moment a WebSocket handler calls <code>engine.process_action(…)</code> and the moment it returns, no other task can run. Every mutation is automatically a critical section.</p>
@@ -165,7 +165,7 @@ client → server:  {&quot;action&quot;: &quot;left&quot; | &quot;right&quot; | 
 <p><strong>DAS (Dealyed Auto Shift)</strong>. Native browser key repeat is OS-configurable and typically ~500ms delay which is unplayably sluggish for Tetris. The client ignores event.repeat entirely and runs its own timers: fire once on keydown, wait 170ms, then repeat every 50ms until keyup. A <code>blur</code> handler kills all timers so switching tabs mid-keypress doesn’t leave your piece drifting left forever.</p>
 <p><strong>Viewpoint scroll.</strong> A 500-column board at 16px/cell is an 8000px-wide canvas. The client auto-scrolls horizontally toward your piece, but only when it drifts more than 30% off-center and only 15% of the remaining distance per frame - dead zone plus easing, so the camera never fights your left/right inputs.</p>
 <p><strong>Reconnect.</strong> <code>ws.onclose</code> schedules a reconnect in 2 seconds, and since the server sends a full snapshot on every new connection, a reconnecting client needs zero resume logic - it just re-joins as a fresh player.</p>
-<p><img src="/blog-images/building-massively-multiplayer-tetris-3.png" alt=""></p>
+<p><img src="https://andrewlidong.xyz/blog-images/building-massively-multiplayer-tetris-3.png" alt=""></p>
 <h2>Testing</h2>
 <p>This was tested in three layers</p>
 <ol>
@@ -206,7 +206,7 @@ client → server:  {&quot;action&quot;: &quot;left&quot; | &quot;right&quot; | 
 <p>The New York City subway has a wonderful coincidence baked into it: a bunch of its lines are named with single letters. There’s an A train, a C, an E, an F, a G, a J… sixteen lettered services in total. Which means you can <em>spell</em> things with them. To spell <a href="https://andrewlidong.github.io/train-anagrams/?word=ILOVECREATIVECODING">FACE</a> you board the F, transfer to the A, and then the C, then the E - and because the subway is a real network, it’s an actual trip you could take, with real transfers at a real stations, for $3.00.</p>
 <p>Thanks for reading! Subscribe for free to receive new posts and support my work.</p>
 <p>I built <a href="https://andrewlidong.github.io/train-anagrams/">Subway Spell</a> to do exactly that: type a word and it finds a ridable path whose line letters spell it, then animates a little train riding the route on a map of the real network. It’s a static site - no backend- running entirely against public open data. Here’s how it works, including a few problems that I found interesting.</p>
-<p><img src="/blog-images/spelling-words-with-the-subway-1.gif" alt=""></p>
+<p><img src="https://andrewlidong.xyz/blog-images/spelling-words-with-the-subway-1.gif" alt=""></p>
 <h2>The Data</h2>
 <p>Two datasets from New York State’s Socrata-powered open-data portal do almost all the work, and both are queryable directly from the browser with CORS:</p>
 <ul>

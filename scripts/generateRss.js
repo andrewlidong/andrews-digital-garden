@@ -42,6 +42,12 @@ function esc(s = '') {
     .replace(/"/g, '&quot;');
 }
 
+// Feed readers render content:encoded outside the site, so root-relative
+// URLs like /blog-images/x.png would resolve against the reader's own host.
+function absolutizeUrls(html) {
+  return html.replace(/(\s(?:src|href)=")\/(?!\/)/g, `$1${SITE}/`);
+}
+
 function main() {
   if (!fs.existsSync(BLOG_DIR)) {
     console.warn('No blog directory; skipping RSS.');
@@ -61,7 +67,7 @@ function main() {
         date: meta.date || '',
         slug,
         link: `${SITE}/read/blog/${slug}`,
-        html: marked.parse(body),
+        html: absolutizeUrls(marked.parse(body)),
       };
     })
     .sort((a, b) => (b.date || '').localeCompare(a.date || ''));
