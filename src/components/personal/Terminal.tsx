@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useViewTransitionNavigate } from '@/hooks/useViewTransitionNavigate';
 import { cn } from '@/lib/utils';
 import { readerPath } from '@/lib/frontmatter';
 import type { Theme } from '@/lib/themes';
@@ -56,7 +56,7 @@ export function Terminal({ onOpenFile, onOpenApp, fileSystem, initialCommand, co
   const trainRunning = useRef(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const terminalRef = useRef<HTMLDivElement>(null);
-  const navigate = useNavigate();
+  const navigate = useViewTransitionNavigate();
 
   // Auto-scroll to bottom when history changes
   useEffect(() => {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Rnd } from "react-rnd";
-import { useNavigate } from "react-router-dom";
+import { useViewTransitionNavigate } from "@/hooks/useViewTransitionNavigate";
 import ClassicScrollbar from "./Scrollbar";
 import { ScrambledText } from "@/components/ui/ScrambledText";
 
@@ -35,7 +35,17 @@ export const Window: React.FC<WindowProps> = ({
   const [isCloseButtonPressed, setIsCloseButtonPressed] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const windowRef = useRef<Rnd>(null);
-  const navigate = useNavigate();
+  const navigate = useViewTransitionNavigate();
+
+  // Expand into the full-screen reader. Only the window being expanded gets
+  // the `reader` view-transition name (two elements sharing a name would
+  // abort the transition), so it's set imperatively right before navigating.
+  const handleExpand = () => {
+    if (!expandUrl) return;
+    const el = windowRef.current?.getSelfElement();
+    el?.style.setProperty("view-transition-name", "reader");
+    navigate(expandUrl);
+  };
 
   // Calculate initial position if not provided
   const getInitialPosition = () => {
@@ -131,7 +141,7 @@ export const Window: React.FC<WindowProps> = ({
                 className="w-5 h-5 flex items-center justify-center rounded-full bg-term-green hover:opacity-80 text-term-inset text-xs leading-none"
                 title="Open full screen (nvim)"
                 aria-label="Open full screen"
-                onClick={() => navigate(expandUrl)}
+                onClick={handleExpand}
               >
                 ⤢
               </button>
