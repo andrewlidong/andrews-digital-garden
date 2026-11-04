@@ -193,6 +193,7 @@ function MobilePage() {
         <button
           onClick={() => setPawModeActive((prev) => !prev)}
           aria-label="Toggle paw mode"
+          data-dog-home
           className={`grid place-items-center rounded-full p-1.5 transition-all duration-300 ${
             pawModeActive
               ? "text-term-accent bg-term-accent/10"
