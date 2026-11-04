@@ -197,3 +197,44 @@
 }
 
 .paw-stamp-fade { animation: paw-stamp-fadeout 0.7s ease-in forwards; }
+
+/* View Transitions (route changes via useViewTransitionNavigate).
+   The root crossfades; an element named `reader` (the expanding desktop
+   window and the reader article) morphs between its old and new boxes. */
+@keyframes vt-fade-out {
+  to { opacity: 0; }
+}
+
+@keyframes vt-fade-in {
+  from { opacity: 0; }
+}
+
+::view-transition-old(root) {
+  animation: vt-fade-out 180ms ease both;
+}
+
+::view-transition-new(root) {
+  animation: vt-fade-in 240ms ease both;
+}
+
+::view-transition-group(reader) {
+  animation-duration: 320ms;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+::view-transition-old(reader),
+::view-transition-new(reader) {
+  height: 100%;
+  width: 100%;
+  object-fit: none;
+  object-position: top left;
+  overflow: clip;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}

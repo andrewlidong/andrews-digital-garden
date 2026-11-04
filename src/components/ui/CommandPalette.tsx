@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useViewTransitionNavigate } from '@/hooks/useViewTransitionNavigate';
 import fileSystemData from '@/content/filesystem.json';
 import { readerPath } from '@/lib/frontmatter';
 
@@ -47,7 +47,7 @@ function collectEntries(): Entry[] {
 }
 
 export function CommandPalette() {
-  const navigate = useNavigate();
+  const navigate = useViewTransitionNavigate();
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
   const [index, setIndex] = useState(0);

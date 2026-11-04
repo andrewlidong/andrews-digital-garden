@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
+import { useViewTransitionNavigate } from "@/hooks/useViewTransitionNavigate";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeHighlight from "rehype-highlight";
@@ -194,7 +195,15 @@ function findNeighbors(section: string, filePath: string) {
 
 export default function ReaderPage() {
   const params = useParams();
-  const navigate = useNavigate();
+  const navigate = useViewTransitionNavigate();
+  // Plain left-clicks on in-app links go through the view-transition
+  // navigate; modified clicks / middle-clicks keep the browser's behaviour.
+  const onLinkClick = (to: string) => (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (e.defaultPrevented || e.button !== 0) return;
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    e.preventDefault();
+    navigate(to);
+  };
   // GitHub Pages serves the pre-rendered share pages from <slug>/index.html
   // and 301s bare URLs to the trailing-slash form — strip it, or the file
   // fetch below becomes "/files/blog/<slug>/.md" and 404s.
@@ -342,6 +351,7 @@ export default function ReaderPage() {
         <div className="mx-auto flex max-w-2xl items-center justify-between px-5 py-3 font-mono text-sm sm:px-6">
           <Link
             to={isBlog ? "/blog" : "/"}
+            onClick={onLinkClick(isBlog ? "/blog" : "/")}
             className="shrink-0 text-term-dim transition-colors hover:text-term-accent"
             aria-label={isBlog ? "All posts" : "Back to desktop"}
           >
@@ -365,14 +375,14 @@ export default function ReaderPage() {
             <p className="mb-4 font-mono text-term-red">
               :e {filename}.md — No such file or directory
             </p>
-            <Link to="/" className="text-term-accent underline hover:opacity-80">
+            <Link to="/" onClick={onLinkClick("/")} className="text-term-accent underline hover:opacity-80">
               Return to the desktop
             </Link>
           </div>
         )}
 
         {state === "ready" && (
-          <article>
+          <article style={{ viewTransitionName: "reader" }}>
             <div className="mb-8 border-b border-term-border pb-6 sm:mb-10">
               <h1 className="mb-2 text-2xl font-bold leading-tight tracking-tight text-term-fg sm:text-4xl">
                 {title}
@@ -467,6 +477,7 @@ export default function ReaderPage() {
                     <li key={bl.path}>
                       <Link
                         to={bl.to}
+                        onClick={onLinkClick(bl.to)}
                         className="group inline-flex items-baseline gap-2 text-sm"
                       >
                         <span className="font-mono text-xs text-term-faint">
@@ -488,6 +499,7 @@ export default function ReaderPage() {
                 {prev ? (
                   <Link
                     to={prev.to}
+                    onClick={onLinkClick(prev.to)}
                     className="group rounded-lg border border-term-border/70 p-4 transition-colors hover:border-term-accent/60 hover:bg-term-elevated/50"
                   >
                     <div className="font-mono text-xs text-term-faint">← Newer</div>
@@ -501,6 +513,7 @@ export default function ReaderPage() {
                 {next ? (
                   <Link
                     to={next.to}
+                    onClick={onLinkClick(next.to)}
                     className="group rounded-lg border border-term-border/70 p-4 transition-colors hover:border-term-accent/60 hover:bg-term-elevated/50 sm:text-right"
                   >
                     <div className="font-mono text-xs text-term-faint">Older →</div>
@@ -515,7 +528,7 @@ export default function ReaderPage() {
             )}
 
             <footer className="mt-10 font-mono text-sm text-term-faint">
-              <Link to="/" className="text-term-dim hover:text-term-accent">
+              <Link to="/" onClick={onLinkClick("/")} className="text-term-dim hover:text-term-accent">
                 ← back to the digital garden
               </Link>
               <span className="ml-3 text-term-faint/70">(press Esc)</span>

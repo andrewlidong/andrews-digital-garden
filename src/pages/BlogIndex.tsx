@@ -4,6 +4,7 @@ import fileSystemData from "@/content/filesystem.json";
 import { formatDate, readerPath } from "@/lib/frontmatter";
 import { useTheme } from "@/hooks/useTheme";
 import { ScrambledText } from "@/components/ui/ScrambledText";
+import { useViewTransitionNavigate } from "@/hooks/useViewTransitionNavigate";
 
 type FsNode = {
   name: string;
@@ -32,6 +33,15 @@ function getPosts(): FsNode[] {
 
 export default function BlogIndex() {
   const posts = getPosts();
+  const navigate = useViewTransitionNavigate();
+  // Plain left-clicks crossfade via the View Transitions API; modified or
+  // middle clicks fall through to the browser (new tab, etc.).
+  const onLinkClick = (to: string) => (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (e.defaultPrevented || e.button !== 0) return;
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    e.preventDefault();
+    navigate(to);
+  };
   // Honor the active "rice" theme on this route too (direct loads of /blog
   // would otherwise fall back to the CSS default palette).
   useTheme();
@@ -49,6 +59,7 @@ export default function BlogIndex() {
         <div className="mx-auto flex max-w-2xl items-center justify-between px-5 py-3 font-mono text-sm sm:px-6">
           <Link
             to="/"
+            onClick={onLinkClick("/")}
             className="text-term-dim transition-colors hover:text-term-accent"
           >
             ← cd ~
@@ -82,6 +93,7 @@ export default function BlogIndex() {
                 <li key={post.path}>
                   <Link
                     to={to}
+                    onClick={onLinkClick(to)}
                     className="group block rounded-xl border border-transparent px-3 py-4 transition-all hover:border-term-border/70 hover:bg-term-elevated/50 active:scale-[0.99]"
                   >
                     <div className="flex items-baseline justify-between gap-4">
