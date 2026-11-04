@@ -1,18 +1,19 @@
 import { useEffect, useRef, useState } from "react";
-import { DOG_EVENT, isDogStorageKey, loadDogEnabled } from "@/lib/dog";
+import { DOG_EVENT, DOG_HOME_EVENT, DOG_PAW_EVENT, isDogStorageKey, loadDogEnabled } from "@/lib/dog";
 import { drawFrame, FRAMES, SPRITE_SIZE, type Frame } from "@/lib/dogSprites";
 
-// A little oneko-style dog that chases the cursor around the page. It runs
-// toward the pointer, settles a short distance away, wags for a while, and
-// eventually curls up and sleeps until the cursor wanders off again. Its bed
-// is the header's paw button (marked with `data-dog-home`): it starts there,
-// and clicking the paw calls it back.
+// A little oneko-style dog that follows paw prints around the page. It sleeps
+// on its bed (the header's paw button, marked with `data-dog-home`) until a
+// paw stamp is dropped (see PawStampMode); then it perks up and runs from
+// print to print, sits and wags where the trail ends, and eventually dozes
+// off. Opening the terminal calls it home to sleep. It never chases the bare
+// cursor.
 
 const SCALE = 2;
 const SIZE = SPRITE_SIZE * SCALE; // rendered size in CSS px
 const SPEED = 140; // px per second
-const STOP_DISTANCE = 44; // settle this far from the cursor so it never covers it
-const WAKE_DISTANCE = 72; // hysteresis: don't chase tiny cursor jitters
+const ARRIVE_DISTANCE = 6; // close enough to count as standing on a print
+const MAX_WAYPOINTS = 12; // forget the oldest prints if clicks pile up
 const RUN_FRAME_MS = 150;
 const WAG_FRAME_MS = 380;
 const SLEEP_FRAME_MS = 900;
@@ -88,9 +89,8 @@ export function CursorDog() {
     canvas.height = SIZE * dpr;
 
     const pos = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
-    const target = { x: pos.x, y: pos.y };
     const home = { x: pos.x, y: pos.y };
-    let hasTarget = false;
+    const waypoints: { x: number; y: number }[] = [];
     let mode: Mode = "sleep";
     let idleSince = 0;
     let alertUntil = 0;
@@ -131,7 +131,7 @@ export function CursorDog() {
 
     // The header is lazy-loaded, so the paw may not exist yet on mount. Poll
     // briefly and move the dog there once it shows up, unless it has already
-    // been woken up by the cursor.
+    // been woken up by a paw print.
     if (!snapHome()) {
       const started = performance.now();
       homePoll = window.setInterval(() => {
@@ -180,10 +180,23 @@ export function CursorDog() {
       c.fillText("!", mirror ? 5 : 25, 8);
     };
 
-    const onMove = (e: MouseEvent) => {
-      target.x = e.clientX;
-      target.y = e.clientY;
-      hasTarget = true;
+    const onPaw = (e: Event) => {
+      const d = (e as CustomEvent<{ x: number; y: number }>).detail;
+      if (!d || !Number.isFinite(d.x) || !Number.isFinite(d.y)) return;
+      // A fresh print can override a trip home.
+      if (mode === "homing") mode = "idle";
+      waypoints.push({ x: d.x, y: d.y });
+      if (waypoints.length > MAX_WAYPOINTS) waypoints.splice(0, waypoints.length - MAX_WAYPOINTS);
+    };
+
+    // Opening the terminal sends the dog back to bed, wherever it is.
+    const onHome = () => {
+      const h = findHome();
+      if (!h) return;
+      home.x = h.x;
+      home.y = h.y;
+      waypoints.length = 0;
+      mode = "homing";
     };
 
     const onResize = () => {
@@ -194,15 +207,21 @@ export function CursorDog() {
       place();
     };
 
-    // Clicking the paw calls the dog back to bed, wherever it is.
-    const onClick = (e: MouseEvent) => {
-      const t = e.target;
-      if (!(t instanceof Element) || !t.closest(HOME_SELECTOR)) return;
-      const h = findHome();
-      if (!h) return;
-      home.x = h.x;
-      home.y = h.y;
-      mode = "homing";
+    /** Advance toward `to`; returns false if pinned against the viewport edge. */
+    const moveToward = (to: { x: number; y: number }, dt: number): boolean => {
+      const dx = to.x - pos.x;
+      const dy = to.y - pos.y;
+      const d = Math.hypot(dx, dy);
+      if (d === 0) return true;
+      const step = Math.min(d, SPEED * dt);
+      const prevX = pos.x;
+      const prevY = pos.y;
+      pos.x += (dx / d) * step;
+      pos.y += (dy / d) * step;
+      clampToViewport(pos);
+      if (Math.abs(dx) > 0.5) facingLeft = dx < 0;
+      place();
+      return !(dt > 0 && Math.hypot(pos.x - prevX, pos.y - prevY) < 0.01);
     };
 
     const tick = (ts: number) => {
@@ -211,14 +230,9 @@ export function CursorDog() {
       const dt = lastTs ? Math.min((ts - lastTs) / 1000, 0.1) : 0;
       lastTs = ts;
 
-      const dx = target.x - pos.x;
-      const dy = target.y - pos.y;
-      const dist = Math.hypot(dx, dy);
-      const far = hasTarget && dist > WAKE_DISTANCE;
-
       switch (mode) {
         case "sleep":
-          if (far) {
+          if (waypoints.length) {
             mode = "alert";
             alertUntil = ts + ALERT_MS;
           }
@@ -227,58 +241,47 @@ export function CursorDog() {
           if (ts >= alertUntil) mode = "run";
           break;
         case "idle":
-          if (far) mode = "run";
+          if (waypoints.length) mode = "run";
           else if (ts - idleSince > SLEEP_AFTER_MS) mode = "sleep";
           break;
         case "run": {
-          if (dist <= STOP_DISTANCE) {
-            mode = "idle";
-            idleSince = ts;
+          // Step onto each print in turn, dropping any we can't reach.
+          while (waypoints.length) {
+            const wp = waypoints[0];
+            const d = Math.hypot(wp.x - pos.x, wp.y - pos.y);
+            if (d <= ARRIVE_DISTANCE) {
+              waypoints.shift();
+              continue;
+            }
+            if (!moveToward(wp, dt)) waypoints.shift();
             break;
           }
-          const step = Math.min(dist - STOP_DISTANCE + 1, SPEED * dt);
-          pos.x = clamp(pos.x + (dx / dist) * step, SIZE / 2, window.innerWidth - SIZE / 2);
-          pos.y = clamp(pos.y + (dy / dist) * step, SIZE / 2, window.innerHeight - SIZE / 2);
-          if (Math.abs(dx) > 0.5) facingLeft = dx < 0;
-          place();
+          if (!waypoints.length) {
+            mode = "idle";
+            idleSince = ts;
+          }
           break;
         }
         case "homing": {
-          const hx = home.x - pos.x;
-          const hy = home.y - pos.y;
-          const hd = Math.hypot(hx, hy);
+          const hd = Math.hypot(home.x - pos.x, home.y - pos.y);
           if (hd <= 2) {
             pos.x = home.x;
             pos.y = home.y;
             clampToViewport(pos);
             place();
             mode = "sleep";
-            // Don't immediately bolt after a cursor that happens to be sitting
-            // where it was left; wait for it to move again.
-            hasTarget = false;
             break;
           }
-          const step = Math.min(hd, SPEED * dt);
-          const prevX = pos.x;
-          const prevY = pos.y;
-          pos.x = pos.x + (hx / hd) * step;
-          pos.y = pos.y + (hy / hd) * step;
-          clampToViewport(pos);
-          if (Math.abs(hx) > 0.5) facingLeft = hx < 0;
-          place();
-          // Pinned against the viewport edge (home is off-screen): give up and
-          // sleep where we are instead of running on the spot forever.
-          if (dt > 0 && Math.hypot(pos.x - prevX, pos.y - prevY) < 0.01) {
-            mode = "sleep";
-            hasTarget = false;
-          }
+          // If home is off-screen and we're stuck on the edge, just sleep here.
+          if (!moveToward(home, dt)) mode = "sleep";
           break;
         }
       }
 
       if (mode === "run" || mode === "homing") {
-        const mx = mode === "homing" ? home.x - pos.x : dx;
-        const my = mode === "homing" ? home.y - pos.y : dy;
+        const to = mode === "homing" ? home : (waypoints[0] ?? pos);
+        const mx = to.x - pos.x;
+        const my = to.y - pos.y;
         const i = Math.floor(ts / RUN_FRAME_MS) % 2;
         if (Math.abs(my) > Math.abs(mx) * 1.6) {
           const up = my < 0;
@@ -302,17 +305,17 @@ export function CursorDog() {
     };
 
     place();
-    window.addEventListener("mousemove", onMove, { passive: true });
+    window.addEventListener(DOG_PAW_EVENT, onPaw);
+    window.addEventListener(DOG_HOME_EVENT, onHome);
     window.addEventListener("resize", onResize);
-    document.addEventListener("click", onClick, true);
     raf = requestAnimationFrame(tick);
 
     return () => {
       cancelAnimationFrame(raf);
       if (homePoll) window.clearInterval(homePoll);
-      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener(DOG_PAW_EVENT, onPaw);
+      window.removeEventListener(DOG_HOME_EVENT, onHome);
       window.removeEventListener("resize", onResize);
-      document.removeEventListener("click", onClick, true);
     };
   }, [enabled]);
 

@@ -237,7 +237,7 @@ export function Terminal({ onOpenFile, onOpenApp, fileSystem, initialCommand, co
   theme - List or switch color themes (try 'theme list')
   graph - Visualize the garden and its wikilinks
   neofetch - Show garden system info
-  dog - Call off (or call back) the dog chasing your cursor
+  dog - Call off (or call back) the dog that follows your paw prints
   clear - Clear terminal
   help - Show this help message
 

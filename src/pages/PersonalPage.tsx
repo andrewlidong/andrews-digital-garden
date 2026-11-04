@@ -18,6 +18,7 @@ import { MetadataBar } from "@/components/personal/MetadataBar";
 import { loadFileContent } from "@/lib/loadFileContent";
 import { useTheme } from "@/hooks/useTheme";
 import { getTheme } from "@/lib/themes";
+import { callDogHome } from "@/lib/dog";
 import { useKonami } from "@/hooks/useKonami";
 import { SproutGrowth } from "@/components/ui/SproutGrowth";
 const TetrisFrame = lazyRetry(() =>
@@ -398,6 +399,7 @@ function PersonalPage() {
   const openTerminal = () => {
     // Opened directly (Header button / welcome link): no command to auto-run.
     setTerminalInitialCommand(undefined);
+    callDogHome();
 
     // Check if terminal is already open
     const existingTerminal = windows.find((w) => w.windowType === "terminal");
