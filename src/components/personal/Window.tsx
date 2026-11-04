@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Rnd } from "react-rnd";
 import { useNavigate } from "react-router-dom";
 import ClassicScrollbar from "./Scrollbar";
+import { ScrambledText } from "@/components/ui/ScrambledText";
 
 interface WindowProps {
   id: string;
@@ -120,7 +121,9 @@ export const Window: React.FC<WindowProps> = ({
         >
           <div className="flex items-center">
             <span className="text-term-green mr-2">$</span>
-            <span className="font-mono text-sm">{title}</span>
+            <span className="font-mono text-sm">
+              <ScrambledText text={title} />
+            </span>
           </div>
           <div className="flex items-center gap-2">
             {expandUrl && (

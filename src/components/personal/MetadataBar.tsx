@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { ScrambledText } from "@/components/ui/ScrambledText";
 
 // A thin terminal-style metadata strip pinned to the bottom of the page,
 // Shows build + runtime context: the git
@@ -63,10 +64,10 @@ const CommitValue: React.FC = () =>
       rel="noopener noreferrer"
       className="text-term-dim hover:text-term-accent hover:underline"
     >
-      {__COMMIT_HASH__}
+      <ScrambledText text={__COMMIT_HASH__} />
     </a>
   ) : (
-    <>{__COMMIT_HASH__}</>
+    <ScrambledText text={__COMMIT_HASH__} />
   );
 
 export const MetadataBar: React.FC<{ compact?: boolean }> = ({ compact = false }) => {
@@ -98,10 +99,16 @@ export const MetadataBar: React.FC<{ compact?: boolean }> = ({ compact = false }
         <Field label="commit">
           <CommitValue />
         </Field>
-        {!compact && <Field label="browser">{browser}</Field>}
+        {!compact && (
+          <Field label="browser">
+            <ScrambledText text={browser} delay={80} />
+          </Field>
+        )}
         {!compact && <Field label="time">{time}</Field>}
         {!compact && <Field label="dimensions">{dimensions}</Field>}
-        <Field label="last updated">{__LAST_UPDATED__}</Field>
+        <Field label="last updated">
+          <ScrambledText text={__LAST_UPDATED__} delay={160} />
+        </Field>
       </div>
     </div>
   );

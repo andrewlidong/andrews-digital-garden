@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import fileSystemData from "@/content/filesystem.json";
 import { formatDate, readerPath } from "@/lib/frontmatter";
 import { useTheme } from "@/hooks/useTheme";
+import { ScrambledText } from "@/components/ui/ScrambledText";
 
 type FsNode = {
   name: string;
@@ -73,8 +74,10 @@ export default function BlogIndex() {
           <p className="text-term-dim">No posts yet.</p>
         ) : (
           <ul className="-mx-3 flex flex-col">
-            {posts.map((post) => {
+            {posts.map((post, i) => {
               const to = post.path ? readerPath(post.path) : "/blog";
+              const key = post.path || post.name;
+              const delay = 300 + i * 80;
               return (
                 <li key={post.path}>
                   <Link
@@ -83,11 +86,19 @@ export default function BlogIndex() {
                   >
                     <div className="flex items-baseline justify-between gap-4">
                       <h2 className="text-lg font-semibold tracking-tight text-term-fg transition-colors group-hover:text-term-accent sm:text-xl">
-                        {post.title || prettify(post.name)}
+                        <ScrambledText
+                          text={post.title || prettify(post.name)}
+                          delay={delay}
+                          once={`blog:title:${key}`}
+                        />
                       </h2>
                       {post.date && (
                         <span className="shrink-0 font-mono text-xs text-term-faint sm:text-sm">
-                          {formatDate(post.date)}
+                          <ScrambledText
+                            text={formatDate(post.date)}
+                            delay={delay}
+                            once={`blog:date:${key}`}
+                          />
                         </span>
                       )}
                     </div>
