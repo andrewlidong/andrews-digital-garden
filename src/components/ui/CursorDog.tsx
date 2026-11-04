@@ -23,6 +23,8 @@ const HOME_SELECTOR = "[data-dog-home]";
 // The header mounts lazily; wait this long for the paw before giving up and
 // starting in the middle of the screen instead.
 const HOME_WAIT_MS = 2000;
+// How often a dog asleep on the paw re-checks that the paw hasn't moved.
+const HOME_TRACK_MS = 250;
 
 type Mode = "sleep" | "alert" | "idle" | "run" | "homing";
 
@@ -37,13 +39,12 @@ function findHome(): { x: number; y: number } | null {
 
 const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v));
 
-/** Skip the dog where it can't be enjoyed or shouldn't move: touch-only
- *  devices have no cursor to chase, and reduced-motion users didn't ask for a
- *  sprite sprinting across their screen. */
+/** Skip the dog where it shouldn't move: reduced-motion users didn't ask for
+ *  a sprite sprinting across their screen. Touch devices are fine, since he
+ *  follows paw prints (taps) rather than a hovering cursor. */
 function canShowDog(): boolean {
   if (typeof window === "undefined" || typeof window.matchMedia !== "function") return false;
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return false;
-  if (window.matchMedia("(hover: none)").matches) return false;
   return true;
 }
 
@@ -99,6 +100,7 @@ export function CursorDog() {
     let lastTs = 0;
     let raf = 0;
     let homePoll = 0;
+    let lastHomeCheck = 0;
 
     const place = () => {
       const x = Math.round(pos.x - SIZE / 2);
@@ -229,6 +231,15 @@ export function CursorDog() {
       // Cap dt so a backgrounded tab doesn't teleport the dog on return.
       const dt = lastTs ? Math.min((ts - lastTs) / 1000, 0.1) : 0;
       lastTs = ts;
+
+      // The bed can move without a resize (e.g. the mobile nav re-lays out
+      // once the device is detected), so a dog curled up on it re-checks the
+      // button's position now and then and shuffles over if it has shifted.
+      if (ts - lastHomeCheck > HOME_TRACK_MS && atHome()) {
+        lastHomeCheck = ts;
+        const h = findHome();
+        if (h && (Math.abs(h.x - home.x) > 0.5 || Math.abs(h.y - home.y) > 0.5)) snapHome();
+      }
 
       switch (mode) {
         case "sleep":

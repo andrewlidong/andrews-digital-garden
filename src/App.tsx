@@ -26,7 +26,7 @@ function App() {
       <Suspense fallback={null}>
         <CommandPalette />
         <WikilinkPreviews />
-        {!isMobile && <CursorDog />}
+        <CursorDog />
         <Routes>
           <Route path="/" element={
             isMobile ?
