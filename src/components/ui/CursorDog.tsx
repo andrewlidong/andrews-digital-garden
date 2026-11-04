@@ -4,20 +4,35 @@ import { drawFrame, FRAMES, SPRITE_SIZE, type Frame } from "@/lib/dogSprites";
 
 // A little oneko-style dog that chases the cursor around the page. It runs
 // toward the pointer, settles a short distance away, wags for a while, and
-// eventually curls up and sleeps until the cursor wanders off again.
+// eventually curls up and sleeps until the cursor wanders off again. Its bed
+// is the header's paw button (marked with `data-dog-home`): it starts there,
+// and clicking the paw calls it back.
 
 const SCALE = 2;
 const SIZE = SPRITE_SIZE * SCALE; // rendered size in CSS px
-const SPEED = 280; // px per second
+const SPEED = 140; // px per second
 const STOP_DISTANCE = 44; // settle this far from the cursor so it never covers it
 const WAKE_DISTANCE = 72; // hysteresis: don't chase tiny cursor jitters
-const RUN_FRAME_MS = 110;
+const RUN_FRAME_MS = 150;
 const WAG_FRAME_MS = 380;
 const SLEEP_FRAME_MS = 900;
 const SLEEP_AFTER_MS = 12_000;
 const ALERT_MS = 320;
+const HOME_SELECTOR = "[data-dog-home]";
+// The header mounts lazily; wait this long for the paw before giving up and
+// starting in the middle of the screen instead.
+const HOME_WAIT_MS = 2000;
 
-type Mode = "sleep" | "alert" | "idle" | "run";
+type Mode = "sleep" | "alert" | "idle" | "run" | "homing";
+
+/** Where the dog curls up: just below the paw button, centered on it. */
+function findHome(): { x: number; y: number } | null {
+  const el = document.querySelector(HOME_SELECTOR);
+  if (!el) return null;
+  const r = el.getBoundingClientRect();
+  if (r.width === 0 && r.height === 0) return null;
+  return { x: r.left + r.width / 2, y: r.bottom + SIZE / 2 - 6 };
+}
 
 const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v));
 
@@ -74,6 +89,7 @@ export function CursorDog() {
 
     const pos = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
     const target = { x: pos.x, y: pos.y };
+    const home = { x: pos.x, y: pos.y };
     let hasTarget = false;
     let mode: Mode = "sleep";
     let idleSince = 0;
@@ -82,12 +98,54 @@ export function CursorDog() {
     let lastKey = "";
     let lastTs = 0;
     let raf = 0;
+    let homePoll = 0;
 
     const place = () => {
       const x = Math.round(pos.x - SIZE / 2);
       const y = Math.round(pos.y - SIZE / 2);
       el.style.transform = `translate3d(${x}px, ${y}px, 0)`;
     };
+
+    const clampToViewport = (p: { x: number; y: number }) => {
+      p.x = clamp(p.x, SIZE / 2, window.innerWidth - SIZE / 2);
+      p.y = clamp(p.y, SIZE / 2, window.innerHeight - SIZE / 2);
+    };
+
+    const atHome = () =>
+      (mode === "sleep" || mode === "idle") &&
+      Math.abs(pos.x - home.x) < 2 &&
+      Math.abs(pos.y - home.y) < 2;
+
+    /** Teleport to the paw (used on mount and when the layout shifts). */
+    const snapHome = (): boolean => {
+      const h = findHome();
+      if (!h) return false;
+      home.x = h.x;
+      home.y = h.y;
+      pos.x = h.x;
+      pos.y = h.y;
+      clampToViewport(pos);
+      place();
+      return true;
+    };
+
+    // The header is lazy-loaded, so the paw may not exist yet on mount. Poll
+    // briefly and move the dog there once it shows up, unless it has already
+    // been woken up by the cursor.
+    if (!snapHome()) {
+      const started = performance.now();
+      homePoll = window.setInterval(() => {
+        if (mode !== "sleep" || performance.now() - started > HOME_WAIT_MS) {
+          window.clearInterval(homePoll);
+          homePoll = 0;
+          return;
+        }
+        if (snapHome()) {
+          window.clearInterval(homePoll);
+          homePoll = 0;
+        }
+      }, 100);
+    }
 
     // Redraw only when the visible frame actually changes; moving the dog is
     // just a transform update on the container.
@@ -129,9 +187,22 @@ export function CursorDog() {
     };
 
     const onResize = () => {
-      pos.x = clamp(pos.x, SIZE / 2, window.innerWidth - SIZE / 2);
-      pos.y = clamp(pos.y, SIZE / 2, window.innerHeight - SIZE / 2);
+      // Keep following the paw if the dog is curled up on it; otherwise just
+      // make sure it stays on screen.
+      if (atHome() && snapHome()) return;
+      clampToViewport(pos);
       place();
+    };
+
+    // Clicking the paw calls the dog back to bed, wherever it is.
+    const onClick = (e: MouseEvent) => {
+      const t = e.target;
+      if (!(t instanceof Element) || !t.closest(HOME_SELECTOR)) return;
+      const h = findHome();
+      if (!h) return;
+      home.x = h.x;
+      home.y = h.y;
+      mode = "homing";
     };
 
     const tick = (ts: number) => {
@@ -172,12 +243,45 @@ export function CursorDog() {
           place();
           break;
         }
+        case "homing": {
+          const hx = home.x - pos.x;
+          const hy = home.y - pos.y;
+          const hd = Math.hypot(hx, hy);
+          if (hd <= 2) {
+            pos.x = home.x;
+            pos.y = home.y;
+            clampToViewport(pos);
+            place();
+            mode = "sleep";
+            // Don't immediately bolt after a cursor that happens to be sitting
+            // where it was left; wait for it to move again.
+            hasTarget = false;
+            break;
+          }
+          const step = Math.min(hd, SPEED * dt);
+          const prevX = pos.x;
+          const prevY = pos.y;
+          pos.x = pos.x + (hx / hd) * step;
+          pos.y = pos.y + (hy / hd) * step;
+          clampToViewport(pos);
+          if (Math.abs(hx) > 0.5) facingLeft = hx < 0;
+          place();
+          // Pinned against the viewport edge (home is off-screen): give up and
+          // sleep where we are instead of running on the spot forever.
+          if (dt > 0 && Math.hypot(pos.x - prevX, pos.y - prevY) < 0.01) {
+            mode = "sleep";
+            hasTarget = false;
+          }
+          break;
+        }
       }
 
-      if (mode === "run") {
+      if (mode === "run" || mode === "homing") {
+        const mx = mode === "homing" ? home.x - pos.x : dx;
+        const my = mode === "homing" ? home.y - pos.y : dy;
         const i = Math.floor(ts / RUN_FRAME_MS) % 2;
-        if (Math.abs(dy) > Math.abs(dx) * 1.6) {
-          const up = dy < 0;
+        if (Math.abs(my) > Math.abs(mx) * 1.6) {
+          const up = my < 0;
           render(`${up ? "up" : "down"}${i}`, (up ? FRAMES.runUp : FRAMES.runDown)[i], false);
         } else {
           render(`side${i}${facingLeft}`, FRAMES.runSide[i], facingLeft);
@@ -200,12 +304,15 @@ export function CursorDog() {
     place();
     window.addEventListener("mousemove", onMove, { passive: true });
     window.addEventListener("resize", onResize);
+    document.addEventListener("click", onClick, true);
     raf = requestAnimationFrame(tick);
 
     return () => {
       cancelAnimationFrame(raf);
+      if (homePoll) window.clearInterval(homePoll);
       window.removeEventListener("mousemove", onMove);
       window.removeEventListener("resize", onResize);
+      document.removeEventListener("click", onClick, true);
     };
   }, [enabled]);
 

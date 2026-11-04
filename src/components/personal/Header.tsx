@@ -231,6 +231,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenTerminal, onOpenGraph, paw
               <div className="relative">
                 <button
                   onClick={onTogglePawMode}
+                  data-dog-home
                   className={`px-2 py-1 rounded flex items-center gap-1 ${
                     pawModeActive ? "bg-term-elevated text-term-accent" : "text-term-dim hover:text-term-fg hover:bg-term-elevated"
                   }`}
