@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { readerPath } from '@/lib/frontmatter';
 import type { Theme } from '@/lib/themes';
+import { toggleDog } from '@/lib/dog';
 
 type FileItem = {
   id: string;
@@ -236,6 +237,7 @@ export function Terminal({ onOpenFile, onOpenApp, fileSystem, initialCommand, co
   theme - List or switch color themes (try 'theme list')
   graph - Visualize the garden and its wikilinks
   neofetch - Show garden system info
+  dog - Call off (or call back) the dog chasing your cursor
   clear - Clear terminal
   help - Show this help message
 
@@ -440,6 +442,13 @@ psst: this terminal keeps a few secrets. old cheat codes still work.`;
         output = 'Nothing happens.';
         break;
 
+      case 'dog':
+      case 'woof':
+        output = toggleDog()
+          ? `<span class="text-term-green">here, pup! a dog trots back into the garden.</span>`
+          : `the dog curls up somewhere out of sight. type <span class="text-term-yellow">dog</span> to call it back.`;
+        break;
+
       case 'sl':
         runTrain(cmd);
         return;
@@ -552,7 +561,7 @@ psst: this terminal keeps a few secrets. old cheat codes still work.`;
     setInput('');
   };
 
-  const COMMANDS = ['help', 'ls', 'cd', 'cat', 'vim', 'nvim', 'edit', 'pwd', 'theme', 'clear'];
+  const COMMANDS = ['help', 'ls', 'cd', 'cat', 'vim', 'nvim', 'edit', 'pwd', 'theme', 'dog', 'clear'];
   // Commands that take a file argument (for argument completion).
   const FILE_COMMANDS = ['cat', 'vim', 'nvim', 'edit'];
 

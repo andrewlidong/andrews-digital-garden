@@ -14,6 +14,9 @@ const CommandPalette = lazyRetry(() =>
 const WikilinkPreviews = lazyRetry(() =>
   import("./components/ui/WikilinkPreviews").then((m) => ({ default: m.WikilinkPreviews }))
 );
+const CursorDog = lazyRetry(() =>
+  import("./components/ui/CursorDog").then((m) => ({ default: m.CursorDog }))
+);
 
 function App() {
   const isMobile = useMobileDetect();
@@ -23,6 +26,7 @@ function App() {
       <Suspense fallback={null}>
         <CommandPalette />
         <WikilinkPreviews />
+        {!isMobile && <CursorDog />}
         <Routes>
           <Route path="/" element={
             isMobile ?
