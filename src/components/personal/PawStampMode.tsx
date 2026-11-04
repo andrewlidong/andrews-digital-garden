@@ -3,23 +3,17 @@ import { dropPawForDog } from "@/lib/dog";
 
 const STAMP_DURATION = 2000;
 
-// Vibrant theme tokens used to color the paw stamps. These map to CSS custom
-// properties written by the active theme (see lib/themes.ts), so stamps recolor
-// to match whatever theme is selected.
-const PAW_PALETTE_VARS = [
-  "--term-accent",
-  "--term-green",
-  "--term-yellow",
-  "--term-red",
-  "--term-cyan",
-  "--term-magenta",
-];
+const FALLBACK_ACCENT = "#7aa2f7";
 
-/** Reads the current theme's vibrant colors from CSS variables. */
-function readPawPalette(): string[] {
-  const styles = getComputedStyle(document.documentElement);
-  const colors = PAW_PALETTE_VARS.map((v) => styles.getPropertyValue(v).trim()).filter(Boolean);
-  return colors.length ? colors : ["#7aa2f7"];
+// Stamps are painted straight from the theme's accent CSS variable (written by
+// applyTheme in lib/themes.ts), so they match the active theme and recolor
+// live if the user switches themes while stamps are still on screen.
+const STAMP_COLOR = `var(--term-accent, ${FALLBACK_ACCENT})`;
+
+/** Reads the current theme's accent color from the document root. */
+function readAccent(): string {
+  const accent = getComputedStyle(document.documentElement).getPropertyValue("--term-accent").trim();
+  return accent || FALLBACK_ACCENT;
 }
 
 /** Builds a paw-shaped cursor (16,16 hotspot) colored with the given fill.
@@ -36,7 +30,6 @@ interface Stamp {
   y: number;
   id: number;
   rotation: number;
-  color: string;
   fading: boolean;
 }
 
@@ -81,8 +74,7 @@ export default function PawStampMode({ isActive }: { isActive: boolean }) {
     // Color the cursor from the theme's accent, and keep it in sync if the
     // theme changes (applyTheme rewrites inline styles on the document root).
     const syncCursor = () => {
-      const accent = getComputedStyle(root).getPropertyValue("--term-accent").trim();
-      root.style.setProperty("--paw-cursor", buildPawCursor(accent || "#7aa2f7"));
+      root.style.setProperty("--paw-cursor", buildPawCursor(readAccent()));
     };
     syncCursor();
 
@@ -104,14 +96,12 @@ export default function PawStampMode({ isActive }: { isActive: boolean }) {
       const target = e.target as HTMLElement;
       if (target.closest('a, button, input, select, textarea, [role="button"]')) return;
 
-      const palette = readPawPalette();
       const id = Date.now() + Math.random();
       const stamp: Stamp = {
         x: e.clientX,
         y: e.clientY,
         id,
         rotation: Math.random() * 40 - 20,
-        color: palette[Math.floor(Math.random() * palette.length)],
         fading: false,
       };
 
@@ -146,7 +136,7 @@ export default function PawStampMode({ isActive }: { isActive: boolean }) {
             filter: "drop-shadow(0 1px 1px rgba(0, 0, 0, 0.25))",
           }}
         >
-          <PawSvg size={60} color={stamp.color} />
+          <PawSvg size={60} color={STAMP_COLOR} />
         </div>
       ))}
     </div>
