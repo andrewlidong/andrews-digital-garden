@@ -1,4 +1,6 @@
 // Pixel-art frames for the cursor-chasing dog (see components/ui/CursorDog).
+// He is a white beagle with black ears and a spot on his back: Snoopy, more or
+// less, at 16 pixels.
 // Each frame is a 16x16 grid of palette keys; '.' is transparent. Frames are
 // drawn with fillRect so there are no image assets to load and the sprite
 // stays crisp at any device pixel ratio.
@@ -6,11 +8,12 @@
 export const SPRITE_SIZE = 16;
 
 const PALETTE: Record<string, string> = {
-  o: "#3b2a1c", // outline
-  b: "#f3e3c3", // cream coat
-  d: "#9c6b43", // brown ears / tail
-  e: "#101010", // eye
-  n: "#101010", // nose
+  o: "#111111", // outline
+  b: "#fbfbfb", // white coat
+  d: "#111111", // black ears
+  s: "#111111", // the spot on his back
+  e: "#111111", // eye
+  n: "#111111", // nose
   p: "#e07a7a", // tongue
 };
 
@@ -27,9 +30,9 @@ const RUN_SIDE_A: Frame = [
   "..odo..obbbbbooo",
   "...oobobbbbbbo..",
   "...obbbbbbbbbbo.",
-  "..obbbbbbbbbbo..",
-  "..obbbbbbbbbbo..",
-  "..obbbbbbbbbbo..",
+  "..obbssbbbbbbo..",
+  "..obsssbbbbbbo..",
+  "..obbsbbbbbbbo..",
   ".ob.obbbbbbo.bo.",
   "ob..ob....ob..bo",
   "o...o......o...o",
@@ -88,8 +91,8 @@ const FACE_UP: Frame = [
   ".oddbbbbbbbbddo.",
   ".oddbbbbbbbbddo.",
   ".odbbbbbbbbbbdo.",
-  "..obbbbbbbbbbo..",
-  "..obbbbbbbbbbo..",
+  "..obbbbbbbssbo..",
+  "..obbbbbbbsbbo..",
   "...obbbbbbbbo...",
 ];
 
@@ -109,8 +112,8 @@ const SIT: Frame = [
   ".......obbbbbbo.",
   "..oo..obbbbbbbo.",
   ".odbo.obbbbbbbo.",
-  ".odbbobbbbbbbo..",
-  "..obbbbbbbbbbo..",
+  ".odbbobssbbbbo..",
+  "..obbbsssbbbbo..",
   "...obbbbobbbbo..",
   "...oooooooooo...",
   "................",
@@ -137,8 +140,8 @@ const SLEEP_A: Frame = [
   "................",
   "......oooooo....",
   "....oobbbbbboo..",
-  "...obbbbbbbbbbo.",
-  "..obbbbbbbbbdbbo",
+  "...obbssbbbbbbo.",
+  "..obbsssbbbbdbbo",
   "..odbbbbbbbbdbbo",
   "..oddbbbbbbbbono",
   "...obbbbbbbbbbo.",
@@ -155,8 +158,8 @@ const SLEEP_B: Frame = [
   "................",
   "......oooooo....",
   "....oobbbbbboo..",
-  "...obbbbbbbbbbo.",
-  "..obbbbbbbbbbbbo",
+  "...obbssbbbbbbo.",
+  "..obbsssbbbbbbbo",
   "..obbbbbbbbbdbbo",
   "..odbbbbbbbbdbbo",
   "..oddbbbbbbbbono",
