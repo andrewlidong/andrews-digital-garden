@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { dropPawForDog } from "@/lib/dog";
 
 const STAMP_DURATION = 2000;
 
@@ -115,6 +116,7 @@ export default function PawStampMode({ isActive }: { isActive: boolean }) {
       };
 
       setStamps((prev) => [...prev, stamp]);
+      dropPawForDog(stamp.x, stamp.y);
 
       setTimeout(() => {
         setStamps((prev) =>
