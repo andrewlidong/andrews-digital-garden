@@ -7,7 +7,8 @@ import { drawFrame, FRAMES, SPRITE_SIZE, type Frame } from "@/lib/dogSprites";
 // paw stamp is dropped (see PawStampMode); then it perks up and runs from
 // print to print, sits and wags where the trail ends, and eventually dozes
 // off. Opening the terminal calls it home to sleep. It never chases the bare
-// cursor.
+// cursor, and it only shows up on pages that have a bed (so pages without
+// paw-stamp mode, like the blog and reader, have no dog).
 
 const SCALE = 2;
 const SIZE = SPRITE_SIZE * SCALE; // rendered size in CSS px
@@ -20,10 +21,9 @@ const SLEEP_FRAME_MS = 900;
 const SLEEP_AFTER_MS = 12_000;
 const ALERT_MS = 320;
 const HOME_SELECTOR = "[data-dog-home]";
-// The header mounts lazily; wait this long for the paw before giving up and
-// starting in the middle of the screen instead.
-const HOME_WAIT_MS = 2000;
-// How often a dog asleep on the paw re-checks that the paw hasn't moved.
+// How often the dog looks for its bed: to appear once the lazily-mounted
+// header provides one, to vanish on pages without one, and to stay on it if
+// it shifts.
 const HOME_TRACK_MS = 250;
 
 type Mode = "sleep" | "alert" | "idle" | "run" | "homing";
@@ -99,8 +99,8 @@ export function CursorDog() {
     let lastKey = "";
     let lastTs = 0;
     let raf = 0;
-    let homePoll = 0;
     let lastHomeCheck = 0;
+    let hidden = true;
 
     const place = () => {
       const x = Math.round(pos.x - SIZE / 2);
@@ -131,23 +131,38 @@ export function CursorDog() {
       return true;
     };
 
-    // The header is lazy-loaded, so the paw may not exist yet on mount. Poll
-    // briefly and move the dog there once it shows up, unless it has already
-    // been woken up by a paw print.
-    if (!snapHome()) {
-      const started = performance.now();
-      homePoll = window.setInterval(() => {
-        if (mode !== "sleep" || performance.now() - started > HOME_WAIT_MS) {
-          window.clearInterval(homePoll);
-          homePoll = 0;
-          return;
-        }
-        if (snapHome()) {
-          window.clearInterval(homePoll);
-          homePoll = 0;
-        }
-      }, 100);
-    }
+    // The dog only lives on pages that have a paw button (and so paw-stamp
+    // mode). Elsewhere, and until the lazily-mounted header provides one, it
+    // stays out of sight.
+    const setHidden = (h: boolean) => {
+      if (h === hidden) return;
+      hidden = h;
+      el.style.display = h ? "none" : "";
+      if (h) {
+        waypoints.length = 0;
+        mode = "sleep";
+      }
+    };
+
+    // Called every HOME_TRACK_MS. Shows the dog once a bed exists, hides it
+    // when the bed is gone (route change), and keeps a sleeping dog on the bed
+    // if it moves without a resize (e.g. the mobile nav re-laying out).
+    const trackHome = () => {
+      const h = findHome();
+      if (!h) {
+        setHidden(true);
+        return;
+      }
+      if (hidden) {
+        snapHome();
+        setHidden(false);
+      } else if (atHome() && (Math.abs(h.x - home.x) > 0.5 || Math.abs(h.y - home.y) > 0.5)) {
+        snapHome();
+      }
+    };
+
+    el.style.display = "none";
+    trackHome();
 
     // Redraw only when the visible frame actually changes; moving the dog is
     // just a transform update on the container.
@@ -232,14 +247,11 @@ export function CursorDog() {
       const dt = lastTs ? Math.min((ts - lastTs) / 1000, 0.1) : 0;
       lastTs = ts;
 
-      // The bed can move without a resize (e.g. the mobile nav re-lays out
-      // once the device is detected), so a dog curled up on it re-checks the
-      // button's position now and then and shuffles over if it has shifted.
-      if (ts - lastHomeCheck > HOME_TRACK_MS && atHome()) {
+      if (ts - lastHomeCheck > HOME_TRACK_MS) {
         lastHomeCheck = ts;
-        const h = findHome();
-        if (h && (Math.abs(h.x - home.x) > 0.5 || Math.abs(h.y - home.y) > 0.5)) snapHome();
+        trackHome();
       }
+      if (hidden) return;
 
       switch (mode) {
         case "sleep":
@@ -323,7 +335,6 @@ export function CursorDog() {
 
     return () => {
       cancelAnimationFrame(raf);
-      if (homePoll) window.clearInterval(homePoll);
       window.removeEventListener(DOG_PAW_EVENT, onPaw);
       window.removeEventListener(DOG_HOME_EVENT, onHome);
       window.removeEventListener("resize", onResize);
