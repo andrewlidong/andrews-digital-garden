@@ -32,6 +32,13 @@ body {
   background-color: var(--term-bg);
 }
 
+/* Search-hit highlights (terminal grep, palette full-text results). */
+mark {
+  background-color: color-mix(in srgb, var(--term-yellow) 30%, transparent);
+  color: var(--term-yellow);
+  border-radius: 2px;
+}
+
 /* In-page anchor jumps (mobile nav) land below the floating glass nav instead
    of flush against the top edge. */
 html {

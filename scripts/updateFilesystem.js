@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { writeSearchIndex } from './generateSearchIndex.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -146,6 +147,7 @@ function updateFilesystem() {
             JSON.stringify(structure, null, 4)
         );
         console.log('✅ filesystem.json updated successfully');
+        writeSearchIndex();
     } catch (error) {
         console.error('❌ Error updating filesystem.json:', error);
         process.exit(1);
@@ -173,6 +175,10 @@ if (isPreCommit) {
         watcher
             .on('add', path => {
                 console.log(`📄 File ${path} has been added`);
+                updateFilesystem();
+            })
+            .on('change', path => {
+                console.log(`✏️ File ${path} has changed`);
                 updateFilesystem();
             })
             .on('unlink', path => {
