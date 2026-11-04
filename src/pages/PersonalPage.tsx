@@ -19,6 +19,7 @@ import { loadFileContent } from "@/lib/loadFileContent";
 import { useTheme } from "@/hooks/useTheme";
 import { getTheme } from "@/lib/themes";
 import { callDogHome } from "@/lib/dog";
+import { useRegisterPaletteAction } from "@/lib/paletteActions";
 import { useKonami } from "@/hooks/useKonami";
 import { SproutGrowth } from "@/components/ui/SproutGrowth";
 const TetrisFrame = lazyRetry(() =>
@@ -517,6 +518,37 @@ function PersonalPage() {
     }
     return false;
   };
+
+  const closeAllWindows = () => {
+    setWindows([]);
+    setDisabledItems(new Set());
+  };
+
+  const cycleTheme = () => {
+    const i = themes.findIndex((t) => t.id === themeId);
+    setTheme(themes[(i + 1) % themes.length].id);
+  };
+
+  // Contextual palette actions (⌘K) for the desktop.
+  useRegisterPaletteAction({ id: "desktop-open-terminal", label: "Open terminal", hint: "window", run: openTerminal });
+  useRegisterPaletteAction({
+    id: "desktop-close-windows",
+    label: "Close all windows",
+    hint: windows.length ? `${windows.length} open` : undefined,
+    run: closeAllWindows,
+  });
+  useRegisterPaletteAction({
+    id: "desktop-cycle-theme",
+    label: "Cycle theme",
+    hint: themes.find((t) => t.id === themeId)?.name,
+    run: cycleTheme,
+  });
+  useRegisterPaletteAction({
+    id: "desktop-toggle-paw",
+    label: pawModeActive ? "Turn off paw mode" : "Toggle paw mode",
+    hint: "🐾",
+    run: () => setPawModeActive((prev) => !prev),
+  });
 
   const renderFileOrFolder = (item: FileItem, parentId?: string) => {
     const isItemDisabled = isDisabled(item.id);

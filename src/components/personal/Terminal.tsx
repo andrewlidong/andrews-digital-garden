@@ -4,6 +4,7 @@ import { cn } from '@/lib/utils';
 import { readerPath } from '@/lib/frontmatter';
 import type { Theme } from '@/lib/themes';
 import { toggleDog } from '@/lib/dog';
+import { grep, compilePattern, highlightMatches } from '@/lib/searchIndex';
 
 type FileItem = {
   id: string;
@@ -65,9 +66,16 @@ export function Terminal({ onOpenFile, onOpenApp, fileSystem, initialCommand, co
     }
   }, [history]);
 
-  // Focus input when terminal is clicked
+  // Focus input when terminal is clicked. Output rendered as HTML can mark
+  // elements with data-open-file="/files/..." to open that file on click.
   useEffect(() => {
-    const handleClick = () => {
+    const handleClick = (e: MouseEvent) => {
+      const link = (e.target as HTMLElement).closest<HTMLElement>('[data-open-file]');
+      if (link?.dataset.openFile) {
+        e.preventDefault();
+        openFileByPath(link.dataset.openFile);
+        return;
+      }
       if (inputRef.current) {
         inputRef.current.focus();
       }
@@ -83,7 +91,23 @@ export function Terminal({ onOpenFile, onOpenApp, fileSystem, initialCommand, co
         terminal.removeEventListener('click', handleClick);
       }
     };
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fileSystem]);
+
+  const openFileByPath = (filePath: string) => {
+    const find = (items: FileItem[]): FileItem | null => {
+      for (const item of items) {
+        if (item.type === 'file' && item.path === filePath) return item;
+        if (item.type === 'folder' && item.children) {
+          const found = find(item.children);
+          if (found) return found;
+        }
+      }
+      return null;
+    };
+    const file = find(fileSystem);
+    if (file) onOpenFile(file.id);
+  };
 
   // Find a file or folder by path
   const findItemByPath = (path: string): FileItem[] | null => {
@@ -219,6 +243,49 @@ export function Terminal({ onOpenFile, onOpenApp, fileSystem, initialCommand, co
       });
   };
 
+  // `grep [-i] [-r] <pattern>` — full-text search across every post via the
+  // build-time index. Each hit's file:line is clickable and opens the file.
+  const GREP_USAGE =
+    'Usage: grep [-i] [-r] &lt;pattern&gt;\n  -i  ignore case\n  -r  recursive (always on — the whole garden is searched)';
+  const GREP_MAX = 30;
+  const runGrep = (cmd: string, args: string[]) => {
+    const flags = args.filter((a) => /^-[a-z]+$/i.test(a)).join('');
+    const pattern = args.filter((a) => !/^-[a-z]+$/i.test(a)).join(' ');
+    if (!pattern) {
+      setHistory((prev) => [...prev, { command: cmd, output: GREP_USAGE, isError: true }]);
+      return;
+    }
+    const ignoreCase = flags.includes('i');
+    setHistory((prev) => [...prev, { command: cmd, output: 'searching the garden…' }]);
+    const replaceLast = (output: string, isError = false) =>
+      setHistory((prev) => {
+        const next = [...prev];
+        next[next.length - 1] = { command: cmd, output, isError };
+        return next;
+      });
+    grep(pattern, { ignoreCase })
+      .then((hits) => {
+        if (hits.length === 0) {
+          replaceLast(`grep: no matches for '${pattern.replace(/</g, '&lt;')}'`, true);
+          return;
+        }
+        const re = compilePattern(pattern, ignoreCase);
+        const lines = hits.slice(0, GREP_MAX).map((h) => {
+          const rel = h.path.replace(/^\/files\//, '');
+          return (
+            `<a href="${readerPath(h.path)}" data-open-file="${h.path}" class="text-term-accent hover:underline cursor-pointer">${rel}</a>` +
+            `<span class="text-term-faint">:${h.line}:</span> ` +
+            `<span class="text-term-fg">${highlightMatches(h.text, re)}</span>`
+          );
+        });
+        if (hits.length > GREP_MAX) {
+          lines.push(`<span class="text-term-faint">… ${hits.length - GREP_MAX} more</span>`);
+        }
+        replaceLast(lines.join('\n'));
+      })
+      .catch(() => replaceLast('grep: the index is unavailable.', true));
+  };
+
   const handleCommand = (cmd: string) => {
     const args = cmd.trim().split(' ');
     const command = args[0].toLowerCase();
@@ -233,6 +300,7 @@ export function Terminal({ onOpenFile, onOpenApp, fileSystem, initialCommand, co
   cd [path] - Change directory
   cat [file] - Open file in a window
   vim [file] - Open file full screen (alias: nvim)
+  grep [-i] [pattern] - Search every post for text
   pwd - Show current directory
   theme - List or switch color themes (try 'theme list')
   graph - Visualize the garden and its wikilinks
@@ -457,6 +525,10 @@ psst: this terminal keeps a few secrets. old cheat codes still work.`;
         runFortune(cmd);
         return;
 
+      case 'grep':
+        runGrep(cmd, args.slice(1).filter(Boolean));
+        return;
+
       case 'rm': {
         const flags = args.slice(1).filter((a) => a.startsWith('-')).join('');
         if (flags.includes('r') && flags.includes('f')) {
@@ -561,7 +633,7 @@ psst: this terminal keeps a few secrets. old cheat codes still work.`;
     setInput('');
   };
 
-  const COMMANDS = ['help', 'ls', 'cd', 'cat', 'vim', 'nvim', 'edit', 'pwd', 'theme', 'dog', 'clear'];
+  const COMMANDS = ['help', 'ls', 'cd', 'cat', 'vim', 'nvim', 'edit', 'grep', 'pwd', 'theme', 'dog', 'clear'];
   // Commands that take a file argument (for argument completion).
   const FILE_COMMANDS = ['cat', 'vim', 'nvim', 'edit'];
 

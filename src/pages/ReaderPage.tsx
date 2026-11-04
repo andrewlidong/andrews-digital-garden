@@ -16,6 +16,7 @@ import {
 import { remarkWikilinks, getBacklinks } from "@/lib/wikilinks";
 import { remarkCallouts } from "@/lib/callouts";
 import { useInternalLinkNav } from "@/lib/useInternalLinkNav";
+import { useRegisterPaletteAction } from "@/lib/paletteActions";
 import { Signature } from "@/components/ui/Signature";
 import { DitheredImage } from "@/components/ui/DitheredImage";
 
@@ -322,6 +323,22 @@ export default function ReaderPage() {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [navigate]);
+
+  // Contextual palette actions (⌘K) for the post being read.
+  useRegisterPaletteAction({
+    id: "reader-copy-permalink",
+    label: "Copy permalink",
+    hint: "clipboard",
+    run: () => {
+      navigator.clipboard?.writeText(window.location.href).catch(() => {});
+    },
+  });
+  useRegisterPaletteAction(
+    prev ? { id: "reader-prev", label: "Previous post (newer)", hint: prev.label, run: () => navigate(prev.to) } : null
+  );
+  useRegisterPaletteAction(
+    next ? { id: "reader-next", label: "Next post (older)", hint: next.label, run: () => navigate(next.to) } : null
+  );
 
   const title = meta.title || filename;
   const isBlog = section === "blog";
