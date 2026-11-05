@@ -74,6 +74,12 @@ function useDogEnabled(): boolean {
 
 export function CursorDog() {
   const enabled = useDogEnabled();
+  // Visibility lives in React state (not just an imperative style write):
+  // the dog shares a Suspense boundary with the lazy routes, and when a route
+  // chunk loads React hides and then un-hides the boundary's children by
+  // resetting their inline `display` to whatever the props say. If the props
+  // said nothing, a dog we had hidden imperatively would pop back.
+  const [visible, setVisible] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -99,7 +105,7 @@ export function CursorDog() {
     let lastKey = "";
     let lastTs = 0;
     let raf = 0;
-    let lastHomeCheck = 0;
+    let lastHomeCheck = -Infinity;
     let hidden = true;
 
     const place = () => {
@@ -135,25 +141,34 @@ export function CursorDog() {
     // mode). Elsewhere, and until the lazily-mounted header provides one, it
     // stays out of sight.
     const setHidden = (h: boolean) => {
+      // Write the style directly so the change lands this frame, and mirror
+      // it into state so React agrees (see the note on `visible`).
+      el.style.display = h ? "none" : "";
+      setVisible(!h);
       if (h === hidden) return;
       hidden = h;
-      el.style.display = h ? "none" : "";
       if (h) {
         waypoints.length = 0;
         mode = "sleep";
       }
     };
 
-    // Called every HOME_TRACK_MS. Shows the dog once a bed exists, hides it
-    // when the bed is gone (route change), and keeps a sleeping dog on the bed
-    // if it moves without a resize (e.g. the mobile nav re-laying out).
-    const trackHome = () => {
+    // Runs every frame: shows the dog once a bed exists, hides it the moment
+    // the bed is gone (route change). Measuring the bed is throttled to
+    // HOME_TRACK_MS; that keeps a sleeping dog on it if it moves without a
+    // resize (e.g. the mobile nav re-laying out).
+    const trackHome = (ts: number) => {
+      const bed = document.querySelector(HOME_SELECTOR);
+      if (!bed) {
+        if (!hidden || el.style.display !== "none") setHidden(true);
+        return;
+      }
+      if (ts - lastHomeCheck < HOME_TRACK_MS) return;
+      lastHomeCheck = ts;
       const h = findHome();
       if (!h) {
         setHidden(true);
-        return;
-      }
-      if (hidden) {
+      } else if (hidden) {
         snapHome();
         setHidden(false);
       } else if (atHome() && (Math.abs(h.x - home.x) > 0.5 || Math.abs(h.y - home.y) > 0.5)) {
@@ -162,7 +177,7 @@ export function CursorDog() {
     };
 
     el.style.display = "none";
-    trackHome();
+    trackHome(performance.now());
 
     // Redraw only when the visible frame actually changes; moving the dog is
     // just a transform update on the container.
@@ -247,10 +262,7 @@ export function CursorDog() {
       const dt = lastTs ? Math.min((ts - lastTs) / 1000, 0.1) : 0;
       lastTs = ts;
 
-      if (ts - lastHomeCheck > HOME_TRACK_MS) {
-        lastHomeCheck = ts;
-        trackHome();
-      }
+      trackHome(ts);
       if (hidden) return;
 
       switch (mode) {
@@ -338,6 +350,8 @@ export function CursorDog() {
       window.removeEventListener(DOG_PAW_EVENT, onPaw);
       window.removeEventListener(DOG_HOME_EVENT, onHome);
       window.removeEventListener("resize", onResize);
+      el.style.display = "none";
+      setVisible(false);
     };
   }, [enabled]);
 
@@ -348,7 +362,13 @@ export function CursorDog() {
       ref={containerRef}
       aria-hidden="true"
       className="pointer-events-none fixed left-0 top-0 select-none"
-      style={{ width: SIZE, height: SIZE, zIndex: 9999, willChange: "transform" }}
+      style={{
+        width: SIZE,
+        height: SIZE,
+        zIndex: 9999,
+        willChange: "transform",
+        display: visible ? undefined : "none",
+      }}
     >
       <canvas ref={canvasRef} style={{ width: SIZE, height: SIZE, display: "block" }} />
     </div>
